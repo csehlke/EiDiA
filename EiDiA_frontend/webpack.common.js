@@ -55,7 +55,7 @@ module.exports = {
         new CleanWebpackPlugin(['dist']),
         new webpack.optimize.CommonsChunkPlugin({name: "vendor", minChunks: Infinity,}),
         new HtmlWebpackPlugin({
-            template: './src/index.html',
+            template: './EiDiA_frontend/src/index.html',
             filename: 'index.html',
             inject: 'body'
         }),
