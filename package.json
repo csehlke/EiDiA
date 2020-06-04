@@ -33,6 +33,7 @@
     "webfontloader": "1.6.28"
   },
   "devDependencies": {
+    "@material-ui/icons": "^4.9.1",
     "babel-core": "6.26.3",
     "babel-loader": "7.1.5",
     "babel-preset-env": "1.7.0",
