@@ -3,7 +3,7 @@
 import React from 'react';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
-import { MovieListView } from './views/MovieListView';
+import { WelcomePageView } from './viewsEIDIA/WelcomePageView';
 import { MovieDetailView }   from './views/MovieDetailView';
 import { MovieFormView }   from './views/MovieFormView';
 import { UserLoginView } from "./views/UserLoginView";
@@ -18,26 +18,9 @@ export default class App extends React.Component {
         super(props);
 
         this.state = {
-            title: 'Movie Example App',
+            title: 'EiDiA',
             routes: [
-                { component: MovieListView , path: '/', exact: true},
-                { component: MovieDetailView , path: '/show/:id'},
-                { render: (props) => {
-                        if(UserService.isAuthenticated()) {
-                            return (<MovieFormView {... props} />)
-                        }
-                        else {
-                            return (<Redirect to={'/login'}/>)
-                        }} , path: '/edit/:id'},
-                { render: (props) => {
-                    if(UserService.isAuthenticated()) {
-                        return (<MovieFormView {... props} />)
-                    }
-                    else {
-                        return (<Redirect to={'/login'}/>)
-                    }}, path: '/add',},
-                { component: UserLoginView, path: '/login'},
-                { component: UserSignupView, path: '/register'}
+                { component: WelcomePageView , path: '/', exact: true},
             ]
         };
     }
@@ -49,9 +32,14 @@ export default class App extends React.Component {
     render() {
         return(
             <div>
+
                 <Router>
                     <Switch>
                         {this.state.routes.map((route, i) => (<Route key={i} {...route}/>) )}
+
+
+
+
                     </Switch>
                 </Router>
             </div>
