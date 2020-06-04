@@ -1,16 +1,9 @@
 "use strict";
 
 import React from 'react';
-import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { WelcomePageView } from './viewsEIDIA/WelcomePageView';
-import { MovieDetailView }   from './views/MovieDetailView';
-import { MovieFormView }   from './views/MovieFormView';
-import { UserLoginView } from "./views/UserLoginView";
-import { UserSignupView } from "./views/UserSignupView";
-
-import UserService from "./services/UserService";
-
+import { WelcomePageView } from './views/WelcomePageView';
 
 export default class App extends React.Component {
 
@@ -20,6 +13,9 @@ export default class App extends React.Component {
         this.state = {
             title: 'EiDiA',
             routes: [
+                /**
+                 * Here all Page Components are declared together with their relative path
+                 */
                 { component: WelcomePageView , path: '/', exact: true},
             ]
         };
@@ -35,11 +31,8 @@ export default class App extends React.Component {
 
                 <Router>
                     <Switch>
+
                         {this.state.routes.map((route, i) => (<Route key={i} {...route}/>) )}
-
-
-
-
                     </Switch>
                 </Router>
             </div>

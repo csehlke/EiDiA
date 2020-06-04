@@ -4,7 +4,6 @@ import React from 'react';
 import { Toolbar, Button } from 'react-md';
 import { withRouter } from 'react-router-dom'
 
-import KebabMenu from './KebabMenu';
 
 
 class Header extends React.Component {
@@ -18,11 +17,10 @@ class Header extends React.Component {
             <Toolbar
                 colored
                 nav={<Button onClick={() => this.props.history.push('/')} icon>home</Button>}
-                title={this.props.title}
-                actions={<KebabMenu id="toolbar-colored-kebab-menu" />}>
+                title={this.props.title}>
             </Toolbar>
         );
     }
-};
+}
 
 export default withRouter(Header);

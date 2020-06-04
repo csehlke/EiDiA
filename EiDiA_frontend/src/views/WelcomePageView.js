@@ -1,10 +1,8 @@
 "use strict";
 
 import React from 'react';
-import MovieService from "../services/MovieService";
-import {MovieList} from "../components/MovieList";
 
-import { WelcomePage } from '../componentsEIDIA/WelcomePage';
+import { WelcomePage } from '../components/WelcomePage';
 
 
 

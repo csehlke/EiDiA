@@ -12,14 +12,14 @@ export default class Page extends React.Component {
         super(props);
 
         this.state = {
-            title: ''
+            title: 'Tesd'
         }
     }
 
     componentDidMount(){
-       this.setState({
-           title: document.title
-       });
+        this.setState({
+            title: document.title
+        });
     }
 
     render() {
