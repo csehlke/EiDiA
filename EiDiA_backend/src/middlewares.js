@@ -10,7 +10,7 @@ const allowCrossDomain = (req, res, next) => {
     res.header('Access-Control-Allow-Headers', '*');
 
     // intercept OPTIONS method
-    if ('OPTIONS' == req.method) {
+    if ('OPTIONS' === req.method) {
         res.status(200).send(200);
     }
     else {
