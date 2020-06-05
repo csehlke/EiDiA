@@ -25,7 +25,7 @@ export default class Page extends React.Component {
     render() {
         return (
             <section>
-                <Header title={this.state.title} />
+                <Header title={this.props.title} />
                 {this.props.children}
                 <Footer />
             </section>
