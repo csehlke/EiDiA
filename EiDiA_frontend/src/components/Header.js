@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({  //Elemente stylen
     }
 }));
 
-export default function MenuAppBar() {
+const MenuAppBar = (props) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -57,7 +57,7 @@ export default function MenuAppBar() {
                         alt="Logo"
                     />
                     <Typography variant="h6" align="center" className={classes.title}>
-                        PUT YOUR TITLE HERE
+                        {props.title}
                     </Typography>
                     <div>
                         <IconButton
@@ -90,3 +90,4 @@ export default function MenuAppBar() {
         </div>
     );
 }
+export default MenuAppBar
