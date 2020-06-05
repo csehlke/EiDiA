@@ -1,7 +1,7 @@
 "use strict";
 
 import React from 'react';
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -14,15 +14,19 @@ import logo from "../assets/logo.png"
 
 // SIEHE: https://material-ui.com/components/app-bar/
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({  //Elemente stylen
     root: {
-        flexGrow: 1
+        flexGrow: 1,
+    },
+    appBar: {
+        background: "#DADADA",
     },
     menuButton: {
         marginRight: theme.spacing(2)
     },
     title: {
-        flexGrow: 1
+        flexGrow: 1,
+        color: "black"
     },
     logo: {
         width: "9%"
@@ -35,7 +39,6 @@ export default function MenuAppBar() {
     const open = Boolean(anchorEl);
 
 
-
     const handleMenu = event => {
         setAnchorEl(event.currentTarget);
     };
@@ -46,8 +49,8 @@ export default function MenuAppBar() {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar>
+            <AppBar position="static" className={classes.appBar}>
+                <Toolbar disableGutters={true}>
                     <img
                         className={classes.logo}
                         src={logo}
@@ -58,13 +61,10 @@ export default function MenuAppBar() {
                     </Typography>
                     <div>
                         <IconButton
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
                             onClick={handleMenu}
-                            color="inherit"
+                            color="black"
                         >
-                            <AccountCircle />
+                            <AccountCircle/>
                         </IconButton>
                         <Menu
                             id="menu-appbar"
