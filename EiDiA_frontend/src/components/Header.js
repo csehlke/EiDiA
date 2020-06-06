@@ -1,14 +1,9 @@
 "use strict";
 
 import React from 'react';
-import {makeStyles} from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
+import {AppBar, IconButton, makeStyles, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import {Link} from "react-router-dom";
 
 import logo from "../assets/logo.png"
 
@@ -29,7 +24,8 @@ const useStyles = makeStyles(theme => ({  //Elemente stylen
         color: "black"
     },
     logo: {
-        width: "9%"
+        margin: "1em",
+        height: "2em"
     }
 }));
 
@@ -51,12 +47,14 @@ const MenuAppBar = (props) => {
         <div className={classes.root}>
             <AppBar position="static" className={classes.appBar}>
                 <Toolbar disableGutters={true}>
-                    <img
-                        className={classes.logo}
-                        src={logo}
-                        alt="Logo"
-                    />
-                    <Typography variant="h6" align="center" className={classes.title}>
+                    <Link to={'/'}>
+                        <img
+                            className={classes.logo}
+                            src={logo}
+                            alt="EiDiA Logo"
+                        />
+                    </Link>
+                    <Typography variant="h4" align="center" className={classes.title}>
                         {props.title}
                     </Typography>
                     <div>
@@ -81,8 +79,8 @@ const MenuAppBar = (props) => {
                             open={open}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleClose}>My account</MenuItem>
+                            <MenuItem onClick={handleClose}>User Account</MenuItem>
+                            <MenuItem onClick={handleClose}>Logout</MenuItem>
                         </Menu>
                     </div>
                 </Toolbar>
