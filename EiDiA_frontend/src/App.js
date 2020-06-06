@@ -1,9 +1,9 @@
 "use strict";
 
 import React from 'react';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {WelcomeView} from "./views/WelcomeView";
-
+import {SearchView} from "./views/SearchView";
 
 
 export default class App extends React.Component {
@@ -14,7 +14,8 @@ export default class App extends React.Component {
         this.state = {
             title: 'EiDiA - Einfache Digitale Akte',
             routes: [
-                { component: WelcomeView , path: '/', exact: true}
+                {component: WelcomeView, path: '/', exact: true},
+                {component: SearchView, path: '/search', exact: true}
             ]
         };
     }
