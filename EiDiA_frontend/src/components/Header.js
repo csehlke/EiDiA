@@ -60,7 +60,7 @@ const MenuAppBar = (props) => {
                     <div>
                         <IconButton
                             onClick={handleMenu}
-                            color="black"
+                            color="default"
                         >
                             <AccountCircle/>
                         </IconButton>
@@ -80,6 +80,7 @@ const MenuAppBar = (props) => {
                             onClose={handleClose}
                         >
                             <MenuItem onClick={handleClose}>User Account</MenuItem>
+                            <MenuItem onClick={handleClose}>Help</MenuItem>
                             <MenuItem onClick={handleClose}>Logout</MenuItem>
                         </Menu>
                     </div>
