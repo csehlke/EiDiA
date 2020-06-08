@@ -3,6 +3,8 @@
 import React from 'react';
 import Page from "../components/Page";
 import styled from "styled-components";
+import FileDrop from "../components/upload/FileDrop";
+import TypePicker from "../components/upload/TypePicker";
 
 const SplitView = styled.div` 
     display: flex;
@@ -19,6 +21,8 @@ export class UploadView extends React.Component {
         return (
             <Page title={"Upload Document"}>
                 <SplitView>
+                    <FileDrop />
+                    <TypePicker />
                 </SplitView>
             </Page>
         );
