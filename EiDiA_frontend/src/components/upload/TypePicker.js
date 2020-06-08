@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
     flex-grow: 1;
+    flex-basis: 50%;
 `;
 
 class TypePicker extends React.Component {
@@ -20,7 +21,7 @@ class TypePicker extends React.Component {
         return (
             <Container>
 
-                <div>Hier Typepicker </div>
+                <div>Here Typepicker </div>
 
 
             </Container>
