@@ -3,7 +3,8 @@
 import React from 'react';
 import Page from "../components/Page";
 import DocEditor from "../components/DocEditor";
-
+import {RightSidepanel} from "../components/RightSidepanel";
+import {Container, Col, Row} from "react-bootstrap";
 
 export class ExportView extends React.Component {
 
@@ -14,8 +15,11 @@ export class ExportView extends React.Component {
     render() {
         return (
             <Page title={"Export"}>
-                <DocEditor>hallo</DocEditor>
+                <RightSidepanel/>
+                <DocEditor/>
+                
             </Page>
         );
     }
 }
+

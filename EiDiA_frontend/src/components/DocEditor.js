@@ -5,7 +5,10 @@ import {llorem} from '../support files/constants';
 export default class DocEditor extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {editorState: EditorState.createWithContent(ContentState.createFromText(llorem))};
+        this.state = {
+            editorState: EditorState.createWithContent(ContentState.createFromText(llorem)),
+            fontSize: 8
+        };
         this.onChange = editorState => this.setState({editorState});
         this.setEditor = (editor) => {
             this.editor = editor;
