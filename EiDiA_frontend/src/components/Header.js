@@ -62,7 +62,7 @@ const MenuAppBar = (props) => {
                     <div>
                         <IconButton
                             onClick={handleMenu}
-                            color="black"
+                            color="default"
                         >
                             <AccountCircle/>
                         </IconButton>
