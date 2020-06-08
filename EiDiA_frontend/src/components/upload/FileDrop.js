@@ -3,6 +3,7 @@
 import React from 'react';
 import styled from "styled-components";
 import {Button} from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert'
 import Dropzone from 'react-dropzone'
 
 const Container = styled.div` // Outer Container
@@ -43,17 +44,22 @@ class FileDrop extends React.Component {
     constructor(props) {
         super(props);
 
+
+        this.state = {
+            files: [],
+            wrongFiletype: false
+        };
+
         this.onDrop = (files) => { //Executed when drop
             this.setState({files})
 
         };
-        this.state = {
-            files: []
-        };
 
         this.assignRecord = this.assignRecord.bind(this);
+        this.failedUpload = this.failedUpload.bind(this);
 
     }
+
 
 
     assignRecord() {
@@ -62,8 +68,10 @@ class FileDrop extends React.Component {
     }
 
     failedUpload() {
-        console.log("Document Type not supported");
-        //TODO: Popover mit User Feedback
+        this.setState({
+            wrongFiletype: true //For Alert Message
+        });
+
 
     }
 
@@ -75,6 +83,12 @@ class FileDrop extends React.Component {
                 {file.name} - {file.size} bytes
             </li>
         ));
+
+        const wrongFiletype= this.state.wrongFiletype;
+        let fileAlert;
+        if(wrongFiletype){
+            fileAlert = <Alert severity="error">This filetype is not supported! Please upload a .png file</Alert>
+        }
 
 
         return (
@@ -100,7 +114,7 @@ class FileDrop extends React.Component {
                             </div>
                             <aside>
                                 <SelectContainer>
-                                    <h4>Selected File:</h4>
+                                    Selected File:
                                     <ul>{files}</ul>
                                 </SelectContainer>
                             </aside>
@@ -116,6 +130,7 @@ class FileDrop extends React.Component {
                         Assign to Record
                     </Button>
                 </ButtonContainer>
+                {fileAlert}
             </Container>
         )
     }
