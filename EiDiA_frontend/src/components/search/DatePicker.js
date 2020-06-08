@@ -2,6 +2,7 @@ import 'date-fns';
 import React from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import PropTypes from "prop-types";
 
 class DatePicker extends React.Component {
 
@@ -37,3 +38,11 @@ class DatePicker extends React.Component {
 }
 
 export default DatePicker;
+
+DatePicker.propTypes = {
+    label: PropTypes.string.isRequired,
+    maxDate: PropTypes.object,
+    minDate: PropTypes.object,
+    value: PropTypes.object,
+    onChange: PropTypes.func.isRequired
+}
