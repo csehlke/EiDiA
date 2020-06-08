@@ -5,7 +5,7 @@ import styled from "styled-components";
 import {Button} from "@material-ui/core";
 
 const Container = styled.div`
-    flex-grow: 1;
+    flex-grow: 1; // Für SplitView
 `;
 
 class FileDrop extends React.Component {
@@ -13,8 +13,7 @@ class FileDrop extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-        }
+        this.state = {}
     }
 
     assignRecord() {
