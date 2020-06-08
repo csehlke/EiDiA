@@ -1,11 +1,32 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import PropTypes from "prop-types";
 
-export default class SmartDropDownBox extends React.Component {
+class SmartDropDownBox extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            inputValue: ''
+        }
+
+        this.handleOnChange = this.handleOnChange.bind(this);
+        this.reset = this.reset.bind(this);
+    }
+
+    reset() {
+        this.setState({
+            inputValue: ''
+        });
+    }
+
+    handleOnChange(event, value) {
+        this.setState({
+            inputValue: value.name
+        });
+        this.props.onChange(event, value);
     }
 
     render() {
@@ -19,8 +40,8 @@ export default class SmartDropDownBox extends React.Component {
                 blurOnSelect
                 fullWidth
                 options={this.props.options}
-                value={this.props.value}
-                onChange={this.props.onChange}
+                inputValue={this.state.inputValue}
+                onChange={this.handleOnChange}
                 getOptionLabel={(option) => option.name}
                 style={{margin: '0.5em'}}
                 renderInput={(params) => (
@@ -31,4 +52,12 @@ export default class SmartDropDownBox extends React.Component {
             />
         );
     }
+}
+
+export default SmartDropDownBox;
+
+SmartDropDownBox.propTypes = {
+    label: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    options: PropTypes.array.isRequired
 }

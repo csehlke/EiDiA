@@ -14,6 +14,14 @@ const Column = styled.div`
     flex: 50%;
 `;
 
+const Box = styled.div`
+    margin-top: 1em;
+    margin-bottom: 1em;
+`;
+
+// TODO fetch options for drop downs
+// TODO send search request
+
 class BasicSearchForm extends React.Component {
 
     constructor(props) {
@@ -30,13 +38,17 @@ class BasicSearchForm extends React.Component {
                 {name: 'user1', username: 'username1'},
                 {name: 'user2', username: 'username2'}
             ],
-            record: '',
-            documentType: '',
+            recordId: '',
+            documentTypeId: '',
             dateFrom: null,
             dateTo: null,
             fullText: '',
-            user: ''
+            username: ''
         }
+
+        this.recordRef = React.createRef();
+        this.documentTypeRef = React.createRef();
+        this.userRef = React.createRef();
 
         this.handleRecordChange = this.handleRecordChange.bind(this);
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
@@ -50,13 +62,13 @@ class BasicSearchForm extends React.Component {
 
     handleRecordChange(event, value) {
         this.setState({
-            record: value
+            recordId: value.id
         });
     }
 
     handleDocumentTypeChange(event, value) {
         this.setState({
-            documentType: value
+            documentTypeId: value.id
         });
     }
 
@@ -72,27 +84,30 @@ class BasicSearchForm extends React.Component {
         })
     }
 
-    handleFullTextChange(event, value) {
+    handleFullTextChange(event) {
         this.setState({
-            fullText: value
+            fullText: event.target.value
         });
     }
 
     handleUserChange(event, value) {
         this.setState({
-            user: value
+            username: value.username
         });
     }
 
     handleReset() {
         this.setState({
-            record: '',
-            documentType: '',
+            recordId: '',
+            documentTypeId: '',
             dateFrom: null,
             dateTo: null,
             fullText: '',
-            user: ''
+            username: ''
         });
+        this.recordRef.current.reset();
+        this.documentTypeRef.current.reset();
+        this.userRef.current.reset();
     }
 
     handleSearch() {
@@ -101,72 +116,74 @@ class BasicSearchForm extends React.Component {
 
     render() {
         return (
-            <Row>
-                <Column>
-                    <Row>
-                        <SmartDropDownBox
-                            onChange={this.handleRecordChange}
-                            options={this.state.records}
-                            value={this.state.record}
-                            label='Record'/>
-                    </Row>
-                    <Row>
-                        <SmartDropDownBox
-                            onChange={this.handleDocumentTypeChange}
-                            options={this.state.documentTypes}
-                            value={this.state.documentType}
-                            label='Document Type'/>
-                    </Row>
-                    <Row>
-                        <DatePicker
-                            onChange={this.handleDateFromChange}
-                            maxDate={this.state.dateTo}
-                            value={this.state.dateFrom}
-                            label="After"/>
-                        &nbsp;-&nbsp;
-                        <DatePicker
-                            onChange={this.handleDateToChange}
-                            minDate={this.state.dateFrom}
-                            value={this.state.dateTo}
-                            label="Before"/>
-                    </Row>
-                </Column>
-                <Column>
-                    <Row>
-                        <TextField
-                            id="full-text"
-                            label="Full Text"
-                            style={{margin: '0.5em'}}
-                            fullWidth
-                            value={this.state.fullText}
-                            onChange={this.handleFullTextChange}
-                            variant="outlined"/>
-                    </Row>
-                    <Row>
-                        <SmartDropDownBox
-                            onChange={this.handleUserChange}
-                            options={this.state.users}
-                            value={this.state.user}
-                            label='User'/>
-                    </Row>
-                    <Row>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={this.handleReset}
-                            style={{width: '50%', margin: '0.5em'}}>
-                            Reset
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={this.handleSearch}
-                            style={{width: '50%', margin: '0.5em'}}>
-                            Search
-                        </Button>
-                    </Row>
-                </Column>
-            </Row>
+            <Box>
+                <Row>
+                    <Column>
+                        <Row>
+                            <SmartDropDownBox
+                                ref={this.recordRef}
+                                onChange={this.handleRecordChange}
+                                options={this.state.records}
+                                label='Record'/>
+                        </Row>
+                        <Row>
+                            <SmartDropDownBox
+                                ref={this.documentTypeRef}
+                                onChange={this.handleDocumentTypeChange}
+                                options={this.state.documentTypes}
+                                label='Document Type'/>
+                        </Row>
+                        <Row>
+                            <DatePicker
+                                onChange={this.handleDateFromChange}
+                                maxDate={this.state.dateTo}
+                                value={this.state.dateFrom}
+                                label="After"/>
+                            <DatePicker
+                                onChange={this.handleDateToChange}
+                                minDate={this.state.dateFrom}
+                                value={this.state.dateTo}
+                                label="Before"/>
+                        </Row>
+                    </Column>
+                    <Column>
+                        <Row>
+                            <TextField
+                                id="full-text"
+                                label="Full Text"
+                                style={{margin: '0.5em'}}
+                                fullWidth
+                                value={this.state.fullText}
+                                onChange={this.handleFullTextChange}
+                                variant="outlined"/>
+                        </Row>
+                        <Row>
+                            <SmartDropDownBox
+                                ref={this.userRef}
+                                onChange={this.handleUserChange}
+                                options={this.state.users}
+                                label='User'/>
+                        </Row>
+                        <Row>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={this.handleReset}
+                                style={{width: '50%', margin: '1em 0.5em'}}>
+                                Reset
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                size={"large"}
+                                onClick={this.handleSearch}
+                                style={{width: '50%', margin: '1em 0.5em'}}>
+                                Search
+                            </Button>
+                        </Row>
+                    </Column>
+                </Row>
+            </Box>
         );
     }
 }
