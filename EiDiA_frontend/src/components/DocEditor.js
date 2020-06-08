@@ -1,10 +1,11 @@
 import React from 'react';
-import {Editor, EditorState} from 'draft-js';
+import {Editor, EditorState, ContentState} from 'draft-js';
+import {llorem} from '../support files/constants';
 
 export default class DocEditor extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {editorState: EditorState.createEmpty()};
+        this.state = {editorState: EditorState.createWithContent(ContentState.createFromText(llorem))};
         this.onChange = editorState => this.setState({editorState});
         this.setEditor = (editor) => {
             this.editor = editor;
@@ -39,6 +40,7 @@ const styles = {
         border: '1px solid gray',
         width: '14cm',
         height: '20cm',
-        align: 'center'
+        align: 'center',
+        margin: 10
     }
 };

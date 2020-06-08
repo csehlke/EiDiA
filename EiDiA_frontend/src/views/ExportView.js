@@ -14,9 +14,6 @@ export class ExportView extends React.Component {
     render() {
         return (
             <Page title={"Export"}>
-                <div>
-                    Welcome to EiDiA
-                </div>
                 <DocEditor>hallo</DocEditor>
             </Page>
         );
