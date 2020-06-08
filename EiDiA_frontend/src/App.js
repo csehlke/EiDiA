@@ -3,6 +3,7 @@
 import React from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import {WelcomeView} from "./views/WelcomeView";
+import {UploadView} from "./views/UploadView";
 
 
 
@@ -14,7 +15,8 @@ export default class App extends React.Component {
         this.state = {
             title: 'EiDiA - Einfache Digitale Akte',
             routes: [
-                { component: WelcomeView , path: '/', exact: true}
+                { component: WelcomeView , path: '/', exact: true},
+                {component: UploadView, path: '/upload', exact: true}
             ]
         };
     }
