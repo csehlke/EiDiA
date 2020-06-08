@@ -1,6 +1,7 @@
 import React from 'react';
 import {Editor, EditorState, ContentState} from 'draft-js';
-import {llorem} from '../support files/constants';
+import {llorem} from '../../support files/constants';
+import { makeStyles } from '@material-ui/core/styles'
 
 export default class DocEditor extends React.Component {
     constructor(props) {
@@ -44,6 +45,7 @@ const styles = {
         width: '14cm',
         height: '20cm',
         align: 'center',
-        margin: 10
+        margin: 10,
+        backgroundColor: "white"
     }
 };

@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Page from "../components/Page";
-import DocEditor from "../components/DocEditor";
-import {RightSidepanel} from "../components/RightSidepanel";
+import DocEditor from "../components/ExportView/DocEditor";
+import RightSidepanel from "../components/ExportView/RightSidepanel";
 import styled from 'styled-components';
 
 
