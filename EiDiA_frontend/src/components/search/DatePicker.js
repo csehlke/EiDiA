@@ -22,6 +22,7 @@ class DatePicker extends React.Component {
                     format="MM/dd/yyyy"
                     margin="normal"
                     id="date-picker-inline"
+                    size={"small"}
                     label={this.props.label}
                     maxDate={this.props.maxDate}
                     minDate={this.props.minDate}
