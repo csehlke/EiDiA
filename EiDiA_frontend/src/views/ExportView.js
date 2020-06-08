@@ -4,7 +4,16 @@ import React from 'react';
 import Page from "../components/Page";
 import DocEditor from "../components/DocEditor";
 import {RightSidepanel} from "../components/RightSidepanel";
-import {Container, Col, Row} from "react-bootstrap";
+import styled from 'styled-components';
+
+
+const Row = styled.div`
+    display: flex;
+`;
+
+const Column = styled.div`
+    flex: 50%;
+`;
 
 export class ExportView extends React.Component {
 
@@ -15,11 +24,18 @@ export class ExportView extends React.Component {
     render() {
         return (
             <Page title={"Export"}>
-                <RightSidepanel/>
-                <DocEditor/>
-                
+                <Row>
+                    <Column>
+                        Sidebar
+                    </Column>
+                    <Column>
+                        <DocEditor/>
+                    </Column>
+                    <Column>
+                        <RightSidepanel/>
+                    </Column>
+                </Row>
             </Page>
         );
     }
 }
-
