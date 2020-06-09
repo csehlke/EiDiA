@@ -5,6 +5,7 @@ import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {WelcomeView} from "./views/WelcomeView";
 import {SearchView} from "./views/SearchView";
 import Navigation from "./components/Navigation";
+import {FileCabinetView} from "./views/FileCabinetView"
 
 
 export default class App extends React.Component {
@@ -26,7 +27,13 @@ export default class App extends React.Component {
                         <SearchView title={this.state.pageTitle}
                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                     )
-                }
+                },
+                {
+                    path: '/cabinet', exact: true, render: () => (
+                        <FileCabinetView title={this.state.pageTitle}
+                                         setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                },
             ],
             pageTitle: ''
         };
