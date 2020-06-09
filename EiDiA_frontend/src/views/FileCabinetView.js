@@ -2,10 +2,16 @@
 
 import React from 'react';
 import Page from "../components/Page";
-
+import {RecordSymbol} from "../components/fileCabinet/RecordSymbol";
 
 export class FileCabinetView extends React.Component {
 
+    /*
+     *TODO:
+     * - add getRecordFromDatabase functionality
+     * -
+     *
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -30,6 +36,8 @@ export class FileCabinetView extends React.Component {
                 <ol>
                     {filteredRecords.map(record => <li>{record}</li>)}
                 </ol>
+                <RecordSymbol name="BMWs"/>
+
             </Page>
         );
     }
