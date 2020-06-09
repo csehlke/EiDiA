@@ -6,6 +6,7 @@ import {Button} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import Dropzone from "react-dropzone";
 import Snackbar from "@material-ui/core/Snackbar";
+import DescriptionIcon from '@material-ui/icons/Description';
 
 const Container = styled.div`
   // Outer Container
@@ -15,6 +16,7 @@ const Container = styled.div`
 
 const DropZoneContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -80,7 +82,7 @@ class FileDrop extends React.Component {
 
     render() {
         const files = this.state.files.map((
-            file //loop files
+            file //loop files, show name + size
         ) => (
             <li key={file.name}>
                 {file.name} - {file.size} bytes
@@ -124,10 +126,13 @@ class FileDrop extends React.Component {
                             <div {...getRootProps({className: "dropzone"})}>
                                 <input {...getInputProps()} />
                                 <DropZoneContainer>
+                                    <DescriptionIcon style={{fontSize: '200px'}} />
+                                    <p>
                                     {!isDragActive && "Click here or drag a file to upload!"}
                                     {isDragActive && !isDragReject && "Drop your file here"}
                                     {isDragReject &&
                                     "File type not accepted, please upload a .png file!"}
+                                    </p>
                                 </DropZoneContainer>
                             </div>
                             <aside>
