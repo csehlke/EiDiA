@@ -1,14 +1,12 @@
 import React from 'react';
 import {Editor, EditorState, ContentState} from 'draft-js';
 import {llorem} from '../../support files/constants';
-import { makeStyles } from '@material-ui/core/styles'
 
 export default class DocEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            editorState: EditorState.createWithContent(ContentState.createFromText(llorem)),
-            fontSize: 8
+            editorState: EditorState.createWithContent(ContentState.createFromText(llorem))
         };
         this.onChange = editorState => this.setState({editorState});
         this.setEditor = (editor) => {
