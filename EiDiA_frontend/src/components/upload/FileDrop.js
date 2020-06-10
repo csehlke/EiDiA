@@ -156,8 +156,6 @@ class FileDrop extends React.Component {
                             justifyContent: "center",
                         }}
                     >
-                        {" "}
-                        {/* MUI Theming */}
                         Assign to Record
                     </Button>
                 </ButtonContainer>
