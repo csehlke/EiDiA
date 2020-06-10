@@ -7,67 +7,93 @@ import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
 import FormatAlignCenterIcon from '@material-ui/icons/FormatAlignCenter';
 import FormatAlignRightIcon from '@material-ui/icons/FormatAlignRight';
 import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify';
-import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
+import { Dropdown, Modal, Button, Icon } from 'semantic-ui-react';
 
 const styles = {
     div: {
         padding: "7px"
     },
-    formControl: {
-        height: 20
+    iconClicked: {
+        color: "black"
     }
 }
 
+const fontSizes = [
+    { text: '4', value: 4 },
+    { text: '8', value: 8 },
+    { text: '10', value: 10 },
+    { text: '12', value: 12 },
+    { text: '14', value: 14 },
+    { text: '16', value: 16 },
+    { text: '20', value: 20 },
+    { text: '24', value: 24 },
+    { text: '30', value: 30 },
+    { text: '36', value: 36 },
+    { text: '42', value: 42 },
+    { text: '50', value: 50 },
+    { text: '64', value: 64 },
+    { text: '72', value: 72 },
+    { text: '90', value: 90 },
+  ];
 
 
 export default class EditorTools extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            bold: false,
+            italic: false,
+            underlined: false,
+            striked: false,
+        }
     }
 
-    logClick(mode) {
-        console.log(mode);
+    handleClick(style) {
+        var newState = this.state
+        newState[style] = !newState[style] 
+        this.setState(newState)
     }
 
     render() {
         return(
             <div style={styles.div}>
-                <IconButton onClick={() => this.logClick("BOLD")}>
+                <IconButton 
+                    style={this.state.bold ? styles.iconClicked : null}
+                    onClick={() => this.handleClick("bold")}
+                >
                     <FormatBoldIcon />
                 </IconButton>
-                <IconButton onClick={() => this.logClick("ITALIC")}>
+                <IconButton 
+                    style={this.state.italic ? styles.iconClicked : null}
+                    onClick={() => this.handleClick("italic")}
+                >                    
                     <FormatItalicIcon />
                 </IconButton>
-                <IconButton onClick={() => this.logClick("alighn justify")}>
+                <IconButton 
+                    style={this.state.underlined ? styles.iconClicked : null}
+                    onClick={() => this.handleClick("underlined")}
+                >                    
                     <FormatUnderlinedIcon />
                 </IconButton>
-                <IconButton onClick={() => this.logClick("STRIKETHROUGH")}>
+                <IconButton 
+                    style={this.state.striked ? styles.iconClicked : null}
+                    onClick={() => this.handleClick("striked")}
+                >                    
                     <StrikethroughSIcon />
                 </IconButton>
-                <IconButton onClick={() => this.logClick("Align left")}>
+                <IconButton onClick={() => this.handleClick("Align left")}>
                     <FormatAlignLeftIcon />
                 </IconButton>
-                <IconButton onClick={() => this.logClick("Align center")}>
+                <IconButton onClick={() => this.handleClick("Align center")}>
                     <FormatAlignCenterIcon />
                 </IconButton>
-                <IconButton onClick={() => this.logClick("align riht")}>
+                <IconButton onClick={() => this.handleClick("align riht")}>
                     <FormatAlignRightIcon />
                 </IconButton>
                 <IconButton onClick={() => this.logClick("alighn justify")}>
                     <FormatAlignJustifyIcon />
                 </IconButton>
-                <FormControl variant="outlined">
-                <InputLabel>Size</InputLabel>
-                    <Select label="Size">
-                        <MenuItem value={10}>10</MenuItem>
-                        <MenuItem value={20}>20</MenuItem>
-                        <MenuItem value={30}>30</MenuItem>
-                    </Select>
-                </FormControl>
             </div>
         )
     }
