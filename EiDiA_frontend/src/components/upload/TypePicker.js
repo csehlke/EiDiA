@@ -6,6 +6,7 @@ import {Button} from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
 
 import SmartDropDownBox from "../SmartDropDownBox";
+import Box from "@material-ui/core/Box";
 
 const Container = styled.div
     // Outer Container
@@ -65,58 +66,46 @@ class TypePicker extends React.Component {
             <Container>
                 <Grid
                     container
-                    direction="column"
-                    justify="space-around"
+                    direction="row"
+                    justify="space-between"
                     alignItems="center"
                 >
-                    <DropDownContainer>
-                        <SmartDropDownBox
-                            ref={this.documentTypeRef}
-                            onChange={this.handleDocumentTypeChange}
-                            options={this.state.documentTypes}
-                            label='Document Type'/>
-                    </DropDownContainer>
+                    <Grid item xs={12} align="center">
+                        <DropDownContainer>
+                            <SmartDropDownBox
+                                ref={this.documentTypeRef}
+                                onChange={this.handleDocumentTypeChange}
+                                options={this.state.documentTypes}
+                                label='Document Type'/>
+                        </DropDownContainer>
+                    </Grid>
 
+                    <Grid item xs={12} align="center">
+                        <Box mt={16}/>
+                    </Grid>
 
-                    <Grid
-                        container
-                        direction="row"
-                        justify="space-around"
-                        alignItems="center"
+                    <Grid item xs={2} align="center">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.createNewDocumentType}
 
-                    >
-                        <Grid item>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={this.createNewDocumentType}
-                                style={{
-                                    display: "flex",
-                                    width: "20%",
-                                    margin: "0.5em",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                Create new Document Type
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={this.nextView}
-                                style={{
-                                    display: "flex",
-                                    width: "20%",
-                                    margin: "0.5em",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                Next
-                            </Button>
-                        </Grid>
+                        >
+                            Create new Document Type
+                        </Button>
+                    </Grid>
+                    <Grid item xs={2} align="center">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.nextView}
+
+                        >
+                            Next
+                        </Button>
                     </Grid>
                 </Grid>
+
             </Container>
         )
     }
