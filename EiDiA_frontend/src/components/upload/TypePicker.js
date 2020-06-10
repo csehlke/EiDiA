@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styled from "styled-components";
-
+import {Button} from "@material-ui/core";
 
 import SmartDropDownBox from "../SmartDropDownBox";
 
@@ -49,6 +49,16 @@ class TypePicker extends React.Component {
         });
     }
 
+    createNewDocumentType(){
+        console.log("Create New Document Type Here")
+        //TODO Add Document Types
+    }
+
+    nextView(){
+        console.log("Open next View here")
+        //TODO Add Document Types
+    }
+
     render() {
         return (
             <Container>
@@ -59,6 +69,34 @@ class TypePicker extends React.Component {
                         options={this.state.documentTypes}
                         label='Document Type'/>
                 </Row>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.createNewDocumentType}
+                    style={{
+                        display: "flex",
+                        width: "20%",
+                        margin: "0.5em",
+                        justifyContent: "center",
+                    }}
+                >
+                    Create new Document Type
+                </Button>
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.nextView}
+                    style={{
+                        display: "flex",
+                        width: "20%",
+                        margin: "0.5em",
+                        justifyContent: "center",
+                    }}
+                >
+                    Next
+                </Button>
+
             </Container>
         )
     }
