@@ -1,16 +1,19 @@
 import React from 'react';
-import {Editor, EditorState, ContentState} from 'draft-js';
+import {RichUtils, Editor, EditorState, ContentState} from 'draft-js';
 import {llorem} from '../../support files/constants';
 import { Dropdown, Modal } from 'semantic-ui-react';
+import 'draft-js/dist/Draft.css'
+
 
 const styles = {
     editor: {
-        border: '1px solid gray',
         width: '14cm',
         height: '20cm',
         align: 'center',
         margin: 10,
-        backgroundColor: "white"
+        backgroundColor: "white",
+        boxShadow: "0px 0px 6px 1px rgba(0,0,0,0.5)",
+        padding: "20px",
     }
 };
 
@@ -36,7 +39,8 @@ export default class DocEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = props.editorState
-        this.onChange = editorState => this.setState({editorState});
+        this.onChange = this.onChange.bind(this)
+        this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
         this.setEditor = (editor) => {
             this.editor = editor;
         };
@@ -46,6 +50,19 @@ export default class DocEditor extends React.Component {
             }
         };
     }
+
+    onChange (editorState) {
+        this.setState({editorState});
+    }
+
+    toggleInlineStyle (event) {
+        event.preventDefault();
+        let style = event.currentTarget.getAttribute('data-style');
+        this.setState({
+          editorState: RichUtils.toggleInlineStyle(this.state.editorState, style)
+        });
+      }
+
 
     render() {
         return (

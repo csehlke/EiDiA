@@ -9,6 +9,7 @@ import FormatAlignRightIcon from '@material-ui/icons/FormatAlignRight';
 import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
 import { Dropdown, Modal, Button, Icon } from 'semantic-ui-react';
+import { StepLabel } from '@material-ui/core';
 
 const styles = {
     div: {
@@ -47,9 +48,11 @@ export default class EditorTools extends React.Component {
             underlined: false,
             striked: false,
         }
+        this.handleClick = this.handleClick.bind(this)
     }
 
-    handleClick(style) {
+    handleClick(e, style) {
+        this.props.onToggleInlineStyle(style)
         var newState = this.state
         newState[style] = !newState[style] 
         this.setState(newState)
@@ -60,38 +63,38 @@ export default class EditorTools extends React.Component {
             <div style={styles.div}>
                 <IconButton 
                     style={this.state.bold ? styles.iconClicked : null}
-                    onClick={() => this.handleClick("bold")}
+                    onMouseDown={(e) => this.handleClick(e, "BOLD")}
                 >
                     <FormatBoldIcon />
                 </IconButton>
                 <IconButton 
                     style={this.state.italic ? styles.iconClicked : null}
-                    onClick={() => this.handleClick("italic")}
+                    onMouseDown={() => this.handleClick("italic")}
                 >                    
                     <FormatItalicIcon />
                 </IconButton>
                 <IconButton 
                     style={this.state.underlined ? styles.iconClicked : null}
-                    onClick={() => this.handleClick("underlined")}
+                    onMouseDown={() => this.handleClick("underlined")}
                 >                    
                     <FormatUnderlinedIcon />
                 </IconButton>
                 <IconButton 
                     style={this.state.striked ? styles.iconClicked : null}
-                    onClick={() => this.handleClick("striked")}
+                    onMouseDown={() => this.handleClick("striked")}
                 >                    
                     <StrikethroughSIcon />
                 </IconButton>
-                <IconButton onClick={() => this.handleClick("Align left")}>
+                <IconButton onMouseDown={() => this.handleClick("Align left")}>
                     <FormatAlignLeftIcon />
                 </IconButton>
-                <IconButton onClick={() => this.handleClick("Align center")}>
+                <IconButton onMouseDown={() => this.handleClick("Align center")}>
                     <FormatAlignCenterIcon />
                 </IconButton>
-                <IconButton onClick={() => this.handleClick("align riht")}>
+                <IconButton onMouseDown={() => this.handleClick("align riht")}>
                     <FormatAlignRightIcon />
                 </IconButton>
-                <IconButton onClick={() => this.logClick("alighn justify")}>
+                <IconButton onMouseDown={() => this.logClick("alighn justify")}>
                     <FormatAlignJustifyIcon />
                 </IconButton>
             </div>
