@@ -6,7 +6,7 @@ import {WelcomeView} from "./views/WelcomeView";
 import {SearchView} from "./views/SearchView";
 import Navigation from "./components/Navigation";
 import {FileCabinetView} from "./views/FileCabinetView"
-
+import {RecordView} from "./views/RecordView";
 
 export default class App extends React.Component {
 
@@ -26,6 +26,12 @@ export default class App extends React.Component {
                     path: '/search', exact: true, render: () => (
                         <SearchView title={this.state.pageTitle}
                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                },
+                {
+                    path: '/record', exact: true, render: () => (
+                        <RecordView title={this.state.pageTitle}
+                                         setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                     )
                 },
                 {
