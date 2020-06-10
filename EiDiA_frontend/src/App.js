@@ -5,7 +5,7 @@ import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {WelcomeView} from "./views/WelcomeView";
 import {SearchView} from "./views/SearchView";
 import {FileCabinetView} from "./views/FileCabinetView"
-
+import {RecordView} from "./views/RecordView";
 
 export default class App extends React.Component {
 
@@ -17,6 +17,7 @@ export default class App extends React.Component {
             routes: [
                 {component: WelcomeView, path: '/', exact: true},
                 {component: SearchView, path: '/search', exact: true},
+                {component: RecordView, path: '/record', exact: true},
                 {component: FileCabinetView, path: '/cabinet', exact: true}
             ]
         };
