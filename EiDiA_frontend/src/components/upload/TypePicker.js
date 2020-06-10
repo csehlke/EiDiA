@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 
 import SmartDropDownBox from "../SmartDropDownBox";
 import Box from "@material-ui/core/Box";
+import {Link} from "react-router-dom";
 
 const Container = styled.div
     // Outer Container
@@ -42,7 +43,6 @@ class TypePicker extends React.Component {
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
         this.createNewDocumentType = this.createNewDocumentType.bind(this);
-        this.nextView = this.nextView.bind(this);
     }
 
     handleDocumentTypeChange(event, value) {
@@ -56,10 +56,6 @@ class TypePicker extends React.Component {
         //TODO Add Document Types
     }
 
-    nextView() {
-        console.log(this.state.documentTypeId)
-        //TODO Add Document Types
-    }
 
     render() {
         return (
@@ -89,20 +85,25 @@ class TypePicker extends React.Component {
                             variant="contained"
                             color="primary"
                             onClick={this.createNewDocumentType}
-
                         >
                             Create new Document Type
                         </Button>
                     </Grid>
                     <Grid item xs={2} align="center">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={this.nextView}
+                        <Link to={{
+                            pathname: '/upload/doc',
+                            state: { //Props for next view
+                                picture: this.props.picture, //From UploadView
+                            }
+                        }}>
 
-                        >
-                            Next
-                        </Button>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                            >
+                                Next
+                            </Button>
+                        </Link>
                     </Grid>
                 </Grid>
 

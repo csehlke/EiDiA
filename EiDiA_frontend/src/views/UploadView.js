@@ -15,14 +15,29 @@ export class UploadView extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            picture: '',
+        }
+
+        this.passPicture = this.passPicture.bind(this);
+    }
+
+    passPicture(uploadedPicture) { //Callback to be able to hand picture to TypePicker, where it gets passed to DocPreview
+        this.setState({
+            picture: uploadedPicture
+        });
+        // console.log("UploadView:")
+        // console.log(typeof this.state.picture);
+        // console.log(this.state.picture)
     }
 
     render() {
         return (
             <Page title={"Upload Document"}>
                 <SplitView>
-                    <FileDrop />
-                    <TypePicker />
+                    <FileDrop callbackUploadView={this.passPicture}/>
+                    <TypePicker picture={this.state.picture}/>
                 </SplitView>
             </Page>
         );

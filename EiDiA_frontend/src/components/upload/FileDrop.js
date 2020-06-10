@@ -51,9 +51,23 @@ class FileDrop extends React.Component {
         };
 
         this.onDrop = (files) => {
-            //Executed when drop
-            this.setState({files});
+            this.setState({files})
+            this.props.callbackUploadView(files);
+            /* See DocPreview
+
+                        const reader = new FileReader()
+
+                        reader.onabort = () => console.log('file reading was aborted')
+                        reader.onerror = () => console.log('file reading has failed')
+                        reader.onload = () => {
+                            // Do whatever you want with the file contents
+                            const binaryStr = reader.result
+                            console.log(binaryStr)
+                        }
+                        reader.readAsDataURL(files[0]) //read First File
+            */
         };
+
 
         this.assignRecord = this.assignRecord.bind(this);
         this.failedUpload = this.failedUpload.bind(this);
@@ -126,12 +140,12 @@ class FileDrop extends React.Component {
                             <div {...getRootProps({className: "dropzone"})}>
                                 <input {...getInputProps()} />
                                 <DropZoneContainer>
-                                    <DescriptionIcon style={{fontSize: '200px'}} />
+                                    <DescriptionIcon style={{fontSize: '200px'}}/>
                                     <p>
-                                    {!isDragActive && "Click here or drag a file to upload!"}
-                                    {isDragActive && !isDragReject && "Drop your file here"}
-                                    {isDragReject &&
-                                    "File type not accepted, please upload a .png file!"}
+                                        {!isDragActive && "Click here or drag a file to upload!"}
+                                        {isDragActive && !isDragReject && "Drop your file here"}
+                                        {isDragReject &&
+                                        "File type not accepted, please upload a .png file!"}
                                     </p>
                                 </DropZoneContainer>
                             </div>

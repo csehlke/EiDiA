@@ -16,13 +16,19 @@ export class AttributeView extends React.Component {
 
     constructor(props) {
         super(props);
+
     }
 
     render() {
+        let pic = "";
+        if(this.props.location.state !== undefined) {
+            pic = this.props.location.state.picture;
+        }
+
         return (
             <Page title={"Attribute Picker"}>
                 <SplitView>
-                    <DocPreview />
+                    <DocPreview picture={{pic}}/>
                     <AttributeContainer />
                 </SplitView>
             </Page>
