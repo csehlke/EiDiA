@@ -1,7 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import {AppBar, CssBaseline, Drawer, IconButton, makeStyles, Toolbar, Typography} from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import {AppBar, CssBaseline, Drawer, makeStyles, Toolbar, Typography} from '@material-ui/core';
 import {Link} from "react-router-dom";
 import logo from "../assets/logo.png";
 import UserMenu from "./UserMenu";
@@ -18,13 +17,6 @@ const useStyles = makeStyles((theme) => ({
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
         background: "#DADADA",
-    },
-    menuButton: {
-        marginRight: 0,
-        marginLeft: 5,
-    },
-    hide: {
-        display: 'none',
     },
     drawer: {
         width: drawerWidth,
@@ -76,10 +68,6 @@ export default function Navigation(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
-    const handleDrawer = () => {
-        setOpen(!open);
-    };
-
     return (
         <div className={classes.root}>
             <CssBaseline/>
@@ -88,17 +76,6 @@ export default function Navigation(props) {
                 className={classes.appBar}
             >
                 <Toolbar disableGutters={true}>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawer}
-                        edge="start"
-                        className={clsx(classes.menuButton, {
-                            [classes.hide]: false,
-                        })}
-                    >
-                        <MenuIcon/>
-                    </IconButton>
                     <Link to={'/'}>
                         <img
                             className={classes.logo}
@@ -124,6 +101,8 @@ export default function Navigation(props) {
                         [classes.drawerClose]: !open,
                     }),
                 }}
+                onMouseEnter={() => setOpen(true)}
+                onMouseLeave={() => setOpen(false)}
             >
                 <div className={classes.toolbar}/>
                 <Sidebar/>

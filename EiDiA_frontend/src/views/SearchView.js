@@ -6,8 +6,12 @@ import styled from "styled-components";
 import SearchResults from "../components/search/SearchResults";
 import SearchForm from "../components/search/SearchForm";
 
-const HalfScreen = styled.div`
-    height: 40vh; // TODO set to 50% but fix height
+const Result = styled.div`
+    width: 100%;
+`;
+
+const Search = styled.div`
+    height: 20em;
     width: 100%;
 `;
 
@@ -20,12 +24,12 @@ export class SearchView extends React.Component {
     render() {
         return (
             <Page title={"Intelligent Search"}>
-                <HalfScreen>
+                <Search>
                     <SearchForm/>
-                </HalfScreen>
-                <HalfScreen>
+                </Search>
+                <Result>
                     <SearchResults/>
-                </HalfScreen>
+                </Result>
             </Page>
         );
     }
