@@ -12,10 +12,12 @@ export class ElementSymbol extends React.Component {
      */
     symbolSelection(type){
         switch(type){
-            case 'pdf':
+            case 'PDF':
                 return <FaFilePdf/>;
-            case 'word':
+            case 'WORD':
                 return <FaFileWord/>;
+            case 'HEADING':
+                return <div/>;
             default:
                 return <AiFillFileUnknown/>;
         }
