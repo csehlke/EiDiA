@@ -45,7 +45,7 @@ export default class Sidebar extends React.Component {
                         <ListItemText primary={"Upload Document"}/>
                     </ListItem>
                 </Link>
-                <Link to={'/create'}>
+                <Link to={'/export'}>
                     <ListItem button key={"CreateDocument"}>
                         <StyledListIcon><NewFileIcon/></StyledListIcon>
                         <ListItemText primary={"Create Document"}/>
