@@ -2,9 +2,7 @@
 
 import React from 'react';
 import Page from "../components/Page";
-import {RecordSymbol} from "../components/fileCabinet/RecordSymbol";
 import styled from "styled-components";
-import { Input } from '@material-ui/core';
 import {RecordMenue} from "../components/fileCabinet/RecordMenue";
 import {FileExplorer} from "../components/fileCabinet/FileExplorer";
 
