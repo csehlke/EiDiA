@@ -1,10 +1,9 @@
 import React from "react";
 
-const NewFile = () =>
+const NewFileIcon = () =>
     <svg enableBackground="new 0 0 512 512"
          height="1em"
          width="1em"
-         fontSize="1.5rem"
          fill='currentColor'
          display='inline-block'
          color='rgba(0, 0, 0, 0.54)'
@@ -16,4 +15,4 @@ const NewFile = () =>
         <path d="m0 106.27h70.185v30.026h-70.185z"/>
     </svg>;
 
-export default NewFile;
+export default NewFileIcon;
