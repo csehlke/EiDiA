@@ -30,12 +30,15 @@ class DocPreview extends React.Component {
 
         this.state = {
             base64Image: '',
+            src: null,
             crop: { //set crop state
                 unit: "%"
             },
         }
 
         this.onCropChange = this.onCropChange.bind(this);
+        this.onImageLoaded = this.onImageLoaded.bind(this);
+        this.onCropComplete = this.onCropComplete.bind(this);
     }
 
     componentDidMount() {
@@ -58,7 +61,8 @@ class DocPreview extends React.Component {
         reader.onload = () => {
             const base64Str = reader.result //Result in base64
             this.setState({
-                base64Image: base64Str
+                base64Image: base64Str,
+                src: base64Str
             });
         }
         reader.readAsDataURL(file[0]) //read First File
@@ -66,11 +70,65 @@ class DocPreview extends React.Component {
 
     }
 
+    onImageLoaded(image){
+        this.imageRef = image;
+    };
+
     onCropChange(crop) {
         // You could also use percentCrop:
         // this.setState({ crop: percentCrop });
         this.setState({crop});
     };
+
+    onCropComplete(crop){
+        this.makeClientCrop(crop);
+    };
+
+    async makeClientCrop(crop) {
+        if (this.imageRef && crop.width && crop.height) {
+            const croppedImageUrl = await this.getCroppedImg(
+                this.imageRef,
+                crop,
+                'newFile.jpeg'
+            );
+            this.setState({ croppedImageUrl });
+        }
+    }
+
+    getCroppedImg(image, crop, fileName) {
+        const canvas = document.createElement('canvas');
+        const scaleX = image.naturalWidth / image.width;
+        const scaleY = image.naturalHeight / image.height;
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+        const ctx = canvas.getContext('2d');
+
+        ctx.drawImage(
+            image,
+            crop.x * scaleX,
+            crop.y * scaleY,
+            crop.width * scaleX,
+            crop.height * scaleY,
+            0,
+            0,
+            crop.width,
+            crop.height
+        );
+
+        return new Promise((resolve, reject) => {
+            canvas.toBlob(blob => {
+                if (!blob) {
+                    //reject(new Error('Canvas is empty'));
+                    console.error('Canvas is empty');
+                    return;
+                }
+                blob.name = fileName;
+                window.URL.revokeObjectURL(this.fileUrl);
+                this.fileUrl = window.URL.createObjectURL(blob);
+                resolve(this.fileUrl);
+            }, 'image/jpeg');
+        });
+    }
 
 
     render() {
@@ -87,9 +145,14 @@ class DocPreview extends React.Component {
                         src={this.state.base64Image}
                         crop={this.state.crop}
                         ruleOfThirds
+                        onImageLoaded={this.onImageLoaded}
+                        onComplete={this.onCropComplete}
                         onChange={this.onCropChange}
                     />
                 </ImageContainer>
+                <ImageContainer>
+                <img alt="Crop" src={this.state.croppedImageUrl} />
+                    </ ImageContainer>
             </Container>
         )
     }
