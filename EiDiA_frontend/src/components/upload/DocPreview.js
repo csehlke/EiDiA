@@ -2,6 +2,8 @@
 
 import React from 'react';
 import styled from "styled-components";
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 
 
 const Container = styled.div
@@ -28,9 +30,12 @@ class DocPreview extends React.Component {
 
         this.state = {
             base64Image: '',
+            crop: { //set crop state
+                unit: "%"
+            },
         }
 
-
+        this.onCropChange = this.onCropChange.bind(this);
     }
 
     componentDidMount() {
@@ -61,13 +66,29 @@ class DocPreview extends React.Component {
 
     }
 
+    onCropChange(crop) {
+        // You could also use percentCrop:
+        // this.setState({ crop: percentCrop });
+        this.setState({crop});
+    };
+
 
     render() {
         return (
             <Container>
                 <h4>Image Preview:</h4>
                 <ImageContainer>
-                    <img src={this.state.base64Image} style={{maxWidth:"100%", maxHeight:"100%", border:"5px solid #555"}} alt="Uploaded Image"/>
+                    <img src={this.state.base64Image}
+                         style={{maxWidth: "100%", maxHeight: "100%", border: "5px solid #555"}} alt="Uploaded Image"/>
+                </ImageContainer>
+                <h4>Crop Image:</h4>
+                <ImageContainer>
+                    <ReactCrop
+                        src={this.state.base64Image}
+                        crop={this.state.crop}
+                        ruleOfThirds
+                        onChange={this.onCropChange}
+                    />
                 </ImageContainer>
             </Container>
         )
