@@ -31,7 +31,6 @@ export class ExportView extends React.Component {
 
     toggleInlineStyle(style) {
         const inlineStyle = style.toUpperCase();
-        console.log(inlineStyle);
         this.setState({
           ["editorState"]: RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
         })
