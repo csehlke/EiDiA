@@ -4,6 +4,7 @@ import React from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {WelcomeView} from "./views/WelcomeView";
 import {SearchView} from "./views/SearchView";
+import Navigation from "./components/Navigation";
 
 
 export default class App extends React.Component {
@@ -14,23 +15,44 @@ export default class App extends React.Component {
         this.state = {
             title: 'EiDiA - Einfache Digitale Akte',
             routes: [
-                {component: WelcomeView, path: '/', exact: true},
-                {component: SearchView, path: '/search', exact: true}
-            ]
+                {
+                    path: '/', exact: true, render: () => (
+                        <WelcomeView title={this.state.pageTitle}
+                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                },
+                {
+                    path: '/search', exact: true, render: () => (
+                        <SearchView title={this.state.pageTitle}
+                                    setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                }
+            ],
+            pageTitle: ''
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         document.title = this.state.title;
     }
 
+    handlePageTitleChange(newTitle) {
+        this.setState({
+            pageTitle: newTitle
+        });
+    }
+
     render() {
-        return(
+        return (
             <div>
                 <Router>
-                    <Switch>
-                        {this.state.routes.map((route, i) => (<Route key={i} {...route}/>) )}
-                    </Switch>
+                    <Navigation title={this.state.pageTitle}>
+                        <Switch>
+                            {this.state.routes.map((route, i) => (
+                                <Route key={i} {...route}/>
+                            ))}
+                        </Switch>
+                    </Navigation>
                 </Router>
             </div>
         );

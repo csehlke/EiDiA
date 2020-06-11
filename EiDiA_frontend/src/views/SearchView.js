@@ -21,9 +21,13 @@ export class SearchView extends React.Component {
         super(props);
     }
 
+    componentDidMount() {
+        this.props.setTitle("Intelligent Search");
+    }
+
     render() {
         return (
-            <Page title={"Intelligent Search"}>
+            <Page title={this.props.title}>
                 <Search>
                     <SearchForm/>
                 </Search>
