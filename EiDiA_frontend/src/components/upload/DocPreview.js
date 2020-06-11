@@ -13,13 +13,13 @@ const Container = styled.div
     flex-grow: 1; //For Splitview
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+
 `;
 
 const ImageContainer = styled.div
     `
-    width: 500px;
-    height: 500px;
+    width: 300px;
+    height: 300px;
 `;
 
 
@@ -150,8 +150,9 @@ class DocPreview extends React.Component {
                         onChange={this.onCropChange}
                     />
                 </ImageContainer>
+                <h4>Cropped Image Preview:</h4>
                 <ImageContainer>
-                <img alt="Crop" src={this.state.croppedImageUrl} />
+                <img alt="Crop" style={{ maxWidth: '100%' }} src={this.state.croppedImageUrl} />
                     </ ImageContainer>
             </Container>
         )
