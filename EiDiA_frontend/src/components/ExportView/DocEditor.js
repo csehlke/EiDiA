@@ -38,9 +38,6 @@ const fontSizes = [
 export default class DocEditor extends React.Component {
     constructor(props) {
         super(props);
-        this.state = props.editorState
-        this.onChange = this.onChange.bind(this)
-        this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
         this.setEditor = (editor) => {
             this.editor = editor;
         };
@@ -51,26 +48,15 @@ export default class DocEditor extends React.Component {
         };
     }
 
-    onChange (editorState) {
-        this.setState({editorState});
-    }
-
-    toggleInlineStyle (event) {
-        event.preventDefault();
-        let style = event.currentTarget.getAttribute('data-style');
-        this.setState({
-          editorState: RichUtils.toggleInlineStyle(this.state.editorState, style)
-        });
-      }
-
-
     render() {
+        const editorState = this.props.editorState
+        const onChange = this.props.onChange
         return (
             <div style={styles.editor} onClick={this.focusEditor}>
                 <Editor
                     ref={this.setEditor}
-                    editorState={this.state.editorState}
-                    onChange={this.onChange}
+                    editorState={editorState}
+                    onChange={onChange}
                 />
             </div>
         );

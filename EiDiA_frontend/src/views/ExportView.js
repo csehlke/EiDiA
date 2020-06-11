@@ -24,14 +24,23 @@ export class ExportView extends React.Component {
             editorState: EditorState.createWithContent(ContentState.createFromText(llorem)),
         };
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.docEditor = React.createRef();
     }
 
     toggleInlineStyle(style) {
         console.log(style)
+        this.setState({
+          editorState: RichUtils.toggleInlineStyle(this.state.editorState, style)
+        });
+    }
+
+    onChange(editorState) {
+        this.setState({["editorState"]: editorState})
     }
 
     render() {
-        const editorState=this.state;
+        const editorState=this.state.editorState;
         return (
             <Page title={"Export"}>
                 <Row>
@@ -39,10 +48,16 @@ export class ExportView extends React.Component {
                         Sidebar
                     </Column>
                     <Column>
-                        <DocEditor editorState={editorState}/>
+                        <DocEditor 
+                            ref={this.docEditor}
+                            editorState={editorState}
+                            onChange={this.onChange}
+                        />
                     </Column>
                     <Column>
-                        <RightSidepanel onToggleInlineStyle={style => this.toggleInlineStyle(style)}/>
+                        <RightSidepanel 
+                            onToggleInlineStyle={this.toggleInlineStyle}
+                        />
                     </Column>
                 </Row>
             </Page>

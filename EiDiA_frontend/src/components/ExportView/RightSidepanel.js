@@ -7,49 +7,38 @@ import EditorTools from './EditorTools';
 
 const drawerWidth = 400;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
+const styles = {
   drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
     position: "relative",
-    top: 0,
-    height: "30cm",
-    width: drawerWidth,
-  },
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing(3),
-  },
-}));
+    align: "right",
+    backgroundColor: "white"
+  }
+}
 
-export default function PermanentDrawerRight() {
-  const classes = useStyles();
+export default class RightSidePanel extends React.Component {
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-        anchor="right"
-      >
-        <div className={classes.toolbar} />
-        <Divider />
-        <EditorTools/>
-        <Divider />
-        Section 2
-        <Divider />
-        Section 3
-      </Drawer>
-    </div>
-  );
+  constructor(props) {
+    super(props);
+    this.changeInlineStyle = this.changeInlineStyle.bind(this);
+  }
+
+  changeInlineStyle(style) {
+    this.props.onToggleInlineStyle(style)
+  } 
+
+  render() {
+    return (
+      <div style={styles.drawer}>
+          <div/>
+          <Divider />
+          <EditorTools 
+            onChangeInlineStyle={style => this.changeInlineStyle(style)}
+          />
+          <Divider />
+          Section 2
+          <Divider />
+          Section 3
+      </div>
+    );
+  }
 }

@@ -51,8 +51,8 @@ export default class EditorTools extends React.Component {
         this.handleClick = this.handleClick.bind(this)
     }
 
-    handleClick(e, style) {
-        this.props.onToggleInlineStyle(style)
+    handleClick(style) {
+        this.props.onChangeInlineStyle(style)
         var newState = this.state
         newState[style] = !newState[style] 
         this.setState(newState)
@@ -63,7 +63,7 @@ export default class EditorTools extends React.Component {
             <div style={styles.div}>
                 <IconButton 
                     style={this.state.bold ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.handleClick(e, "BOLD")}
+                    onMouseDown={() => this.handleClick("bold")}
                 >
                     <FormatBoldIcon />
                 </IconButton>
