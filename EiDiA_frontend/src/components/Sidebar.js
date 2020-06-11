@@ -3,13 +3,14 @@
 import React from 'react';
 
 import {List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
-import HomeIcon from '@material-ui/icons/Home';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import SearchIcon from '@material-ui/icons/Search';
-import StorageIcon from '@material-ui/icons/Storage';
-import NewFile from "../assets/NewFile";
+import NewFileIcon from "../assets/NewFileIcon";
 import {Link} from "./Link";
+import {AiOutlineSearch, FaCloudUploadAlt, FaHome, FiHardDrive} from "react-icons/all";
+import styled from "styled-components";
 
+const StyledListIcon = styled(ListItemIcon)`
+        font-size: 1.75em;
+`;
 
 export default class Sidebar extends React.Component {
 
@@ -22,31 +23,31 @@ export default class Sidebar extends React.Component {
             <List>
                 <Link to={'/'}>
                     <ListItem button key={"Home"}>
-                        <ListItemIcon><HomeIcon/></ListItemIcon>
+                        <StyledListIcon><FaHome/></StyledListIcon>
                         <ListItemText primary={"Home"}/>
                     </ListItem>
                 </Link>
                 <Link to={'/browse'}>
                     <ListItem button key={"Browse"}>
-                        <ListItemIcon><StorageIcon/></ListItemIcon>
+                        <StyledListIcon><FiHardDrive/></StyledListIcon>
                         <ListItemText primary={"Browse"}/>
                     </ListItem>
                 </Link>
                 <Link to={'/search'}>
                     <ListItem button key={"Search"}>
-                        <ListItemIcon><SearchIcon/></ListItemIcon>
+                        <StyledListIcon><AiOutlineSearch/></StyledListIcon>
                         <ListItemText primary={"Search"}/>
                     </ListItem>
                 </Link>
                 <Link to={'/upload'}>
                     <ListItem button key={"UploadDocument"}>
-                        <ListItemIcon><CloudUploadIcon/></ListItemIcon>
+                        <StyledListIcon><FaCloudUploadAlt/></StyledListIcon>
                         <ListItemText primary={"Upload Document"}/>
                     </ListItem>
                 </Link>
                 <Link to={'/create'}>
                     <ListItem button key={"CreateDocument"}>
-                        <ListItemIcon><NewFile/></ListItemIcon>
+                        <StyledListIcon><NewFileIcon/></StyledListIcon>
                         <ListItemText primary={"Create Document"}/>
                     </ListItem>
                 </Link>

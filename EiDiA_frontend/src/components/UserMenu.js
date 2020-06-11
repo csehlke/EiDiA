@@ -1,6 +1,6 @@
 import {IconButton, Menu, MenuItem} from "@material-ui/core";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import React from "react";
+import {MdAccountCircle} from "react-icons/all";
 
 const UserMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -22,7 +22,7 @@ const UserMenu = () => {
                 onClick={handleMenu}
                 color="default"
             >
-                <AccountCircle/>
+                <MdAccountCircle/>
             </IconButton>
             <Menu
                 id="menu-appbar"
