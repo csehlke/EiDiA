@@ -3,7 +3,7 @@
 import React from 'react';
 import {Tab, Tabs} from "@material-ui/core";
 import BasicSearchForm from "./BasicSearchForm";
-import AdvancedSearchForm from "./AdvancedSearchForm";
+import AdvancedSearchForm from "./AdvancedSearch/AdvancedSearchForm";
 import styled from "styled-components";
 
 function Form(props) {
@@ -44,8 +44,7 @@ class SearchForm extends React.Component {
                     value={this.state.value}
                     indicatorColor="primary"
                     textColor="primary"
-                    onChange={this.handleChange}
-                >
+                    onChange={this.handleChange}>
                     <Tab label="Basic Search"/>
                     <Tab label="Advanced Search"/>
                 </Tabs>

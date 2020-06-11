@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-export default class AdvancedSearchForm extends React.Component {
+export default class SearchSummary extends React.Component {
 
     constructor(props) {
         super(props);
@@ -11,7 +11,7 @@ export default class AdvancedSearchForm extends React.Component {
     render() {
         return (
             <div>
-                AdvancedSearchForm works
+                SearchSummary works
             </div>
         );
     }

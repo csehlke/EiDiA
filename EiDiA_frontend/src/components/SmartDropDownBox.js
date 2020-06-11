@@ -1,3 +1,5 @@
+"use strict";
+
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -9,7 +11,8 @@ class SmartDropDownBox extends React.Component {
         super(props);
 
         this.state = {
-            inputValue: ''
+            inputValue: '',
+            value: null,
         }
 
         this.handleOnChange = this.handleOnChange.bind(this);
@@ -19,20 +22,23 @@ class SmartDropDownBox extends React.Component {
 
     reset() {
         this.setState({
-            inputValue: ''
+            inputValue: '',
+            value: null,
         });
     }
 
     handleOnChange(event, value) {
+        const inputValue = (value === null) ? '' : value.name;
         this.setState({
-            inputValue: value.name
+            inputValue: inputValue,
+            value: value,
         });
         this.props.onChange(event, value);
     }
 
     handleOnInputChange(event, value) {
         this.setState({
-            inputValue: value
+            inputValue: value,
         });
     }
 
@@ -47,8 +53,10 @@ class SmartDropDownBox extends React.Component {
                 blurOnSelect
                 fullWidth
                 size={"small"}
+                disabled={this.props.disabled ? this.props.disabled : false}
                 options={this.props.options}
                 inputValue={this.state.inputValue}
+                value={this.state.value}
                 onChange={this.handleOnChange}
                 onInputChange={this.handleOnInputChange}
                 getOptionLabel={(option) => option.name}
@@ -66,6 +74,7 @@ class SmartDropDownBox extends React.Component {
 export default SmartDropDownBox;
 
 SmartDropDownBox.propTypes = {
+    disabled: PropTypes.bool,
     label: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     options: PropTypes.array.isRequired

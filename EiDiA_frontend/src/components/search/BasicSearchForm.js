@@ -36,14 +36,14 @@ class BasicSearchForm extends React.Component {
                 {name: 'type2', id: '2'}],
             users: [
                 {name: 'user1', username: 'username1'},
-                {name: 'user2', username: 'username2'}
+                {name: 'user2', username: 'username2'},
             ],
             recordId: '',
             documentTypeId: '',
             dateFrom: null,
             dateTo: null,
             fullText: '',
-            username: ''
+            username: '',
         }
 
         this.recordRef = React.createRef();
@@ -61,38 +61,41 @@ class BasicSearchForm extends React.Component {
     }
 
     handleRecordChange(event, value) {
+        const id = (value === null) ? '' : value.id;
         this.setState({
-            recordId: value.id
+            recordId: id,
         });
     }
 
     handleDocumentTypeChange(event, value) {
+        const id = (value === null) ? '' : value.id;
         this.setState({
-            documentTypeId: value.id
+            documentTypeId: id,
         });
     }
 
     handleDateFromChange(event, value) {
         this.setState({
-            dateFrom: value
-        })
+            dateFrom: value,
+        });
     }
 
     handleDateToChange(event, value) {
         this.setState({
-            dateTo: value
-        })
+            dateTo: value,
+        });
     }
 
     handleFullTextChange(event) {
         this.setState({
-            fullText: event.target.value
+            fullText: event.target.value,
         });
     }
 
     handleUserChange(event, value) {
+        const username = (value === null) ? '' : value.username;
         this.setState({
-            username: value.username
+            username: username,
         });
     }
 
@@ -103,7 +106,7 @@ class BasicSearchForm extends React.Component {
             dateFrom: null,
             dateTo: null,
             fullText: '',
-            username: ''
+            username: '',
         });
         this.recordRef.current.reset();
         this.documentTypeRef.current.reset();
@@ -111,7 +114,11 @@ class BasicSearchForm extends React.Component {
     }
 
     handleSearch() {
-        console.log("here the basic search is triggered");
+        console.log("here the basic search is triggered\n" + "recordId: " + this.state.recordId +
+            "\ndocumentTypeId: " + this.state.documentTypeId +
+            "\nbetween: " + this.state.dateFrom + " and " + this.state.dateTo +
+            "\ntext: " + this.state.fullText +
+            "\nusername: " + this.state.username);
     }
 
     render() {
