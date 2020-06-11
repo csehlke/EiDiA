@@ -6,6 +6,7 @@ import {RecordSymbol} from "../components/fileCabinet/RecordSymbol";
 import styled from "styled-components";
 import { Input } from '@material-ui/core';
 import {RecordMenue} from "../components/fileCabinet/RecordMenue";
+import {FileExplorer} from "../components/fileCabinet/FileExplorer";
 
 
 const FlexRow = styled.div`
@@ -43,8 +44,11 @@ export class RecordView extends React.Component {
         );
 
         return (
-            <Page title={"File Cabinet"}>
+            <Page title={"Record"}>
                 <RecordMenue/>
+                <div>
+                    <FileExplorer/>
+                </div>
             </Page>
         );
     }
