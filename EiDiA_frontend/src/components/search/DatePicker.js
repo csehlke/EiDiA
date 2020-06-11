@@ -23,12 +23,13 @@ class DatePicker extends React.Component {
                     margin="normal"
                     id="date-picker-inline"
                     size={"small"}
+                    fullWidth
                     label={this.props.label}
                     maxDate={this.props.maxDate}
                     minDate={this.props.minDate}
                     value={this.props.value}
                     onChange={this.props.onChange}
-                    style={{margin: '0.5em', width: '48%'}}
+                    style={{margin: '0.5em'}}
                     KeyboardButtonProps={{
                         'aria-label': 'change date',
                     }}
