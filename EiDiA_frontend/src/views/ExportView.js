@@ -5,7 +5,7 @@ import Page from "../components/Page";
 import DocEditor from "../components/ExportView/DocEditor";
 import RightSidepanel from "../components/ExportView/RightSidepanel";
 import styled from 'styled-components';
-import {RichUtils, EditorState, ContentState} from 'draft-js';
+import {RichUtils, EditorState, ContentState, Editor} from 'draft-js';
 import {llorem} from '../support files/constants';
 
 const Row = styled.div`
@@ -23,16 +23,19 @@ export class ExportView extends React.Component {
         this.state = {
             editorState: EditorState.createWithContent(ContentState.createFromText(llorem)),
         };
+        
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
         this.onChange = this.onChange.bind(this);
         this.docEditor = React.createRef();
     }
 
     toggleInlineStyle(style) {
-        console.log(style)
+        const inlineStyle = style.toUpperCase();
+        console.log(inlineStyle);
         this.setState({
-          editorState: RichUtils.toggleInlineStyle(this.state.editorState, style)
-        });
+          ["editorState"]: RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
+        })
+        this.docEditor.focusEditor();
     }
 
     onChange(editorState) {
@@ -49,7 +52,7 @@ export class ExportView extends React.Component {
                     </Column>
                     <Column>
                         <DocEditor 
-                            ref={this.docEditor}
+                            ref={(docEditor) => {this.docEditor = docEditor}}
                             editorState={editorState}
                             onChange={this.onChange}
                         />

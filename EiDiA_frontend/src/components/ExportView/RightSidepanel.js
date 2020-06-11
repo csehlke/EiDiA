@@ -11,7 +11,8 @@ const styles = {
   drawer: {
     position: "relative",
     align: "right",
-    backgroundColor: "white"
+    backgroundColor: "white",
+    boxShadow: "-10px 0px 6px -10px rgba(0,0,0,0.5)",
   }
 }
 

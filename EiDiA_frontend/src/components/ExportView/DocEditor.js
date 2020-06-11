@@ -48,6 +48,10 @@ export default class DocEditor extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.focusEditor();
+    }
+
     render() {
         const editorState = this.props.editorState
         const onChange = this.props.onChange

@@ -51,7 +51,8 @@ export default class EditorTools extends React.Component {
         this.handleClick = this.handleClick.bind(this)
     }
 
-    handleClick(style) {
+    handleClick(e, style) {
+        e.preventDefault();
         this.props.onChangeInlineStyle(style)
         var newState = this.state
         newState[style] = !newState[style] 
@@ -63,25 +64,25 @@ export default class EditorTools extends React.Component {
             <div style={styles.div}>
                 <IconButton 
                     style={this.state.bold ? styles.iconClicked : null}
-                    onMouseDown={() => this.handleClick("bold")}
+                    onMouseDown={(e) => this.handleClick(e, "bold")}
                 >
                     <FormatBoldIcon />
                 </IconButton>
                 <IconButton 
                     style={this.state.italic ? styles.iconClicked : null}
-                    onMouseDown={() => this.handleClick("italic")}
+                    onMouseDown={(e) => this.handleClick(e, "italic")}
                 >                    
                     <FormatItalicIcon />
                 </IconButton>
                 <IconButton 
                     style={this.state.underlined ? styles.iconClicked : null}
-                    onMouseDown={() => this.handleClick("underlined")}
+                    onMouseDown={(e) => this.handleClick(e, "underlined")}
                 >                    
                     <FormatUnderlinedIcon />
                 </IconButton>
                 <IconButton 
                     style={this.state.striked ? styles.iconClicked : null}
-                    onMouseDown={() => this.handleClick("striked")}
+                    onMouseDown={(e) => this.handleClick(e, "striked")}
                 >                    
                     <StrikethroughSIcon />
                 </IconButton>
