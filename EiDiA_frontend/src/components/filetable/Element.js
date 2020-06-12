@@ -4,68 +4,154 @@ import React from 'react';
 import styled from "styled-components";
 import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
+import {DragTypes} from "../Constants"
+import {DragSource, DropTarget} from "react-dnd";
+import {compose} from 'redux'
 
+const ElementBoundary = styled.div`
+    width:90%;
+    height:auto;
+    margin: 1vh 5vw  1vh 5vw;
+   
+    
+
+`;
 const ElementRow = styled.div`
-    margin: 2vh 5vw  2vh 5vw;
+    height:auto;
+    margin: 1vh 0  1vh 0;
     display: flex;
     flex-direction: row;
     flex-wrap: no-wrap
-    border: 1px solid transparent;
-    border-radius: 3px;
-    border-color:#DADADA;
+    
 
 `;
 
+const ChildRow = styled.div`
+    
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap
+    
+`;
+
+
 const Symbol = styled.div`
-    width: 5vw;  
+    width: 10%;  
 
 `;
 const Name = styled.div`
-    width: 20vw;  
+    width: ${props=>props.width+"%"}; 
+    flex-direction: row;
+    flex-wrap: no-wrap;
+    padding-left: ${props=>props.padding+"%"};
+    
+  
 `;
 const Date = styled.div`
-    width: 10vw;  
+    width: 7.5%;  
 `;
 const Comment = styled.div`
-    width: 40vw;  
+    width: 35%;  
 `;
 const Actions = styled.div`
-    width: 15vw;  
+    width: 15%;  
 `;
-export  class Element extends React.Component {
+
+const itemSource = {
+    beginDrag(props) {
+        const item = { src: props.src, id: props.id }
+        return item
+    },
+    endDrag(props,monitor) {
+        console.log(monitor.getDropResult())
+        return props.handleDrop( )
+    }
+}
+function collectDrag(connect, monitor) {
+    return {
+        connectDragSource: connect.dragSource(),
+        isDragging: monitor.isDragging()
+    }
+}
+function collectDrop(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget()
+    }
+}
+
+class Element extends React.Component {
 
     constructor(props) {
         super(props);
         this.state ={
-            symbolArray: []
+            symbolArray: [],
+            padding: this.props.level*2,
+            width:  40-this.props.level*2
         }
+
     }
 
 
     render() {
-        return (
-            <ElementRow>
-                <Symbol>
-                    <ElementSymbol type ={this.props.type}/>
-                </Symbol>
-                <Name>
-                    {this.props.name}
-                </Name>
+        const { isDragging, connectDragSource, src } = this.props
 
-                <Date>
-                    {this.props.dateCreation}
-                </Date>
-                <Date>
-                    {this.props.dateModification}
-                </Date>
-                <Comment>
-                    {this.props.comment}
+        const toRender =(
+            <div>
+                {!isDragging &&
+                <div>
 
-                </Comment>
-                <Actions>
-                    <ElementActions actions = {this.props.actions}/>
-                </Actions>
-            </ElementRow>
-        );
+                    <ElementRow>
+                        {/*<Symbol>
+                                <ElementSymbol type={this.props.type}/>
+                            </Symbol>*/}
+                        <Name width={this.state.width} padding={this.state.padding}>
+                            <ElementSymbol type={this.props.type}/>
+                            {this.props.name}
+                        </Name>
+
+                        <Date>
+                            {this.props.dateCreation}
+                        </Date>
+                        <Date>
+                            {this.props.dateModification}
+                        </Date>
+                        <Comment>
+                            {this.props.comment}
+
+                        </Comment>
+                        <Actions>
+                            <ElementActions actions={this.props.actions}/>
+                        </Actions>
+                    </ElementRow>
+                    {this.props.children}
+
+                </div>
+                }
+            </div>
+
+        )
+        return this.props.connectDragSource(toRender)
+        // if(this.props.active)
+        // else return this.props.connectDropTarget(toRender)
+
+
+
+
+
+
+
+
     }
 }
+
+// @DragSource(DragTypes.ELEMENT, itemSource, collect)
+// @DropTarget(DragTypes.ELEMENT, {}, collect), ,DropTarget(DragTypes.ELEMENT, {}, collect)
+
+// export default compose(, )(Element)
+// export { RawElement }
+//TODO clean this up and remove Drop,redux, collect function etc.
+const drop =DropTarget(DragTypes.ELEMENT, {}, collectDrop) ;
+const drag =DragSource(DragTypes.ELEMENT, itemSource, collectDrag);
+export default drop(drag(Element));
+

@@ -4,7 +4,7 @@ import React from 'react';
 import Page from "../components/Page";
 import styled from "styled-components";
 import {RecordMenue} from "../components/fileCabinet/RecordMenue";
-import {FileExplorer} from "../components/fileCabinet/FileExplorer";
+import FileExplorer from "../components/fileCabinet/FileExplorer";
 
 
 const FlexRow = styled.div`
