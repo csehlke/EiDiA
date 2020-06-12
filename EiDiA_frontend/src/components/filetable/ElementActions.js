@@ -19,7 +19,7 @@ const IconButton = styled.button`
  * TODO:
  * - Button Link Coloring
  * - Remove Button border color when clicked and add Icon Color
- *
+ *- or remove whole button and make icon clickable
  */
 const IconSize = '1.5vw'
 export class ElementActions extends React.Component {
@@ -34,9 +34,9 @@ export class ElementActions extends React.Component {
     }
     actionSelection(actions){
         let toReturn =[];
-        if( this.findTerm('EDIT',actions))toReturn.push(<IconButton><AiFillEdit size={IconSize}/></IconButton>);
-        if( this.findTerm('DOWNLOAD',actions))toReturn.push(<IconButton>    <FaCloudDownloadAlt size={IconSize}/></IconButton>);
-        if( this.findTerm('DELETE',actions))toReturn.push(<IconButton><AiFillDelete size={IconSize}/></IconButton>);
+        if( this.findTerm('EDIT',actions))toReturn.push(<AiFillEdit size={IconSize}/>);
+        if( this.findTerm('DOWNLOAD',actions))toReturn.push(    <FaCloudDownloadAlt size={IconSize}/>);
+        if( this.findTerm('DELETE',actions))toReturn.push(<AiFillDelete size={IconSize}/>);
         if( this.findTerm('HEADING',actions))toReturn =['Actions'];
         if(toReturn == []) toReturn =[''];//TODO Throw Error
 
@@ -44,7 +44,8 @@ export class ElementActions extends React.Component {
     }
     render() {
         return (
-            this.actionSelection(this.props.actions).map((button)=>button)
+            //TODO remove button
+            this.actionSelection(this.props.actions).map( button =><IconButton>{button}</IconButton> )
         );
     }
 }
