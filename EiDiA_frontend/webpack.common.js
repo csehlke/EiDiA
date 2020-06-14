@@ -1,7 +1,6 @@
 "use strict";
 
 
-const webpack            = require('webpack');
 const path               = require('path');
 const ExtractTextPlugin  = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin  = require('html-webpack-plugin');
@@ -36,8 +35,6 @@ module.exports = {
                     loader: 'html-loader',
                     options: {
                         minimize: true,
-                        removeComments: false,
-                        collapseWhitespace: false
                     }
                 }]
             },
@@ -57,9 +54,13 @@ module.exports = {
 
         ]
     },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        },
+    },
     plugins: [
         new CleanWebpackPlugin(['dist']),
-        new webpack.optimize.CommonsChunkPlugin({name: "vendor", minChunks: Infinity,}),
         new HtmlWebpackPlugin({
             template: './EiDiA_frontend/src/index.html',
             filename: 'index.html',
