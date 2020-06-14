@@ -11,15 +11,15 @@ const Container = styled.div
     `
     display: flex;
     flex-grow: 1; //For Splitview
-    flex-direction: column;
-    align-items: center;
+    flex-basis: 50%
+    
 
 `;
 
 const ImageContainer = styled.div
     `
-    width: 300px;
-    height: 300px;
+    object-fit: cover;
+    width: 100%;
 `;
 
 
@@ -132,12 +132,6 @@ class DocPreview extends React.Component {
     render() {
         return (
             <Container>
-                <h4>Image Preview:</h4>
-                <ImageContainer>
-                    <img src={this.state.base64Image}
-                         style={{maxWidth: "100%", maxHeight: "100%", border: "5px solid #555"}} alt="Uploaded Image"/>
-                </ImageContainer>
-                <h4>Crop Image:</h4>
                 <ImageContainer>
                     <ReactCrop
                         src={this.state.base64Image}
@@ -148,10 +142,6 @@ class DocPreview extends React.Component {
                         onComplete={this.onCropComplete}
                         onChange={this.onCropChange}
                     />
-                </ImageContainer>
-                <h4>Cropped Image Preview:</h4>
-                <ImageContainer>
-                    <img alt="Crop" style={{maxWidth: '100%'}} src={this.state.croppedImageUrl}/>
                 </ImageContainer>
             </Container>
         )

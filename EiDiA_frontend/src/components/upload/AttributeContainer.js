@@ -8,8 +8,8 @@ const Container = styled.div
     // Outer Container
     `
     display: flex;
-    flex-direction: column;
     flex-grow: 1; //For Splitview
+    flex-basis: 50%
 `;
 
 
