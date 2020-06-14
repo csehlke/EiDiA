@@ -89,7 +89,7 @@ class DocPreview extends React.Component {
                 crop,
                 'newFile.jpeg'
             );
-            this.setState({croppedImageUrl});
+            this.props.callbackUploadView(croppedImageUrl); //Callback to UploadView getCropBlob()
         }
     }
 
@@ -127,6 +127,7 @@ class DocPreview extends React.Component {
             }, 'image/jpeg');
         });
     }
+
 
 
     render() {

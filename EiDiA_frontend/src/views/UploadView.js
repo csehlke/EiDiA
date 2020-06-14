@@ -27,6 +27,7 @@ export class UploadView extends React.Component {
 
         this.passPicture = this.passPicture.bind(this);
         this.getDocumentTypeId = this.getDocumentTypeId.bind(this);
+        this.getCropBlob = this.getCropBlob.bind(this);
     }
 
 
@@ -46,6 +47,12 @@ export class UploadView extends React.Component {
             //TODO Add Assigned record
         });
 
+    }
+
+    getCropBlob(crop) { //Callback to be able to hand cropped Image Attributecontainer
+        this.setState({
+            cropBlob: crop
+        });
     }
 
     render() {
@@ -70,8 +77,8 @@ export class UploadView extends React.Component {
         } else if (this.state.isUploaded && this.state.nextPressed) {
             return <Page title={"Attribute Picker"}>
                 <SplitView>
-                    <DocPreview picture={this.state.picture} cropDisabled={false}/>
-                    <AttributeContainer/>
+                    <DocPreview picture={this.state.picture} cropDisabled={false} callbackUploadView={this.getCropBlob}/>
+                    <AttributeContainer crop={this.state.cropBlob}/>
                 </SplitView>
             </Page>
         } else {
