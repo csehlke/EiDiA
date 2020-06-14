@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from "styled-components";
 
-// import { createWorker } from 'tesseract.js';
+import Tesseract from 'tesseract.js';
 // <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
 
 
@@ -30,13 +30,13 @@ class AttributeContainer extends React.Component {
 
 
 
-
     componentDidUpdate(prevProps) { //WHen new crop gets added
 
 
-        //Handle OCR here
-         console.log(this.props.crop)
-
+        Tesseract.recognize(this.props.crop)
+            .then(function (result){
+                console.log(result.text)
+            })
 
     }
 
