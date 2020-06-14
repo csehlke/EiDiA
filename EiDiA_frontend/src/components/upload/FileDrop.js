@@ -20,24 +20,10 @@ const DropZoneContainer = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 400px;
+  min-height: 60vh;
   border: 2px dashed #dadada;
   padding: 30px;
   margin: 8%;
-`;
-
-const SelectContainer = styled.h4`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 `;
 
 class FileDrop extends React.Component {
@@ -96,14 +82,6 @@ class FileDrop extends React.Component {
 
 
     render() {
-        const files = this.state.files.map((
-            file //loop files, show name + size
-        ) => (
-            <li key={file.name}>
-                {file.name} - {file.size} bytes
-            </li>
-        ));
-
         const wrongFiletype = this.state.wrongFiletype;
         let fileAlert;
         let snackBar;
@@ -150,30 +128,9 @@ class FileDrop extends React.Component {
                                     </p>
                                 </DropZoneContainer>
                             </div>
-                            <aside>
-                                <SelectContainer>
-                                    Selected File:
-                                    <ul>{files}</ul>
-                                </SelectContainer>
-                            </aside>
                         </section>
                     )}
                 </Dropzone>
-                <ButtonContainer>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={this.assignRecord}
-                        style={{
-                            display: "flex",
-                            width: "20%",
-                            margin: "0.5em",
-                            justifyContent: "center",
-                        }}
-                    >
-                        Assign to Record
-                    </Button>
-                </ButtonContainer>
                 {snackBar}
             </Container>
         );

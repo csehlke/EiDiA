@@ -44,6 +44,7 @@ class TypePicker extends React.Component {
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
         this.createNewDocumentType = this.createNewDocumentType.bind(this);
         this.handleOnClick = this.handleOnClick.bind(this);
+        this.assignRecord = this.assignRecord.bind(this);
     }
 
     handleDocumentTypeChange(event, value) {
@@ -59,6 +60,10 @@ class TypePicker extends React.Component {
 
     handleOnClick() {
         this.props.callbackUploadView(this.state.documentTypeId);
+    }
+
+    assignRecord() {
+        console.log("Open FilePicker here (to assign to record)");
     }
 
 
@@ -82,7 +87,7 @@ class TypePicker extends React.Component {
                     </Grid>
 
                     <Grid item xs={12} align="center">
-                        <Box mt={16}/>
+                        <Box mt={40}/>
                     </Grid>
 
                     <Grid item xs={2} align="center">
@@ -92,6 +97,16 @@ class TypePicker extends React.Component {
                             onClick={this.createNewDocumentType}
                         >
                             Create new Document Type
+                        </Button>
+                    </Grid>
+                    <Grid item xs={2} align="center">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.assignRecord}
+
+                        >
+                            Assign to Record
                         </Button>
                     </Grid>
                     <Grid item xs={2} align="center">
