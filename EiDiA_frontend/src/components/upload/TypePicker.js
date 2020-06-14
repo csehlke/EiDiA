@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 
 import SmartDropDownBox from "../SmartDropDownBox";
 import Box from "@material-ui/core/Box";
-import {Link} from "react-router-dom";
 
 const Container = styled.div
     // Outer Container
@@ -39,10 +38,12 @@ class TypePicker extends React.Component {
             documentTypeId: '',
         }
 
+
         this.documentTypeRef = React.createRef();
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
         this.createNewDocumentType = this.createNewDocumentType.bind(this);
+        this.handleOnClick = this.handleOnClick.bind(this);
     }
 
     handleDocumentTypeChange(event, value) {
@@ -54,6 +55,10 @@ class TypePicker extends React.Component {
     createNewDocumentType() {
         console.log("Create New Document Type Here")
         //TODO Add Document Types
+    }
+
+    handleOnClick() {
+        this.props.callbackUploadView(this.state.documentTypeId);
     }
 
 
@@ -90,20 +95,13 @@ class TypePicker extends React.Component {
                         </Button>
                     </Grid>
                     <Grid item xs={2} align="center">
-                        <Link to={{
-                            pathname: '/upload/doc',
-                            state: { //Props for next view
-                                picture: this.props.picture, //From UploadView
-                            }
-                        }}>
-
-                            <Button
-                                variant="contained"
-                                color="primary"
-                            >
-                                Next
-                            </Button>
-                        </Link>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.handleOnClick}
+                        >
+                            Next
+                        </Button>
                     </Grid>
                 </Grid>
 

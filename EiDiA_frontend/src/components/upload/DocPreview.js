@@ -42,17 +42,18 @@ class DocPreview extends React.Component {
     }
 
     componentDidMount() {
-        const fileArr = Object.values(this.props.picture)
-        const firstItem = fileArr[0]
-        if (typeof firstItem === 'object' && firstItem !== null) {
-            this.readFile(firstItem)
+        const fileArr = Object.values(this.props.picture) //Picture from Uploadview
+        if (typeof fileArr === 'object' && fileArr !== null) {
+            this.readFile(fileArr)
         } else {
             console.log("Picture could not be loaded")
         }
 
     }
 
+
     readFile(file) {
+
 
         const reader = new FileReader()
 
@@ -61,8 +62,7 @@ class DocPreview extends React.Component {
         reader.onload = () => {
             const base64Str = reader.result //Result in base64
             this.setState({
-                base64Image: base64Str,
-                src: base64Str
+                base64Image: base64Str
             });
         }
         reader.readAsDataURL(file[0]) //read First File
@@ -70,17 +70,15 @@ class DocPreview extends React.Component {
 
     }
 
-    onImageLoaded(image){
+    onImageLoaded(image) {
         this.imageRef = image;
     };
 
     onCropChange(crop) {
-        // You could also use percentCrop:
-        // this.setState({ crop: percentCrop });
         this.setState({crop});
     };
 
-    onCropComplete(crop){
+    onCropComplete(crop) {
         this.makeClientCrop(crop);
     };
 
@@ -91,7 +89,7 @@ class DocPreview extends React.Component {
                 crop,
                 'newFile.jpeg'
             );
-            this.setState({ croppedImageUrl });
+            this.setState({croppedImageUrl});
         }
     }
 
@@ -145,6 +143,7 @@ class DocPreview extends React.Component {
                         src={this.state.base64Image}
                         crop={this.state.crop}
                         ruleOfThirds
+                        disabled={this.props.cropDisabled}
                         onImageLoaded={this.onImageLoaded}
                         onComplete={this.onCropComplete}
                         onChange={this.onCropChange}
@@ -152,8 +151,8 @@ class DocPreview extends React.Component {
                 </ImageContainer>
                 <h4>Cropped Image Preview:</h4>
                 <ImageContainer>
-                <img alt="Crop" style={{ maxWidth: '100%' }} src={this.state.croppedImageUrl} />
-                    </ ImageContainer>
+                    <img alt="Crop" style={{maxWidth: '100%'}} src={this.state.croppedImageUrl}/>
+                </ImageContainer>
             </Container>
         )
     }

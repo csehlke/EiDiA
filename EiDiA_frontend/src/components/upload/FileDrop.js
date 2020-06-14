@@ -50,7 +50,8 @@ class FileDrop extends React.Component {
             open: true //Snackbar ready to be rendered
         };
 
-        this.onDrop = (files) => {
+
+        this.onDropAccepted = (files) => {
             this.setState({files})
             this.props.callbackUploadView(files);
             /* See DocPreview
@@ -127,7 +128,7 @@ class FileDrop extends React.Component {
         return (
             <Container>
                 <Dropzone
-                    onDrop={this.onDrop}
+                    onDropAccepted={this.onDropAccepted}
                     onDropRejected={this.failedUpload}
                     accept="image/png"
                     multiple={false}
