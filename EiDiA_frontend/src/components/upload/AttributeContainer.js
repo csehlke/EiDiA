@@ -48,6 +48,21 @@ class AttributeContainer extends React.Component {
 
     }
 
+    sendFulltextToBackend(){ //TODO Send to Backend (OCR IS VERY SLOW) --> Do it on backend?
+         const worker = createWorker({
+             logger: m => console.log(m)
+         });
+
+         (async () => {
+             await worker.load();
+             await worker.loadLanguage('eng');
+             await worker.initialize('eng');
+             const { data: { text } } = await worker.recognize(this.props.picture[0]);
+             console.log(text);
+             await worker.terminate();
+         })();
+    }
+
 
     componentDidUpdate(prevProps) { //When new crop gets added
         (async () => {

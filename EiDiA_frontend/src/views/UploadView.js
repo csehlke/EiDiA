@@ -31,7 +31,7 @@ export class UploadView extends React.Component {
     }
 
 
-    passPicture(uploadedPicture) { //Callback to be able to hand picture to TypePicker, where it gets passed to DocPreview
+    passPicture(uploadedPicture) { //Callback to be able to hand picture to DocPreview
         this.setState({
             picture: uploadedPicture,
             isUploaded: true
@@ -78,7 +78,7 @@ export class UploadView extends React.Component {
             return <Page title={"Attribute Picker"}>
                 <SplitView>
                     <DocPreview picture={this.state.picture} cropDisabled={false} callbackUploadView={this.getCropBlob}/>
-                    <AttributeContainer crop={this.state.cropBlob}/>
+                    <AttributeContainer picture={this.state.picture} crop={this.state.cropBlob}/>
                 </SplitView>
             </Page>
         } else {
