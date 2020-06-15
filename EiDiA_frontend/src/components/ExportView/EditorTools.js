@@ -69,10 +69,13 @@ export default class EditorTools extends React.Component {
         e.preventDefault()
         this.props.onChangeAlignment(align)
         var newState = this.state
+        const newFlag = !newState.alignments[align]
         for (let key in newState.alignments) {
             newState.alignments[key] = false
         }
-        newState.alignments[align] = true
+
+        newState.alignments[align] = newFlag;
+
         this.setState(newState)
     }
 

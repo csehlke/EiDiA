@@ -5,8 +5,9 @@ import Page from "../components/Page";
 import DocEditor from "../components/ExportView/DocEditor";
 import RightSidepanel from "../components/ExportView/RightSidepanel";
 import styled from 'styled-components';
-import {RichUtils, EditorState, ContentState, Editor} from 'draft-js';
+import {RichUtils, EditorState, ContentState} from 'draft-js';
 import {llorem} from '../support files/constants';
+
 
 const Row = styled.div`
     display: flex;

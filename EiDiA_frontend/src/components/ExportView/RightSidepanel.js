@@ -1,6 +1,7 @@
 import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import EditorTools from './EditorTools';
+import DocSearch from './DocSearch';
 
 const styles = {
   drawer: {
@@ -37,7 +38,7 @@ export default class RightSidePanel extends React.Component {
             onChangeAlignment={align => this.changeAlignment(align)}
           />
           <Divider />
-          Section 2
+          <DocSearch/>
           <Divider />
           Section 3
       </div>
