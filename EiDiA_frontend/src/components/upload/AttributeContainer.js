@@ -3,8 +3,7 @@
 import React from 'react';
 import styled from "styled-components";
 
-import Tesseract from 'tesseract.js';
-// <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
+import {createWorker} from 'tesseract.js';
 
 
 const Container = styled.div
@@ -22,22 +21,39 @@ class AttributeContainer extends React.Component {
         super(props);
 
         this.state = {
-
+            wrk: this.loadWorker()
         }
 
 
     }
 
 
+    loadWorker() { //Initialize Worker only once an reuse it, to save startup time
+        const worker = createWorker({
+            logger: m => console.log(m)
+        });
 
-    componentDidUpdate(prevProps) { //WHen new crop gets added
+        (async () => {
+            await worker.load();
+            await worker.loadLanguage('eng');
+            await worker.initialize('eng');
+
+            //await worker.terminate(); Do not terminate worker so it can be reused
+        })();
+        return worker
+    }
 
 
-        Tesseract.recognize(this.props.crop)
-            .then(function (result){
-                console.log(result.text)
-            })
+    componentDidMount() {
 
+    }
+
+
+    componentDidUpdate(prevProps) { //When new crop gets added
+        (async () => {
+            const {data: {text}} = await this.state.wrk.recognize(this.props.crop); //Do OCR on crop
+            console.log(text);
+        })();
     }
 
 
