@@ -1,11 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import EditorTools from './EditorTools';
-
-const drawerWidth = 400;
 
 const styles = {
   drawer: {
@@ -21,11 +16,16 @@ export default class RightSidePanel extends React.Component {
   constructor(props) {
     super(props);
     this.changeInlineStyle = this.changeInlineStyle.bind(this);
+    this.changeAlignment = this.changeAlignment.bind(this);
   }
 
   changeInlineStyle(style) {
-    this.props.onToggleInlineStyle(style)
+    this.props.onToggleInlineStyle(style);
   } 
+
+  changeAlignment(align) {
+    this.props.onToggleBlockType(align);
+  }
 
   render() {
     return (
@@ -34,6 +34,7 @@ export default class RightSidePanel extends React.Component {
           <Divider />
           <EditorTools 
             onChangeInlineStyle={style => this.changeInlineStyle(style)}
+            onChangeAlignment={align => this.changeAlignment(align)}
           />
           <Divider />
           Section 2

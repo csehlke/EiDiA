@@ -26,6 +26,7 @@ export class ExportView extends React.Component {
         
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.toggleBlockType = this.toggleBlockType.bind(this);
         this.docEditor = React.createRef();
     }
 
@@ -34,6 +35,13 @@ export class ExportView extends React.Component {
         this.setState({
           ["editorState"]: RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
         })
+        this.docEditor.focusEditor();
+    }
+
+    toggleBlockType(align) {
+        this.setState({
+            ["editorState"]: RichUtils.toggleBlockType(this.state.editorState, align)
+        });
         this.docEditor.focusEditor();
     }
 
@@ -59,6 +67,7 @@ export class ExportView extends React.Component {
                     <Column>
                         <RightSidepanel 
                             onToggleInlineStyle={this.toggleInlineStyle}
+                            onToggleBlockType={this.toggleBlockType}
                         />
                     </Column>
                 </Row>
