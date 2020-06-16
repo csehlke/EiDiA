@@ -3,6 +3,7 @@ import Divider from '@material-ui/core/Divider';
 import EditorTools from './EditorTools';
 import DocSearch from './DocSearch';
 import ExportSection from './ExportSection';
+import TemplateList from './TemplateList';
 import { parseWithOptions } from 'date-fns/fp';
 
 const styles = {
@@ -24,8 +25,8 @@ export default class RightSidePanel extends React.Component {
     this.typeComponents = {
       editorTools: EditorTools,
       docSearch: DocSearch,
-      exportSection: ExportSection
-
+      exportSection: ExportSection,
+      templateList: TemplateList
     }
   }
 

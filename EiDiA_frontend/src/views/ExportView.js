@@ -80,7 +80,7 @@ export class ExportView extends React.Component {
                         <RightSidepanel 
                             onToggleInlineStyle={this.toggleInlineStyle}
                             onToggleBlockType={this.toggleBlockType}
-                            comp1={"editorTools"}
+                            comp1={"templateList"}
                             comp2={"docSearch"}
                             comp3={"exportSection"}
                             onAction1_1={this.toggleInlineStyle}
