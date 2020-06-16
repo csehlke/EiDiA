@@ -59,7 +59,7 @@ export default class EditorTools extends React.Component {
 
     setEmphasis(e, style) {
         e.preventDefault();
-        this.props.onChangeInlineStyle(style);
+        this.props.onAction1(style);
         var newState = this.state;
         newState[style] = !newState[style] ;
         this.setState(newState);
@@ -67,7 +67,7 @@ export default class EditorTools extends React.Component {
 
     setAlignment(e, align) {
         e.preventDefault()
-        this.props.onChangeAlignment(align)
+        this.props.onAction2(align)
         var newState = this.state
         const newFlag = !newState.alignments[align]
         for (let key in newState.alignments) {

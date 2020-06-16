@@ -28,6 +28,8 @@ export class ExportView extends React.Component {
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
         this.onChange = this.onChange.bind(this);
         this.toggleBlockType = this.toggleBlockType.bind(this);
+        this.onAction3_1 = this.onAction3_1.bind(this);
+        this.onAction3_2 = this.onAction3_2.bind(this);
         this.docEditor = React.createRef();
     }
 
@@ -50,10 +52,19 @@ export class ExportView extends React.Component {
         this.setState({["editorState"]: editorState})
     }
 
+
+    onAction3_1(){
+        console.log("cliked Button 1")
+    }
+
+    onAction3_2(){
+        console.log("cliked Button 2")
+    }
+
     render() {
         const editorState=this.state.editorState;
         return (
-            <Page title={"Export"}>
+            <Page title={"Select Template"}>
                 <Row>
                     <Column>
                         Sidebar
@@ -69,6 +80,13 @@ export class ExportView extends React.Component {
                         <RightSidepanel 
                             onToggleInlineStyle={this.toggleInlineStyle}
                             onToggleBlockType={this.toggleBlockType}
+                            comp1={"editorTools"}
+                            comp2={"docSearch"}
+                            comp3={"exportSection"}
+                            onAction1_1={this.toggleInlineStyle}
+                            onAction1_2={this.toggleBlockType}
+                            onAction3_1={this.onAction3_1}
+                            onAction3_2={this.onAction3_2}
                         />
                     </Column>
                 </Row>

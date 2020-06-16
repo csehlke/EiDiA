@@ -4,14 +4,18 @@ import styled from 'styled-components';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import IconButton from '@material-ui/core/IconButton'
-import AddIcon from '@material-ui/icons/Add';
+
 import Typography from '@material-ui/core/Typography';
+import {makeStyles} from '@material-ui/core/styles';
+import DocListItem  from './DocListItem';
 
 const styles = {
     div: {
         margin: 10
+    },
+    scrollable: {
+        overflowY: scroll,
+        height: "25%"
     }
 }
 
@@ -27,17 +31,24 @@ const Column = styled.div`
 export default class DocSearch extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            selected:  []
+        };
+        this.addToList = this.addToList.bind(this);
     }
 
-    generate(element) {
-        return [0, 1, 2].map((value) =>
-          React.cloneElement(element, {
-            key: value,
-          }),
-        );
+    addToList(element) {
+        var selectedElems = this.state.selected;
+        if (!selectedElems.includes(element)) {
+            selectedElems.push(element);
+            console.log("select" + element)
+            this.setState({selected: selectedElems})
+        }
     }
 
     render() {
+        const listItems = ['List Item A', 'List Item B', 'List Item C']
+        const selectedItems = this.state.selected;
         return(
             <div style={styles.div}>
                 <Row>
@@ -48,33 +59,26 @@ export default class DocSearch extends React.Component {
                     <Typography variant="subtitle2">
                         Search Results
                     </Typography>
-                        <List dense={true}>
-                            {this.generate(
-                                <ListItem>
-                                <ListItemText
-                                    primary="Single-line item"
-                                />
-                                <ListItemSecondaryAction>
-                                    <IconButton edge="end" aria-label="delete">
-                                    <AddIcon />
-                                    </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>,
-                            )}
+                        <List dense={true} style={styles.scrollable}>
+                            {listItems.map((value) =>
+                                <DocListItem 
+                                    key={value}
+                                    id={value}
+                                    onSelect={this.addToList}
+                                    />)}
                         </List>
                     </Column>
                     <Column>
                     <Typography variant="subtitle2">
                         Selected Documents
                     </Typography>
-                        <List dense={true}>
-                            {this.generate(
-                                <ListItem>
-                                <ListItemText
-                                    primary="Single-line item"
-                                />
-                                </ListItem>,
-                            )}
+                        <List dense={true} className="docList">
+                                {selectedItems.map((value) =>
+                                    <ListItem key={value}>
+                                    <ListItemText
+                                        primary={value}
+                                    />
+                                </ListItem>)}
                         </List>
                     </Column>
                 </Row>

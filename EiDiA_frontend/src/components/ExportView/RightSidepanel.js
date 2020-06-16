@@ -2,6 +2,8 @@ import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import EditorTools from './EditorTools';
 import DocSearch from './DocSearch';
+import ExportSection from './ExportSection';
+import { parseWithOptions } from 'date-fns/fp';
 
 const styles = {
   drawer: {
@@ -18,6 +20,13 @@ export default class RightSidePanel extends React.Component {
     super(props);
     this.changeInlineStyle = this.changeInlineStyle.bind(this);
     this.changeAlignment = this.changeAlignment.bind(this);
+
+    this.typeComponents = {
+      editorTools: EditorTools,
+      docSearch: DocSearch,
+      exportSection: ExportSection
+
+    }
   }
 
   changeInlineStyle(style) {
@@ -29,18 +38,24 @@ export default class RightSidePanel extends React.Component {
   }
 
   render() {
+    const TypeComponent1 = this.typeComponents[this.props.comp1]
+    const TypeComponent2 = this.typeComponents[this.props.comp2]
+    const TypeComponent3 = this.typeComponents[this.props.comp3]
     return (
       <div style={styles.drawer}>
           <div/>
           <Divider />
-          <EditorTools 
-            onChangeInlineStyle={style => this.changeInlineStyle(style)}
-            onChangeAlignment={align => this.changeAlignment(align)}
+            <TypeComponent1 
+              onAction1={this.props.onAction1_1}
+              onAction2={this.props.onAction1_2}
+              />
+          <Divider />
+          <TypeComponent2/>
+          <Divider />
+          <TypeComponent3
+            onAction1={this.props.onAction3_1}
+            onAction2={this.props.onAction3_2}
           />
-          <Divider />
-          <DocSearch/>
-          <Divider />
-          Section 3
       </div>
     );
   }
