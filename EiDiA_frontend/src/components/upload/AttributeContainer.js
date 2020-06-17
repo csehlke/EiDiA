@@ -31,9 +31,16 @@ class AttributeContainer extends React.Component {
                 {name: 'Attr2', id: '2'},
                 {name: 'Attr3', id: '3'}
             ],
+            attributeData: [
+                {}
+
+            ],
             wrk: this.loadWorker(),
             textValue: "",
         }
+
+        this.saveData = this.saveData.bind(this);
+        this.findData = this.findData.bind(this);
 
     }
 
@@ -53,6 +60,32 @@ class AttributeContainer extends React.Component {
         return worker
     }
 
+    saveData(attrID) {
+        let copyArr = this.state.attributeData
+        let idx = (this.state.attributeData.findIndex(element => element.id == attrID))
+        if (idx == -1) { //If ID doesn't exist yet, add it
+            this.setState({
+                attributeData: [...this.state.attributeData, {id: attrID, text: this.state.textValue}]
+            });
+        } else {
+            copyArr.splice(idx, 1, {id: attrID, text: this.state.textValue}) //If ID exists already, overwrite it with new value
+            this.setState({
+                attributeData: copyArr
+            });
+        }
+
+    }
+
+    findData(attrID) {
+        let idx = (this.state.attributeData.findIndex(element => element.id == attrID)) //find index of ID
+        if (idx !== -1) {
+            return Object.values(this.state.attributeData)[idx].text // Get text at index
+        } else {
+            return ""
+        }
+
+    }
+
 
     componentDidMount() {
     }
@@ -61,13 +94,13 @@ class AttributeContainer extends React.Component {
         return <TextField
             label={attrName}
             variant="outlined"
-            value={this.state.textValue}
+            value={this.findData(attrID)}
             //onChange={}
             //inputRef={}
             //onBlur={}
             InputProps={{
                 endAdornment: <InputAdornment>
-                    <IconButton /*onClick={}*/>
+                    <IconButton onClick={() => this.saveData(attrID)}>
                         <CropIcon/>
                     </IconButton>
                 </InputAdornment>
@@ -109,7 +142,8 @@ class AttributeContainer extends React.Component {
         return ( // Render TextFields dynamically from state
             <Container>
                 <FormControl>
-                    {this.state.attributes.map((item) => <div key={item.id}>{this.renderTextFields(item.name, item.id)}</div>)}
+                    {this.state.attributes.map((item) => <div
+                        key={item.id}>{this.renderTextFields(item.name, item.id)}</div>)}
                 </FormControl>
             </Container>
         )
