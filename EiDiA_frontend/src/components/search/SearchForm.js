@@ -25,7 +25,7 @@ class SearchForm extends React.Component {
         super(props);
 
         this.state = {
-            value: 0
+            value: 1, // todo revert to 0
         }
 
         this.handleChange = this.handleChange.bind(this);

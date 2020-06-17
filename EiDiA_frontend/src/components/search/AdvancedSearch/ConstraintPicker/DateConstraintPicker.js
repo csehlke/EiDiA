@@ -5,6 +5,7 @@ import styled from "styled-components";
 import SmartDropDownBox from "../../../SmartDropDownBox";
 import DatePicker from "../../DatePicker";
 import CompareTypes from "../../../../assets/CompareTypes";
+import {format} from 'date-fns'
 
 
 const Row = styled.div`
@@ -16,7 +17,7 @@ const Column = styled.div`
     flex: 33%;
 `;
 
-export default class ConstraintPicker extends React.Component {
+export default class DateConstraintPicker extends React.Component {
 
     constructor(props) {
         super(props);
@@ -29,6 +30,7 @@ export default class ConstraintPicker extends React.Component {
             date2: null,
 
             constraintTypes: [],
+            filled: false,
         }
 
         this.constraintTypeRef = React.createRef();
@@ -36,6 +38,7 @@ export default class ConstraintPicker extends React.Component {
         this.handleConstraintTypeChange = this.handleConstraintTypeChange.bind(this);
         this.handleDate1Change = this.handleDate1Change.bind(this);
         this.handleDate2Change = this.handleDate2Change.bind(this);
+        this.checkIfFilled = this.checkIfFilled.bind(this);
     }
 
     componentDidMount() {
@@ -59,8 +62,8 @@ export default class ConstraintPicker extends React.Component {
     getConstraint() {
         return {
             compareTypeId: this.state.constraintTypeId,
-            value1: this.state.date1,
-            value2: this.state.date2,
+            value1: format(this.state.date1, 'dd/MM/yyyy'),
+            value2: this.state.date2 ? format(this.state.date2, 'dd/MM/yyyy') : '',
         }
     }
 
@@ -72,15 +75,30 @@ export default class ConstraintPicker extends React.Component {
         });
     }
 
-    handleDate1Change(event, value) {
+    handleDate1Change(event) {
         this.setState({
-            date1: value
+            date1: event,
         });
+        this.checkIfFilled(event, this.state.date2);
     }
 
-    handleDate2Change(event, value) {
+    handleDate2Change(event) {
         this.setState({
-            date2: value
+            date2: event,
+        });
+        this.checkIfFilled(this.state.date1, event);
+    }
+
+    checkIfFilled(date1, date2) {
+        let filled;
+        if (this.state.numberOfFields === 1) {
+            filled = date1 !== null;
+        } else {
+            filled = date1 !== null && date2 !== null;
+        }
+        this.props.isFilled(filled);
+        this.setState({
+            filled: filled,
         });
     }
 
@@ -99,7 +117,7 @@ export default class ConstraintPicker extends React.Component {
                     <DatePicker
                         disabled={this.props.disabled || this.state.constraintTypeId === ''}
                         onChange={this.handleDate1Change}
-                        minDate={this.state.date2}
+                        maxDate={this.state.date2}
                         value={this.state.date1}
                         label={this.state.numberOfFields === 1 ? "Value" : "From"}/>
                     {this.state.numberOfFields === 2 ?
