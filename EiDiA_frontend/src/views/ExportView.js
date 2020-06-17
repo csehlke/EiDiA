@@ -7,6 +7,7 @@ import RightSidepanel from "../components/ExportView/RightSidepanel";
 import styled from 'styled-components';
 import {RichUtils, EditorState, ContentState} from 'draft-js';
 import {llorem} from '../support files/constants';
+import FloatingWindows from '../components/ExportView/FloatingWindow';
 
 
 const Row = styled.div`
@@ -24,7 +25,10 @@ export class ExportView extends React.Component {
         this.editorText = llorem["Template0"];
         this.state = {
             editorState: EditorState.createWithContent(ContentState.createFromText(this.editorText)),
-            currentPage: "Select Template"
+            currentPage: "Select Template",
+            selectedTemplate: null,
+            seen: true,
+            open: false
         };
 
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
@@ -33,6 +37,7 @@ export class ExportView extends React.Component {
         this.changeToEditTemplateView = this.changeToEditTemplateView.bind(this);
         this.onAction3_2 = this.onAction3_2.bind(this);
         this.selectTemplate = this.selectTemplate.bind(this);
+        this.openDialog = this.openDialog.bind(this);
 
         this.docEditor = React.createRef();
 
@@ -46,7 +51,7 @@ export class ExportView extends React.Component {
             "Edit Template": {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
-                onAction3_1: this.changeToEditTemplateView,
+                onAction3_1: this.openDialog,
                 onAction3_2: this.onAction3_2
             }
         }
@@ -59,33 +64,38 @@ export class ExportView extends React.Component {
             },
             "Edit Template": {
                 comp1: "editorTools",
-                comp2: "docSearch",
-                comp3: "exportSection"
+                comp2: "variableList",
+                comp3: "saveTemplateSection"
             }
         }
     }
 
+    openDialog() {
+        var newState = this.state;
+        newState.open = true;
+        this.setState(newState);
+    }
+
     selectTemplate(value){
         this.editorText = llorem[value] || this.editorText;
-        const currentPage = this.state.currentPage;
-        this.setState({
-            editorState: EditorState.createWithContent(ContentState.createFromText(this.editorText)),
-            currentPage: currentPage
-        });
+        var newState = this.state;
+        newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
+        newState.selectedTemplate = value;
+        this.setState(newState);
     }
 
     toggleInlineStyle(style) {
         const inlineStyle = style.toUpperCase();
-        this.setState({
-          ["editorState"]: RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
-        })
+        var newState = this.state;
+        newState.editorState = RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
+        this.setState(newState);
         this.docEditor.focusEditor();
     }
 
     toggleBlockType(align) {
-        this.setState({
-            ["editorState"]: RichUtils.toggleBlockType(this.state.editorState, align)
-        });
+        var newState = this.state;
+        newState.editorState = RichUtils.toggleBlockType(this.state.editorState, align)
+        this.setState(newState);
         this.docEditor.focusEditor();
     }
 
@@ -93,17 +103,15 @@ export class ExportView extends React.Component {
         this.setState({["editorState"]: editorState})
     }
 
-    changeToEditTemplateView(){
+    changeToEditTemplateView() {
         var newState = this.state;
         newState.currentPage = "Edit Template";
         this.setState(newState);
     }
 
     onAction3_2(){
-        console.log("cliked Button 2")
+        console.log("clicked Button 2")
     }
-
-    
 
     render() {
         const currentPage=this.state.currentPage;
@@ -111,6 +119,7 @@ export class ExportView extends React.Component {
         const actionSet = this.actionSet[currentPage];
         const componentSet = this.componentSet[currentPage];
         return (
+            <div>
             <Page title={this.state.currentPage}>
                 <Row>
                     <Column>
@@ -136,6 +145,8 @@ export class ExportView extends React.Component {
                     </Column>
                 </Row>
             </Page>
+            <FloatingWindows open={this.state.open}/>
+            </div>
         );
     }
 }

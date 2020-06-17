@@ -4,6 +4,8 @@ import EditorTools from './EditorTools';
 import DocSearch from './DocSearch';
 import ExportSection from './ExportSection';
 import TemplateList from './TemplateList';
+import SaveTemplateSection from './SaveTemplateSection';
+import VariableList from './VariableList';
 import { parseWithOptions } from 'date-fns/fp';
 
 const styles = {
@@ -26,7 +28,9 @@ export default class RightSidePanel extends React.Component {
       editorTools: EditorTools,
       docSearch: DocSearch,
       exportSection: ExportSection,
-      templateList: TemplateList
+      templateList: TemplateList,
+      saveTemplateSection: SaveTemplateSection,
+      variableList: VariableList
     }
   }
 
@@ -56,6 +60,7 @@ export default class RightSidePanel extends React.Component {
           <TypeComponent3
             onAction1={this.props.onAction3_1}
             onAction2={this.props.onAction3_2}
+            open={this.props.open}
           />
       </div>
     );
