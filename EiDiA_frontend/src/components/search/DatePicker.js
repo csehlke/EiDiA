@@ -19,7 +19,7 @@ class DatePicker extends React.Component {
                     initialFocusedDate=""
                     inputVariant="outlined"
                     variant="inline"
-                    format="MM/dd/yyyy"
+                    format="dd/MM/yyyy"
                     margin="normal"
                     id="date-picker-inline"
                     size={"small"}

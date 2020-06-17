@@ -28,6 +28,7 @@ export default class ConstraintPicker extends React.Component {
             value2: '',
 
             constraintTypes: [],
+            filled: false,
         }
 
         this.constraintTypeRef = React.createRef();
@@ -35,6 +36,7 @@ export default class ConstraintPicker extends React.Component {
         this.handleConstraintTypeChange = this.handleConstraintTypeChange.bind(this);
         this.handleValue1Change = this.handleValue1Change.bind(this);
         this.handleValue2Change = this.handleValue2Change.bind(this);
+        this.checkIfFilled = this.checkIfFilled.bind(this);
     }
 
     componentDidMount() {
@@ -74,14 +76,29 @@ export default class ConstraintPicker extends React.Component {
     handleValue1Change(event) {
         const value = event.target.value.replace(new RegExp("\\D"), "");
         this.setState({
-            value1: event.target.value
+            value1: value,
         });
+        this.checkIfFilled(value, this.state.value2);
     }
 
     handleValue2Change(event) {
         const value = event.target.value.replace(new RegExp("\\D"), "");
         this.setState({
-            value2: value
+            value2: value,
+        });
+        this.checkIfFilled(this.state.value1, value);
+    }
+
+    checkIfFilled(value1, value2) {
+        let filled;
+        if (this.state.numberOfFields === 1) {
+            filled = value1 !== '';
+        } else {
+            filled = value1 !== '' && value2 !== '';
+        }
+        this.props.isFilled(filled);
+        this.setState({
+            filled: filled,
         });
     }
 
