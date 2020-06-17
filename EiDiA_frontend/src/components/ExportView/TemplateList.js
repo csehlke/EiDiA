@@ -7,8 +7,7 @@ export default class TemplateList extends React.Component {
         super(props);
         this.state = {
             data: [0, 1, 2],
-            selectedIndex: 3
-
+            selectedIndex: 0
         }
         this.handleListItemclick = this.handleListItemclick.bind(this);
     }
@@ -17,6 +16,8 @@ export default class TemplateList extends React.Component {
         var newState = this.state;
         newState.selectedIndex = index;
         this.setState(newState);
+        this.props.onAction1(index)
+
     }
 
     render() {
