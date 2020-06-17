@@ -21,7 +21,7 @@ export class ExportView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.editorText = llorem["Template 0"];
+        this.editorText = llorem["Template0"];
         this.state = {
             editorState: EditorState.createWithContent(ContentState.createFromText(this.editorText)),
             currentPage: "Select Template"
@@ -32,12 +32,13 @@ export class ExportView extends React.Component {
         this.toggleBlockType = this.toggleBlockType.bind(this);
         this.changeToEditTemplateView = this.changeToEditTemplateView.bind(this);
         this.onAction3_2 = this.onAction3_2.bind(this);
-        this.docEditor = React.createRef();
+        this.selectTemplate = this.selectTemplate.bind(this);
 
+        this.docEditor = React.createRef();
 
         this.actionSet = {
             "Select Template": {
-                onAction1_1: this.toggleInlineStyle,
+                onAction1_1: this.selectTemplate,
                 onAction1_2: this.toggleBlockType,
                 onAction3_1: this.changeToEditTemplateView,
                 onAction3_2: this.onAction3_2
@@ -62,6 +63,15 @@ export class ExportView extends React.Component {
                 comp3: "exportSection"
             }
         }
+    }
+
+    selectTemplate(value){
+        this.editorText = llorem[value] || this.editorText;
+        const currentPage = this.state.currentPage;
+        this.setState({
+            editorState: EditorState.createWithContent(ContentState.createFromText(this.editorText)),
+            currentPage: currentPage
+        });
     }
 
     toggleInlineStyle(style) {

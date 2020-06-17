@@ -12,11 +12,11 @@ export default class TemplateList extends React.Component {
         this.handleListItemclick = this.handleListItemclick.bind(this);
     }
 
-    handleListItemclick(e, index) {
+    handleListItemclick(value, index) {
         var newState = this.state;
         newState.selectedIndex = index;
         this.setState(newState);
-        this.props.onAction1(index)
+        this.props.onAction1(value);
 
     }
 
@@ -32,8 +32,10 @@ export default class TemplateList extends React.Component {
                         <TemplateListItem 
                             key={i}
                             text={"Template " + i}
+                            id={"Template" + i}
+                            index={i}
                             isSelected={this.state.selectedIndex === i}
-                            onAction={(event) => this.handleListItemclick(event,i)}
+                            onAction={this.handleListItemclick}
                     />
                     )}
                     
