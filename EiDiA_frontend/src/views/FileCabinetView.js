@@ -5,7 +5,7 @@ import Page from "../components/Page";
 import {RecordSymbol} from "../components/fileCabinet/RecordSymbol";
 import styled from "styled-components";
 import {Input} from '@material-ui/core';
-
+import {Link} from "../components/Link";
 
 const FlexRow = styled.div`
     margin: 0 5% 0 5%;
@@ -30,6 +30,9 @@ export class FileCabinetView extends React.Component {
             search : ''
         }
     }
+    componentDidMount() {
+        this.props.setTitle("File Cabinet");
+    }
     updateSearch(event){
         this.setState({search: event.target.value.substr(0,20)});
     }
@@ -49,7 +52,10 @@ export class FileCabinetView extends React.Component {
 
 
                 <FlexRow>
-                    {filteredRecords.map(record =>  <RecordSymbol name={record}/>)}
+{/*
+                    TODO: make Link depending on the records
+*/}
+                    {filteredRecords.map(record =>  <Link to={"/record"}><RecordSymbol name={record}/></Link>)}
                 </FlexRow>
             </Page>
         );
