@@ -4,19 +4,11 @@ import React from 'react';
 import Page from "../components/Page";
 import DocEditor from "../components/ExportView/DocEditor";
 import RightSidepanel from "../components/ExportView/RightSidepanel";
-import styled from 'styled-components';
 import {RichUtils, EditorState, ContentState} from 'draft-js';
 import {llorem} from '../support files/constants';
 import FloatingWindows from '../components/ExportView/FloatingWindow';
+import {Row, Column} from '../support files/constants';
 
-
-const Row = styled.div`
-    display: flex;
-`;
-
-const Column = styled.div`
-    flex: 50%;
-`;
 
 export class ExportView extends React.Component {
 
@@ -37,7 +29,7 @@ export class ExportView extends React.Component {
         this.changeToEditTemplateView = this.changeToEditTemplateView.bind(this);
         this.onAction3_2 = this.onAction3_2.bind(this);
         this.selectTemplate = this.selectTemplate.bind(this);
-        this.openDialog = this.openDialog.bind(this);
+        this.toggleDialog = this.toggleDialog.bind(this);
 
         this.docEditor = React.createRef();
 
@@ -51,7 +43,7 @@ export class ExportView extends React.Component {
             "Edit Template": {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
-                onAction3_1: this.openDialog,
+                onAction3_1: this.toggleDialog,
                 onAction3_2: this.onAction3_2
             }
         }
@@ -70,9 +62,9 @@ export class ExportView extends React.Component {
         }
     }
 
-    openDialog() {
+    toggleDialog() {
         var newState = this.state;
-        newState.open = true;
+        newState.open = !newState.open;
         this.setState(newState);
     }
 
@@ -145,7 +137,7 @@ export class ExportView extends React.Component {
                     </Column>
                 </Row>
             </Page>
-            <FloatingWindows open={this.state.open}/>
+            <FloatingWindows open={this.state.open} onClose={this.toggleDialog}/>
             </div>
         );
     }
