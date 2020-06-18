@@ -58,6 +58,7 @@ export default class DocEditor extends React.Component {
         return (
             <div style={styles.editor} onClick={this.focusEditor}>
                 <Editor
+                    textAlignment={this.props.textAlignment}
                     ref={this.setEditor}
                     editorState={editorState}
                     onChange={onChange}

@@ -20,7 +20,7 @@ export default class DocListItem extends React.Component {
         return(
             <ListItem>
                 <ListItemText
-                    primary="Single-line item"
+                    primary={this.props.id}
                 />
                 <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="delete" onClick={this.addToList}>

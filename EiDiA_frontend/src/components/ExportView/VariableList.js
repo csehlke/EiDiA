@@ -6,12 +6,13 @@ export default class VariableList extends React.Component {
     constructor(props){
         super(props);
     }
-    
+
     render(){
+        const variable_arr = this.props.variables;
         return(
-            <div>
+            <div style={{margin: "3%"}}>
                 <p/>
-                Use 3 documents.
+                Use <input defaultValue="3" width="10px" type="number"/> documents.
                 <p/>
                 <p/>
                 <p/>
@@ -19,8 +20,7 @@ export default class VariableList extends React.Component {
                     Variables
                 </Typography>
                 <Box component="span" display="block" p={1} m={1} bgcolor="LightGray">
-                    <li>$VARIABLE1</li>
-                    <li>$DATE</li>
+                    {variable_arr.map((variable) => <li key={variable}>{variable}</li>)}
                 </Box>
             </div>
         )

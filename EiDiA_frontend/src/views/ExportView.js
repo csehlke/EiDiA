@@ -8,7 +8,7 @@ import {RichUtils, EditorState, ContentState} from 'draft-js';
 import {llorem} from '../support files/constants';
 import FloatingWindows from '../components/ExportView/FloatingWindow';
 import {Row, Column} from '../support files/constants';
-
+import {convertToRaw} from 'draft-js';
 
 export class ExportView extends React.Component {
 
@@ -17,10 +17,12 @@ export class ExportView extends React.Component {
         this.editorText = llorem["Template0"];
         this.state = {
             editorState: EditorState.createWithContent(ContentState.createFromText(this.editorText)),
+            textAlignment: "left",
             currentPage: "Select Template",
             selectedTemplate: null,
             seen: true,
-            open: false
+            open: false,
+            variables: []
         };
 
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
@@ -30,6 +32,7 @@ export class ExportView extends React.Component {
         this.onAction3_2 = this.onAction3_2.bind(this);
         this.selectTemplate = this.selectTemplate.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
+        this.extractVariables = this.extractVariables.bind(this);
 
         this.docEditor = React.createRef();
 
@@ -86,14 +89,31 @@ export class ExportView extends React.Component {
 
     toggleBlockType(align) {
         var newState = this.state;
-        newState.editorState = RichUtils.toggleBlockType(this.state.editorState, align)
+        newState.editorState = RichUtils.toggleBlockType(this.state.editorState, align);
+        newState.textAlignment = align;
         this.setState(newState);
-        this.docEditor.focusEditor();
+    }
+    
+    onChange(editorState) {
+        var newState = this.state;
+        newState.editorState = editorState;
+        newState.variables = this.extractVariables(editorState);
+        this.setState(newState);
     }
 
-    onChange(editorState) {
-        this.setState({["editorState"]: editorState})
+    extractVariables(editorState) {
+        const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
+        const value = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+        const arr = value.split(" ");
+        var arr2 = []
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i][0] == "$") {
+                arr2.push(arr[i]);
+            }
+        }
+        return arr2;
     }
+
 
     changeToEditTemplateView() {
         var newState = this.state;
@@ -119,6 +139,7 @@ export class ExportView extends React.Component {
                     </Column>
                     <Column>
                         <DocEditor 
+                            textAlignment={this.state.textAlignment}
                             ref={(docEditor) => {this.docEditor = docEditor}}
                             editorState={editorState}
                             onChange={this.onChange}
@@ -133,6 +154,8 @@ export class ExportView extends React.Component {
                             onAction1_2={actionSet.onAction1_2}
                             onAction3_1={actionSet.onAction3_1}
                             onAction3_2={actionSet.onAction3_2}
+                            editorState={this.state.editorState}
+                            variables={this.state.variables}
                         />
                     </Column>
                 </Row>

@@ -44,10 +44,10 @@ export default class EditorTools extends React.Component {
         this.state = {
             bold: false,
             italic: false,
-            underlined: false,
-            striked: false,
+            underline: false,
+            strikethrough: false,
             alignments: {
-                left: false,
+                left: true,
                 center: false,
                 right: false,
                 justify: false
@@ -96,13 +96,13 @@ export default class EditorTools extends React.Component {
                 </IconButton>
                 <IconButton 
                     style={this.state.underlined ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setEmphasis(e, "underlined")}
+                    onMouseDown={(e) => this.setEmphasis(e, "underline")}
                 >                    
                     <FormatUnderlinedIcon />
                 </IconButton>
                 <IconButton 
                     style={this.state.striked ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setEmphasis(e, "striked")}
+                    onMouseDown={(e) => this.setEmphasis(e, "strikethrough")}
                 >                    
                     <StrikethroughSIcon />
                 </IconButton>

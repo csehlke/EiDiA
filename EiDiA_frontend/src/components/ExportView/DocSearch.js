@@ -47,7 +47,7 @@ export default class DocSearch extends React.Component {
     }
 
     render() {
-        const listItems = ['List Item A', 'List Item B', 'List Item C']
+        const listItems = ['Document A', 'Document B', 'Document C']
         const selectedItems = this.state.selected;
         return(
             <div style={styles.div}>

@@ -9,12 +9,11 @@ const Quarter = styled.div`
     width: 14.5%;
     height: auto;
     font-size: 2vw;
-    
-
 `;
 const HeadingNoMargin = styled.p`
     margin-top: 0;
-    text-align: center;
+    text-align: left;
+    font-size: ${props => props.labelFontSize || "auto"};
 `;
 
 export class RecordSymbol extends React.Component {
@@ -37,8 +36,8 @@ export class RecordSymbol extends React.Component {
     render() {
         return(
             <Quarter>
-                <Folder style={{fontSize: '14vw'}}/>
-                <HeadingNoMargin>{this.props.name}</HeadingNoMargin>
+                <Folder style={{fontSize: this.props.fontSize || '7vw'}}/>
+                <HeadingNoMargin labelFontSize={this.props.labelFontSize}>{this.props.name}</HeadingNoMargin>
             </Quarter> )
 
     }
