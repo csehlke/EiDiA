@@ -1,18 +1,19 @@
-"use strict";
-
 import React from 'react';
+import styled from "styled-components";
 
-export default class FileTable extends React.Component {
-
+export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-    }
+        this.state={
 
+        }
+    }
     render() {
         return (
             <div>
-                FileTable works
+            <p> Dashboard</p>
             </div>
         );
     }
 }
+
