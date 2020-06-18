@@ -1,7 +1,7 @@
 "use strict";
 
 import React from 'react';
-import FileTable from "../filetable/FileTable";
+import FileTable from "../filetable/Element";
 
 export default class SearchResults extends React.Component {
 
