@@ -5,17 +5,9 @@ import styled from "styled-components";
 import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
 import {DragTypes} from "../Constants"
-import {DragSource, DropTarget} from "react-dnd";
-import {compose} from 'redux'
+import {DragSource} from "react-dnd";
 
-const ElementBoundary = styled.div`
-    width:90%;
-    height:auto;
-    margin: 1vh 5vw  1vh 5vw;
-   
-    
 
-`;
 const ElementRow = styled.div`
     height:auto;
     margin: 1vh 0  1vh 0;
@@ -26,25 +18,11 @@ const ElementRow = styled.div`
 
 `;
 
-const ChildRow = styled.div`
-    
-    
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap
-    
-`;
-
-
-const Symbol = styled.div`
-    width: 10%;  
-
-`;
 const Name = styled.div`
-    width: ${props=>props.width+"%"}; 
+    width: ${props => props.width + "%"}; 
     flex-direction: row;
     flex-wrap: no-wrap;
-    padding-left: ${props=>props.padding+"%"};
+    padding-left: ${props => props.padding + "%"};
     
   
 `;
@@ -60,57 +38,68 @@ const Actions = styled.div`
 
 const itemSource = {
     beginDrag(props) {
-        const item = { src: props.src, id: props.index }
+        const item = {src: props.src, id: props.index}
         return item
     },
-    endDrag(props,monitor,component) {
+    endDrag(props, monitor, component) {
         console.log(monitor.getDropResult().component.props.id)
         console.log(component)
-        component.props.handleDrop(component.props.key,monitor.getDropResult().component.props.id )
-        return component.props.handleDrop(component.props.index,monitor.getDropResult().component.props.id )
+        component.props.handleDrop(component.props.key, monitor.getDropResult().component.props.id)
+        return component.props.handleDrop(component.props.index, monitor.getDropResult().component.props.id)
     }
 }
+
 function collectDrag(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging()
     }
 }
+
 function collectDrop(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget()
     }
 }
 
+/*
+ *TODO:
+ * - make not draggable if type is Heading
+ */
 class Element extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state ={
+        this.state = {
             symbolArray: [],
-            padding: this.props.level*2,
-            width:  40-this.props.level*2
+            padding: this.props.level * 2,
+            width: 40 - this.props.level * 2
         }
 
     }
-    clickHandle(event){
+
+    clickHandle(event) {
         console.log("clicked")
-        this.props.setActive(this)
+        this.props.activeToggle(this)
     }
 
     render() {
-        const { isDragging, connectDragSource, src } = this.props
+        const {isDragging, connectDragSource, src} = this.props
 
-        const toRender =(
-            <div >
+        const toRender = (
+            <div>
                 {!isDragging &&
                 <div>
+                    {/*
+                    * Solution for not firing onClick event
+                    * https://stackoverflow.com/questions/50805710/react-js-onclick-event-not-firing
+                    * other solution is to change stylwe
+                    * <div style = {{cursor:(element.type === 'FOLDER')&& 'pointer'}} onClick = {(element.type === 'FOLDER')?this.addChildren.bind(element.id,element):null}>
+                     */}
+                    <ElementRow style={{cursor: (this.props.type === 'FOLDER') && 'pointer'}}
+                                onClick={this.clickHandle.bind(this)}>
 
-                    <ElementRow onClick={this.clickHandle.bind(this)}>
-                        {/*<Symbol>
-                                <ElementSymbol type={this.props.type}/>
-                            </Symbol>*/}
-                        <Name width={this.state.width} padding={this.state.padding} >
+                        <Name width={this.state.width} padding={this.state.padding}>
                             <ElementSymbol type={this.props.type}/>
                             {this.props.name}
                         </Name>
@@ -141,22 +130,17 @@ class Element extends React.Component {
         // else return this.props.connectDropTarget(toRender)
 
 
-
-
-
-
-
-
     }
 }
 
-// @DragSource(DragTypes.ELEMENT, itemSource, collect)
-// @DropTarget(DragTypes.ELEMENT, {}, collect), ,DropTarget(DragTypes.ELEMENT, {}, collect)
-
-// export default compose(, )(Element)
-// export { RawElement }
-//TODO clean this up and remove Drop,redux, collect function etc.
-const drop =DropTarget(DragTypes.ELEMENT, {}, collectDrop) ;
-const drag =DragSource(DragTypes.ELEMENT, itemSource, collectDrag);
-export default drop(drag(Element));
+/*
+ *TODO:
+ * - a cleaner Code would be to remove Elementtable and making Element Target & Source at the same time, however, this
+ * needs state handling. If choosen to do both in one, one has to write something like this
+ * const drop = DropTarget(DragTypes.ELEMENT, {}, collectDrop);
+ * const drag = DragSource(DragTypes.ELEMENT, itemSource, collectDrag);
+ * export default drop(drag(Element));
+ */
+const drag = DragSource(DragTypes.ELEMENT, itemSource, collectDrag);
+export default drag(Element);
 
