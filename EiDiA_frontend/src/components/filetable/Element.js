@@ -6,7 +6,7 @@ import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
 import {DragTypes} from "../Constants"
 import {DragSource} from "react-dnd";
-
+import {fileTypes} from "../Constants";
 
 const ElementRow = styled.div`
     height:auto;
@@ -101,7 +101,7 @@ class Element extends React.Component {
                                 onClick={this.clickHandle.bind(this)}>
 
                         <Name width={this.state.width} padding={this.state.padding}>
-                            <ElementSymbol type={this.props.type}/>
+                            <ElementSymbol type={this.props.type} active={this.props.active}/>
                             {this.props.name}
                         </Name>
 

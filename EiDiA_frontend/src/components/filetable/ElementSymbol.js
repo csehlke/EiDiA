@@ -1,7 +1,7 @@
 import React from 'react';
-import {FaFilePdf, FaFileWord} from 'react-icons/fa'
+import {FaFilePdf, FaFileWord,FaFolder, FaFolderOpen} from 'react-icons/fa'
 import {AiFillFileUnknown} from 'react-icons/ai'
-
+import {fileTypes} from "../Constants";
 export class ElementSymbol extends React.Component {
     constructor(props) {
         super(props);
@@ -12,12 +12,16 @@ export class ElementSymbol extends React.Component {
      */
     symbolSelection(type){
         switch(type){
-            case 'PDF':
+            case fileTypes.PDF:
                 return <FaFilePdf/>;
-            case 'WORD':
+            case fileTypes.WORD:
                 return <FaFileWord/>;
-            case 'HEADING':
-                return <div/>;
+            case fileTypes.FOLDER:
+                if(this.props.active)return <FaFolderOpen/>;
+                else return <FaFolder/>;
+
+            case fileTypes.NONE:
+                return <div/>
             default:
                 return <AiFillFileUnknown/>;
         }
