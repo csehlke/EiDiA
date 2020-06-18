@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import CropIcon from "@material-ui/icons/Crop";
-import FormControl from "@material-ui/core/FormControl";
+import Grid from "@material-ui/core/Grid";
 
 
 const Container = styled.div
@@ -16,7 +16,13 @@ const Container = styled.div
     `
     display: flex;
     flex-grow: 1; //For Splitview
-    flex-basis: 50%
+    flex-basis: 50%;
+`;
+
+const GridContainer = styled.div
+    `
+    display: flex;
+    height: 50%
 `;
 
 
@@ -29,7 +35,14 @@ class AttributeContainer extends React.Component {
             attributes: [
                 {name: 'Attr1', id: '1'},
                 {name: 'Attr2', id: '2'},
-                {name: 'Attr3', id: '3'}
+                {name: 'Attr3', id: '3'},
+                {name: 'Attr4', id: '4'},
+                {name: 'Attr5', id: '5'},
+                {name: 'Attr6', id: '6'},
+                {name: 'Attr7', id: '7'},
+                {name: 'Attr8', id: '8'},
+                {name: 'Attr9', id: '9'},
+                {name: 'Attr10', id: '10'}
             ],
             attributeData: [
                 {}
@@ -104,25 +117,22 @@ class AttributeContainer extends React.Component {
     }
 
 
-    componentDidMount() {
-    }
-
     renderTextFields(attrName, attrID) {
-        return <TextField
-            label={attrName}
-            variant="outlined"
-            value={this.findData(attrID)}
-            onChange={(evt) => this.handleOnChange(evt, attrID)}
-            //inputRef={}
-            //onBlur={}
-            InputProps={{
-                endAdornment: <InputAdornment>
-                    <IconButton onClick={() => this.saveData(attrID)}>
-                        <CropIcon/>
-                    </IconButton>
-                </InputAdornment>
-            }}
-        />
+        return <Grid item xs>
+            <TextField
+                label={attrName}
+                variant="outlined"
+                value={this.findData(attrID)}
+                onChange={(evt) => this.handleOnChange(evt, attrID)}
+                InputProps={{
+                    endAdornment: <InputAdornment>
+                        <IconButton onClick={() => this.saveData(attrID)}>
+                            <CropIcon/>
+                        </IconButton>
+                    </InputAdornment>
+                }}
+            />
+        </Grid>
     }
 
     sendFulltextToBackend() { //TODO Send to Backend (OCR IS VERY SLOW) --> Do it on backend?
@@ -158,10 +168,17 @@ class AttributeContainer extends React.Component {
     render() {
         return ( // Render TextFields dynamically from state
             <Container>
-                <FormControl>
-                    {this.state.attributes.map((item) => <div
-                        key={item.id}>{this.renderTextFields(item.name, item.id)}</div>)}
-                </FormControl>
+                <GridContainer>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-evenly"
+                        alignItems="flex-end"
+                    >
+                        {this.state.attributes.map((item) => <div
+                            key={item.id}>{this.renderTextFields(item.name, item.id)}</div>)}
+                    </Grid>
+                </GridContainer>
             </Container>
         )
     }
