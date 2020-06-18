@@ -62,8 +62,8 @@ class AttributeContainer extends React.Component {
 
     saveData(attrID) {
         let copyArr = this.state.attributeData
-        let idx = (this.state.attributeData.findIndex(element => element.id == attrID))
-        if (idx == -1) { //If ID doesn't exist yet, add it
+        let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
+        if (idx === -1) { //If ID doesn't exist yet, add it
             this.setState({
                 attributeData: [...this.state.attributeData, {id: attrID, text: this.state.textValue}]
             });
@@ -77,11 +77,28 @@ class AttributeContainer extends React.Component {
     }
 
     findData(attrID) {
-        let idx = (this.state.attributeData.findIndex(element => element.id == attrID)) //find index of ID
+        let idx = (this.state.attributeData.findIndex(element => element.id === attrID)) //find index of ID
         if (idx !== -1) {
             return Object.values(this.state.attributeData)[idx].text // Get text at index
         } else {
             return ""
+        }
+    }
+
+
+    handleOnChange(event, attrID) { //Updates attributeData based on user input
+        let copyArr = this.state.attributeData
+        let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
+
+        if (idx === -1) { //If ID doesn't exist yet, add it
+            this.setState({
+                attributeData: [...this.state.attributeData, {id: attrID, text: event.target.value}]
+            });
+        } else {
+            copyArr.splice(idx, 1, {id: attrID, text: event.target.value}) //Overwrite with new value
+            this.setState({
+                attributeData: copyArr
+            });
         }
 
     }
@@ -95,7 +112,7 @@ class AttributeContainer extends React.Component {
             label={attrName}
             variant="outlined"
             value={this.findData(attrID)}
-            //onChange={}
+            onChange={(evt) => this.handleOnChange(evt, attrID)}
             //inputRef={}
             //onBlur={}
             InputProps={{
