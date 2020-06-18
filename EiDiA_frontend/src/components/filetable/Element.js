@@ -6,52 +6,50 @@ import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
 
 const ElementRow = styled.div`
-    margin: 2vh 5vw  2vh 5vw;
     display: flex;
     flex-direction: row;
-    flex-wrap: no-wrap
-    border: 1px solid transparent;
-    border-radius: 3px;
-    border-color:#DADADA;
-
+    flex-wrap: nowrap;
 `;
 
 const Symbol = styled.div`
-    width: 5vw;  
+    width: 5%;
+`;
 
-`;
 const Name = styled.div`
-    width: 20vw;  
+    width: 20%;  
 `;
+
 const Date = styled.div`
-    width: 10vw;  
+    width: 10%;  
 `;
+
 const Comment = styled.div`
-    width: 40vw;  
+    width: 40%;  
 `;
+
 const Actions = styled.div`
-    width: 15vw;  
+    width: 15%;  
 `;
-export  class Element extends React.Component {
+
+export class Element extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state ={
-            symbolArray: []
+
+        this.state = {
+            symbolArray: [],
         }
     }
-
 
     render() {
         return (
             <ElementRow>
                 <Symbol>
-                    <ElementSymbol type ={this.props.type}/>
+                    <ElementSymbol type={this.props.type}/>
                 </Symbol>
                 <Name>
                     {this.props.name}
                 </Name>
-
                 <Date>
                     {this.props.dateCreation}
                 </Date>
@@ -60,10 +58,9 @@ export  class Element extends React.Component {
                 </Date>
                 <Comment>
                     {this.props.comment}
-
                 </Comment>
                 <Actions>
-                    <ElementActions actions = {this.props.actions}/>
+                    <ElementActions actions={this.props.actions}/>
                 </Actions>
             </ElementRow>
         );
