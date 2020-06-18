@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styled from "styled-components";
-import { Folder } from '@material-ui/icons';
+import {FaFolder} from "react-icons/all";
 
 
 const Quarter = styled.div`
@@ -37,7 +37,7 @@ export class RecordSymbol extends React.Component {
     render() {
         return(
             <Quarter>
-                <Folder style={{fontSize: '14vw'}}/>
+                <FaFolder style={{fontSize: '14vw'}}/>
                 <HeadingNoMargin>{this.props.name}</HeadingNoMargin>
             </Quarter> )
 

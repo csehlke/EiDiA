@@ -30,6 +30,11 @@ export class RecordView extends React.Component {
             search : ''
         }
     }
+
+    componentDidMount() {
+        this.props.setTitle("Record");
+    }
+
     updateSearch(event){
         this.setState({search: event.target.value.substr(0,20)});
     }
@@ -42,7 +47,7 @@ export class RecordView extends React.Component {
         );
 
         return (
-            <Page title={"Record"}>
+            <Page title={this.props.title}>
                 <RecordMenue/>
                 <div>
                     <FileExplorer/>

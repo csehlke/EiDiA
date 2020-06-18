@@ -30,6 +30,11 @@ export class FileCabinetView extends React.Component {
             search : ''
         }
     }
+
+    componentDidMount() {
+        this.props.setTitle("File Cabinet");
+    }
+
     updateSearch(event){
         this.setState({search: event.target.value.substr(0,20)});
     }
@@ -42,7 +47,7 @@ export class FileCabinetView extends React.Component {
         );
 
         return (
-            <Page title={"File Cabinet"}>
+            <Page title={this.props.title}>
                 <div width="80%" style = {{margin: "3% 10% 3% 10%"}}>
                     <Input placeholder="Search Records ..." fullWidth={true}  inputProps={{ 'aria-label': 'description' }} value={this.state.search} onChange={this.updateSearch.bind(this)} />
                 </div>

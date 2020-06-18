@@ -27,7 +27,7 @@ export default class Sidebar extends React.Component {
                         <ListItemText primary={"Home"}/>
                     </ListItem>
                 </Link>
-                <Link to={'/browse'}>
+                <Link to={'/cabinet'}>
                     <ListItem button key={"Browse"}>
                         <StyledListIcon><FiHardDrive/></StyledListIcon>
                         <ListItemText primary={"Browse"}/>
