@@ -57,6 +57,10 @@ class AttributeContainer extends React.Component {
 
     }
 
+    componentDidMount() {
+        this.props.setTitle("Attribute Picker");
+    }
+
 
     loadWorker() { //Initialize Worker only once an reuse it, to save startup time
         const worker = createWorker({
