@@ -36,10 +36,11 @@ class TypePicker extends React.Component {
                 {name: 'type2', id: '2'}
             ],
             documentTypeId: '',
+            buttonStatus: true, // true, if "next"-button is disabled
+            autoCompleteStatus: false // true, if autoComplete has value
         }
 
 
-        this.documentTypeRef = React.createRef();
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
         this.createNewDocumentType = this.createNewDocumentType.bind(this);
@@ -47,10 +48,33 @@ class TypePicker extends React.Component {
         this.assignRecord = this.assignRecord.bind(this);
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.picUploaded !== this.props.picUploaded) {
+            if (this.state.autoCompleteStatus && this.props.picUploaded) {
+                this.setState({
+                    buttonStatus: false
+                });
+            }
+        }
+    }
+
+
     handleDocumentTypeChange(event, value) {
         this.setState({
-            documentTypeId: value.id
+            documentTypeId: value.id,
         });
+
+
+        if (this.props.picUploaded) { //Check if image has been uploaded yet
+            this.setState({
+                buttonStatus: false
+            });
+        } else {
+            this.setState({
+                autoCompleteStatus: true
+            });
+        }
+
     }
 
     createNewDocumentType() {
@@ -79,7 +103,6 @@ class TypePicker extends React.Component {
                     <Grid item xs={12} align="center">
                         <DropDownContainer>
                             <SmartDropDownBox
-                                ref={this.documentTypeRef}
                                 onChange={this.handleDocumentTypeChange}
                                 options={this.state.documentTypes}
                                 label='Document Type'/>
@@ -113,6 +136,7 @@ class TypePicker extends React.Component {
                         <Button
                             variant="contained"
                             color="primary"
+                            disabled={this.state.buttonStatus}
                             onClick={this.handleOnClick}
                         >
                             Next

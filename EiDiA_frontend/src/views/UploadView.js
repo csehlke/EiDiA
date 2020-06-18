@@ -81,7 +81,7 @@ export class UploadView extends React.Component {
                     <DocPreview picture={this.state.picture}
                                 cropDisabled={true} /* Picture from FileDrop, disable crop for preview */ />
                     <TypePicker
-                        callbackUploadView={this.getDocumentTypeId}  /* Get ID to fill Attributecontainer fields *//>
+                        callbackUploadView={this.getDocumentTypeId} picUploaded={this.state.isUploaded} /* Get ID to fill Attributecontainer fields *//>
                 </SplitView>
             </Page>
         } else if (this.state.isUploaded && this.state.nextPressed) {
