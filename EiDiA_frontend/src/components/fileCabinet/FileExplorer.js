@@ -18,26 +18,26 @@ const ElementBoundary = styled.div`
 
 `;
 const databaseEntries =[
-    {parentId:0,id: 1,active:false,level:0,position:1,type:"WORD",name:"Sample Word Document", dateCreation :'1.1.1970',
+    {parentId:0,id: 1,active:false,level:0,type:"WORD",name:"Sample Word Document", dateCreation :'1.1.1970',
         dateModification : '1.1.2020', comment : 'This is a long long Lorem Ipsum Comment talking blablabla',
         actions:['DOWNLOAD','EDIT','DELETE'],children:[]},
 
-    {parentId:0,id:3,active:false,level:0,position:3,type:"FOLDER",name:"Sample Folder", dateCreation :'',
+    {parentId:0,id:3,active:false,level:0,type:"FOLDER",name:"Sample Folder", dateCreation :'',
         dateModification : '', comment : 'TJust some Folder',
         actions:['EDIT','DELETE'],children:
             [
-                {parentId:3,id:2,active:false,level:1,position:2,type:"PDF",name:"Sample PDF Document", dateCreation :'2.2.1970',
+                {parentId:3,id:2,active:false,level:1,type:"PDF",name:"Sample PDF Document", dateCreation :'2.2.1970',
                 dateModification : '2.2.2020', comment : 'Second Document Comment',
                 actions:['DOWNLOAD','EDIT','DELETE'],children:[]},
-                {parentId:3,id:6,active:false,level:1,position:3,type:"FOLDER",name:"Sample Folder", dateCreation :'',
+                {parentId:3,id:6,active:false,level:1,type:"FOLDER",name:"Sample Folder", dateCreation :'',
                 dateModification : '', comment : 'TJust some Folder',
                 actions:['EDIT','DELETE'],children:
                         [
-                            {parentId:3,id: 5,active:false,level:2,position:1,type:"WORD",name:"Sample Word Document", dateCreation :'1.1.1970',
+                            {parentId:3,id: 5,active:false,level:2,type:"WORD",name:"Sample Word Document", dateCreation :'1.1.1970',
                             dateModification : '1.1.2020', comment : 'This is a long long Lorem Ipsum Comment talking blablabla',
                             actions:['DOWNLOAD','EDIT','DELETE'],children:[]}
                         ]},
-                {parentId:3,id:4,active:false,level:1,position:2,type:"PDF",name:"Sample PDF Document", dateCreation :'2.2.1970',
+                {parentId:3,id:4,active:false,level:1,type:"PDF",name:"Sample PDF Document", dateCreation :'2.2.1970',
                 dateModification : '2.2.2020', comment : 'Second Document Comment',
                 actions:['DOWNLOAD','EDIT','DELETE'],children:[]}
             ]
