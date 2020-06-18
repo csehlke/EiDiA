@@ -81,8 +81,8 @@ export default class FileExplorer extends React.Component {
 
     renderElement(element, index, level) {
         return (
-            <ElementTable type={element.type} id={element.id}>
-                <Element active={element.active} index={index} parentId={element.parentId}
+            <ElementTable key={"ELTable"+element.id}type={element.type} id={element.id}>
+                <Element key={"EL"+element.id} active={element.active} index={index} parentId={element.parentId}
                          id={element.id} level={level}
                          type={element.type} name={element.name} dateCreation={element.dateCreation}
                          dateModification={element.dateModification} comment={element.comment} actions={element.actions}

@@ -113,7 +113,7 @@ class Element extends React.Component {
 
                         </Comment>
                         <Actions>
-                            <ElementActions actions={this.props.actions}/>
+                            <ElementActions parentKey ={this.props.key} actions={this.props.actions}/>
                         </Actions>
                     </ElementRow>
                     {this.props.children}
