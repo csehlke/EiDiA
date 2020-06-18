@@ -46,17 +46,19 @@ const databaseEntries =[
 export default class FileExplorer extends React.Component {
     constructor(props) {
         super(props);
+        //TODO is this wanted? This unfolds all folder at the beginning
+        databaseEntries.forEach(element =>  element.active=false )
+
         this.state={
-            //TODO: expand elements by parentID
             elements: databaseEntries,
-            activeElements: databaseEntries.filter(element=>element.parentId ==0)
+            //activeElements: databaseEntries.filter(element=>element.parentId ==0)
 
         }
     }
 
     changeElements(oldIndex,newIndex){
         console.log("change"+oldIndex+"to:"+newIndex)
-        let array = this.state.activeElements;
+        let array = this.state.elements;
         if (newIndex >= array.length) {
 
             var k = newIndex - array.length + 1;
@@ -65,7 +67,7 @@ export default class FileExplorer extends React.Component {
             }
         }
         array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
-        this.setState({activeElements:array});
+        this.setState({elements:array});
     }
     activateElements(id,index){
         let newActiveElements = this.state.activeElements
@@ -79,21 +81,25 @@ export default class FileExplorer extends React.Component {
 
         element.props.children.push(entriesToAdd);*/
     }
-    setActive(){
+    setActive(element){
         console.log("active")
-        this.state.activeElements[index].active=true;
+
+       // element.children.forEach(child => child.active=true)
+        element.active==true ? element.active=false:element.active=true
+      //  this.state.activeElements[index].active=true;
         this.setState(this.state)
     }
     //<div style = {{cursor:(element.type === 'FOLDER')&& 'pointer'}} onClick = {(element.type === 'FOLDER')?this.activateElements.bind(this, element.id,index):((element.type === 'FOLDEROPEN')?this.deactivateElements.bind(this,element.id)}>
     renderElement(element,index){
+        //if(!(element.active | element.parentId==0))return null;
         return(/*<div style = {{cursor:(element.type === 'FOLDER')&& 'pointer'}} onClick = {(element.type === 'FOLDER')?this.addChildren.bind(element.id,element):null}>*/
 
             <ElementTable index={index}>
                 <Element active={element.active} index ={index} level ={element.level} type ={element.type} name = {element.name} dateCreation = {element.dateCreation}
                          dateModification = {element.dateModification} comment = {element.comment} actions={element.actions}
-                         handleDrop={(oldIndex,newIndex)=>this.changeElements(oldIndex,newIndex)} onClick={this.setActive.bind(this,index)}>
+                         handleDrop={(oldIndex,newIndex)=>this.changeElements(oldIndex,newIndex)} onClick={this.setActive.bind(this,element)} >
 
-                    {element.children.map((child,indexChild)=>this.renderElement(child,""+index+indexChild))}
+                    {element.active==true ? element.children.map((child,indexChild)=> this.renderElement(child,""+index+indexChild)):null}
 
 
                 </Element>
@@ -116,6 +122,7 @@ handleDrop={(oldIndex,newIndex)=>this.changeElements(oldIndex,newIndex)}/>
 )}*/
 
 render() {
+    console.log(this.state.elements)
         return (
             <div>
                 <ElementBoundary>
@@ -125,7 +132,7 @@ render() {
 
 
 
-                        {this.state.activeElements.map((element,index) =>
+                        {this.state.elements.map((element,index) =>
                             this.renderElement(element,index)
                         )}
                     </DndProvider>
