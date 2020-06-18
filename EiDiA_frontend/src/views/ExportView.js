@@ -9,6 +9,7 @@ import {llorem} from '../support files/constants';
 import FloatingWindows from '../components/ExportView/FloatingWindow';
 import {Row, Column} from '../support files/constants';
 import {convertToRaw} from 'draft-js';
+import { FormatListNumbered } from '@material-ui/icons';
 
 export class ExportView extends React.Component {
 
@@ -33,6 +34,7 @@ export class ExportView extends React.Component {
         this.selectTemplate = this.selectTemplate.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
         this.extractVariables = this.extractVariables.bind(this);
+        this.saveTemplate = this.saveTemplate.bind(this);
 
         this.docEditor = React.createRef();
 
@@ -44,6 +46,12 @@ export class ExportView extends React.Component {
                 onAction3_2: this.onAction3_2
             },
             "Edit Template": {
+                onAction1_1: this.toggleInlineStyle,
+                onAction1_2: this.toggleBlockType,
+                onAction3_1: this.toggleDialog,
+                onAction3_2: this.onAction3_2
+            },
+            "Edit": {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
                 onAction3_1: this.toggleDialog,
@@ -61,6 +69,11 @@ export class ExportView extends React.Component {
                 comp1: "editorTools",
                 comp2: "variableList",
                 comp3: "saveTemplateSection"
+            },
+            "Edit": {
+                comp1: "editorTools",
+                comp2: "docSearch",
+                comp3: "exportSection"
             }
         }
     }
@@ -115,14 +128,22 @@ export class ExportView extends React.Component {
     }
 
 
-    changeToEditTemplateView() {
+    changeToEditTemplateView(page) {
         var newState = this.state;
-        newState.currentPage = "Edit Template";
+        newState.currentPage = page;
         this.setState(newState);
+        this.docEditor.focusEditor();
     }
 
     onAction3_2(){
         console.log("clicked Button 2")
+    }
+
+    saveTemplate() {
+        var newState = this.state;
+        newState.open = false;
+        newState.currentPage = "Select Template";
+        this.setState(newState);
     }
 
     render() {
@@ -160,7 +181,7 @@ export class ExportView extends React.Component {
                     </Column>
                 </Row>
             </Page>
-            <FloatingWindows open={this.state.open} onClose={this.toggleDialog}/>
+            <FloatingWindows open={this.state.open} onClose={this.toggleDialog} save={this.saveTemplate}/>
             </div>
         );
     }

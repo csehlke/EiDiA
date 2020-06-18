@@ -103,6 +103,7 @@ export default class FloatingWindow extends React.Component {
                                 variant="contained"
                                 color="primary"
                                 disableElevation
+                                onClick={this.props.save}
                             >
                                 Save Template
                             </Button>

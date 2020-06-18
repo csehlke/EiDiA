@@ -21,7 +21,7 @@ export default class ExportSection extends React.Component {
                     variant="contained"
                     color="primary"
                     disableElevation
-                    onClick={this.props.onAction1}
+                    onClick={() => this.props.onAction1("Edit Template")}
                 >
                     Edit Template
                 </Button>
@@ -30,7 +30,7 @@ export default class ExportSection extends React.Component {
                     variant="contained" 
                     color="primary" 
                     disableElevation
-                    onClick={this.props.onAction2}    
+                    onClick={() => this.props.onAction1("Edit")}
                 >
                     Next
                 </Button>
