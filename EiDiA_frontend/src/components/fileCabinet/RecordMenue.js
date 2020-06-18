@@ -3,7 +3,7 @@
 import React from 'react';
 
 import styled from "styled-components";
-
+import {recordMenueOptions} from "../Constants";
 
 const FlexRow = styled.div`
     margin: 2vh 5% 2vh 5%;
@@ -47,30 +47,33 @@ export class RecordMenue extends React.Component {
     constructor(props) {
         super(props);
         this.state ={
-            dashboard: true,
-            fileExplorer: false
+            activeOption: recordMenueOptions.DASHBOARD,
+
         }
     }
 
     handleButton( option) {
         switch (option){
-            case 1: this.setState({ dashboard: true, fileExplorer: false });break;
-            case 2: this.setState({ dashboard: false, fileExplorer: true });break;
+            case 1: this.state.activeOption = recordMenueOptions.DASHBOARD;break;
+            case 2: this.state.activeOption = recordMenueOptions.FILEEXPLORER;break;
             default:
                 //TODO: throw some error
                 break;
 
         }
 
+        this.props.handle(this.state.activeOption);
+        this.setState(this.state);
+
     }
 
     render() {
         return (
             <FlexRow>
-                <MenueButton active={this.state.dashboard} onClick={this.handleButton.bind(this,1)}>
+                <MenueButton active={this.state.activeOption==recordMenueOptions.DASHBOARD} onClick={this.handleButton.bind(this,1)}>
                     Dashboard
                 </MenueButton>
-                <MenueButton active={this.state.fileExplorer} onClick={this.handleButton.bind(this,2)}>
+                <MenueButton active={this.state.activeOption==recordMenueOptions.FILEEXPLORER} onClick={this.handleButton.bind(this,2)}>
                     File Explorer
                 </MenueButton>
             </FlexRow>
