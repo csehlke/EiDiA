@@ -93,21 +93,24 @@ class Element extends React.Component {
         }
 
     }
-
+    clickHandle(event){
+        console.log("clicked")
+        this.props.setActive(this)
+    }
 
     render() {
         const { isDragging, connectDragSource, src } = this.props
 
         const toRender =(
-            <div>
+            <div >
                 {!isDragging &&
                 <div>
 
-                    <ElementRow>
+                    <ElementRow onClick={this.clickHandle.bind(this)}>
                         {/*<Symbol>
                                 <ElementSymbol type={this.props.type}/>
                             </Symbol>*/}
-                        <Name width={this.state.width} padding={this.state.padding}>
+                        <Name width={this.state.width} padding={this.state.padding} >
                             <ElementSymbol type={this.props.type}/>
                             {this.props.name}
                         </Name>

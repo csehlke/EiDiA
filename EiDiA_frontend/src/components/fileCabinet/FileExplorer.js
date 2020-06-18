@@ -97,7 +97,7 @@ export default class FileExplorer extends React.Component {
             <ElementTable index={index}>
                 <Element active={element.active} index ={index} level ={element.level} type ={element.type} name = {element.name} dateCreation = {element.dateCreation}
                          dateModification = {element.dateModification} comment = {element.comment} actions={element.actions}
-                         handleDrop={(oldIndex,newIndex)=>this.changeElements(oldIndex,newIndex)} onClick={this.setActive.bind(this,element)} >
+                         handleDrop={(oldIndex,newIndex)=>this.changeElements(oldIndex,newIndex)} setActive={this.setActive.bind(this,element)} >
 
                     {element.active==true ? element.children.map((child,indexChild)=> this.renderElement(child,""+index+indexChild)):null}
 
