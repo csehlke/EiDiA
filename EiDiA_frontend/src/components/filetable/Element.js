@@ -44,8 +44,9 @@ const itemSource = {
     endDrag(props, monitor, component) {
         console.log(monitor.getDropResult().component.props.id)
         console.log(component)
-        component.props.handleDrop(component.props.key, monitor.getDropResult().component.props.id)
-        return component.props.handleDrop(component.props.index, monitor.getDropResult().component.props.id)
+        // component.props.handleDrop(component.props.key, monitor.getDropResult().component.props.id)
+        component.props.handleDrop(monitor.getDropResult().component.props.id)
+        //return component.props.handleDrop(component.props.index, monitor.getDropResult().component.props.id)
     }
 }
 
