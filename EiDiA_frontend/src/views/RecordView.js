@@ -2,18 +2,8 @@
 
 import React from 'react';
 import Page from "../components/Page";
-import styled from "styled-components";
-import {RecordMenue} from "../components/fileCabinet/RecordMenue";
+import {RecordMenu} from "../components/fileCabinet/RecordMenu";
 import {FileExplorer} from "../components/fileCabinet/FileExplorer";
-
-
-const FlexRow = styled.div`
-    margin: 0 5% 0 5%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap
-
-`;
 
 export class RecordView extends React.Component {
 
@@ -25,33 +15,17 @@ export class RecordView extends React.Component {
      */
     constructor(props) {
         super(props);
-        this.state = {
-            records : ["Volkswagen","BMW","Thyssenkrup","Google","Facebook","Microsoft","ABC Company","Adidas","lenovo Limited","IBM","TrueThat","hello","abc","def"],
-            search : ''
-        }
     }
 
     componentDidMount() {
         this.props.setTitle("Record");
     }
 
-    updateSearch(event){
-        this.setState({search: event.target.value.substr(0,20)});
-    }
-
     render() {
-        let filteredRecords = this.state.records.filter(
-            (record) => {
-                return record.indexOf(this.state.search) !== -1;
-            }
-        );
-
         return (
-            <Page title={this.props.title}>
-                <RecordMenue/>
-                <div>
-                    <FileExplorer/>
-                </div>
+            <Page>
+                <RecordMenu/>
+                <FileExplorer/>
             </Page>
         );
     }

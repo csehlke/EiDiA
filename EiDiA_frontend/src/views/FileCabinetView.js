@@ -8,11 +8,16 @@ import {Input} from '@material-ui/core';
 
 
 const FlexRow = styled.div`
-    margin: 0 5% 0 5%;
     display: flex;
+    justify-content: center;
     flex-direction: row;
-    flex-wrap: wrap
+    flex-wrap: wrap;
+`;
 
+const SearchBar = styled.div`
+    width: 80%;
+    justify-content: center;
+    margin: 3% 10%;
 `;
 
 export class FileCabinetView extends React.Component {
@@ -26,8 +31,23 @@ export class FileCabinetView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            records : ["Volkswagen","BMW","Thyssenkrup","Google","Facebook","Microsoft","ABC Company","Adidas","lenovo Limited","IBM","TrueThat","hello","abc","def"],
-            search : ''
+            records : [
+                "Volkswagen",
+                "BMW",
+                "Thyssenkrup",
+                "Google",
+                "Facebook",
+                "Microsoft",
+                "ABC Company",
+                "Adidas",
+                "lenovo Limited",
+                "IBM",
+                "TrueThat",
+                "hello",
+                "abc",
+                "def",
+            ],
+            search: '',
         }
     }
 
@@ -35,26 +55,32 @@ export class FileCabinetView extends React.Component {
         this.props.setTitle("File Cabinet");
     }
 
-    updateSearch(event){
-        this.setState({search: event.target.value.substr(0,20)});
+    updateSearch(event) {
+        this.setState({
+            search: event.target.value.substr(0,20),
+        });
     }
 
     render() {
-        let filteredRecords = this.state.records.filter(
-            (record) => {
-                return record.indexOf(this.state.search) !== -1;
-            }
-        );
+        const filteredRecords = this.state.records.filter(record => {
+            return record.indexOf(this.state.search) !== -1;
+        });
 
         return (
-            <Page title={this.props.title}>
-                <div width="80%" style = {{margin: "3% 10% 3% 10%"}}>
-                    <Input placeholder="Search Records ..." fullWidth={true}  inputProps={{ 'aria-label': 'description' }} value={this.state.search} onChange={this.updateSearch.bind(this)} />
-                </div>
+            <Page>
+                <SearchBar>
+                    <Input placeholder="Search Records ..."
+                           fullWidth={true}
+                           inputProps={{ 'aria-label': 'description' }}
+                           value={this.state.search}
+                           onChange={this.updateSearch.bind(this)} />
+                </SearchBar>
 
 
                 <FlexRow>
-                    {filteredRecords.map(record =>  <RecordSymbol name={record}/>)}
+                    {filteredRecords.map((record, i, records) =>
+                        <RecordSymbol key={records[i]} name={record}/>
+                    )}
                 </FlexRow>
             </Page>
         );
