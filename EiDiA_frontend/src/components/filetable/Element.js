@@ -42,10 +42,8 @@ const itemSource = {
         return item
     },
     endDrag(props, monitor, component) {
-        console.log(monitor.getDropResult().component.props.id)
-        console.log(component)
-        // component.props.handleDrop(component.props.key, monitor.getDropResult().component.props.id)
-        component.props.handleDrop(monitor.getDropResult().component.props.id)
+        let wrapperProps =monitor.getDropResult().component.props
+        if(wrapperProps.type==fileTypes.FOLDER)component.props.handleDrop(wrapperProps.id)
         //return component.props.handleDrop(component.props.index, monitor.getDropResult().component.props.id)
     }
 }
