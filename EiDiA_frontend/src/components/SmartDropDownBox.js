@@ -46,6 +46,7 @@ class SmartDropDownBox extends React.Component {
                 autoHighlight
                 blurOnSelect
                 fullWidth
+                size={"small"}
                 options={this.props.options}
                 inputValue={this.state.inputValue}
                 onChange={this.handleOnChange}

@@ -10,13 +10,17 @@ export class WelcomeView extends React.Component {
         super(props);
     }
 
+    componentDidMount() {
+        this.props.setTitle("Welcome");
+    }
+
     render() {
         return (
-           <Page title={"Welcome"}>
-               <div>
-                   Welcome to EiDiA
-               </div>
-           </Page>
+            <Page title={this.props.title}>
+                <div>
+                    Welcome to EiDiA
+                </div>
+            </Page>
         );
     }
 }
