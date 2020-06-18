@@ -9,7 +9,7 @@ const calTarget = {
     },
 
     drop(props, monitor, component) {
-        if(monitor.didDrop())return
+        if (monitor.didDrop()) return
         return {component}
     },
 };

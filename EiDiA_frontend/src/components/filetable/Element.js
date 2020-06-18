@@ -78,7 +78,6 @@ class Element extends React.Component {
     }
 
     clickHandle(event) {
-        console.log("clicked")
         this.props.activeToggle(this)
     }
 
@@ -125,10 +124,6 @@ class Element extends React.Component {
 
         )
         return this.props.connectDragSource(toRender)
-        // if(this.props.active)
-        // else return this.props.connectDropTarget(toRender)
-
-
     }
 }
 
