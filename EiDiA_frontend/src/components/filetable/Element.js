@@ -60,12 +60,14 @@ const Actions = styled.div`
 
 const itemSource = {
     beginDrag(props) {
-        const item = { src: props.src, id: props.id }
+        const item = { src: props.src, id: props.index }
         return item
     },
-    endDrag(props,monitor) {
-        console.log(monitor.getDropResult())
-        return props.handleDrop( )
+    endDrag(props,monitor,component) {
+        console.log(monitor.getDropResult().component.props.id)
+        console.log(component)
+        component.props.handleDrop(component.props.key,monitor.getDropResult().component.props.id )
+        return component.props.handleDrop(component.props.index,monitor.getDropResult().component.props.id )
     }
 }
 function collectDrag(connect, monitor) {

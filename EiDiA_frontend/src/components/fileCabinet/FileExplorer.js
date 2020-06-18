@@ -55,7 +55,8 @@ export default class FileExplorer extends React.Component {
     }
 
     changeElements(oldIndex,newIndex){
-        let array = this.state.elements;
+        console.log("change"+oldIndex+"to:"+newIndex)
+        let array = this.state.activeElements;
         if (newIndex >= array.length) {
 
             var k = newIndex - array.length + 1;
@@ -64,7 +65,7 @@ export default class FileExplorer extends React.Component {
             }
         }
         array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
-        this.setState({elements:array});
+        this.setState({activeElements:array});
     }
     activateElements(id,index){
         let newActiveElements = this.state.activeElements
@@ -87,8 +88,8 @@ export default class FileExplorer extends React.Component {
     renderElement(element,index){
         return(/*<div style = {{cursor:(element.type === 'FOLDER')&& 'pointer'}} onClick = {(element.type === 'FOLDER')?this.addChildren.bind(element.id,element):null}>*/
 
-            <ElementTable>
-                <Element active={element.active} key ={index} level ={element.level} type ={element.type} name = {element.name} dateCreation = {element.dateCreation}
+            <ElementTable index={index}>
+                <Element active={element.active} index ={index} level ={element.level} type ={element.type} name = {element.name} dateCreation = {element.dateCreation}
                          dateModification = {element.dateModification} comment = {element.comment} actions={element.actions}
                          handleDrop={(oldIndex,newIndex)=>this.changeElements(oldIndex,newIndex)} onClick={this.setActive.bind(this,index)}>
 
@@ -116,8 +117,9 @@ handleDrop={(oldIndex,newIndex)=>this.changeElements(oldIndex,newIndex)}/>
 
 render() {
         return (
-            <ElementBoundary>
-                <DndProvider backend = {HTML5Backend}>
+            <div>
+                <ElementBoundary>
+                    <DndProvider backend = {HTML5Backend}>
                         <Element level={0} type ={'HEADING'} name = {'Name'} dateCreation = {'Date'} dateModification = {'Last Modified'} comment = {'Comment'} actions={['HEADING']}/>
                         <hr/>
 
@@ -126,16 +128,13 @@ render() {
                         {this.state.activeElements.map((element,index) =>
                             this.renderElement(element,index)
                         )}
+                    </DndProvider>
 
+                </ElementBoundary>
+                <button onClick={this.changeElements.bind(this,1,0)}/>
 
+            </div>
 
-
-
-
-
-                </DndProvider>
-
-            </ElementBoundary>
         );
     }
 }
