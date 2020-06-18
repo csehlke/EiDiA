@@ -13,6 +13,7 @@ class SmartDropDownBox extends React.Component {
         }
 
         this.handleOnChange = this.handleOnChange.bind(this);
+        this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.reset = this.reset.bind(this);
     }
 
@@ -29,6 +30,12 @@ class SmartDropDownBox extends React.Component {
         this.props.onChange(event, value);
     }
 
+    handleOnInputChange(event, value) {
+        this.setState({
+            inputValue: value
+        });
+    }
+
     render() {
         return (
             <Autocomplete
@@ -42,6 +49,7 @@ class SmartDropDownBox extends React.Component {
                 options={this.props.options}
                 inputValue={this.state.inputValue}
                 onChange={this.handleOnChange}
+                onInputChange={this.handleOnInputChange}
                 getOptionLabel={(option) => option.name}
                 style={{margin: '0.5em'}}
                 renderInput={(params) => (
