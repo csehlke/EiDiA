@@ -14,7 +14,11 @@ const ElementBoundary = styled.div`
     
 
 `;
-
+/**
+ * TODO:
+ * - Cant drag files to toplevel at the moment
+ * - Design DnD operations
+ */
 export default class FileExplorer extends React.Component {
 
     constructor(props) {
@@ -101,6 +105,7 @@ export default class FileExplorer extends React.Component {
         return (
             <div>
                 <ElementBoundary>
+
                     <DndProvider backend={HTML5Backend}>
                         <Element level={0} type={fileTypes.NONE} name={'Name'} dateCreation={'Date'}
                                  dateModification={'Last Modified'} comment={'Comment'} actions={['HEADING']}/>
