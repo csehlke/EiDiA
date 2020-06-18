@@ -16,7 +16,8 @@ const calTarget = {
 function collect(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget(),
-        canDrop: monitor.canDrop()
+        canDrop: monitor.canDrop(),
+        isOver: monitor.isOver()
     }
 }
 
@@ -24,10 +25,10 @@ class ElementTable extends Component {
 
 
     render() {
-        const {connectDropTarget, test} = this.props;
+        const {connectDropTarget, isOver} = this.props;
         return connectDropTarget(
             <div style={{
-                backgroundColor: test ? '#eee' : ''
+                backgroundColor: isOver ? 'darkgreen' : ''
             }}>
                 {this.props.children}
             </div>
