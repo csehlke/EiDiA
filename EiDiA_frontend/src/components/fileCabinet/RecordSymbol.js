@@ -19,8 +19,6 @@ const HeadingNoMargin = styled.p`
 
 export class RecordSymbol extends React.Component {
 
-
-
     /*
      *TODO:
      * - add Logo to Record?

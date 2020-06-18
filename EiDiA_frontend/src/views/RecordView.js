@@ -37,6 +37,10 @@ export class RecordView extends React.Component {
     updateSearch(event){
         this.setState({search: event.target.value.substr(0,20)});
     }
+    componentDidMount() {
+        //TODO: set a variable title
+        this.props.setTitle("Record View");
+    }
     changePage(option){
         this.state.currentPage=option;
         this.setState(this.state);
