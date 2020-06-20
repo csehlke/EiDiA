@@ -11,7 +11,8 @@ const Container = styled.div
     `
     display: flex;
     flex-grow: 1; //For Splitview
-    flex-basis: 50%
+    flex-basis: 50%;
+    justify-content: center;
     
 
 `;
@@ -19,7 +20,6 @@ const Container = styled.div
 const ImageContainer = styled.div
     `
     object-fit: cover;
-    width: 100%;
 `;
 
 

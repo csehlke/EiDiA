@@ -13,6 +13,13 @@ const SplitView = styled.div`
     flex-direction:row;
 `;
 
+const PreviewContainer = styled.div`
+    overflow: auto;
+    width: 50%;
+    height: 88vh; //Not 100 because of border
+    
+`;
+
 export class UploadView extends React.Component {
 
     constructor(props) {
@@ -71,25 +78,32 @@ export class UploadView extends React.Component {
             return <Page>
                 <SplitView>
                     <FileDrop callbackUploadView={this.passPicture} cropDisabled={true}/>
-                    <TypePicker />
+                    <TypePicker/>
                 </SplitView>
             </Page>
 
         } else if (this.state.isUploaded && !this.state.nextPressed) { //If picture has been dropped but no Document Type picked
             return <Page>
                 <SplitView>
-                    <DocPreview picture={this.state.picture}
-                                cropDisabled={true} /* Picture from FileDrop, disable crop for preview */ />
+                    <PreviewContainer>
+                        <DocPreview picture={this.state.picture}
+                                    cropDisabled={true} /* Picture from FileDrop, disable crop for preview */ />
+                    </PreviewContainer>
                     <TypePicker
-                        callbackUploadView={this.getDocumentTypeId} picUploaded={this.state.isUploaded} /* Get ID to fill Attributecontainer fields *//>
+                        callbackUploadView={this.getDocumentTypeId}
+                        picUploaded={this.state.isUploaded} /* Get ID to fill Attributecontainer fields *//>
                 </SplitView>
             </Page>
         } else if (this.state.isUploaded && this.state.nextPressed) {
             return <Page>
                 <SplitView>
-                    <DocPreview picture={this.state.picture} cropDisabled={false} callbackUploadView={this.getCropBlob} />
-                    <AttributeContainer picture={this.state.picture} crop={this.state.cropBlob} title={this.state.pageTitle}
-                                        setTitle={(newTitle) => this.handlePageTitleChange(newTitle)} />
+                    <PreviewContainer>
+                        <DocPreview picture={this.state.picture} cropDisabled={false}
+                                    callbackUploadView={this.getCropBlob}/>
+                    </PreviewContainer>
+                    <AttributeContainer picture={this.state.picture} crop={this.state.cropBlob}
+                                        title={this.state.pageTitle}
+                                        setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                 </SplitView>
             </Page>
         } else {

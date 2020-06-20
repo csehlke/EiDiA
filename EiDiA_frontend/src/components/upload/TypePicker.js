@@ -16,6 +16,7 @@ const Container = styled.div
     flex-grow: 1; //For Splitview
     flex-basis: 50%;
     justify-content: center;
+    height: 88vh; //Not 100 because of border
 `;
 
 
