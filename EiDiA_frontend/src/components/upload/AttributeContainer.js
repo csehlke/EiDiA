@@ -161,6 +161,25 @@ class AttributeContainer extends React.Component {
         </Grid>
     }
 
+    renderNumberFields(attrName, attrID) {
+        return <Grid item xs>
+            <TextField
+                label={attrName}
+                type="number"
+                variant="outlined"
+                value={Number(this.findData(attrID)) || ""}
+                onChange={(evt) => this.handleOnChange(evt, attrID)}
+                InputProps={{
+                    endAdornment: <InputAdornment>
+                        <IconButton onClick={() => this.saveData(attrID)}>
+                            <CropIcon/>
+                        </IconButton>
+                    </InputAdornment>
+                }}
+            />
+        </Grid>
+    }
+
 
     renderDateFields(attrName, attrID) {
         return <Grid item xs>
@@ -234,7 +253,7 @@ class AttributeContainer extends React.Component {
                             if (item.type === 'text') {
                                 return <div key={item.id}>{self.renderTextFields(item.name, item.id)}</div>
                             } else if (item.type === 'number') {
-                                return <div key={item.id}>{self.renderTextFields(item.name, item.id)}</div>
+                                return <div key={item.id}>{self.renderNumberFields(item.name, item.id)}</div>
                             } else if (item.type === 'date') {
                                 return <div key={item.id}>{self.renderDateFields(item.name, item.id)}</div>
                             }
