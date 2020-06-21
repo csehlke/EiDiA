@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 // Define the schema
 
-const DocumentTypeSchema = new mongoose.Schema({
+const AttributeTypeSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -23,4 +23,4 @@ const DocumentTypeSchema = new mongoose.Schema({
 });
 
 // Export the model
-module.exports = mongoose.model('DocumentType', DocumentTypeSchema);
+module.exports = mongoose.model('AttributeType', AttributeTypeSchema);

@@ -1,12 +1,18 @@
 "use strict";
 
-const express    = require('express');
+const express = require('express');
 const bodyParser = require('body-parser');
-const helmet     = require('helmet');
+const helmet = require('helmet');
 
 const middleWares = require('./middlewares');
 
-const auth  = require('./routes/auth');
+const auth = require('./routes/auth');
+const record = require('./routes/record');
+const dashboard = require('./routes/dashboard');
+const model = require('./routes/model');
+const upload = require('./routes/upload');
+const exportTemplate = require('./routes/exportTemplate');
+const search = require('./routes/search');
 
 const api = express();
 
@@ -26,6 +32,12 @@ api.get('/', (req, res) => {
 });
 
 // API routes
-api.use('/auth'  , auth);
+api.use('/auth', auth);
+api.use('/record', record);
+api.use('/dashboard', dashboard);
+api.use('/model', model);
+api.use('/upload', upload);
+api.use('/exporttemplate', exportTemplate);
+api.use('/search', search);
 
 module.exports = api;
