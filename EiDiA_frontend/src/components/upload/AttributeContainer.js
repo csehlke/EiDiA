@@ -12,6 +12,8 @@ import Grid from "@material-ui/core/Grid";
 import DateFnsUtils from "@date-io/date-fns";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 
+import MetaData from "./MetaData";
+
 
 const Container = styled.div
     // Outer Container
@@ -19,12 +21,20 @@ const Container = styled.div
     display: flex;
     flex-grow: 1; //For Splitview
     flex-basis: 50%;
+    flex-direction: column;
 `;
 
 const GridContainer = styled.div
     `
     display: flex;
     height: 50%
+`;
+
+const MetaDataContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;
 
 
@@ -50,14 +60,16 @@ class AttributeContainer extends React.Component {
                 {}
 
             ],
+            metaData: [{}],
             wrk: this.loadWorker(),
-            textValue: "",
+            textValue: ""
         }
 
         this.saveData = this.saveData.bind(this);
         this.findData = this.findData.bind(this);
         this.renderTextFields = this.renderTextFields.bind(this);
         this.renderDateFields = this.renderDateFields.bind(this);
+        this.getMetaData = this.getMetaData.bind(this);
 
     }
 
@@ -79,6 +91,14 @@ class AttributeContainer extends React.Component {
             //await worker.terminate(); Do not terminate worker so it can be reused
         })();
         return worker
+    }
+
+    getMetaData(data) { //Get data from MetaData-component
+        let copyArr = this.state.metaData
+        copyArr.splice(0, 1, {priority: data[0], department: data[1], comment: data[2]})
+        this.setState({
+            metaData: copyArr
+        });
     }
 
     saveData(attrID) {
@@ -121,6 +141,7 @@ class AttributeContainer extends React.Component {
                 attributeData: copyArr
             });
         }
+        //console.log(Object.values(this.state.metaData)[0].priority)
 
 
     }
@@ -196,8 +217,9 @@ class AttributeContainer extends React.Component {
                     label={attrName}
                     value={this.findData(attrID)}
                     onChange={(date, value) => this.handleOnDateChange(date, value, attrID) || ''}
+                    InputAdornmentProps={{position: 'start'}}
                     InputProps={{
-                        startAdornment: <InputAdornment>
+                        endAdornment: <InputAdornment>
                             <IconButton onClick={() => this.saveData(attrID)}>
                                 <CropIcon/>
                             </IconButton>
@@ -207,6 +229,7 @@ class AttributeContainer extends React.Component {
             </MuiPickersUtilsProvider>
         </Grid>
     }
+
 
     sendFulltextToBackend() { //TODO Send to Backend (OCR IS VERY SLOW) --> Do it on backend?
         const worker = createWorker({
@@ -262,6 +285,9 @@ class AttributeContainer extends React.Component {
 
                     </Grid>
                 </GridContainer>
+                <MetaDataContainer>
+                    <MetaData callbackAttributeContainer={this.getMetaData}/>
+                </MetaDataContainer>
             </Container>
         )
     }
