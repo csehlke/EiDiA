@@ -6,6 +6,7 @@ import logo from "../assets/logo.png";
 import UserMenu from "./UserMenu";
 import Sidebar from "./Sidebar";
 import UserService from "../services/UserService";
+import PropTypes from "prop-types";
 
 // code taken from https://material-ui.com/components/drawers/#mini-variant-drawer
 
@@ -116,4 +117,9 @@ export default function Navigation(props) {
             </main>
         </div>
     );
+}
+
+Navigation.propTypes = {
+    title: PropTypes.string,
+    children: PropTypes.object,
 }

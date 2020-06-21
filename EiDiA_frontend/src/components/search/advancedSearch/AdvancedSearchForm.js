@@ -5,10 +5,11 @@ import styled from "styled-components";
 import SearchSummary from "./SearchSummary";
 import SmartDropDownBox from "../../SmartDropDownBox";
 import {Button} from "@material-ui/core";
-import TextConstraintPicker from "./ConstraintPicker/TextConstraintPicker";
-import NumberConstraintPicker from "./ConstraintPicker/NumberConstraintPicker";
-import DateConstraintPicker from "./ConstraintPicker/DateConstraintPicker";
+import TextConstraintPicker from "./constraintPicker/TextConstraintPicker";
+import NumberConstraintPicker from "./constraintPicker/NumberConstraintPicker";
+import DateConstraintPicker from "./constraintPicker/DateConstraintPicker";
 import CompareTypes from "../../../assets/CompareTypes";
+import PropTypes from "prop-types";
 
 const Row = styled.div`
     display: flex;
@@ -43,14 +44,28 @@ export default class AdvancedSearchForm extends React.Component {
             attribute: null,
             attributeTypeId: '',
             documentTypeConstraints: [
-                {name: "constr1", documentTypeId: 0, attributeTypeConstraints: [
-                        {name: "11", attributeTypeId: 0, constraint:{compareTypeId: 0}},
-                        {name: "12", attributeTypeId: 0, constraint:{compareTypeId: 2}},
-                        {name: "13", attributeTypeId: 0, constraint:{compareTypeId: 3}},
-                    ]},
+                // { // Examples
+                //
+                //     name: "AA",
+                //     documentTypeId: "1",
+                //     attributeTypeConstraints: [
+                //         {
+                //             name: "AA attributeText1 is equal to eee",
+                //             documentTypeId: "1",
+                //             attributeTypeId: "1",
+                //             constraint: {compareTypeId: 101, value1: "eee", value2: ""},
+                //         },
+                //         {
+                //             name: "AA attributeText1 ends with eee",
+                //             documentTypeId: "1",
+                //             attributeTypeId: "1",
+                //             constraint: {compareTypeId:103, value1: "eee", value2: ""},
+                //         },
+                //     ],
+                // },
             ],
             filled: false,
-        }
+        };
 
         this.documentTypeRef = React.createRef();
         this.attributeTypeRef = React.createRef();
@@ -70,7 +85,7 @@ export default class AdvancedSearchForm extends React.Component {
         const name = (value === null) ? '' : value.name;
 
         // TODO set Attributes depending on documentTypeId
-        let attributeTypes = this.state.attributeTypesTmp.map((attribute) => this.createAttributes(attribute, name));
+        let attributeTypes = this.props.attributeTypes.map((attribute) => this.createAttributes(attribute, name));
 
         this.setState({
             documentTypeId: id,
@@ -88,7 +103,7 @@ export default class AdvancedSearchForm extends React.Component {
             name: name + ' ' + attribute.name,
             id: attribute.id,
             type: attribute.type,
-        }
+        };
     }
 
     handleAttributeTypeChange(event, value) {
@@ -111,6 +126,7 @@ export default class AdvancedSearchForm extends React.Component {
         const constraint = this.constraintPickerRef.current.getConstraint();
         const compareType = CompareTypes.filter(value => value.id === constraint.compareTypeId)[0];
         const values = compareType.fields === 1 ? constraint.value1 : constraint.value1 + " and " + constraint.value2;
+        // create new attributeConstraint to add to the list
         const newAttributeConstraint = {
             name: this.state.attribute.name + " " + compareType.name + " " + values,
             documentTypeId: this.state.documentTypeId,
@@ -122,7 +138,7 @@ export default class AdvancedSearchForm extends React.Component {
         let documentTypeConstraints = this.state.documentTypeConstraints.map(documentTypeConstraint => {
             if (documentTypeConstraint.documentTypeId === newAttributeConstraint.documentTypeId) {
                 let needsNewAttributeConstraint = true;
-                let attributeTypeConstraints = value.attributeTypeConstraints.map(attributeTypeConstraint => {
+                let attributeTypeConstraints = documentTypeConstraint.attributeTypeConstraints.map(attributeTypeConstraint => {
                     if (attributeTypeConstraint.attributeTypeId === newAttributeConstraint.attributeTypeId &&
                         attributeTypeConstraint.constraint.compareTypeId === newAttributeConstraint.constraint.compareTypeId) {
                         // TODO show error
@@ -148,11 +164,11 @@ export default class AdvancedSearchForm extends React.Component {
 
         if (needsNewDocumentTypeConstraint) {
             // needs to add DocumentType Row as well
-            const documentType = this.state.documentTypes.filter(documentType0 =>
+            const documentType = this.props.documentTypes.filter(documentType0 =>
                 documentType0.id === newAttributeConstraint.documentTypeId)[0];
             const newDocumentTypeConstraint = {
                 name: documentType.name,
-                id: documentType.id,
+                documentTypeId: documentType.id,
                 attributeTypeConstraints: [
                     newAttributeConstraint,
                 ],
@@ -170,24 +186,28 @@ export default class AdvancedSearchForm extends React.Component {
         const attributeTypeId = element.attributeTypeId;
         const compareTypeId = element.constraint.compareTypeId;
 
-        let documentTypeConstraints = this.state.documentTypeConstraints.map(value => {
-            if (value.documentTypeId === documentTypeId) {
-                value.attributeTypeConstraints = value.attributeTypeConstraints.map(value1 => {
-                    if (value1.attributeTypeId === attributeTypeId && value1.constraint.compareTypeId === compareTypeId) {
-                        return;
+        let documentTypeConstraints = this.state.documentTypeConstraints.filter(documentTypeConstraint => {
+            if (documentTypeConstraint.documentTypeId === documentTypeId) {
+                documentTypeConstraint.attributeTypeConstraints = documentTypeConstraint.attributeTypeConstraints.filter(attributeTypeConstraint => {
+                    if (attributeTypeConstraint.attributeTypeId === attributeTypeId &&
+                        attributeTypeConstraint.constraint.compareTypeId === compareTypeId) {
+                        // remove constraint identified by documentTypeId, attributeTypeId and compareTypeId
+
                     } else {
-                        return value1;
+                        return attributeTypeConstraint;
                     }
-                })
-                if (value.attributeTypeConstraints.length === 0) {
-                    return;
+                });
+                if (documentTypeConstraint.attributeTypeConstraints.length === 0) {
+                    // remove document type from list, if there are no constraints left
+
                 } else {
-                    return value;
+                    return documentTypeConstraint;
                 }
             } else {
-                return value;
+                return documentTypeConstraint;
             }
         });
+
         this.setState({
             documentTypeConstraints: documentTypeConstraints,
         });
@@ -205,7 +225,16 @@ export default class AdvancedSearchForm extends React.Component {
     }
 
     handleSearch() {
-        console.log("here the advanced search is triggered");
+        // TODO handle search
+        let text = "here the advanced search is triggered";
+        this.state.documentTypeConstraints.map(documentTypeConstraint => {
+            documentTypeConstraint.attributeTypeConstraints.map(attributeTypeConstraint => {
+                text += "\nDocumentType: " + attributeTypeConstraint.documentTypeId +
+                    "\nAttributeTypeId: " + attributeTypeConstraint.attributeTypeId +
+                    "\n" + attributeTypeConstraint.name;
+            });
+        });
+        console.log(text);
     }
 
     render() {
@@ -217,7 +246,7 @@ export default class AdvancedSearchForm extends React.Component {
                             <SmartDropDownBox
                                 ref={this.documentTypeRef}
                                 onChange={this.handleDocumentTypeChange}
-                                options={this.state.documentTypes}
+                                options={this.props.documentTypes}
                                 label='Document Type'/>
                         </Row>
                         <Row>
@@ -286,10 +315,17 @@ export default class AdvancedSearchForm extends React.Component {
                         </Row>
                     </Column>
                     <Column>
-                        <SearchSummary documentTypeConstraints={this.state.documentTypeConstraints} handleDelete={this.handleDeleteConstraint}/>
+                        <SearchSummary
+                            documentTypeConstraints={this.state.documentTypeConstraints}
+                            handleDelete={this.handleDeleteConstraint}/>
                     </Column>
                 </Row>
             </Box>
         );
     }
+}
+
+AdvancedSearchForm.propTypes = {
+    documentTypes: PropTypes.array.isRequired,
+    attributeTypes: PropTypes.array.isRequired,
 }
