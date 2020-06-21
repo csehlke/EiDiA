@@ -9,6 +9,8 @@ import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import CropIcon from "@material-ui/icons/Crop";
 import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 
 
 const Container = styled.div
@@ -33,16 +35,16 @@ class AttributeContainer extends React.Component {
 
         this.state = {
             attributes: [
-                {name: 'Attr1', id: '1'},
-                {name: 'Attr2', id: '2'},
-                {name: 'Attr3', id: '3'},
-                {name: 'Attr4', id: '4'},
-                {name: 'Attr5', id: '5'},
-                {name: 'Attr6', id: '6'},
-                {name: 'Attr7', id: '7'},
-                {name: 'Attr8', id: '8'},
-                {name: 'Attr9', id: '9'},
-                {name: 'Attr10', id: '10'}
+                {name: 'Attr1', type: 'text', id: '1'},
+                {name: 'Attr2', type: 'date', id: '2'},
+                {name: 'Attr3', type: 'number', id: '3'},
+                {name: 'Attr4', type: 'date', id: '4'},
+                {name: 'Attr5', type: 'text', id: '5'},
+                {name: 'Attr6', type: 'number', id: '6'},
+                {name: 'Attr7', type: 'text', id: '7'},
+                {name: 'Attr8', type: 'text', id: '8'},
+                {name: 'Attr9', type: 'date', id: '9'},
+                {name: 'Attr10', type: 'number', id: '10'}
             ],
             attributeData: [
                 {}
@@ -54,6 +56,8 @@ class AttributeContainer extends React.Component {
 
         this.saveData = this.saveData.bind(this);
         this.findData = this.findData.bind(this);
+        this.renderTextFields = this.renderTextFields.bind(this);
+        this.renderDateFields = this.renderDateFields.bind(this);
 
     }
 
@@ -118,6 +122,24 @@ class AttributeContainer extends React.Component {
             });
         }
 
+
+    }
+
+    handleOnDateChange(date, value, attrID) { //Updates attributeData based on user input
+        let copyArr = this.state.attributeData
+        let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
+
+        if (idx === -1) { //If ID doesn't exist yet, add it
+            this.setState({
+                attributeData: [...this.state.attributeData, {id: attrID, text: value}]
+            });
+        } else {
+            copyArr.splice(idx, 1, {id: attrID, text: value}) //Overwrite with new value
+            this.setState({
+                attributeData: copyArr
+            });
+        }
+
     }
 
 
@@ -136,6 +158,34 @@ class AttributeContainer extends React.Component {
                     </InputAdornment>
                 }}
             />
+        </Grid>
+    }
+
+
+    renderDateFields(attrName, attrID) {
+        return <Grid item xs>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                    style={{maxWidth: 275}} //Same as TextFields
+                    autoOk={true}
+                    disableToolbar
+                    inputVariant="outlined"
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    invalidDateMessage=""
+                    invalidLabel=""
+                    label={attrName}
+                    value={this.findData(attrID)}
+                    onChange={(date, value) => this.handleOnDateChange(date, value, attrID) || ''}
+                    InputProps={{
+                        startAdornment: <InputAdornment>
+                            <IconButton onClick={() => this.saveData(attrID)}>
+                                <CropIcon/>
+                            </IconButton>
+                        </InputAdornment>
+                    }}
+                />
+            </MuiPickersUtilsProvider>
         </Grid>
     }
 
@@ -170,6 +220,7 @@ class AttributeContainer extends React.Component {
 
 
     render() {
+        let self = this
         return ( // Render TextFields dynamically from state
             <Container>
                 <GridContainer>
@@ -179,8 +230,17 @@ class AttributeContainer extends React.Component {
                         justify="space-evenly"
                         alignItems="flex-end"
                     >
-                        {this.state.attributes.map((item) => <div
-                            key={item.id}>{this.renderTextFields(item.name, item.id)}</div>)}
+                        {this.state.attributes.map(function (item) {
+                            if (item.type === 'text') {
+                                return <div key={item.id}>{self.renderTextFields(item.name, item.id)}</div>
+                            } else if (item.type === 'number') {
+                                return <div key={item.id}>{self.renderTextFields(item.name, item.id)}</div>
+                            } else if (item.type === 'date') {
+                                return <div key={item.id}>{self.renderDateFields(item.name, item.id)}</div>
+                            }
+                        })}
+
+
                     </Grid>
                 </GridContainer>
             </Container>
