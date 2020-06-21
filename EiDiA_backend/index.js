@@ -16,7 +16,7 @@ const server = http.createServer(api);
 
 //Connect to the MongoDB database; then start the server
 mongoose
-    .connect(config.mongoURI)
+    .connect(config.mongoURI, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => server.listen(config.port))
     .catch(err => {
         console.log('Error connecting to the database', err.message);
