@@ -24,6 +24,7 @@ class DatePicker extends React.Component {
                     id="date-picker-inline"
                     size={"small"}
                     fullWidth
+                    disabled={this.props.disabled ? this.props.disabled : false}
                     label={this.props.label}
                     maxDate={this.props.maxDate}
                     minDate={this.props.minDate}
@@ -46,5 +47,6 @@ DatePicker.propTypes = {
     maxDate: PropTypes.object,
     minDate: PropTypes.object,
     value: PropTypes.object,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
 }

@@ -1,10 +1,11 @@
 "use strict";
 
 import React from 'react';
-import CompareTypes from "../../../../assets/CompareTypes";
 import SmartDropDownBox from "../../../SmartDropDownBox";
 import {TextField} from "@material-ui/core";
 import styled from "styled-components";
+import CompareTypes from "../../../../assets/CompareTypes";
+import PropTypes from "prop-types";
 
 const Row = styled.div`
     display: flex;
@@ -15,7 +16,7 @@ const Column = styled.div`
     flex: 33%;
 `;
 
-export default class ConstraintPicker extends React.Component {
+export default class TextConstraintPicker extends React.Component {
 
     constructor(props) {
         super(props);
@@ -24,8 +25,8 @@ export default class ConstraintPicker extends React.Component {
             constraintType: null,
             numberOfFields: 1,
             constraintTypeId: '',
-            value1: '',
-            value2: '',
+            field1: '',
+            field2: '',
 
             constraintTypes: [],
             filled: false,
@@ -33,14 +34,15 @@ export default class ConstraintPicker extends React.Component {
 
         this.constraintTypeRef = React.createRef();
 
+        this.reset = this.reset.bind(this);
         this.handleConstraintTypeChange = this.handleConstraintTypeChange.bind(this);
-        this.handleValue1Change = this.handleValue1Change.bind(this);
-        this.handleValue2Change = this.handleValue2Change.bind(this);
+        this.handleField1Change = this.handleField1Change.bind(this);
+        this.handleField2Change = this.handleField2Change.bind(this);
         this.checkIfFilled = this.checkIfFilled.bind(this);
     }
 
     componentDidMount() {
-        const options = CompareTypes.filter((type) => type.type === 'number');
+        const options = CompareTypes.filter((type) => type.type === 'text');
         this.setState({
             constraintTypes: options,
         });
@@ -52,17 +54,17 @@ export default class ConstraintPicker extends React.Component {
             constraintType: null,
             numberOfFields: 1,
             constraintTypeId: '',
-            value1: '',
-            value2: '',
+            field1: '',
+            field2: '',
         });
     }
 
     getConstraint() {
         return {
             compareTypeId: this.state.constraintTypeId,
-            value1: this.state.value1,
-            value2: this.state.value2,
-        }
+            value1: this.state.field1,
+            value2: this.state.field2,
+        };
     }
 
     handleConstraintTypeChange(event, value) {
@@ -73,20 +75,18 @@ export default class ConstraintPicker extends React.Component {
         });
     }
 
-    handleValue1Change(event) {
-        const value = event.target.value.replace(new RegExp("\\D"), "");
+    handleField1Change(event) {
         this.setState({
-            value1: value,
+            field1: event.target.value,
         });
-        this.checkIfFilled(value, this.state.value2);
+        this.checkIfFilled(event.target.value, this.state.field2);
     }
 
-    handleValue2Change(event) {
-        const value = event.target.value.replace(new RegExp("\\D"), "");
+    handleField2Change(event) {
         this.setState({
-            value2: value,
+            field2: event.target.value,
         });
-        this.checkIfFilled(this.state.value1, value);
+        this.checkIfFilled(this.state.field1, event.target.value);
     }
 
     checkIfFilled(value1, value2) {
@@ -121,8 +121,8 @@ export default class ConstraintPicker extends React.Component {
                         style={{margin: '0.5em'}}
                         fullWidth
                         size={"small"}
-                        value={this.state.value1}
-                        onChange={this.handleValue1Change}
+                        value={this.state.field1}
+                        onChange={this.handleField1Change}
                         variant="outlined"/>
                     {this.state.numberOfFields === 2 ?
                         <TextField
@@ -132,11 +132,16 @@ export default class ConstraintPicker extends React.Component {
                             style={{margin: '0.5em'}}
                             fullWidth
                             size={"small"}
-                            value={this.state.value2}
-                            onChange={this.handleValue2Change}
+                            value={this.state.field2}
+                            onChange={this.handleField2Change}
                             variant="outlined"/> : ""}
                 </Row>
             </Column>
         );
     }
+}
+
+TextConstraintPicker.propTypes = {
+    disabled: PropTypes.bool,
+    isFilled: PropTypes.func.isRequired,
 }

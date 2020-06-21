@@ -1,10 +1,13 @@
 "use strict";
 
 import React from 'react';
-import SmartDropDownBox from "../../../SmartDropDownBox";
-import {TextField} from "@material-ui/core";
 import styled from "styled-components";
+import SmartDropDownBox from "../../../SmartDropDownBox";
+import DatePicker from "../../DatePicker";
 import CompareTypes from "../../../../assets/CompareTypes";
+import {format} from 'date-fns'
+import PropTypes from "prop-types";
+
 
 const Row = styled.div`
     display: flex;
@@ -15,7 +18,7 @@ const Column = styled.div`
     flex: 33%;
 `;
 
-export default class ConstraintPicker extends React.Component {
+export default class DateConstraintPicker extends React.Component {
 
     constructor(props) {
         super(props);
@@ -24,8 +27,8 @@ export default class ConstraintPicker extends React.Component {
             constraintType: null,
             numberOfFields: 1,
             constraintTypeId: '',
-            field1: '',
-            field2: '',
+            date1: null,
+            date2: null,
 
             constraintTypes: [],
             filled: false,
@@ -33,15 +36,14 @@ export default class ConstraintPicker extends React.Component {
 
         this.constraintTypeRef = React.createRef();
 
-        this.reset = this.reset.bind(this);
         this.handleConstraintTypeChange = this.handleConstraintTypeChange.bind(this);
-        this.handleField1Change = this.handleField1Change.bind(this);
-        this.handleField2Change = this.handleField2Change.bind(this);
+        this.handleDate1Change = this.handleDate1Change.bind(this);
+        this.handleDate2Change = this.handleDate2Change.bind(this);
         this.checkIfFilled = this.checkIfFilled.bind(this);
     }
 
     componentDidMount() {
-        const options = CompareTypes.filter((type) => type.type === 'text');
+        const options = CompareTypes.filter((type) => type.type === 'date');
         this.setState({
             constraintTypes: options,
         });
@@ -53,17 +55,17 @@ export default class ConstraintPicker extends React.Component {
             constraintType: null,
             numberOfFields: 1,
             constraintTypeId: '',
-            field1: '',
-            field2: '',
+            date1: null,
+            date2: null,
         });
     }
 
     getConstraint() {
         return {
             compareTypeId: this.state.constraintTypeId,
-            value1: this.state.field1,
-            value2: this.state.field2,
-        };
+            value1: format(this.state.date1, 'dd/MM/yyyy'),
+            value2: this.state.date2 ? format(this.state.date2, 'dd/MM/yyyy') : '',
+        }
     }
 
     handleConstraintTypeChange(event, value) {
@@ -74,26 +76,26 @@ export default class ConstraintPicker extends React.Component {
         });
     }
 
-    handleField1Change(event) {
+    handleDate1Change(event) {
         this.setState({
-            field1: event.target.value,
+            date1: event,
         });
-        this.checkIfFilled(event.target.value, this.state.field2);
+        this.checkIfFilled(event, this.state.date2);
     }
 
-    handleField2Change(event) {
+    handleDate2Change(event) {
         this.setState({
-            field2: event.target.value,
+            date2: event,
         });
-        this.checkIfFilled(this.state.field1, event.target.value);
+        this.checkIfFilled(this.state.date1, event);
     }
 
-    checkIfFilled(value1, value2) {
+    checkIfFilled(date1, date2) {
         let filled;
         if (this.state.numberOfFields === 1) {
-            filled = value1 !== '';
+            filled = date1 !== null;
         } else {
-            filled = value1 !== '' && value2 !== '';
+            filled = date1 !== null && date2 !== null;
         }
         this.props.isFilled(filled);
         this.setState({
@@ -113,29 +115,26 @@ export default class ConstraintPicker extends React.Component {
                         label='Restriction'/>
                 </Row>
                 <Row>
-                    <TextField
+                    <DatePicker
                         disabled={this.props.disabled || this.state.constraintTypeId === ''}
-                        id="full-text"
-                        label={this.state.numberOfFields === 1 ? "Value" : "From"}
-                        style={{margin: '0.5em'}}
-                        fullWidth
-                        size={"small"}
-                        value={this.state.field1}
-                        onChange={this.handleField1Change}
-                        variant="outlined"/>
+                        onChange={this.handleDate1Change}
+                        maxDate={this.state.date2}
+                        value={this.state.date1}
+                        label={this.state.numberOfFields === 1 ? "Value" : "From"}/>
                     {this.state.numberOfFields === 2 ?
-                        <TextField
+                        <DatePicker
                             disabled={this.props.disabled || this.state.constraintTypeId === ''}
-                            id="full-text"
-                            label={"To"}
-                            style={{margin: '0.5em'}}
-                            fullWidth
-                            size={"small"}
-                            value={this.state.field2}
-                            onChange={this.handleField2Change}
-                            variant="outlined"/> : ""}
+                            onChange={this.handleDate2Change}
+                            minDate={this.state.date1}
+                            value={this.state.date2}
+                            label={"To"}/> : ""}
                 </Row>
             </Column>
         );
     }
+}
+
+DateConstraintPicker.propTypes = {
+    disabled: PropTypes.bool,
+    isFilled: PropTypes.func.isRequired,
 }

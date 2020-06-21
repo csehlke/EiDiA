@@ -11,6 +11,7 @@ import styled from "styled-components";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import {IoIosArrowBack, IoIosArrowDown, RiDeleteBinLine} from "react-icons/all";
+import PropTypes from "prop-types";
 
 const ListItemTextSmall = styled(ListItemText)`
     font-size: 0.75em;
@@ -139,4 +140,9 @@ export default class SearchSummary extends React.Component {
             </Background>
         );
     }
+}
+
+SearchSummary.propTypes = {
+    documentTypeConstraints: PropTypes.array.isRequired,
+    handleDelete: PropTypes.func.isRequired,
 }
