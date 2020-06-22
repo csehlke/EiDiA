@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Alert from "@material-ui/lab/Alert";
 import Dropzone from "react-dropzone";
 import Snackbar from "@material-ui/core/Snackbar";
-import DescriptionIcon from '@material-ui/icons/Description';
+import {MdDescription} from "react-icons/all";
 
 const Container = styled.div`
   // Outer Container
@@ -32,34 +32,18 @@ class FileDrop extends React.Component {
         this.state = {
             files: [],
             wrongFiletype: false,
-            open: true //Snackbar ready to be rendered
+            snackbarOpen: true //Snackbar ready to be rendered
         };
-
-
-
 
         this.assignRecord = this.assignRecord.bind(this);
         this.failedUpload = this.failedUpload.bind(this);
-        this.handleClose = this.handleClose.bind(this);
+        this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
         this.onDropAccepted = this.onDropAccepted.bind(this);
     }
 
-    onDropAccepted(files){
-        this.setState(files)
+    onDropAccepted(files) {
+        this.setState(files);
         this.props.callbackUploadView(files);
-        /* See DocPreview
-
-                    const reader = new FileReader()
-
-                    reader.onabort = () => console.log('file reading was aborted')
-                    reader.onerror = () => console.log('file reading has failed')
-                    reader.onload = () => {
-                        // Do whatever you want with the file contents
-                        const binaryStr = reader.result
-                        console.log(binaryStr)
-                    }
-                    reader.readAsDataURL(files[0]) //read First File
-        */
     }
 
     assignRecord() {
@@ -69,38 +53,33 @@ class FileDrop extends React.Component {
     failedUpload() {
         this.setState({
             wrongFiletype: true, //Condition to show Snackbar
-            open: true //Allow Snackbar to open multiple times
+            snackbarOpen: true //Allow Snackbar to open multiple times
         });
     }
 
-
-    handleClose() {
+    handleSnackbarClose() {
         //Snackbar-Close
         this.setState({
-            open: false,
+            snackbarOpen: false,
         });
     }
 
-
     render() {
-        const wrongFiletype = this.state.wrongFiletype;
         let fileAlert;
         let snackBar;
-        if (wrongFiletype) {
+        if (this.state.wrongFiletype) {
             fileAlert = (
-                <Alert severity="error" onClose={this.handleClose}>
-                    This filetype is not supported! Please upload a .png file
+                <Alert severity="error" onClose={this.handleSnackbarClose}>
+                    This file type is not supported! Please upload a *.png file.
                 </Alert>
             );
             snackBar = (
                 <Snackbar
-                    open={this.state.open}
+                    open={this.state.snackbarOpen}
                     autoHideDuration={5000}
-                    onClose={this.handleClose}
-                >
+                    onClose={this.handleSnackbarClose}>
                     {fileAlert}
                 </Snackbar>
-
             );
         }
 
@@ -111,16 +90,13 @@ class FileDrop extends React.Component {
                     onDropRejected={this.failedUpload}
                     accept="image/png"
                     multiple={false}
-                    style={{}}
-                >
-                    {(
-                        {getRootProps, getInputProps, isDragActive, isDragReject} //Renderprops
-                    ) => (
+                    style={{}}>
+                    {({getRootProps, getInputProps, isDragActive, isDragReject}) => ( //Renderprops
                         <section className="container">
                             <div {...getRootProps({className: "dropzone"})}>
                                 <input {...getInputProps()} />
                                 <DropZoneContainer>
-                                    <DescriptionIcon style={{fontSize: '200px'}}/>
+                                    <MdDescription style={{fontSize: '200px'}}/>
                                     <p>
                                         {!isDragActive && "Click here or drag a file to upload!"}
                                         {isDragActive && !isDragReject && "Drop your file here"}

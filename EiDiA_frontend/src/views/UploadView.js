@@ -17,7 +17,6 @@ const PreviewContainer = styled.div`
     overflow: auto;
     width: 50%;
     height: 88vh; //Not 100 because of border
-    
 `;
 
 export class UploadView extends React.Component {
@@ -28,15 +27,13 @@ export class UploadView extends React.Component {
         this.state = {
             picture: '',
             isUploaded: false, //if picture has not been dropped yet
-            nextPressed: false, //Next-button
-            pageTitle: ""
+            isNextPressed: false, //Next-button
+            pageTitle: ''
         }
 
         this.passPicture = this.passPicture.bind(this);
         this.getDocumentTypeId = this.getDocumentTypeId.bind(this);
         this.getCropBlob = this.getCropBlob.bind(this);
-
-        this.props.setTitle("Upload Document");
     }
 
     componentDidMount() {
@@ -46,7 +43,6 @@ export class UploadView extends React.Component {
     handlePageTitleChange(newTitle) {
         this.props.setTitle(newTitle)
     }
-
 
     passPicture(uploadedPicture) { //Callback to be able to hand picture to DocPreview
         this.setState({
@@ -58,12 +54,11 @@ export class UploadView extends React.Component {
     getDocumentTypeId(documentTypeId) { //Callback to be able get Document Type + Assigned Record
         this.setState({
             documentTypeId: documentTypeId,
-            nextPressed: true
+            isNextPressed: true
             //assignedRecord:
 
             //TODO Add Assigned record
         });
-
     }
 
     getCropBlob(crop) { //Callback to be able to hand cropped Image Attributecontainer
@@ -73,43 +68,50 @@ export class UploadView extends React.Component {
     }
 
     render() {
-
-        if (!this.state.isUploaded && !this.state.nextPressed) { //Standard
-            return <Page>
-                <SplitView>
-                    <FileDrop callbackUploadView={this.passPicture} cropDisabled={true}/>
-                    <TypePicker/>
-                </SplitView>
-            </Page>
-
-        } else if (this.state.isUploaded && !this.state.nextPressed) { //If picture has been dropped but no Document Type picked
-            return <Page>
-                <SplitView>
-                    <PreviewContainer>
-                        <DocPreview picture={this.state.picture}
-                                    cropDisabled={true} /* Picture from FileDrop, disable crop for preview */ />
-                    </PreviewContainer>
-                    <TypePicker
-                        callbackUploadView={this.getDocumentTypeId}
-                        picUploaded={this.state.isUploaded} /* Get ID to fill Attributecontainer fields *//>
-                </SplitView>
-            </Page>
-        } else if (this.state.isUploaded && this.state.nextPressed) {
-            return <Page>
-                <SplitView>
-                    <PreviewContainer>
-                        <DocPreview picture={this.state.picture} cropDisabled={false}
-                                    callbackUploadView={this.getCropBlob}/>
-                    </PreviewContainer>
-                    <AttributeContainer picture={this.state.picture} crop={this.state.cropBlob}
-                                        title={this.state.pageTitle}
-                                        setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                </SplitView>
-            </Page>
+        if (!this.state.isUploaded && !this.state.isNextPressed) { //Standard
+            return (
+                <Page>
+                    <SplitView>
+                        <FileDrop callbackUploadView={this.passPicture}
+                                  cropDisabled={true}/>
+                        <TypePicker/>
+                    </SplitView>
+                </Page>
+            );
+        } else if (this.state.isUploaded && !this.state.isNextPressed) { //If picture has been dropped but no Document Type picked
+            return (
+                <Page>
+                    <SplitView>
+                        <PreviewContainer>
+                            <DocPreview picture={this.state.picture}
+                                        cropDisabled={true} /* Picture from FileDrop, disable crop for preview */ />
+                        </PreviewContainer>
+                        <TypePicker
+                            callbackUploadView={this.getDocumentTypeId}
+                            picUploaded={this.state.isUploaded} /* Get ID to fill Attributecontainer fields *//>
+                    </SplitView>
+                </Page>
+            );
+        } else if (this.state.isUploaded && this.state.isNextPressed) {
+            return (
+                <Page>
+                    <SplitView>
+                        <PreviewContainer>
+                            <DocPreview picture={this.state.picture}
+                                        cropDisabled={false}
+                                        callbackUploadView={this.getCropBlob}/>
+                        </PreviewContainer>
+                        <AttributeContainer picture={this.state.picture}
+                                            crop={this.state.cropBlob}
+                                            title={this.state.pageTitle}
+                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    </SplitView>
+                </Page>
+            );
         } else {
-            return <p> Something went wrong </p>
+            return (
+                <p> Something went wrong </p>
+            );
         }
-
-
     }
 }

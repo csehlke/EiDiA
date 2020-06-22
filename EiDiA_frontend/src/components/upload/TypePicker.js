@@ -16,14 +16,12 @@ const Container = styled.div
     flex-grow: 1; //For Splitview
     flex-basis: 50%;
     justify-content: center;
-    height: 88vh; //Not 100 because of border
+    margin: 8%;
 `;
 
-
-const DropDownContainer = styled.div
-    //Set DropDown width
-    `
-    width: 30%
+//Set DropDown width
+const DropDownContainer = styled.div`
+    width: 100%
 `;
 
 class TypePicker extends React.Component {
@@ -37,45 +35,40 @@ class TypePicker extends React.Component {
                 {name: 'type2', id: '2'}
             ],
             documentTypeId: '',
-            buttonStatus: true, // true, if "next"-button is disabled
-            autoCompleteStatus: false // true, if autoComplete has value
+            isNextButtonDisabled: true, // true, if "next"-button is disabled
+            hasAutoCompleteValue: false // true, if autoComplete has value
         }
-
-
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
         this.createNewDocumentType = this.createNewDocumentType.bind(this);
-        this.handleOnClick = this.handleOnClick.bind(this);
+        this.handleNextButtonOnClick = this.handleNextButtonOnClick.bind(this);
         this.assignRecord = this.assignRecord.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.picUploaded !== this.props.picUploaded) {
-            if (this.state.autoCompleteStatus && this.props.picUploaded) {
-                this.setState({
-                    buttonStatus: false
-                });
-            }
+        if (prevProps.picUploaded !== this.props.picUploaded &&
+            this.state.hasAutoCompleteValue &&
+            this.props.picUploaded) {
+            this.setState({
+                isNextButtonDisabled: false
+            });
         }
     }
-
 
     handleDocumentTypeChange(event, value) {
         this.setState({
             documentTypeId: value.id,
         });
 
-
         if (this.props.picUploaded) { //Check if image has been uploaded yet
             this.setState({
-                buttonStatus: false
+                isNextButtonDisabled: false
             });
         } else {
             this.setState({
-                autoCompleteStatus: true
+                hasAutoCompleteValue: true
             });
         }
-
     }
 
     createNewDocumentType() {
@@ -83,7 +76,7 @@ class TypePicker extends React.Component {
         //TODO Add Document Types
     }
 
-    handleOnClick() {
+    handleNextButtonOnClick() {
         this.props.callbackUploadView(this.state.documentTypeId);
     }
 
@@ -91,16 +84,13 @@ class TypePicker extends React.Component {
         console.log("Open FilePicker here (to assign to record)");
     }
 
-
     render() {
         return (
             <Container>
-                <Grid
-                    container
-                    direction="row"
-                    justify="space-between"
-                    alignItems="center"
-                >
+                <Grid container
+                      direction="row"
+                      justify="space-between"
+                      alignItems="center">
                     <Grid item xs={12} align="center">
                         <DropDownContainer>
                             <SmartDropDownBox
@@ -118,8 +108,7 @@ class TypePicker extends React.Component {
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={this.createNewDocumentType}
-                        >
+                            onClick={this.createNewDocumentType}>
                             Create new Document Type
                         </Button>
                     </Grid>
@@ -127,9 +116,7 @@ class TypePicker extends React.Component {
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={this.assignRecord}
-
-                        >
+                            onClick={this.assignRecord}>
                             Assign to Record
                         </Button>
                     </Grid>
@@ -137,18 +124,15 @@ class TypePicker extends React.Component {
                         <Button
                             variant="contained"
                             color="primary"
-                            disabled={this.state.buttonStatus}
-                            onClick={this.handleOnClick}
-                        >
+                            disabled={this.state.isNextButtonDisabled}
+                            onClick={this.handleNextButtonOnClick}>
                             Next
                         </Button>
                     </Grid>
                 </Grid>
-
             </Container>
         )
     }
-
 }
 
-export default TypePicker
+export default TypePicker;
