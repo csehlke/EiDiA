@@ -13,6 +13,8 @@ import DateFnsUtils from "@date-io/date-fns";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 
 import MetaData from "./MetaData";
+import Box from "@material-ui/core/Box";
+import {Button} from "@material-ui/core";
 
 
 const Container = styled.div
@@ -22,12 +24,6 @@ const Container = styled.div
     flex-grow: 1; //For Splitview
     flex-basis: 50%;
     flex-direction: column;
-`;
-
-const GridContainer = styled.div
-    `
-    display: flex;
-    height: 50%
 `;
 
 
@@ -158,7 +154,7 @@ class AttributeContainer extends React.Component {
 
 
     renderTextFields(attrName, attrID) {
-        return <Grid item xs>
+        return <Grid item xs style={{padding: 10}}>
             <TextField
                 label={attrName}
                 variant="outlined"
@@ -176,7 +172,7 @@ class AttributeContainer extends React.Component {
     }
 
     renderNumberFields(attrName, attrID) {
-        return <Grid item xs>
+        return <Grid item xs style={{padding: 10}}>
             <TextField
                 label={attrName}
                 type="number"
@@ -196,7 +192,7 @@ class AttributeContainer extends React.Component {
 
 
     renderDateFields(attrName, attrID) {
-        return <Grid item xs>
+        return <Grid item xs style={{padding: 10}}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                     style={{maxWidth: 275}} //Same as TextFields
@@ -258,27 +254,48 @@ class AttributeContainer extends React.Component {
         let self = this
         return ( // Render TextFields dynamically from state
             <Container>
-                <GridContainer>
-                    <Grid
-                        container
-                        direction="row"
-                        justify="space-evenly"
-                        alignItems="flex-end"
-                    >
-                        {this.state.attributes.map(function (item) {
-                            if (item.type === 'text') {
-                                return <div key={item.id}>{self.renderTextFields(item.name, item.id)}</div>
-                            } else if (item.type === 'number') {
-                                return <div key={item.id}>{self.renderNumberFields(item.name, item.id)}</div>
-                            } else if (item.type === 'date') {
-                                return <div key={item.id}>{self.renderDateFields(item.name, item.id)}</div>
-                            }
-                        })}
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-evenly"
+                    alignItems="flex-end"
+                >
+                    {this.state.attributes.map(function (item) {
+                        if (item.type === 'text') {
+                            return <div key={item.id}>{self.renderTextFields(item.name, item.id)}</div>
+                        } else if (item.type === 'number') {
+                            return <div key={item.id}>{self.renderNumberFields(item.name, item.id)}</div>
+                        } else if (item.type === 'date') {
+                            return <div key={item.id}>{self.renderDateFields(item.name, item.id)}</div>
+                        }
+                    })}
 
-                            <MetaData callbackAttributeContainer={this.getMetaData}/>
-
+                    <Grid item xs={12} align="center">
+                        <Box mt={10}/>
                     </Grid>
-                </GridContainer>
+
+                    <MetaData callbackAttributeContainer={this.getMetaData}/>
+
+                    <Grid item xs={6} align="center" style={{marginTop: 100}}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                        >
+                            Update Document Type
+                        </Button>
+                    </Grid>
+
+                    <Grid item xs={6} align="center" style={{marginTop: 100}}> //TODO Handle onClick (send to backend)
+                        <Button
+                            variant="contained"
+                            color="primary"
+
+                        >
+                            Save
+                        </Button>
+                    </Grid>
+
+                </Grid>
             </Container>
         )
     }
