@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {DropTarget} from 'react-dnd';
-import {DragTypes} from "../Constants";
+import {DragTypes} from "../../assets/Constants";
 
 
 const calTarget = {
@@ -10,7 +10,7 @@ const calTarget = {
 
     drop(props, monitor, component) {
         if (monitor.didDrop()) return
-        return {component}
+        return {component};
     },
 };
 
@@ -18,13 +18,11 @@ function collect(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget(),
         canDrop: monitor.canDrop(),
-        isOver: monitor.isOver()
-    }
+        isOver: monitor.isOver(),
+    };
 }
 
 class ElementTable extends Component {
-
-
     render() {
         const {connectDropTarget, isOver} = this.props;
         return connectDropTarget(

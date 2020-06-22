@@ -7,19 +7,13 @@ import {SearchView} from "./views/SearchView";
 import {FileCabinetView} from "./views/FileCabinetView"
 import {RecordView} from "./views/RecordView";
 import Navigation from "./components/Navigation";
-import {RecordMenue} from "./components/fileCabinet/RecordMenue";
 
 
 export default class App extends React.Component {
 
     constructor(props) {
         super(props);
-       /* [
-            {component: WelcomeView, path: '/', exact: true},
-            {component: SearchView, path: '/search', exact: true},
-            {component: RecordView, path: '/record', exact: true},
-            {component: FileCabinetView, path: '/cabinet', exact: true}
-        ]*/
+
         this.state = {
             title: 'EiDiA - Einfache Digitale Akte',
             routes: [
@@ -44,11 +38,11 @@ export default class App extends React.Component {
                 {
                     path: '/cabinet', exact: true, render: () => (
                         <FileCabinetView title={this.state.pageTitle}
-                                    setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                                         setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                     )
                 },
             ],
-            pageTitle: ''
+            pageTitle: '',
         };
     }
 
@@ -58,7 +52,7 @@ export default class App extends React.Component {
 
     handlePageTitleChange(newTitle) {
         this.setState({
-            pageTitle: newTitle
+            pageTitle: newTitle,
         });
     }
 

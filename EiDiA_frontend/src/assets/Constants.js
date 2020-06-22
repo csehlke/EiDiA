@@ -1,18 +1,19 @@
-export const recordMenueOptions ={
-    DASHBOARD:1,
-    FILEEXPLORER:2
-}
+export const recordMenuOptions = {
+    DASHBOARD: 1,
+    FILEEXPLORER: 2,
+};
+
 export const DragTypes = {
-    ELEMENT: 'element'
+    ELEMENT: 'element',
 }
+
 export const fileTypes = {
     FOLDER: 'Folder',
     PDF: 'PDF',
     WORD: 'Word',
-    NONE: 'None'
+    NONE: 'None',
+};
 
-
-}
 export const databaseEntriesPlaceholder = [
     {
         parentId: 0,
@@ -24,9 +25,8 @@ export const databaseEntriesPlaceholder = [
         dateModification: '1.1.2020',
         comment: 'This is a long long Lorem Ipsum Comment talking blablabla',
         actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-        children: []
+        children: [],
     },
-
     {
         parentId: 0,
         id: 3,
@@ -48,7 +48,7 @@ export const databaseEntriesPlaceholder = [
                 dateModification: '2.2.2020',
                 comment: 'Second Document Comment',
                 actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-                children: []
+                children: [],
             },
             {
                 parentId: 3,
@@ -72,9 +72,9 @@ export const databaseEntriesPlaceholder = [
                             dateModification: '1.1.2020',
                             comment: 'This is a long long Lorem Ipsum Comment talking blablabla',
                             actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-                            children: []
-                        }
-                    ]
+                            children: [],
+                        },
+                    ],
             },
             {
                 parentId: 3,
@@ -86,8 +86,8 @@ export const databaseEntriesPlaceholder = [
                 dateModification: '2.2.2020',
                 comment: 'Second Document Comment',
                 actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-                children: []
-            }
-        ]
+                children: [],
+            },
+        ],
     }
 ];
