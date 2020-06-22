@@ -2,7 +2,6 @@
 
 import React from "react";
 import styled from "styled-components";
-import {Button} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import Dropzone from "react-dropzone";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -37,28 +36,30 @@ class FileDrop extends React.Component {
         };
 
 
-        this.onDropAccepted = (files) => {
-            this.setState({files})
-            this.props.callbackUploadView(files);
-            /* See DocPreview
-
-                        const reader = new FileReader()
-
-                        reader.onabort = () => console.log('file reading was aborted')
-                        reader.onerror = () => console.log('file reading has failed')
-                        reader.onload = () => {
-                            // Do whatever you want with the file contents
-                            const binaryStr = reader.result
-                            console.log(binaryStr)
-                        }
-                        reader.readAsDataURL(files[0]) //read First File
-            */
-        };
 
 
         this.assignRecord = this.assignRecord.bind(this);
         this.failedUpload = this.failedUpload.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.onDropAccepted = this.onDropAccepted.bind(this);
+    }
+
+    onDropAccepted(files){
+        this.setState(files)
+        this.props.callbackUploadView(files);
+        /* See DocPreview
+
+                    const reader = new FileReader()
+
+                    reader.onabort = () => console.log('file reading was aborted')
+                    reader.onerror = () => console.log('file reading has failed')
+                    reader.onload = () => {
+                        // Do whatever you want with the file contents
+                        const binaryStr = reader.result
+                        console.log(binaryStr)
+                    }
+                    reader.readAsDataURL(files[0]) //read First File
+        */
     }
 
     assignRecord() {

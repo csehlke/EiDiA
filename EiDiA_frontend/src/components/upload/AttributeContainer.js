@@ -285,7 +285,7 @@ class AttributeContainer extends React.Component {
                         </Button>
                     </Grid>
 
-                    <Grid item xs={6} align="center" style={{marginTop: 100}}> //TODO Handle onClick (send to backend)
+                    <Grid item xs={6} align="center" style={{marginTop: 100}}>
                         <Button
                             variant="contained"
                             color="primary"
