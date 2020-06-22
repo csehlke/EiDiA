@@ -12,16 +12,12 @@ import TextField from "@material-ui/core/TextField";
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
 
-const MetaContainer = styled.div
-    `
+const MetaContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    
 `;
-
-
 
 class MetaData extends React.Component {
 
@@ -32,15 +28,12 @@ class MetaData extends React.Component {
             priority: '',
             department: [],
             comment: '',
-
         }
 
         this.handleOnPriorityChange = this.handleOnPriorityChange.bind(this);
         this.handleOnDepartmentChange = this.handleOnDepartmentChange.bind(this);
         this.handleOnCommentChange = this.handleOnCommentChange.bind(this);
-
     }
-
 
     sendData() {
         return [this.state.priority, this.state.department, this.state.comment]
@@ -50,7 +43,6 @@ class MetaData extends React.Component {
         this.setState({priority: event.target.value}, () => { //setState is not always synchronous
             this.props.callbackAttributeContainer(this.sendData());
         });
-
     }
 
     handleOnDepartmentChange(event) {
@@ -73,9 +65,7 @@ class MetaData extends React.Component {
         this.setState({comment: event.target.value}, () => { //setState is not always synchronous
             this.props.callbackAttributeContainer(this.sendData());
         });
-
     }
-
 
     render() {
         return <Grid item xs={12}>
@@ -88,7 +78,6 @@ class MetaData extends React.Component {
                         <FormControlLabel value="low" control={<Radio/>} label="low"/>
                     </RadioGroup>
                 </FormControl>
-
 
                 <FormControl>
                     <FormLabel>Relevant for Departments:</FormLabel>
@@ -108,18 +97,14 @@ class MetaData extends React.Component {
                     </FormGroup>
                 </FormControl>
 
-
                 <TextField
                     multiline={true}
                     label={"Comment"}
                     variant="outlined"
-                    onChange={this.handleOnCommentChange}
-                />
-
+                    onChange={this.handleOnCommentChange}/>
             </MetaContainer>
         </Grid>
     }
-
 }
 
-export default MetaData
+export default MetaData;

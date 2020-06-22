@@ -13,12 +13,9 @@ const Container = styled.div
     flex-grow: 1; //For Splitview
     flex-basis: 50%;
     justify-content: center;
-    
-
 `;
 
-const ImageContainer = styled.div
-    `
+const ImageContainer = styled.div`
     object-fit: cover;
 `;
 
@@ -48,13 +45,9 @@ class DocPreview extends React.Component {
         } else {
             console.log("Picture could not be loaded")
         }
-
     }
 
-
     readFile(file) {
-
-
         const reader = new FileReader()
 
         reader.onabort = () => console.log('file reading was aborted')
@@ -66,8 +59,6 @@ class DocPreview extends React.Component {
             });
         }
         reader.readAsDataURL(file[0]) //read First File
-
-
     }
 
     onImageLoaded(image) {
@@ -128,8 +119,6 @@ class DocPreview extends React.Component {
         });
     }
 
-
-
     render() {
         return (
             <Container>
@@ -141,13 +130,11 @@ class DocPreview extends React.Component {
                         disabled={this.props.cropDisabled}
                         onImageLoaded={this.onImageLoaded}
                         onComplete={this.onCropComplete}
-                        onChange={this.onCropChange}
-                    />
+                        onChange={this.onCropChange}/>
                 </ImageContainer>
             </Container>
         )
     }
-
 }
 
 export default DocPreview

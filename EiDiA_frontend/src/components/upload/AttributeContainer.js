@@ -7,7 +7,6 @@ import {createWorker} from 'tesseract.js';
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import CropIcon from "@material-ui/icons/Crop";
 import Grid from "@material-ui/core/Grid";
 import DateFnsUtils from "@date-io/date-fns";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
@@ -15,6 +14,7 @@ import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers"
 import MetaData from "./MetaData";
 import Box from "@material-ui/core/Box";
 import {Button} from "@material-ui/core";
+import {RiCropLine} from "react-icons/all";
 
 
 const Container = styled.div
@@ -47,25 +47,34 @@ class AttributeContainer extends React.Component {
             ],
             attributeData: [
                 {}
-
             ],
             metaData: [{}],
             wrk: this.loadWorker(),
             textValue: ""
         }
 
-        this.saveData = this.saveData.bind(this);
-        this.findData = this.findData.bind(this);
+        this.saveTextFieldData = this.saveTextFieldData.bind(this);
+        this.getFieldValue = this.getFieldValue.bind(this);
         this.renderTextFields = this.renderTextFields.bind(this);
         this.renderDateFields = this.renderDateFields.bind(this);
         this.getMetaData = this.getMetaData.bind(this);
-
     }
 
     componentDidMount() {
         this.props.setTitle("Attribute Picker");
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.crop !== this.props.crop) { //When new crop gets added
+            (async () => {
+                const {data: {text}} = await this.state.wrk.recognize(this.props.crop); //Do OCR on crop
+                console.log(text);
+                this.setState({
+                    textValue: text
+                });
+            })();
+        }
+    }
 
     loadWorker() { //Initialize Worker only once an reuse it, to save startup time
         const worker = createWorker({
@@ -76,10 +85,9 @@ class AttributeContainer extends React.Component {
             await worker.load();
             await worker.loadLanguage('eng');
             await worker.initialize('eng');
-
             //await worker.terminate(); Do not terminate worker so it can be reused
         })();
-        return worker
+        return worker;
     }
 
     getMetaData(data) { //Get data from MetaData-component
@@ -90,7 +98,7 @@ class AttributeContainer extends React.Component {
         });
     }
 
-    saveData(attrID) {
+    saveTextFieldData(attrID) {
         let copyArr = this.state.attributeData
         let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
         if (idx === -1) { //If ID doesn't exist yet, add it
@@ -103,20 +111,18 @@ class AttributeContainer extends React.Component {
                 attributeData: copyArr
             });
         }
-
     }
 
-    findData(attrID) {
+    getFieldValue(attrID) {
         let idx = (this.state.attributeData.findIndex(element => element.id === attrID)) //find index of ID
         if (idx !== -1) {
-            return Object.values(this.state.attributeData)[idx].text // Get text at index
+            return Object.values(this.state.attributeData)[idx].text; // Get text at index
         } else {
-            return ""
+            return "";
         }
     }
 
-
-    handleOnChange(event, attrID) { //Updates attributeData based on user input
+    handleTextFieldOnChange(event, attrID) { //Updates attributeData based on user input
         let copyArr = this.state.attributeData
         let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
 
@@ -130,9 +136,6 @@ class AttributeContainer extends React.Component {
                 attributeData: copyArr
             });
         }
-        //console.log(Object.values(this.state.metaData)[0].priority)
-
-
     }
 
     handleOnDateChange(date, value, attrID) { //Updates attributeData based on user input
@@ -149,76 +152,7 @@ class AttributeContainer extends React.Component {
                 attributeData: copyArr
             });
         }
-
     }
-
-
-    renderTextFields(attrName, attrID) {
-        return <Grid item xs style={{padding: 10}}>
-            <TextField
-                label={attrName}
-                variant="outlined"
-                value={this.findData(attrID)}
-                onChange={(evt) => this.handleOnChange(evt, attrID)}
-                InputProps={{
-                    endAdornment: <InputAdornment>
-                        <IconButton onClick={() => this.saveData(attrID)}>
-                            <CropIcon/>
-                        </IconButton>
-                    </InputAdornment>
-                }}
-            />
-        </Grid>
-    }
-
-    renderNumberFields(attrName, attrID) {
-        return <Grid item xs style={{padding: 10}}>
-            <TextField
-                label={attrName}
-                type="number"
-                variant="outlined"
-                value={Number(this.findData(attrID)) || ""}
-                onChange={(evt) => this.handleOnChange(evt, attrID)}
-                InputProps={{
-                    endAdornment: <InputAdornment>
-                        <IconButton onClick={() => this.saveData(attrID)}>
-                            <CropIcon/>
-                        </IconButton>
-                    </InputAdornment>
-                }}
-            />
-        </Grid>
-    }
-
-
-    renderDateFields(attrName, attrID) {
-        return <Grid item xs style={{padding: 10}}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                    style={{maxWidth: 275}} //Same as TextFields
-                    autoOk={true}
-                    disableToolbar
-                    inputVariant="outlined"
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    invalidDateMessage=""
-                    invalidLabel=""
-                    label={attrName}
-                    value={this.findData(attrID)}
-                    onChange={(date, value) => this.handleOnDateChange(date, value, attrID) || ''}
-                    InputAdornmentProps={{position: 'start'}}
-                    InputProps={{
-                        endAdornment: <InputAdornment>
-                            <IconButton onClick={() => this.saveData(attrID)}>
-                                <CropIcon/>
-                            </IconButton>
-                        </InputAdornment>
-                    }}
-                />
-            </MuiPickersUtilsProvider>
-        </Grid>
-    }
-
 
     sendFulltextToBackend() { //TODO Send to Backend (OCR IS VERY SLOW) --> Do it on backend?
         const worker = createWorker({
@@ -235,20 +169,67 @@ class AttributeContainer extends React.Component {
         })();
     }
 
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.crop !== this.props.crop) { //When new crop gets added
-            (async () => {
-                const {data: {text}} = await this.state.wrk.recognize(this.props.crop); //Do OCR on crop
-                console.log(text);
-                this.setState({
-                    textValue: text
-                });
-            })();
-
-        }
+    renderTextFields(attrName, attrID) {
+        return <Grid item xs style={{padding: 10}}>
+            <TextField
+                label={attrName}
+                variant="outlined"
+                value={this.getFieldValue(attrID)}
+                onChange={(evt) => this.handleTextFieldOnChange(evt, attrID)}
+                InputProps={{
+                    endAdornment: <InputAdornment>
+                        <IconButton onClick={() => this.saveTextFieldData(attrID)}>
+                            <RiCropLine/>
+                        </IconButton>
+                    </InputAdornment>
+                }}/>
+        </Grid>
     }
 
+    renderNumberFields(attrName, attrID) {
+        return <Grid item xs style={{padding: 10}}>
+            <TextField
+                label={attrName}
+                type="number"
+                variant="outlined"
+                value={Number(this.getFieldValue(attrID)) || ""}
+                onChange={(evt) => this.handleTextFieldOnChange(evt, attrID)}
+                InputProps={{
+                    endAdornment: <InputAdornment>
+                        <IconButton onClick={() => this.saveTextFieldData(attrID)}>
+                            <RiCropLine/>
+                        </IconButton>
+                    </InputAdornment>
+                }}/>
+        </Grid>
+    }
+
+    renderDateFields(attrName, attrID) {
+        return <Grid item xs style={{padding: 10}}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                    style={{maxWidth: 275}} //Same as TextFields
+                    autoOk={true}
+                    disableToolbar
+                    inputVariant="outlined"
+                    variant="inline"
+                    format="dd/MM/yyyy"
+                    invalidDateMessage=""
+                    invalidLabel=""
+                    label={attrName}
+                    value={this.getFieldValue(attrID)}
+                    onChange={(date, value) => this.handleOnDateChange(date, value, attrID) || ''}
+                    InputAdornmentProps={{position: 'start'}}
+                    InputProps={{
+                        endAdornment: <InputAdornment>
+                            <IconButton onClick={() => this.saveTextFieldData(attrID)}>
+                                <RiCropLine/>
+                            </IconButton>
+                        </InputAdornment>
+                    }}/>
+            </MuiPickersUtilsProvider>
+        </Grid>
+    }
 
     render() {
         let self = this
@@ -258,15 +239,26 @@ class AttributeContainer extends React.Component {
                     container
                     direction="row"
                     justify="space-evenly"
-                    alignItems="flex-end"
-                >
+                    alignItems="flex-end">
                     {this.state.attributes.map(function (item) {
                         if (item.type === 'text') {
-                            return <div key={item.id}>{self.renderTextFields(item.name, item.id)}</div>
+                            return (
+                                <div key={item.id}>
+                                    {self.renderTextFields(item.name, item.id)}
+                                </div>
+                            );
                         } else if (item.type === 'number') {
-                            return <div key={item.id}>{self.renderNumberFields(item.name, item.id)}</div>
+                            return (
+                                <div key={item.id}>
+                                    {self.renderNumberFields(item.name, item.id)}
+                                </div>
+                            );
                         } else if (item.type === 'date') {
-                            return <div key={item.id}>{self.renderDateFields(item.name, item.id)}</div>
+                            return (
+                                <div key={item.id}>
+                                    {self.renderDateFields(item.name, item.id)}
+                                </div>
+                            );
                         }
                     })}
 
@@ -277,29 +269,22 @@ class AttributeContainer extends React.Component {
                     <MetaData callbackAttributeContainer={this.getMetaData}/>
 
                     <Grid item xs={6} align="center" style={{marginTop: 100}}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                        >
+                        <Button variant="contained"
+                                color="primary">
                             Update Document Type
                         </Button>
                     </Grid>
 
                     <Grid item xs={6} align="center" style={{marginTop: 100}}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-
-                        >
+                        <Button variant="contained"
+                                color="primary">
                             Save
                         </Button>
                     </Grid>
-
                 </Grid>
             </Container>
         )
     }
-
 }
 
-export default AttributeContainer
+export default AttributeContainer;
