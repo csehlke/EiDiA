@@ -1,15 +1,11 @@
 import React from 'react';
 import Element from './Element'
 import styled from "styled-components";
-import {HTML5Backend} from "react-dnd-html5-backend";
-import {DndProvider} from "react-dnd";
 import ElementTable from "./ElementTable";
 import {databaseEntriesPlaceholder, fileTypes} from "../../assets/Constants";
 
 const ElementBoundary = styled.div`
-    width: 90%;
     height: auto;
-    margin: 1em 5em;
 `;
 
 /**
@@ -120,23 +116,19 @@ export default class FileExplorer extends React.Component {
 
     render() {
         return (
-            <div>
-                <ElementBoundary>
-                    <DndProvider backend={HTML5Backend}>
-                        <Element level={0}
-                                 type={fileTypes.NONE}
-                                 name={'Name'}
-                                 dateCreation={'Date'}
-                                 dateModification={'Last Modified'}
-                                 comment={'Comment'}
-                                 actions={['HEADING']}/>
-                        <hr/>
-                        {this.state.elements.map((element, index) =>
-                            this.renderElement(element, index, 0)
-                        )}
-                    </DndProvider>
-                </ElementBoundary>
-            </div>
+            <ElementBoundary>
+                <Element level={0}
+                         type={fileTypes.NONE}
+                         name={'Name'}
+                         dateCreation={'Date'}
+                         dateModification={'Last Modified'}
+                         comment={'Comment'}
+                         actions={['HEADING']}/>
+                <hr/>
+                {this.state.elements.map((element, index) =>
+                    this.renderElement(element, index, 0)
+                )}
+            </ElementBoundary>
         );
     }
 }

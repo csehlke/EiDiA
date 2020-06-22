@@ -7,6 +7,8 @@ import {SearchView} from "./views/SearchView";
 import {FileCabinetView} from "./views/FileCabinetView"
 import {RecordView} from "./views/RecordView";
 import Navigation from "./components/Navigation";
+import {HTML5Backend} from "react-dnd-html5-backend";
+import {DndProvider} from "react-dnd";
 
 
 export default class App extends React.Component {
@@ -61,11 +63,13 @@ export default class App extends React.Component {
             <div>
                 <Router>
                     <Navigation title={this.state.pageTitle}>
-                        <Switch>
-                            {this.state.routes.map((route, i) => (
-                                <Route key={i} {...route}/>
-                            ))}
-                        </Switch>
+                        <DndProvider backend={HTML5Backend}>
+                            <Switch>
+                                {this.state.routes.map((route, i) => (
+                                    <Route key={i} {...route}/>
+                                ))}
+                            </Switch>
+                        </DndProvider>
                     </Navigation>
                 </Router>
             </div>

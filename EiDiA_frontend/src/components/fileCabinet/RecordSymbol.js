@@ -7,7 +7,7 @@ import {FaFolder} from "react-icons/all";
 
 const Quarter = styled.div`
     height: auto;
-    font-size: 8em;
+    font-size: 1.5em;
 `;
 
 const HeadingNoMargin = styled.p`
@@ -16,7 +16,7 @@ const HeadingNoMargin = styled.p`
 `;
 
 const FolderLogo = styled(FaFolder)`
-     font-size: 5em;
+     font-size: 6em;
      margin: 0 0.25em;
 `;
 
