@@ -30,13 +30,6 @@ const GridContainer = styled.div
     height: 50%
 `;
 
-const MetaDataContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
-
 
 class AttributeContainer extends React.Component {
 
@@ -282,12 +275,10 @@ class AttributeContainer extends React.Component {
                             }
                         })}
 
+                            <MetaData callbackAttributeContainer={this.getMetaData}/>
 
                     </Grid>
                 </GridContainer>
-                <MetaDataContainer>
-                    <MetaData callbackAttributeContainer={this.getMetaData}/>
-                </MetaDataContainer>
             </Container>
         )
     }

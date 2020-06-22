@@ -9,6 +9,18 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from "@material-ui/core/TextField";
+import styled from "styled-components";
+import Grid from "@material-ui/core/Grid";
+
+const MetaContainer = styled.div
+    `
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    
+`;
+
 
 
 class MetaData extends React.Component {
@@ -66,38 +78,46 @@ class MetaData extends React.Component {
 
 
     render() {
-        return <div><FormControl>
-            <FormLabel>Priority:</FormLabel>
-            <RadioGroup value={this.state.priority} onChange={this.handleOnPriorityChange}>
-                <FormControlLabel value="high" control={<Radio/>} label="high"/>
-                <FormControlLabel value="medium" control={<Radio/>} label="medium"/>
-                <FormControlLabel value="low" control={<Radio/>} label="low"/>
-            </RadioGroup>
-        </FormControl>
-            <FormControl>
-                <FormLabel>Relevant for Departments:</FormLabel>
-                <FormGroup>
-                    <FormControlLabel
-                        control={<Checkbox onChange={this.handleOnDepartmentChange} value="Accounting"/>}
-                        label="Accounting"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox onChange={this.handleOnDepartmentChange} value="Human Resources"/>}
-                        label="Human Resources"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox onChange={this.handleOnDepartmentChange} value="Sales"/>}
-                        label="Sales"
-                    />
-                </FormGroup>
-            </FormControl>
-            <TextField
-                label={"Comment"}
-                variant="outlined"
-                onChange={this.handleOnCommentChange}
-            />
-        </div>
+        return <Grid item xs={12}>
+            <MetaContainer>
+                <FormControl>
+                    <FormLabel>Priority:</FormLabel>
+                    <RadioGroup value={this.state.priority} onChange={this.handleOnPriorityChange}>
+                        <FormControlLabel value="high" control={<Radio/>} label="high"/>
+                        <FormControlLabel value="medium" control={<Radio/>} label="medium"/>
+                        <FormControlLabel value="low" control={<Radio/>} label="low"/>
+                    </RadioGroup>
+                </FormControl>
 
+
+                <FormControl>
+                    <FormLabel>Relevant for Departments:</FormLabel>
+                    <FormGroup>
+                        <FormControlLabel
+                            control={<Checkbox onChange={this.handleOnDepartmentChange} value="Accounting"/>}
+                            label="Accounting"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox onChange={this.handleOnDepartmentChange} value="Human Resources"/>}
+                            label="Human Resources"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox onChange={this.handleOnDepartmentChange} value="Sales"/>}
+                            label="Sales"
+                        />
+                    </FormGroup>
+                </FormControl>
+
+
+                <TextField
+                    multiline={true}
+                    label={"Comment"}
+                    variant="outlined"
+                    onChange={this.handleOnCommentChange}
+                />
+
+            </MetaContainer>
+        </Grid>
     }
 
 }
