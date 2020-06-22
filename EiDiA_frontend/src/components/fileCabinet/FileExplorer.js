@@ -18,6 +18,9 @@ const ElementBoundary = styled.div`
  * TODO:
  * - Cant drag files to toplevel at the moment
  * - Design DnD operations
+ * - Design subfolder passt nicht, Daten alle komisch eingerückt
+ * - DnD auf level 0
+ * - Action Buttons
  */
 export default class FileExplorer extends React.Component {
 
