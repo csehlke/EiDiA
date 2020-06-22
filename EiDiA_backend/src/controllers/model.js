@@ -18,7 +18,7 @@ const listDocumentTypes = (req, res) => {
         .catch(error => {
             res.status(400).json({
                 error: 'Internal server error',
-                message: error.message
+                message: error.message,
             });
         });
 };
@@ -39,12 +39,17 @@ const listAttributeTypes = (req, res) => {
         .catch(error => {
             res.status(400).json({
                 error: 'Internal server error',
-                message: error.message
+                message: error.message,
             });
         });
+};
+
+const createDocumentType = (req, res) => {
+    res.status(200).json({response: "dummy response"});
 };
 
 module.exports = {
     listDocumentTypes,
     listAttributeTypes,
+    createDocumentType,
 };

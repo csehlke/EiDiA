@@ -4,10 +4,10 @@ const express = require('express');
 const router = express.Router();
 
 const middleWares = require('../middlewares');
-// const RecordController = require('../controllers/record');
+const RecordController = require('../controllers/record');
 
 
-router.get('/list', middleWares.checkAuthentication);//, AuthController.settings);
-router.post('/add', middleWares.checkAuthentication);//, AuthController.settings);
+router.get('/list', middleWares.checkAuthentication, RecordController.listRecords);
+router.post('/add', middleWares.checkAuthentication, RecordController.addRecord);
 
 module.exports = router;
