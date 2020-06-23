@@ -153,7 +153,7 @@ export class ExportView extends React.Component {
         const componentSet = this.componentSet[currentPage];
         return (
             <div>
-            <Page title={this.state.currentPage}>
+            <Page title={this.state.currentPage} changeView={this.changeView}>
                 <Row>
                     <Column>
                         Sidebar
