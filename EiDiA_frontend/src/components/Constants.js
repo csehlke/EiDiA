@@ -13,6 +13,41 @@ export const fileTypes = {
 
 
 }
+export const Widgets ={
+    X:1,
+    Y:1,
+    ROWS:1,
+    COLUMNS:1,
+    TITLE: "Last Activities",
+    Type: "LOG"
+}
+export const WidgetTypes = {
+    LOG:'LOG',
+    GRAPH:'GRAPH',
+    INDICATOR:'INDICATOR'
+
+
+}
+export const logs = [
+    {
+        PERSON: "John Doe",
+        ACTIVITY: "added Document \"Tax assesment\"",
+        TIMESTAMP: "1.1.1970"
+    },
+    {
+        PERSON: "John Doe",
+        ACTIVITY: "added Document \"Tax assesment\"",
+        TIMESTAMP: "1.1.1970"
+    },
+    {
+        PERSON: "John Doe",
+        ACTIVITY: "added Document \"Tax assesment\"",
+        TIMESTAMP: "1.1.1970"
+    }
+
+]
+
+
 export const databaseEntriesPlaceholder = [
     {
         parentId: 0,
