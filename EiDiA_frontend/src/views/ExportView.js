@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Page from "../components/Page";
-import DocEditor from "../components/ExportView/DocEditor";
+import DocEditor from "../components/ExportView/Subcomponents/DocEditor";
 import RightSidepanel from "../components/ExportView/RightSidepanel";
 import {RichUtils, EditorState, ContentState} from 'draft-js';
 import {llorem} from '../support files/constants';
@@ -29,7 +29,7 @@ export class ExportView extends React.Component {
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
         this.onChange = this.onChange.bind(this);
         this.toggleBlockType = this.toggleBlockType.bind(this);
-        this.changeToEditTemplateView = this.changeToEditTemplateView.bind(this);
+        this.changeView = this.changeView.bind(this);
         this.onAction3_2 = this.onAction3_2.bind(this);
         this.selectTemplate = this.selectTemplate.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
@@ -42,7 +42,7 @@ export class ExportView extends React.Component {
             "Select Template": {
                 onAction1_1: this.selectTemplate,
                 onAction1_2: this.toggleBlockType,
-                onAction3_1: this.changeToEditTemplateView,
+                onAction3_1: this.changeView,
                 onAction3_2: this.onAction3_2
             },
             "Edit Template": {
@@ -73,7 +73,7 @@ export class ExportView extends React.Component {
             "Edit": {
                 comp1: "editorTools",
                 comp2: "docSearch",
-                comp3: "exportSection"
+                comp3: "setValueSection"
             }
         }
     }
@@ -128,7 +128,7 @@ export class ExportView extends React.Component {
     }
 
 
-    changeToEditTemplateView(page) {
+    changeView(page) {
         var newState = this.state;
         newState.currentPage = page;
         this.setState(newState);

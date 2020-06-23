@@ -1,12 +1,12 @@
 import React from 'react';
 import Divider from '@material-ui/core/Divider';
-import EditorTools from './EditorTools';
-import DocSearch from './DocSearch';
-import ExportSection from './ExportSection';
-import TemplateList from './TemplateList';
-import SaveTemplateSection from './SaveTemplateSection';
-import VariableList from './VariableList';
-import { parseWithOptions } from 'date-fns/fp';
+import EditorTools from './Subcomponents/EditorTools';
+import DocSearch from './Subcomponents/DocSearch';
+import ExportSection from './Subcomponents/ExportSection';
+import TemplateList from './Subcomponents/TemplateList';
+import SaveTemplateSection from './Subcomponents/SaveTemplateSection';
+import VariableList from './Subcomponents/VariableList';
+import SetValueSection from './Subcomponents/SetValueSection';
 
 const styles = {
   drawer: {
@@ -18,7 +18,6 @@ const styles = {
 }
 
 export default class RightSidePanel extends React.Component {
-
   constructor(props) {
     super(props);
     this.changeInlineStyle = this.changeInlineStyle.bind(this);
@@ -30,7 +29,8 @@ export default class RightSidePanel extends React.Component {
       exportSection: ExportSection,
       templateList: TemplateList,
       saveTemplateSection: SaveTemplateSection,
-      variableList: VariableList
+      variableList: VariableList,
+      setValueSection: SetValueSection
     }
   }
 
@@ -64,6 +64,7 @@ export default class RightSidePanel extends React.Component {
             onAction1={this.props.onAction3_1}
             onAction2={this.props.onAction3_2}
             open={this.props.open}
+            variables={this.props.variables}
           />
       </div>
     );

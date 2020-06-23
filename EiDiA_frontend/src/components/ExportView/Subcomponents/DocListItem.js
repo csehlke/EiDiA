@@ -23,7 +23,7 @@ export default class DocListItem extends React.Component {
                     primary={this.props.id}
                 />
                 <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete" onClick={this.addToList}>
+                    <IconButton edge="end" onClick={this.addToList}>
                     <AddIcon />
                     </IconButton>
                 </ListItemSecondaryAction>
