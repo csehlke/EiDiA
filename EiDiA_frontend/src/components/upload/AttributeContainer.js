@@ -10,11 +10,13 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid from "@material-ui/core/Grid";
 import DateFnsUtils from "@date-io/date-fns";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import Snackbar from "@material-ui/core/Snackbar";
 
 import MetaData from "./MetaData";
 import Box from "@material-ui/core/Box";
 import {Button} from "@material-ui/core";
 import {RiCropLine} from "react-icons/all";
+import Alert from "@material-ui/lab/Alert";
 
 
 const Container = styled.div
@@ -50,14 +52,17 @@ class AttributeContainer extends React.Component {
             ],
             metaData: [{}],
             wrk: this.loadWorker(),
-            textValue: ""
+            textValue: "",
+            snackbarOpen: false
         }
 
         this.saveTextFieldData = this.saveTextFieldData.bind(this);
+        this.saveDateFieldData = this.saveDateFieldData.bind(this);
         this.getFieldValue = this.getFieldValue.bind(this);
         this.renderTextFields = this.renderTextFields.bind(this);
         this.renderDateFields = this.renderDateFields.bind(this);
         this.getMetaData = this.getMetaData.bind(this);
+        this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
     }
 
     componentDidMount() {
@@ -101,6 +106,21 @@ class AttributeContainer extends React.Component {
     saveTextFieldData(attrID) {
         let copyArr = this.state.attributeData
         let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
+        if (idx === -1) { //If ID doesn't exist yet, add it
+            this.setState({
+                attributeData: [...this.state.attributeData, {id: attrID, text: this.state.textValue}]
+            });
+        } else {
+            copyArr.splice(idx, 1, {id: attrID, text: this.state.textValue}) //If ID exists already, overwrite it with new value
+            this.setState({
+                attributeData: copyArr
+            });
+        }
+    }
+
+    saveDateFieldData(attrID) {
+        let copyArr = this.state.attributeData
+        let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
         let data = this.state.textValue
         if (!isNaN(Date.parse(data))) { //IF OCR String is date, convert to datatype 'Date'
             let convDate = data.split("/");
@@ -118,16 +138,9 @@ class AttributeContainer extends React.Component {
             }
 
         } else {
-            if (idx === -1) { //If ID doesn't exist yet, add it
-                this.setState({
-                    attributeData: [...this.state.attributeData, {id: attrID, text: this.state.textValue}]
-                });
-            } else {
-                copyArr.splice(idx, 1, {id: attrID, text: this.state.textValue}) //If ID exists already, overwrite it with new value
-                this.setState({
-                    attributeData: copyArr
-                });
-            }
+            this.setState({
+                snackbarOpen: true
+            });
         }
     }
 
@@ -240,7 +253,7 @@ class AttributeContainer extends React.Component {
                     InputAdornmentProps={{position: 'start'}}
                     InputProps={{
                         endAdornment: <InputAdornment>
-                            <IconButton onClick={() => this.saveTextFieldData(attrID)}>
+                            <IconButton onClick={() => this.saveDateFieldData(attrID)}>
                                 <RiCropLine/>
                             </IconButton>
                         </InputAdornment>
@@ -249,8 +262,28 @@ class AttributeContainer extends React.Component {
         </Grid>
     }
 
+    handleSnackbarClose() {
+        //Snackbar-Close
+        this.setState({
+            snackbarOpen: false,
+        });
+    }
+
     render() {
         let self = this
+        let dateAlert = (
+            <Alert severity="error" onClose={this.handleSnackbarClose}>
+                No date was recognized, please try again!
+            </Alert>
+        );
+        let snackBar = (
+            <Snackbar
+                open={this.state.snackbarOpen}
+                autoHideDuration={5000}
+                onClose={this.handleSnackbarClose}>
+                {dateAlert}
+            </Snackbar>
+        );
         return ( // Render TextFields dynamically from state
             <Container>
                 <Grid
@@ -300,6 +333,7 @@ class AttributeContainer extends React.Component {
                         </Button>
                     </Grid>
                 </Grid>
+                {snackBar}
             </Container>
         )
     }
