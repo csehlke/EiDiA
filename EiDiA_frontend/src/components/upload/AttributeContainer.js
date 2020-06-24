@@ -101,15 +101,33 @@ class AttributeContainer extends React.Component {
     saveTextFieldData(attrID) {
         let copyArr = this.state.attributeData
         let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
-        if (idx === -1) { //If ID doesn't exist yet, add it
-            this.setState({
-                attributeData: [...this.state.attributeData, {id: attrID, text: this.state.textValue}]
-            });
+        let data = this.state.textValue
+        if (!isNaN(Date.parse(data))) { //IF OCR String is date, convert to datatype 'Date'
+            let convDate = data.split("/");
+            let dateObject = new Date(+convDate[2], convDate[1] - 1, +convDate[0]); //Convert to dd/MM/YYYY
+
+            if (idx === -1) { //If ID doesn't exist yet, add it
+                this.setState({
+                    attributeData: [...this.state.attributeData, {id: attrID, text: dateObject}]
+                });
+            } else {
+                copyArr.splice(idx, 1, {id: attrID, text: dateObject}) //If ID exists already, overwrite it with new value
+                this.setState({
+                    attributeData: copyArr
+                });
+            }
+
         } else {
-            copyArr.splice(idx, 1, {id: attrID, text: this.state.textValue}) //If ID exists already, overwrite it with new value
-            this.setState({
-                attributeData: copyArr
-            });
+            if (idx === -1) { //If ID doesn't exist yet, add it
+                this.setState({
+                    attributeData: [...this.state.attributeData, {id: attrID, text: this.state.textValue}]
+                });
+            } else {
+                copyArr.splice(idx, 1, {id: attrID, text: this.state.textValue}) //If ID exists already, overwrite it with new value
+                this.setState({
+                    attributeData: copyArr
+                });
+            }
         }
     }
 
@@ -144,10 +162,10 @@ class AttributeContainer extends React.Component {
 
         if (idx === -1) { //If ID doesn't exist yet, add it
             this.setState({
-                attributeData: [...this.state.attributeData, {id: attrID, text: value}]
+                attributeData: [...this.state.attributeData, {id: attrID, text: date}]
             });
         } else {
-            copyArr.splice(idx, 1, {id: attrID, text: value}) //Overwrite with new value
+            copyArr.splice(idx, 1, {id: attrID, text: date}) //Overwrite with new value
             this.setState({
                 attributeData: copyArr
             });
