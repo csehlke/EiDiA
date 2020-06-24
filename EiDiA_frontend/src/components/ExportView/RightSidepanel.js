@@ -58,6 +58,8 @@ export default class RightSidePanel extends React.Component {
           <TypeComponent2
             editorState={this.props.editorState}
             variables={this.props.variables}
+            selectedDocs={this.props.selectedDocs}
+            onAction2_2={this.props.onAction2_2 || null}
           />
           <Divider />
           <TypeComponent3
@@ -65,6 +67,7 @@ export default class RightSidePanel extends React.Component {
             onAction2={this.props.onAction3_2}
             open={this.props.open}
             variables={this.props.variables}
+            selectedDocs={this.props.selectedDocs}
           />
       </div>
     );

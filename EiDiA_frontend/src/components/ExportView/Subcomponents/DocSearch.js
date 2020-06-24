@@ -31,24 +31,11 @@ const Column = styled.div`
 export default class DocSearch extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selected:  []
-        };
-        this.addToList = this.addToList.bind(this);
-    }
-
-    addToList(element) {
-        var selectedElems = this.state.selected;
-        if (!selectedElems.includes(element)) {
-            selectedElems.push(element);
-            console.log("select" + element)
-            this.setState({selected: selectedElems})
-        }
     }
 
     render() {
         const listItems = ['Document A', 'Document B', 'Document C']
-        const selectedItems = this.state.selected;
+        const selectedItems = this.props.selectedDocs;
         return(
             <div style={styles.div}>
                 <Row>
@@ -64,7 +51,7 @@ export default class DocSearch extends React.Component {
                                 <DocListItem 
                                     key={value}
                                     id={value}
-                                    onSelect={this.addToList}
+                                    onSelect={this.props.onAction2_2}
                                     />)}
                         </List>
                     </Column>
