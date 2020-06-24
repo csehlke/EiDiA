@@ -53,7 +53,8 @@ class AttributeContainer extends React.Component {
             metaData: [{}],
             wrk: this.loadWorker(),
             textValue: "",
-            snackbarOpen: false
+            dateSnackbarOpen: false,
+            numberSnackbarOpen: false
         }
 
         this.saveTextFieldData = this.saveTextFieldData.bind(this);
@@ -62,7 +63,8 @@ class AttributeContainer extends React.Component {
         this.renderTextFields = this.renderTextFields.bind(this);
         this.renderDateFields = this.renderDateFields.bind(this);
         this.getMetaData = this.getMetaData.bind(this);
-        this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
+        this.handleDateSnackbarClose = this.handleDateSnackbarClose.bind(this);
+        this.handleNumberSnackbarClose = this.handleNumberSnackbarClose.bind(this);
     }
 
     componentDidMount() {
@@ -139,7 +141,28 @@ class AttributeContainer extends React.Component {
 
         } else {
             this.setState({
-                snackbarOpen: true
+                dateSnackbarOpen: true
+            });
+        }
+    }
+
+    saveNumberFieldData(attrID) {
+        let copyArr = this.state.attributeData
+        let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
+        if (!isNaN(Number(this.state.textValue))) {
+            if (idx === -1) { //If ID doesn't exist yet, add it
+                this.setState({
+                    attributeData: [...this.state.attributeData, {id: attrID, text: this.state.textValue}]
+                });
+            } else {
+                copyArr.splice(idx, 1, {id: attrID, text: this.state.textValue}) //If ID exists already, overwrite it with new value
+                this.setState({
+                    attributeData: copyArr
+                });
+            }
+        } else {
+            this.setState({
+                numberSnackbarOpen: true
             });
         }
     }
@@ -227,7 +250,7 @@ class AttributeContainer extends React.Component {
                 onChange={(evt) => this.handleTextFieldOnChange(evt, attrID)}
                 InputProps={{
                     endAdornment: <InputAdornment>
-                        <IconButton onClick={() => this.saveTextFieldData(attrID)}>
+                        <IconButton onClick={() => this.saveNumberFieldData(attrID)}>
                             <RiCropLine/>
                         </IconButton>
                     </InputAdornment>
@@ -262,26 +285,46 @@ class AttributeContainer extends React.Component {
         </Grid>
     }
 
-    handleSnackbarClose() {
+    handleDateSnackbarClose() {
         //Snackbar-Close
         this.setState({
-            snackbarOpen: false,
+            dateSnackbarOpen: false
+        });
+    }
+
+    handleNumberSnackbarClose() {
+        //Snackbar-Close
+        this.setState({
+            numberSnackbarOpen: false
         });
     }
 
     render() {
         let self = this
         let dateAlert = (
-            <Alert severity="error" onClose={this.handleSnackbarClose}>
+            <Alert severity="error" onClose={this.handleDateSnackbarClose}>
                 No date was recognized, please try again!
             </Alert>
         );
-        let snackBar = (
+        let numberAlert = (
+            <Alert severity="error" onClose={this.handleNumberSnackbarClose}>
+                No number was recognized, please try again!
+            </Alert>
+        );
+        let dateSnackBar = (
             <Snackbar
-                open={this.state.snackbarOpen}
+                open={this.state.dateSnackbarOpen}
                 autoHideDuration={5000}
-                onClose={this.handleSnackbarClose}>
+                onClose={this.handleDateSnackbarClose}>
                 {dateAlert}
+            </Snackbar>
+        );
+        let numberSnackBar = (
+            <Snackbar
+                open={this.state.numberSnackbarOpen}
+                autoHideDuration={5000}
+                onClose={this.handleNumberSnackbarClose}>
+                {numberAlert}
             </Snackbar>
         );
         return ( // Render TextFields dynamically from state
@@ -333,7 +376,8 @@ class AttributeContainer extends React.Component {
                         </Button>
                     </Grid>
                 </Grid>
-                {snackBar}
+                {dateSnackBar}
+                {numberSnackBar}
             </Container>
         )
     }
