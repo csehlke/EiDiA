@@ -3,7 +3,6 @@
 import React from 'react';
 import styled from "styled-components";
 
-import {createWorker} from 'tesseract.js';
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -51,7 +50,6 @@ class AttributeContainer extends React.Component {
                 {}
             ],
             metaData: [{}],
-            wrk: this.loadWorker(),
             textValue: "",
             isDateSnackbarOpen: false,
             isNumberSnackbarOpen: false
@@ -74,27 +72,13 @@ class AttributeContainer extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.crop !== this.props.crop) { //When new crop gets added
             (async () => {
-                const {data: {text}} = await this.state.wrk.recognize(this.props.crop); //Do OCR on crop
+                const {data: {text}} = await this.props.ocrWorker.recognize(this.props.crop); //Do OCR on crop
                 console.log(text);
                 this.setState({
                     textValue: text
                 });
             })();
         }
-    }
-
-    loadWorker() { //Initialize Worker only once an reuse it, to save startup time
-        const worker = createWorker({
-            logger: m => console.log(m)
-        });
-
-        (async () => {
-            await worker.load();
-            await worker.loadLanguage('eng');
-            await worker.initialize('eng');
-            //await worker.terminate(); Do not terminate worker so it can be reused
-        })();
-        return worker;
     }
 
     getMetaData(data) { //Get data from MetaData-component

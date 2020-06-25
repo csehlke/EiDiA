@@ -7,6 +7,7 @@ import FileDrop from "../components/upload/FileDrop";
 import TypePicker from "../components/upload/TypePicker";
 import DocPreview from "../components/upload/DocPreview";
 import AttributeContainer from "../components/upload/AttributeContainer";
+import {createWorker} from 'tesseract.js';
 
 const SplitView = styled.div` 
     display: flex;
@@ -28,7 +29,8 @@ export class UploadView extends React.Component {
             picture: '',
             isUploaded: false, //if picture has not been dropped yet
             isNextPressed: false, //Next-button
-            pageTitle: ''
+            pageTitle: '',
+            ocrWorker: this.loadWorker(), // Worker already initializes in UploadView to save startup time in AttributeContainer
         }
 
         this.passPicture = this.passPicture.bind(this);
@@ -65,6 +67,20 @@ export class UploadView extends React.Component {
         this.setState({
             cropBlob: crop
         });
+    }
+
+    loadWorker() { //Initialize Worker only once an reuse it, to save startup time
+        const worker = createWorker({
+            logger: m => console.log(m)
+        });
+
+        (async () => {
+            await worker.load();
+            await worker.loadLanguage('eng');
+            await worker.initialize('eng');
+            //await worker.terminate(); Do not terminate worker so it can be reused
+        })();
+        return worker;
     }
 
     render() {
@@ -104,7 +120,8 @@ export class UploadView extends React.Component {
                         <AttributeContainer picture={this.state.picture}
                                             crop={this.state.cropBlob}
                                             title={this.state.pageTitle}
-                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}
+                                            ocrWorker={this.state.ocrWorker}/>
                     </SplitView>
                 </Page>
             );
