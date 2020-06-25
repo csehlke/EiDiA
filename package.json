@@ -33,8 +33,11 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^3.10.0",
+    "react-dropzone": "^11.0.1",
+    "react-image-crop": "^8.6.4",
     "react-router-dom": "^5.2.0",
     "styled-components": "^5.1.1",
+    "tesseract.js": "^2.1.1",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
@@ -42,6 +45,7 @@
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "clean-webpack-plugin": "0.1.19",
     "clsx": "^1.1.1",
     "css-loader": "^3.6.0",

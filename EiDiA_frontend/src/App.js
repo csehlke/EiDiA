@@ -5,6 +5,7 @@ import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {WelcomeView} from "./views/WelcomeView";
 import {SearchView} from "./views/SearchView";
 import Navigation from "./components/Navigation";
+import {UploadView} from "./views/UploadView";
 
 
 export default class App extends React.Component {
@@ -24,6 +25,12 @@ export default class App extends React.Component {
                 {
                     path: '/search', exact: true, render: () => (
                         <SearchView title={this.state.pageTitle}
+                                    setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                },
+                {
+                    path: '/upload', exact: true, render: () => (
+                        <UploadView title={this.state.pageTitle}
                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                     )
                 }
