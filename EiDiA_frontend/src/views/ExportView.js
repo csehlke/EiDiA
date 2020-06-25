@@ -10,6 +10,22 @@ import {Row, Column, documentMockData, llorem} from '../support files/constants'
 import {convertToRaw} from 'draft-js';
 import { FormatListNumbered } from '@material-ui/icons';
 
+function Dialog(props) {
+    if (props.currentPage == "Select Template") {
+        return <div />
+    }
+    return (
+        <FloatingWindows 
+            open={props.open}
+            onClose={props.onClose}
+            save={props.saveTemplate}
+            currentPage={props.currentPage}
+            selectedDocs={props.selectedDocs}
+            download={props.download}
+        />);
+}
+
+
 export class ExportView extends React.Component {
 
     constructor(props) {
@@ -23,14 +39,15 @@ export class ExportView extends React.Component {
             seen: true,
             open: false,
             variables: [],
-            selectedDocs: []
+            selectedDocs: [],
+            selectedVariable: "",
         };
 
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
         this.onChange = this.onChange.bind(this);
         this.toggleBlockType = this.toggleBlockType.bind(this);
         this.changeView = this.changeView.bind(this);
-        this.onAction3_2 = this.onAction3_2.bind(this);
+        this.setSelectedVariable = this.setSelectedVariable.bind(this);
         this.selectTemplate = this.selectTemplate.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
         this.extractVariables = this.extractVariables.bind(this);
@@ -38,6 +55,8 @@ export class ExportView extends React.Component {
         this.addToList = this.addToList.bind(this);
         this.mapValues = this.mapValues.bind(this);
         this.extractTextFromEditorState = this.extractTextFromEditorState.bind(this);
+        this.downloadDocument = this.downloadDocument.bind(this);
+        this.setValueToVariable = this.setValueToVariable.bind(this);
 
         this.docEditor = React.createRef();
 
@@ -47,19 +66,21 @@ export class ExportView extends React.Component {
                 onAction1_2: this.toggleBlockType,
                 onAction2_2: this.addToList,
                 onAction3_1: this.changeView,
-                onAction3_2: this.onAction3_2
+                onAction3_2: this.setSelectedVariable
             },
             "Edit Template": {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
                 onAction3_1: this.toggleDialog,
-                onAction3_2: this.onAction3_2
+                onAction3_2: this.setSelectedVariable
             },
             "Edit": {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
+                onAction2_2: this.addToList,
                 onAction3_1: this.toggleDialog,
-                onAction3_2: this.onAction3_2
+                onAction3_2: this.setSelectedVariable,
+                onAction3_3: this.setValueToVariable
             }
         }
 
@@ -88,6 +109,15 @@ export class ExportView extends React.Component {
         return documentData;
     }
 
+    setValueToVariable(value) {
+        var newState = this.state;
+        var editorText = this.extractTextFromEditorState(newState.editorState);
+        editorText = editorText.replace(this.state.selectedVariable, value);
+        this.editorText = editorText;
+        newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
+        this.setState(newState);
+    }
+
     mapValues() {
         const variables = this.state.variables;
         const documentData = documentMockData;
@@ -100,7 +130,6 @@ export class ExportView extends React.Component {
             }
         }
         this.editorText = editorText;
-        console.log(editorText);
         newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
         this.setState(newState);
     }
@@ -154,7 +183,11 @@ export class ExportView extends React.Component {
     onChange(editorState) {
         var newState = this.state;
         newState.editorState = editorState;
-        newState.variables = this.extractVariables(editorState);
+        var tmp_set = new Set(newState.variables);
+        var new_set = new Set(this.extractVariables(editorState));
+        var final_set = new Set([...tmp_set, ...new_set]);
+        newState.variables = Array.from(final_set);
+        console.log(final_set);
         this.setState(newState);
     }
 
@@ -185,8 +218,10 @@ export class ExportView extends React.Component {
         }
     }
 
-    onAction3_2(){
-        console.log("clicked Button 2")
+    setSelectedVariable(event){
+        var newState = this.state;
+        newState.selectedVariable = event.target.value;
+        this.setState(newState);
     }
 
     saveTemplate() {
@@ -195,6 +230,16 @@ export class ExportView extends React.Component {
         newState.currentPage = "Select Template";
         this.setState(newState);
     }
+
+
+    downloadDocument() {
+        let editorText = this.extractTextFromEditorState(this.state.editorState);
+        let pdfMakeObject = {
+            content: editorText.split("\n")
+        };
+        console.log(pdfMakeObject);
+    }
+
 
     render() {
         const currentPage=this.state.currentPage;
@@ -226,14 +271,23 @@ export class ExportView extends React.Component {
                             onAction2_2={actionSet.onAction2_2 || null}
                             onAction3_1={actionSet.onAction3_1 || null}
                             onAction3_2={actionSet.onAction3_2 || null}
+                            onAction3_3={actionSet.onAction3_3 || null}
                             editorState={this.state.editorState}
                             variables={this.state.variables}
                             selectedDocs={this.state.selectedDocs}
+                            selectedVariable={this.state.selectedVariable}
                         />
                     </Column>
                 </Row>
             </Page>
-            <FloatingWindows open={this.state.open} onClose={this.toggleDialog} save={this.saveTemplate}/>
+            <Dialog 
+                open={this.state.open} 
+                onClose={this.toggleDialog} 
+                save={this.saveTemplate} 
+                currentPage={this.state.currentPage}
+                selectedDocs={this.state.selectedDocs}
+                download={this.downloadDocument}    
+            />
             </div>
         );
     }

@@ -32,33 +32,50 @@ function createData(variable, value, source) {
     return { variable, value, source };
   }
 
-function convertData(arr) {
+function convertData(arr, value=null) {
     var out = [];
     for (var i = 0; i < arr.length; i++) {
-        out.push(createData(arr[i], "BMW", '05.05.2020'));
+        if (arr[i] == "$VARIABLE1") {
+            out.push(createData(arr[i], "BMW", 'DocumentA/$VARIABLE1'));
+        } else {
+            out.push(createData(arr[i], value, null));
+        }
     }
     return out;
 }
 
 export default class SetValueSection extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            input: ""
+        }
+        this.handleChangeTextfield = this.handleChangeTextfield.bind(this);
+        this.setValueToVariable = this.setValueToVariable.bind(this);
+    }
 
-    handleChange(event) {
-        console.log(event.target.value);
+    setValueToVariable() {
+        this.props.onAction3(this.state.input);
+    }
+
+
+    handleChangeTextfield(event) {
+        this.setState({input: event.target.value});
     }
 
     render() {
-        const variables = this.props.variables
+        const variables = this.props.variables;
         const rows = convertData(variables);
         return(
             <div>
                 <FormControl style={{margin: "5px"}}>
-                    <Select variant="outlined" onChange={this.handleChange}>
+                    <Select variant="outlined" onChange={this.props.onAction2}>
                         {variables.map((variable) => <MenuItem key={variable} value={variable}>{variable}</MenuItem>)}
                     </Select>
                     <FormHelperText>Variables</FormHelperText>
                 </FormControl>
-                <TextField style={{margin: "5px"}} variant="outlined" helperText="e.g. max(Doc_A/VALUE_A)" />
-                <IconButton style={{margin: "5px"}} color="primary"><AddIcon/></IconButton>
+                <TextField style={{margin: "5px"}} variant="outlined" helperText="e.g. 01.01.2020" onChange={this.handleChangeTextfield}/>
+                <IconButton style={{margin: "5px"}} color="primary" onClick={this.setValueToVariable}><AddIcon/></IconButton>
                 <TableContainer component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead>
@@ -87,9 +104,9 @@ export default class SetValueSection extends React.Component {
                         variant="contained"
                         color="primary"
                         disableElevation
+                        onClick={this.props.onAction1}
                     >Export</Button>
                 </div>
-
             </div>
         )
     }
