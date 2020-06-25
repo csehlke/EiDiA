@@ -53,8 +53,8 @@ class AttributeContainer extends React.Component {
             metaData: [{}],
             wrk: this.loadWorker(),
             textValue: "",
-            dateSnackbarOpen: false,
-            numberSnackbarOpen: false
+            isDateSnackbarOpen: false,
+            isNumberSnackbarOpen: false
         }
 
         this.saveTextFieldData = this.saveTextFieldData.bind(this);
@@ -141,7 +141,7 @@ class AttributeContainer extends React.Component {
 
         } else {
             this.setState({
-                dateSnackbarOpen: true
+                isDateSnackbarOpen: true
             });
         }
     }
@@ -162,7 +162,7 @@ class AttributeContainer extends React.Component {
             }
         } else {
             this.setState({
-                numberSnackbarOpen: true
+                isNumberSnackbarOpen: true
             });
         }
     }
@@ -288,14 +288,14 @@ class AttributeContainer extends React.Component {
     handleDateSnackbarClose() {
         //Snackbar-Close
         this.setState({
-            dateSnackbarOpen: false
+            isDateSnackbarOpen: false
         });
     }
 
     handleNumberSnackbarClose() {
         //Snackbar-Close
         this.setState({
-            numberSnackbarOpen: false
+            isNumberSnackbarOpen: false
         });
     }
 
@@ -313,7 +313,7 @@ class AttributeContainer extends React.Component {
         );
         let dateSnackBar = (
             <Snackbar
-                open={this.state.dateSnackbarOpen}
+                open={this.state.isDateSnackbarOpen}
                 autoHideDuration={5000}
                 onClose={this.handleDateSnackbarClose}>
                 {dateAlert}
@@ -321,7 +321,7 @@ class AttributeContainer extends React.Component {
         );
         let numberSnackBar = (
             <Snackbar
-                open={this.state.numberSnackbarOpen}
+                open={this.state.isNumberSnackbarOpen}
                 autoHideDuration={5000}
                 onClose={this.handleNumberSnackbarClose}>
                 {numberAlert}
