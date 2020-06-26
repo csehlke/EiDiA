@@ -8,6 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import SmartDropDownBox from "../SmartDropDownBox";
 import Box from "@material-ui/core/Box";
 
+import UploadService from '../../services/UploadService';
+
 const Container = styled.div
     // Outer Container
     `
@@ -31,8 +33,6 @@ class TypePicker extends React.Component {
 
         this.state = {
             documentTypes: [
-                {name: 'type1', id: '1'},
-                {name: 'type2', id: '2'}
             ],
             documentTypeId: '',
             isNextButtonDisabled: true, // true, if "next"-button is disabled
@@ -43,6 +43,18 @@ class TypePicker extends React.Component {
         this.createNewDocumentType = this.createNewDocumentType.bind(this);
         this.handleNextButtonOnClick = this.handleNextButtonOnClick.bind(this);
         this.assignRecord = this.assignRecord.bind(this);
+    }
+
+    componentDidMount() {
+        UploadService.getDocumentTypes().then((data) => {
+            let arr =Object.values(data)[0]
+            arr.forEach(element => this.setState({
+                documentTypes: [...this.state.documentTypes, element] //Append to dropdown-menu
+            }))
+        }).catch((e) => {
+            console.error(e);
+        });
+        console.log(this.state.documentTypes)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
