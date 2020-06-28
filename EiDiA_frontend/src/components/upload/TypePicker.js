@@ -32,8 +32,7 @@ class TypePicker extends React.Component {
         super(props);
 
         this.state = {
-            documentTypes: [
-            ],
+            documentTypes: [],
             selectedDocumentTypeId: '',
             isNextButtonDisabled: true, // true, if "next"-button is disabled
             hasAutoCompleteValue: false // true, if autoComplete has value
