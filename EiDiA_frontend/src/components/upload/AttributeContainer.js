@@ -17,6 +17,8 @@ import {Button} from "@material-ui/core";
 import {RiCropLine} from "react-icons/all";
 import Alert from "@material-ui/lab/Alert";
 
+import UploadService from '../../services/UploadService';
+
 
 const Container = styled.div
     // Outer Container
@@ -67,6 +69,12 @@ class AttributeContainer extends React.Component {
 
     componentDidMount() {
         this.props.setTitle("Attribute Picker");
+
+        UploadService.listAttributes(this.props.selectedDocumentTypeId).then((data) => {
+            console.log(data)
+        }).catch((e) => {
+            console.error(e);
+        });
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {

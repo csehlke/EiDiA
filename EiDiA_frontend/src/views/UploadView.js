@@ -31,6 +31,7 @@ export class UploadView extends React.Component {
             isNextPressed: false, //Next-button
             pageTitle: '',
             ocrWorker: this.loadWorker(), // Worker already initializes in UploadView to save startup time in AttributeContainer
+            selectedDocumentTypeId: ''
         }
 
         this.passPicture = this.passPicture.bind(this);
@@ -121,7 +122,8 @@ export class UploadView extends React.Component {
                                             crop={this.state.cropBlob}
                                             title={this.state.pageTitle}
                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}
-                                            ocrWorker={this.state.ocrWorker}/>
+                                            ocrWorker={this.state.ocrWorker}
+                                            selectedDocumentTypeId={this.state.selectedDocumentTypeId}/>
                     </SplitView>
                 </Page>
             );
