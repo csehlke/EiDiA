@@ -34,7 +34,7 @@ class TypePicker extends React.Component {
         this.state = {
             documentTypes: [
             ],
-            documentTypeId: '',
+            selectedDocumentTypeId: '',
             isNextButtonDisabled: true, // true, if "next"-button is disabled
             hasAutoCompleteValue: false // true, if autoComplete has value
         }
@@ -47,14 +47,12 @@ class TypePicker extends React.Component {
 
     componentDidMount() {
         UploadService.getDocumentTypes().then((data) => {
-            let arr =Object.values(data)[0]
-            arr.forEach(element => this.setState({
-                documentTypes: [...this.state.documentTypes, element] //Append to dropdown-menu
-            }))
+            this.setState({
+                documentTypes: [...data.documentTypes],
+            });
         }).catch((e) => {
             console.error(e);
         });
-        console.log(this.state.documentTypes)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -69,7 +67,7 @@ class TypePicker extends React.Component {
 
     handleDocumentTypeChange(event, value) {
         this.setState({
-            documentTypeId: value.id,
+            selectedDocumentTypeId: value.id,
         });
 
         if (this.props.picUploaded) { //Check if image has been uploaded yet
@@ -89,7 +87,7 @@ class TypePicker extends React.Component {
     }
 
     handleNextButtonOnClick() {
-        this.props.callbackUploadView(this.state.documentTypeId);
+        this.props.callbackUploadView(this.state.selectedDocumentTypeId);
     }
 
     assignRecord() {
