@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import SmartDropDownBox from "../SmartDropDownBox";
 import Box from "@material-ui/core/Box";
 
-import UploadService from '../../services/UploadService';
+import CommonService from '../../services/CommonService';
 
 const Container = styled.div
     // Outer Container
@@ -46,7 +46,7 @@ class TypePicker extends React.Component {
     }
 
     componentDidMount() {
-        UploadService.getDocumentTypes().then((data) => {
+        CommonService.getAllDocumentTypes().then((data) => {
             this.setState({
                 documentTypes: [...data.documentTypes],
             });
