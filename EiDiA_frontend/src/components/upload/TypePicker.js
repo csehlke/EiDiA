@@ -8,6 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import SmartDropDownBox from "../SmartDropDownBox";
 import Box from "@material-ui/core/Box";
 
+import CommonService from '../../services/CommonService';
+
 const Container = styled.div
     // Outer Container
     `
@@ -30,11 +32,8 @@ class TypePicker extends React.Component {
         super(props);
 
         this.state = {
-            documentTypes: [
-                {name: 'type1', id: '1'},
-                {name: 'type2', id: '2'}
-            ],
-            documentTypeId: '',
+            documentTypes: [],
+            selectedDocumentTypeId: '',
             isNextButtonDisabled: true, // true, if "next"-button is disabled
             hasAutoCompleteValue: false // true, if autoComplete has value
         }
@@ -43,6 +42,16 @@ class TypePicker extends React.Component {
         this.createNewDocumentType = this.createNewDocumentType.bind(this);
         this.handleNextButtonOnClick = this.handleNextButtonOnClick.bind(this);
         this.assignRecord = this.assignRecord.bind(this);
+    }
+
+    componentDidMount() {
+        CommonService.getAllDocumentTypes().then((data) => {
+            this.setState({
+                documentTypes: [...data.documentTypes],
+            });
+        }).catch((e) => {
+            console.error(e);
+        });
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -57,7 +66,7 @@ class TypePicker extends React.Component {
 
     handleDocumentTypeChange(event, value) {
         this.setState({
-            documentTypeId: value.id,
+            selectedDocumentTypeId: value.id,
         });
 
         if (this.props.picUploaded) { //Check if image has been uploaded yet
@@ -77,7 +86,7 @@ class TypePicker extends React.Component {
     }
 
     handleNextButtonOnClick() {
-        this.props.callbackUploadView(this.state.documentTypeId);
+        this.props.callbackUploadView(this.state.selectedDocumentTypeId);
     }
 
     assignRecord() {

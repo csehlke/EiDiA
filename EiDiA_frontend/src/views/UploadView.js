@@ -55,7 +55,7 @@ export class UploadView extends React.Component {
 
     getDocumentTypeId(documentTypeId) { //Callback to be able get Document Type + Assigned Record
         this.setState({
-            documentTypeId: documentTypeId,
+            selectedDocumentTypeId: documentTypeId,
             isNextPressed: true
             //assignedRecord:
 
