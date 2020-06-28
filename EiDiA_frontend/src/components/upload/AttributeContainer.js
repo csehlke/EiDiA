@@ -36,18 +36,7 @@ class AttributeContainer extends React.Component {
         super(props);
 
         this.state = {
-            attributes: [
-                {name: 'Attr1', type: 'text', id: '1'},
-                {name: 'Attr2', type: 'date', id: '2'},
-                {name: 'Attr3', type: 'number', id: '3'},
-                {name: 'Attr4', type: 'date', id: '4'},
-                {name: 'Attr5', type: 'text', id: '5'},
-                {name: 'Attr6', type: 'number', id: '6'},
-                {name: 'Attr7', type: 'text', id: '7'},
-                {name: 'Attr8', type: 'text', id: '8'},
-                {name: 'Attr9', type: 'date', id: '9'},
-                {name: 'Attr10', type: 'number', id: '10'}
-            ],
+            attributes: [],
             attributeData: [
                 {}
             ],
@@ -71,7 +60,9 @@ class AttributeContainer extends React.Component {
         this.props.setTitle("Attribute Picker");
 
         UploadService.listAttributes(this.props.selectedDocumentTypeId).then((data) => {
-            console.log(data)
+            this.setState({
+                attributes: [...data.attributeTypes]
+            });
         }).catch((e) => {
             console.error(e);
         });
@@ -327,19 +318,19 @@ class AttributeContainer extends React.Component {
                     justify="space-evenly"
                     alignItems="flex-end">
                     {this.state.attributes.map(function (item) {
-                        if (item.type === 'text') {
+                        if (item.dataType === 'text') {
                             return (
                                 <div key={item.id}>
                                     {self.renderTextFields(item.name, item.id)}
                                 </div>
                             );
-                        } else if (item.type === 'number') {
+                        } else if (item.dataType === 'number') {
                             return (
                                 <div key={item.id}>
                                     {self.renderNumberFields(item.name, item.id)}
                                 </div>
                             );
-                        } else if (item.type === 'date') {
+                        } else if (item.dataType === 'date') {
                             return (
                                 <div key={item.id}>
                                     {self.renderDateFields(item.name, item.id)}
