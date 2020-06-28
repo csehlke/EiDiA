@@ -24,7 +24,25 @@ export default class App extends React.Component {
                     )
                 },
                 {
+                    path: '/browse', exact: true, render: () => (
+                        <DefaultView title={this.state.pageTitle}
+                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                },
+                {
                     path: '/permissionRequests', exact: true, render: () => (
+                        <DefaultView title={this.state.pageTitle}
+                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                },
+                {
+                    path: '/record', exact: true, render: () => (
+                        <DefaultView title={this.state.pageTitle}
+                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                },
+                {
+                    path: '/record/:id', render: () => (
                         <DefaultView title={this.state.pageTitle}
                                      setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                     )
@@ -78,4 +96,3 @@ export default class App extends React.Component {
         );
     }
 }
-
