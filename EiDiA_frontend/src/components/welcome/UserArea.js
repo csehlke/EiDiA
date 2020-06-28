@@ -61,10 +61,10 @@ export default class UserArea extends React.Component {
                         <Image src={this.state.picture} alt={"Profile Picture"}/>}
                 </Picture>
                 <NameRow>
-                    {[this.state.fistName, this.state.lastName].join(" ")}
+                    {[this.state.fistName, this.state.lastName].filter(value => value).join(" ")}
                 </NameRow>
                 <WorkRow>
-                    {[this.state.workPosition, this.state.locatedAt].join(", ")}
+                    {[this.state.workPosition, this.state.locatedAt].filter(value => value).join(", ")}
                 </WorkRow>
                 <LinkRow>
                     <Link to={'/settings'}>
