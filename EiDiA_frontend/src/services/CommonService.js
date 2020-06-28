@@ -2,16 +2,15 @@
 
 import HttpService from './HttpService';
 
+import {baseURL} from '../../../constants.js'
+
 export default class CommonService { //Contains API-calls that need to be accessed from multiple components
     constructor() {
     }
-
-    static docURL() {return 'http://localhost:3000/model/document/list' }
-    static attrURL() {return 'http://localhost:3000/model/attribute/list' }
-
+    
     static getAllDocumentTypes(){
         return new Promise((resolve, reject) => {
-            HttpService.get(this.docURL(), function(data) {
+            HttpService.get(baseURL+'/model/document/list', function(data) {
                 resolve(data);
             }, function(textStatus) {
                 reject(textStatus);
@@ -21,7 +20,7 @@ export default class CommonService { //Contains API-calls that need to be access
 
     static getAllAttributeTypes(){
         return new Promise((resolve, reject) => {
-            HttpService.get(this.attrURL(), function(data) {
+            HttpService.get(baseURL+'/model/attribute/list', function(data) {
                 resolve(data);
             }, function(textStatus) {
                 reject(textStatus);
