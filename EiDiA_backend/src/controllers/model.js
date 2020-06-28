@@ -44,7 +44,7 @@ const listAttributeTypes = (req, res) => {
         });
 };
 
-const listAttributes = (req, res) => { // Return attributes based on selected DocumentTypeId
+const listAttributeTypesByDocumentId = (req, res) => { // Return attributes based on selected DocumentTypeId
     AttributeTypeModel.find({'documentTypeId': req.params.selectedDocumentTypeId})
         .then(attributeTypes => {
             let response = attributeTypes.map(attributeType => {
@@ -72,5 +72,5 @@ module.exports = {
     listDocumentTypes,
     listAttributeTypes,
     createDocumentType,
-    listAttributes
+    listAttributeTypesByDocumentId
 };
