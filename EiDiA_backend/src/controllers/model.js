@@ -44,6 +44,26 @@ const listAttributeTypes = (req, res) => {
         });
 };
 
+const listAttributes = (req, res) => { // Return attributes based on selected DocumentTypeId
+    AttributeTypeModel.find({'documentTypeId': req.params.selectedDocumentTypeId})
+        .then(attributeTypes => {
+            let response = attributeTypes.map(attributeType => {
+                return {
+                    id: attributeType._id,
+                    name: attributeType.name,
+                    dataType: attributeType.dataType,
+                };
+            });
+            res.status(200).json({attributeTypes: response});
+        })
+        .catch(error => {
+            res.status(400).json({
+                error: 'Internal server error',
+                message: error.message,
+            });
+        });
+};
+
 const createDocumentType = (req, res) => {
     res.status(200).json({response: "dummy response"});
 };
@@ -52,4 +72,5 @@ module.exports = {
     listDocumentTypes,
     listAttributeTypes,
     createDocumentType,
+    listAttributes
 };
