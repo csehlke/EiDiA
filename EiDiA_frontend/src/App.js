@@ -6,6 +6,7 @@ import {WelcomeView} from "./views/WelcomeView";
 import {SearchView} from "./views/SearchView";
 import Navigation from "./components/Navigation";
 import {UploadView} from "./views/UploadView";
+import {DefaultView} from "./views/DefaultView";
 
 
 export default class App extends React.Component {
@@ -23,9 +24,21 @@ export default class App extends React.Component {
                     )
                 },
                 {
+                    path: '/permissionRequests', exact: true, render: () => (
+                        <DefaultView title={this.state.pageTitle}
+                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                },
+                {
                     path: '/search', exact: true, render: () => (
                         <SearchView title={this.state.pageTitle}
                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                },
+                {
+                    path: '/settings', exact: true, render: () => (
+                        <DefaultView title={this.state.pageTitle}
+                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                     )
                 },
                 {
@@ -33,7 +46,7 @@ export default class App extends React.Component {
                         <UploadView title={this.state.pageTitle}
                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                     )
-                }
+                },
             ],
             pageTitle: ''
         };
