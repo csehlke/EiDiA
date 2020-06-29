@@ -10,7 +10,6 @@ import {WelcomeView} from "./views/WelcomeView";
 import Navigation from "./components/Navigation";
 import UserService from "./services/UserService";
 
-
 export default class App extends React.Component {
 
     constructor(props) {
@@ -60,7 +59,7 @@ export default class App extends React.Component {
                         if (UserService.isAuthenticated()) {
                             return (
                                 <DefaultView title={this.state.pageTitle}
-                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                             )
                         } else {
                             return (<Redirect to={'/login'}/>)
@@ -69,62 +68,62 @@ export default class App extends React.Component {
                 },
                 {
                     path: '/record', exact: true, render: () => {
-                    if (UserService.isAuthenticated()) {
-                        return (
-                            <DefaultView title={this.state.pageTitle}
-                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                        )
-                    } else {
-                        return (<Redirect to={'/login'}/>)
-                    }
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <DefaultView title={this.state.pageTitle}
+                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
                     }
                 },
                 {
                     path: '/record/:id', render: () => {
-                    if (UserService.isAuthenticated()) {
-                        return (
-                            <DefaultView title={this.state.pageTitle}
-                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                        )
-                    } else {
-                        return (<Redirect to={'/login'}/>)
-                    }
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <DefaultView title={this.state.pageTitle}
+                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
                     }
                 },
                 {
                     path: '/search', exact: true, render: () => {
-                    if (UserService.isAuthenticated()) {
-                        return (
-                            <SearchView title={this.state.pageTitle}
-                                    setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                        )
-                    } else {
-                        return (<Redirect to={'/login'}/>)
-                    }
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <SearchView title={this.state.pageTitle}
+                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
                     }
                 },
                 {
                     path: '/settings', exact: true, render: () => {
-                    if (UserService.isAuthenticated()) {
-                        return (
-                            <DefaultView title={this.state.pageTitle}
-                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                        )
-                    } else {
-                        return (<Redirect to={'/login'}/>)
-                    }
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <DefaultView title={this.state.pageTitle}
+                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
                     }
                 },
                 {
                     path: '/upload', exact: true, render: () => {
-                    if (UserService.isAuthenticated()) {
-                        return (
-                            <UploadView title={this.state.pageTitle}
-                                    setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                        )
-                    } else {
-                        return (<Redirect to={'/login'}/>)
-                    }
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <UploadView title={this.state.pageTitle}
+                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
                     }
                 },
             ],
