@@ -15,7 +15,7 @@ class DatePicker extends React.Component {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                     disableToolbar
-                    disableFuture
+                    autoOk
                     initialFocusedDate=""
                     inputVariant="outlined"
                     variant="inline"
@@ -26,8 +26,8 @@ class DatePicker extends React.Component {
                     fullWidth
                     disabled={this.props.disabled ? this.props.disabled : false}
                     label={this.props.label}
-                    maxDate={this.props.maxDate}
-                    minDate={this.props.minDate}
+                    maxDate={this.props.maxDate ? this.props.maxDate : undefined}
+                    minDate={this.props.minDate ? this.props.minDate : undefined}
                     value={this.props.value}
                     onChange={this.props.onChange}
                     style={{margin: '0.5em'}}
