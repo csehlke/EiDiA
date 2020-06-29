@@ -9,13 +9,11 @@ export default class UploadService {
 
     static listAttributes(documentTypeID) {
         return new Promise((resolve, reject) => {
-            HttpService.get(baseURL + '/upload/attributes/get/' + documentTypeID, function (data) {
+            HttpService.get(baseURL + '/model/attribute/list/' + documentTypeID, function (data) {
                 resolve(data);
             }, function (textStatus) {
                 reject(textStatus);
             });
         });
     }
-
-
 }
