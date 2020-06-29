@@ -2,6 +2,7 @@
 
 import React from 'react';
 import FileTable from "../filetable/FileTable";
+import PropTypes from "prop-types";
 
 export default class SearchResults extends React.Component {
 
@@ -17,4 +18,8 @@ export default class SearchResults extends React.Component {
             </div>
         );
     }
+}
+
+SearchResults.propTypes = {
+    table: PropTypes.array.isRequired,
 }
