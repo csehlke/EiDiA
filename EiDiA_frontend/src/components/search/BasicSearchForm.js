@@ -102,12 +102,17 @@ class BasicSearchForm extends React.Component {
     }
 
     handleSearch() {
-        // TODO send search request
-        console.log("here the basic search is triggered\n" + "recordId: " + this.state.recordId +
-            "\ndocumentTypeId: " + this.state.documentTypeId +
-            "\nbetween: " + this.state.dateFrom + " and " + this.state.dateTo +
-            "\ntext: " + this.state.fullText +
-            "\nusername: " + this.state.username);
+        this.props.onSearch({
+            type: 'basic',
+            values: {
+                recordId: this.state.recordId !== '' ? this.state.recordId : null,
+                documentTypeId: this.state.documentTypeId !== '' ? this.state.documentTypeId : null,
+                dateFrom: this.state.dateFrom,
+                dateTo: this.state.dateTo,
+                fullText: this.state.fullText !== '' ? this.state.fullText : null,
+                username: this.state.username !== '' ? this.state.username : null,
+            }
+        });
     }
 
     render() {
@@ -192,4 +197,5 @@ BasicSearchForm.propTypes = {
     records: PropTypes.array.isRequired,
     documentTypes: PropTypes.array.isRequired,
     users: PropTypes.array.isRequired,
+    onSearch: PropTypes.func.isRequired,
 }

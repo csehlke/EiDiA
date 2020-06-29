@@ -5,6 +5,10 @@ import {Tab, Tabs} from "@material-ui/core";
 import BasicSearchForm from "./BasicSearchForm";
 import AdvancedSearchForm from "./advancedSearch/AdvancedSearchForm";
 import styled from "styled-components";
+import CommonService from "../../services/CommonService";
+import UserService from "../../services/UserService";
+import RecordService from "../../services/RecordService";
+import PropTypes from "prop-types";
 
 const Background = styled.div`
     background-color: #EDEDED;
@@ -17,35 +21,53 @@ class SearchForm extends React.Component {
         super(props);
 
         this.state = {
-            value: 0,
-            documentTypes: [
-                {name: 'AA', id: '1'},
-                {name: 'BB', id: '2'}],
-            attributeTypes: [
-                {name: 'attributeText1', type: 'text', id: '1'},
-                {name: 'attributeDate2', type: 'date', id: '2'},
-                {name: 'attributeNumber3', type: 'number', id: '3'},
-                {name: 'attributeText4', type: 'text', id: '4'},
-            ],
-            records: [
-                {name: 'BMW', id: '1'},
-                {name: 'TUM', id: '2'}],
-            users: [
-                {name: 'user1', username: 'username1'},
-                {name: 'user2', username: 'username2'},
-            ],
+            tabValue: 0,
+            documentTypes: [],
+            attributeTypes: [],
+            records: [],
+            users: [],
         }
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
     }
 
     componentDidMount() {
-        // TODO get Data from Backend
+        CommonService.getAllDocumentTypes().then((data) => {
+            this.setState({
+                documentTypes: [...data.documentTypes],
+            });
+        }).catch((e) => {
+            console.error(e);
+        });
+
+        CommonService.getAllAttributeTypes().then((data) => {
+            this.setState({
+                attributeTypes: [...data.attributeTypes],
+            });
+        }).catch((e) => {
+            console.error(e);
+        });
+
+        UserService.getAllUsernames().then((data) => {
+            this.setState({
+                users: [...data.users],
+            });
+        }).catch((e) => {
+            console.error(e);
+        });
+
+        RecordService.getAllRecords().then((data) => {
+            this.setState({
+                records: [...data.records],
+            });
+        }).catch((e) => {
+            console.error(e);
+        });
     }
 
-    handleChange(event, newValue) {
+    handleTabChange(event, newTabValue) {
         this.setState({
-            value: newValue
+            tabValue: newTabValue
         });
     };
 
@@ -53,21 +75,23 @@ class SearchForm extends React.Component {
         return (
             <Background>
                 <Tabs
-                    value={this.state.value}
+                    value={this.state.tabValue}
                     indicatorColor="primary"
                     textColor="primary"
-                    onChange={this.handleChange}>
+                    onChange={this.handleTabChange}>
                     <Tab label="Basic Search"/>
                     <Tab label="Advanced Search"/>
                 </Tabs>
-                {this.state.value === 0 ?
+                {this.state.tabValue === 0 ?
                     <BasicSearchForm
                         records={this.state.records}
                         documentTypes={this.state.documentTypes}
-                        users={this.state.users}/> :
+                        users={this.state.users}
+                        onSearch={this.props.onSearch}/> :
                     <AdvancedSearchForm
                         documentTypes={this.state.documentTypes}
-                        attributeTypes={this.state.attributeTypes}/>
+                        attributeTypes={this.state.attributeTypes}
+                        onSearch={this.props.onSearch}/>
                 }
             </Background>
         );
@@ -75,3 +99,7 @@ class SearchForm extends React.Component {
 }
 
 export default SearchForm;
+
+SearchForm.propTypes = {
+    onSearch: PropTypes.func.isRequired,
+}

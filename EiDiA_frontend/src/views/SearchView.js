@@ -19,20 +19,35 @@ export class SearchView extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            table: [],
+        }
+
+        this.onSearch = this.onSearch.bind(this);
     }
 
     componentDidMount() {
         this.props.setTitle("Intelligent Search");
     }
 
+    onSearch(search) {
+        // TODO handel search
+        switch (search.type) {
+            case 'basic':
+            case 'advanced':
+            default:
+        }
+    }
+
     render() {
         return (
             <Page>
                 <Search>
-                    <SearchForm/>
+                    <SearchForm onSearch={this.onSearch}/>
                 </Search>
                 <Result>
-                    <SearchResults/>
+                    <SearchResults table={this.state.table}/>
                 </Result>
             </Page>
         );
