@@ -322,6 +322,7 @@ const listUsers = (req, res) => {
             let response = users.map(user => {
                 const name = [user.firstName, user.lastName].filter(a => a).join(" "); // First and Last Name are not required
                 return {
+                    id: user._id,
                     username: user.username,
                     name: name ? name : user.username,
                 };
