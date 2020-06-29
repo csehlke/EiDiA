@@ -5,6 +5,7 @@ import Page from "../components/Page";
 import styled from "styled-components";
 import SearchResults from "../components/search/SearchResults";
 import SearchForm from "../components/search/SearchForm";
+import SearchService from "../services/SearchService";
 
 const Result = styled.div`
     width: 100%;
@@ -32,10 +33,25 @@ export class SearchView extends React.Component {
     }
 
     onSearch(search) {
-        // TODO handel search
         switch (search.type) {
             case 'basic':
+                SearchService.getBasicSearchResult(search.searchConstraints).then((data) => {
+                    this.setState({
+                        table: [...data.table],
+                    });
+                }).catch((e) => {
+                    console.error(e);
+                });
+                break;
             case 'advanced':
+                SearchService.getAdvancedSearchResult(search.searchConstraints).then((data) => {
+                    this.setState({
+                        table: [...data.table],
+                    });
+                }).catch((e) => {
+                    console.error(e);
+                });
+                break;
             default:
         }
     }

@@ -14,27 +14,30 @@ export default class HttpService {
         fetch(url, {
             method: 'GET',
             headers: header
-        }).then((resp) => {
-            if (this.checkIfUnauthorized(resp)) { //redirects to login if unauthorized
-                window.localStorage.removeItem('jwtToken') //clear token if unauthorized
-                window.location = "/#login";
-            } else {
-                return resp.json();
-            }
-        }).then((resp) => {
-            if (typeof resp === "undefined") {
-                console.log("User is not authorized")
-            } else if (resp.error) {
-                onError(resp.error);
-            } else {
-                if (resp.hasOwnProperty('token')) {
-                    window.localStorage['jwtToken'] = resp.token;
+        })
+            .then((resp) => {
+                if (this.checkIfUnauthorized(resp)) { //redirects to login if unauthorized
+                    window.localStorage.removeItem('jwtToken') //clear token if unauthorized
+                    window.location = "/#login";
+                } else {
+                    return resp.json();
                 }
-                onSuccess(resp);
-            }
-        }).catch((e) => {
-            onError(e.message);
-        });
+            })
+            .then((resp) => {
+                if (typeof resp === "undefined") {
+                    console.log("User is not authorized")
+                } else if (resp.error) {
+                    onError(resp.error);
+                } else {
+                    if (resp.hasOwnProperty('token')) {
+                        window.localStorage['jwtToken'] = resp.token;
+                    }
+                    onSuccess(resp);
+                }
+            })
+            .catch((e) => {
+                onError(e.message);
+            });
     }
 
     static put(url, data, onSuccess, onError) {
@@ -49,26 +52,29 @@ export default class HttpService {
             method: 'PUT',
             headers: header,
             body: JSON.stringify(data)
-        }).then((resp) => {
-            if (this.checkIfUnauthorized(resp)) {
-                window.localStorage.removeItem('jwtToken') //clear token if unauthorized
-                window.location = "/#login";
-                return;
-            } else {
-                return resp.json();
-            }
-        }).then((resp) => {
-            if (resp.error) {
-                onError(resp.error);
-            } else {
-                if (resp.hasOwnProperty('token')) {
-                    window.localStorage['jwtToken'] = resp.token;
+        })
+            .then((resp) => {
+                if (this.checkIfUnauthorized(resp)) {
+                    window.localStorage.removeItem('jwtToken') //clear token if unauthorized
+                    window.location = "/#login";
+                    return;
+                } else {
+                    return resp.json();
                 }
-                onSuccess(resp);
-            }
-        }).catch((e) => {
-            onError(e.message);
-        });
+            })
+            .then((resp) => {
+                if (resp.error) {
+                    onError(resp.error);
+                } else {
+                    if (resp.hasOwnProperty('token')) {
+                        window.localStorage['jwtToken'] = resp.token;
+                    }
+                    onSuccess(resp);
+                }
+            })
+            .catch((e) => {
+                onError(e.message);
+            });
     }
 
     static post(url, data, onSuccess, onError) {
@@ -83,26 +89,29 @@ export default class HttpService {
             method: 'POST',
             headers: header,
             body: JSON.stringify(data)
-        }).then((resp) => {
-            if (this.checkIfUnauthorized(resp)) {
-                window.localStorage.removeItem('jwtToken') //clear token if unauthorized
-                window.location = "/#login";
-                return;
-            } else {
-                return resp.json();
-            }
-        }).then((resp) => {
-            if (resp.error) {
-                onError(resp.error);
-            } else {
-                if (resp.hasOwnProperty('token')) {
-                    window.localStorage['jwtToken'] = resp.token;
+        })
+            .then((resp) => {
+                if (this.checkIfUnauthorized(resp)) {
+                    window.localStorage.removeItem('jwtToken') //clear token if unauthorized
+                    window.location = "/#login";
+                    return;
+                } else {
+                    return resp.json();
                 }
-                onSuccess(resp);
-            }
-        }).catch((e) => {
-            onError(e.message);
-        });
+            })
+            .then((resp) => {
+                if (resp.error) {
+                    onError(resp.error);
+                } else {
+                    if (resp.hasOwnProperty('token')) {
+                        window.localStorage['jwtToken'] = resp.token;
+                    }
+                    onSuccess(resp);
+                }
+            })
+            .catch((e) => {
+                onError(e.message);
+            });
     }
 
     static remove(url, onSuccess, onError) {
@@ -115,23 +124,26 @@ export default class HttpService {
         fetch(url, {
             method: 'DELETE',
             headers: header
-        }).then((resp) => {
-            if (this.checkIfUnauthorized(resp)) {
-                window.localStorage.removeItem('jwtToken') //clear token if unauthorized
-                window.location = "/#login";
-                return;
-            } else {
-                return resp.json();
-            }
-        }).then((resp) => {
-            if (resp.error) {
-                onError(resp.error);
-            } else {
-                onSuccess(resp)
-            }
-        }).catch((e) => {
-            onError(e.message);
-        });
+        })
+            .then((resp) => {
+                if (this.checkIfUnauthorized(resp)) {
+                    window.localStorage.removeItem('jwtToken') //clear token if unauthorized
+                    window.location = "/#login";
+                    return;
+                } else {
+                    return resp.json();
+                }
+            })
+            .then((resp) => {
+                if (resp.error) {
+                    onError(resp.error);
+                } else {
+                    onSuccess(resp)
+                }
+            })
+            .catch((e) => {
+                onError(e.message);
+            });
     }
 
     static checkIfUnauthorized(res) {
