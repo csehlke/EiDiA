@@ -1,7 +1,6 @@
 "use strict";
 
 import HttpService from './HttpService';
-
 import {baseURL} from '../../../constants.js'
 
 export default class CommonService { //Contains API-calls that need to be accessed from multiple components
