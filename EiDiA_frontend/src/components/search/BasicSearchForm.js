@@ -102,16 +102,28 @@ class BasicSearchForm extends React.Component {
     }
 
     handleSearch() {
+        const searchConstraints = {};
+        if (this.state.recordId !== '') {
+            searchConstraints['recordId'] = this.state.recordId;
+        }
+        if (this.state.documentTypeId !== '') {
+            searchConstraints['documentTypeId'] = this.state.documentTypeId;
+        }
+        if (this.state.dateFrom !== null) {
+            searchConstraints['dateFrom'] = this.state.dateFrom;
+        }
+        if (this.state.dateTo !== null) {
+            searchConstraints['dateTo'] = this.state.dateTo;
+        }
+        if (this.state.fullText !== '') {
+            searchConstraints['fullText'] = this.state.fullText;
+        }
+        if (this.state.username !== '') {
+            searchConstraints['username'] = this.state.username;
+        }
         this.props.onSearch({
             type: 'basic',
-            values: {
-                recordId: this.state.recordId !== '' ? this.state.recordId : null,
-                documentTypeId: this.state.documentTypeId !== '' ? this.state.documentTypeId : null,
-                dateFrom: this.state.dateFrom,
-                dateTo: this.state.dateTo,
-                fullText: this.state.fullText !== '' ? this.state.fullText : null,
-                username: this.state.username !== '' ? this.state.username : null,
-            }
+            searchConstraints: searchConstraints,
         });
     }
 
