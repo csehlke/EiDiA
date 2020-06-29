@@ -297,6 +297,7 @@ export default class AdvancedSearchForm extends React.Component {
                                     color="primary"
                                     size={"medium"}
                                     onClick={this.handleSearch}
+                                    disabled={this.state.documentTypeConstraints.length === 0}
                                     style={{width: '50%', margin: '0.5em'}}>
                                     Search
                                 </Button>

@@ -27,7 +27,7 @@ export default class SearchService {
             url.searchParams.set('fullText', searchValues.fullText);
         }
         if (searchValues.username) {
-            url.searchParams.set('username', searchValues.username);
+            url.searchParams.set('userId', searchValues.userId);
         }
 
         return new Promise((resolve, reject) => {
