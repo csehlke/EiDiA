@@ -214,7 +214,7 @@ export default class AdvancedSearchForm extends React.Component {
     handleSearch() {
         this.props.onSearch({
             type: 'advanced',
-            values: this.state.documentTypeConstraints,
+            searchConstraints: this.state.documentTypeConstraints,
         });
     }
 
