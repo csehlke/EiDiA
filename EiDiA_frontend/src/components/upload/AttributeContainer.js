@@ -37,9 +37,7 @@ class AttributeContainer extends React.Component {
 
         this.state = {
             attributes: [],
-            attributeData: [
-                {}
-            ],
+            attributeData: [],
             metaData: [{}],
             textValue: "",
             isDateSnackbarOpen: false,
@@ -59,7 +57,7 @@ class AttributeContainer extends React.Component {
     componentDidMount() {
         this.props.setTitle("Attribute Picker");
 
-        UploadService.listAttributes(this.props.selectedDocumentTypeId).then((data) => {
+        UploadService.addAttributes(this.state.attributeData).then((data) => {
             this.setState({
                 attributes: [...data.attributeTypes]
             });
@@ -78,6 +76,7 @@ class AttributeContainer extends React.Component {
                 });
             })();
         }
+        console.log(this.state.attributeData)
     }
 
     getMetaData(data) { //Get data from MetaData-component
@@ -282,6 +281,13 @@ class AttributeContainer extends React.Component {
         });
     }
 
+    attrsToBackend() {
+        UploadService.addAttributes(this.state.attributeData).then(() => {
+        }).catch((e) => {
+            console.error(e);
+        });
+    }
+
     render() {
         let self = this
         let dateAlert = (
@@ -354,7 +360,8 @@ class AttributeContainer extends React.Component {
 
                     <Grid item xs={6} align="center" style={{marginTop: 100}}>
                         <Button variant="contained"
-                                color="primary">
+                                color="primary"
+                                onClick={this.attrsToBackend}>
                             Save
                         </Button>
                     </Grid>
