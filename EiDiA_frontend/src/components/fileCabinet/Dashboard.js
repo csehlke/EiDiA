@@ -1,23 +1,10 @@
 import React from 'react';
-import styled from "styled-components";
 import {Widget} from "./Widgets/Widget";
-import {Widgets} from "../Constants";
-
-
-const Grid = styled.div`
-    height: 50vh;
-    margin: 0 5% 0 5%;
-    
-    text-align:center;
-    vertical-align:middle;
-    display: grid;
-    grid-template-columns: auto auto auto;
-    grid-template-rows: auto auto;
-    
-    
-
-`;
-
+import {Widgets, WidgetTypes} from "../Constants";
+import {Grid3Cols2Rows} from "../StyleElements";
+import {LogWidget} from "./Widgets/LogWidget";
+import {GraphsWidget} from "./Widgets/GraphsWidget";
+import {IndicatorWidget} from "./Widgets/IndicatorWidget";
 
 export class Dashboard extends React.Component {
     constructor(props) {
@@ -28,34 +15,28 @@ export class Dashboard extends React.Component {
         }
     }
 
+    renderWidget(widget) {
+        switch (widget.type) {
+            case WidgetTypes.LOG:
+                return (<LogWidget positionInfo={widget.positionInfo}/>)
+            case WidgetTypes.GRAPH:
+                return (<GraphsWidget positionInfo={widget.positionInfo}/>)
+            case WidgetTypes.INDICATOR:
+                return (<IndicatorWidget positionInfo={widget.positionInfo}/>)
+            default:
+                return (<Widget positionInfo={widget.positionInfo}/>)
+
+        }
+    }
+
     render() {
         return (
-            <Grid>
+            <Grid3Cols2Rows>
 
-                {this.state.widgets.map((widget) => <Widget positionInfo={widget.positionInfo}/>)}
+                {this.state.widgets.map((widget) => this.renderWidget(widget))}
 
-            </Grid>
-            /* <div>
-                 <FlexRow>
-                     <Widget></Widget>
-                     <Widget></Widget>
-                     <Widget></Widget>
+            </Grid3Cols2Rows>
 
-                 </FlexRow>
-                 <FlexRow>
-                     <LogWidget >
-                         <p>Dashboard</p>
-                     </LogWidget>
-                     <LogWidget>
-                         <p>Dashboard</p>
-                     </LogWidget>
-                     <LogWidget>
-                         <p>Dashboard</p>
-                     </LogWidget>
-                 </FlexRow>
-
-
-             </div>*/
         );
     }
 }

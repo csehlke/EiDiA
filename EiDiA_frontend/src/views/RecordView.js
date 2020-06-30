@@ -2,20 +2,12 @@
 
 import React from 'react';
 import Page from "../components/Page";
-import styled from "styled-components";
 import {RecordMenue} from "../components/fileCabinet/RecordMenue";
 import FileExplorer from "../components/fileCabinet/FileExplorer";
 import {Dashboard} from "../components/fileCabinet/Dashboard";
 import {recordMenueOptions} from "../components/Constants";
+import {WrapperRecordView} from "../components/StyleElements";
 
-
-const FlexRow = styled.div`
-    margin: 0 5% 0 5%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap
-
-`;
 
 export class RecordView extends React.Component {
 
@@ -46,19 +38,15 @@ export class RecordView extends React.Component {
         this.setState(this.state);
     }
     render() {
-        let filteredRecords = this.state.records.filter(
-            (record) => {
-                return record.indexOf(this.state.search) !== -1;
-            }
-        );
-        let toShow =recordMenueOptions.DASHBOARD;
 
-        switch (this.state.currentPage){
+        let toShow;
+
+        switch (this.state.currentPage) {
             case recordMenueOptions.DASHBOARD:
                 toShow = <Dashboard/>;
                 break;
             case recordMenueOptions.FILEEXPLORER:
-                toShow =<FileExplorer/>;
+                toShow = <FileExplorer/>;
                 break;
             default:
                 toShow = <Dashboard/>;
@@ -67,10 +55,10 @@ export class RecordView extends React.Component {
 
         return (
             <Page title={"Record"}>
-                <RecordMenue handle={(option)=>this.changePage(option)} />
-                <div>
+                <RecordMenue handle={(option) => this.changePage(option)}/>
+                <WrapperRecordView>
                     {toShow}
-                </div>
+                </WrapperRecordView>
             </Page>
         );
     }

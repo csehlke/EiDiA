@@ -38,12 +38,7 @@ export class Widget extends React.Component {
     MainPart() {
         return (
             <Body positionInfo={this.state.positionInfo} color={this.state.color}>
-                {/*this.childPart()+*/<div>
-                    <p>x/y</p>
-                    <p>{this.state.positionInfo.x + "," + this.state.positionInfo.y}</p>
-                    <p>Rows/Cols</p>
-                    <p>{this.state.positionInfo.rows + "," + this.state.positionInfo.cols}</p>
-                </div>}
+                {this.childPart()}
             </Body>
 
 

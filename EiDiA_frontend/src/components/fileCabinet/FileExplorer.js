@@ -1,19 +1,11 @@
 import React from 'react';
 import Element from '../filetable/Element'
-import styled from "styled-components";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
 import ElementTable from "../filetable/ElementTable";
 import {databaseEntriesPlaceholder, fileTypes} from "../Constants";
 
-const ElementBoundary = styled.div`
-    width:90%;
-    height:auto;
-    margin: 1vh 5vw  1vh 5vw;
-   
-    
 
-`;
 /**
  * TODO:
  * - Cant drag files to toplevel at the moment
@@ -88,8 +80,8 @@ export default class FileExplorer extends React.Component {
 
     renderElement(element, index, level) {
         return (
-            <ElementTable key={"ELTable"+element.id}type={element.type} id={element.id}>
-                <Element key={"EL"+element.id} active={element.active} index={index} parentId={element.parentId}
+            <ElementTable key={"ELTable" + element.id} type={element.type} id={element.id}>
+                <Element key={"EL" + element.id} active={element.active} index={index} parentId={element.parentId}
                          id={element.id} level={level}
                          type={element.type} name={element.name} dateCreation={element.dateCreation}
                          dateModification={element.dateModification} comment={element.comment} actions={element.actions}
@@ -107,7 +99,6 @@ export default class FileExplorer extends React.Component {
     render() {
         return (
             <div>
-                <ElementBoundary>
 
                     <DndProvider backend={HTML5Backend}>
                         <Element level={0} type={fileTypes.NONE} name={'Name'} dateCreation={'Date'}
@@ -117,7 +108,6 @@ export default class FileExplorer extends React.Component {
                             this.renderElement(element, index, 0)
                         )}
                     </DndProvider>
-                </ElementBoundary>
             </div>
 
         );
