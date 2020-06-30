@@ -13,14 +13,6 @@ export const fileTypes = {
 
 
 }
-export const Widgets ={
-    X:1,
-    Y:1,
-    ROWS:1,
-    COLUMNS:1,
-    TITLE: "Last Activities",
-    Type: "LOG"
-}
 export const WidgetTypes = {
     LOG:'LOG',
     GRAPH:'GRAPH',
@@ -28,6 +20,44 @@ export const WidgetTypes = {
 
 
 }
+export const Widgets =
+    [
+        {
+            positionInfo: {
+                x: 1,
+                y: 1,
+                rows: 1+1,
+                cols: 1,
+            },
+            TITLE: "Last Activities",
+            Type: WidgetTypes.LOG
+        },
+        {
+            positionInfo: {
+                x: 2,
+                y: 1,
+                rows: 1+1,
+                cols: 3+1,
+            },
+            TITLE: "Last Activities",
+            Type: WidgetTypes.LOG
+        },
+        {
+            positionInfo: {
+                x: 1,
+                y: 2,
+                rows: 1+1,
+                cols: 3+1,
+            },
+            TITLE: "Big Bottom",
+            Type: WidgetTypes.LOG
+        }
+
+    ]
+
+
+
+
 export const logs = [
     {
         PERSON: "John Doe",
