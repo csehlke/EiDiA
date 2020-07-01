@@ -9,6 +9,7 @@ import SmartDropDownBox from "../SmartDropDownBox";
 import Box from "@material-ui/core/Box";
 
 import CommonService from '../../services/CommonService';
+import TextField from "@material-ui/core/TextField";
 
 const Container = styled.div
     // Outer Container
@@ -35,13 +36,15 @@ class TypePicker extends React.Component {
             documentTypes: [],
             selectedDocumentTypeId: '',
             isNextButtonDisabled: true, // true, if "next"-button is disabled
-            hasAutoCompleteValue: false // true, if autoComplete has value
+            hasAutoCompleteValue: false, // true, if autoComplete has value
+            documentName: ""
         }
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
         this.createNewDocumentType = this.createNewDocumentType.bind(this);
         this.handleNextButtonOnClick = this.handleNextButtonOnClick.bind(this);
         this.assignRecord = this.assignRecord.bind(this);
+        this.handleDocumentNameChange = this.handleDocumentNameChange.bind(this);
     }
 
     componentDidMount() {
@@ -86,11 +89,17 @@ class TypePicker extends React.Component {
     }
 
     handleNextButtonOnClick() {
-        this.props.callbackUploadView(this.state.selectedDocumentTypeId);
+        this.props.callbackUploadView(this.state.selectedDocumentTypeId, this.state.documentName);
     }
 
     assignRecord() {
         console.log("Open FilePicker here (to assign to record)");
+    }
+
+    handleDocumentNameChange(event) {
+        this.setState({
+            documentName: event.target.value,
+        });
     }
 
     render() {
@@ -100,6 +109,15 @@ class TypePicker extends React.Component {
                       direction="row"
                       justify="space-between"
                       alignItems="center">
+
+                    <Grid item xs={12} align="center">
+                        <TextField
+                            label="Document Name"
+                            variant="outlined"
+                            onChange={this.handleDocumentNameChange}
+                        />
+                    </Grid>
+
                     <Grid item xs={12} align="center">
                         <DropDownContainer>
                             <SmartDropDownBox
