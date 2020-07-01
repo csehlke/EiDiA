@@ -48,7 +48,8 @@ class AttributeContainer extends React.Component {
             name: "PLACEHOLDER",
             uploadedBy: "5ef9e3d2c4664e04e4003999",
             rootFolderId: "5ef9e3d2c4664e04e4003999", //Placeholder
-            documentTypeId: "5ef9e3d2c4664e04e4003999", //Placeholder
+            documentTypeId: this.props.selectedDocumentTypeId,
+            //Setting props as state is not recommended but makes sense in this case as the whole state is being sent to backend
             recordId: "5ef9e3d2c4664e04e4003999", //Placeholder
             //TODO Remove Placeholders
         }
