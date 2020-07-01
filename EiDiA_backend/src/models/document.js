@@ -45,23 +45,30 @@ const DocumentSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    attributes: {
-        type: [
-            {
-                attributeId: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    required: true,
-                    index: true,
-                }
-            },
-            {
-                value: {
-                    required: true,
-                    index: true,
-                }
-            },
-        ]
+    uploadedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
     },
+    comment: {
+        type: String
+    },
+    priority: {
+        type: String
+    },
+    department: {
+        type: [String]
+    },
+
+    attributes: [
+        {
+            attributeId: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+                index: true,
+            },
+            value: {}
+        },
+    ],
 });
 
 // Export the model
