@@ -9,15 +9,14 @@ const uploadDocument = (req, res) => {
 
 const addAttributes = (req, res) => {
     DocumentModel.create({
-        name: 'testDocument2',
-        pathOnDisk: 'TestPath',
-        rootFolderId: '5ef9e3d2c4664e04e4003576',
-        documentTypeId: '5ef9e3d2c4664e04e4003576',
-        recordId: '5ef9e3d2c4664e04e4003576'
+        name: req.body.name,
+        pathOnDisk: req.body.pathOnDisk,
+        rootFolderId: req.body.rootFolderId,
+        documentTypeId: req.body.documentTypeId,
+        recordId: req.body.recordId
     })
         .then(() => {
-            console.log("HELLO")
-            res.status(200).json({response: "Inserted data"});
+            res.status(200).json({response: "Inserted attribute-data"});
         })
         .catch(error => {
             res.status(400).json({
