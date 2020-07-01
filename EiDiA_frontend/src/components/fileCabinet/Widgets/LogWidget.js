@@ -1,5 +1,5 @@
 import React from 'react';
-import {Widget} from "./Widget";
+import {PreferredBreakSpan, TealName} from "../../StyleElements";
 
 
 /**
@@ -14,6 +14,19 @@ import {Widget} from "./Widget";
 export class LogWidget extends React.Component {
     constructor(props) {
         super(props);
+
+
+        props.data.sort(function (a, b) {
+            return b.data - a.date
+        })
+        this.state = {
+            logCount: 3,
+            sortedLogs: props.data.sort(function (a, b) {
+                return new Date(b.date) - new Date(a.date);
+            })
+
+        }
+
     }
 
     logEntry(log) {

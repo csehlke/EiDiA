@@ -1,7 +1,7 @@
 import React from 'react';
 import {Widget} from "./Widgets/Widget";
 import {Widgets, WidgetTypes} from "../Constants";
-import {Grid3Cols2Rows} from "../StyleElements";
+import {DashboardWrapper} from "../StyleElements";
 import {LogWidget} from "./Widgets/LogWidget";
 import {GraphsWidget} from "./Widgets/GraphsWidget";
 import {IndicatorWidget} from "./Widgets/IndicatorWidget";
@@ -15,7 +15,7 @@ export class Dashboard extends React.Component {
         }
     }
 
-    renderWidget(widget, index) {
+    renderWidget(widget) {
         switch (widget.Type) {
             case WidgetTypes.LOG:
                 return (<LogWidget data={widget.Data}/>)
@@ -25,7 +25,6 @@ export class Dashboard extends React.Component {
                 return (<IndicatorWidget data={widget.Data}/>)
             default:
                 return (<p>No child part</p>)
-            /*  return (<Widget key={index} title={widget.TITLE} positionInfo={widget.positionInfo}/>)*/
 
         }
     }
@@ -35,7 +34,7 @@ export class Dashboard extends React.Component {
             <DashboardWrapper>
 
                 {this.state.widgets.map((widget, index) => <Widget key={index} title={widget.TITLE}
-                                                                   positionInfo={widget.positionInfo}>{this.renderWidget(widget, index)}</Widget>)}
+                                                                   positionInfo={widget.positionInfo}>{this.renderWidget(widget)}</Widget>)}
 
             </DashboardWrapper>
 

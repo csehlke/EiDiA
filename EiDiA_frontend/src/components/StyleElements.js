@@ -2,18 +2,40 @@ import styled from "styled-components";
 
 export const WrapperRecordView = styled.div`
     height: 70vh;
-    margin: 0 5% 0 5%;
+    margin: 0 5% 0 5%; 
     
     
     
 
 `;
-export const Grid3Cols2Rows = styled.div`
+export const DashboardWrapper = styled.div`
     height:100%;
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 33% 33% 33%;
     grid-template-rows: auto auto;
-    
+    grid-column-gap: 1em;
+    grid-row-gap: 1em;
     
 
+`;
+export const WidgetWrapper = styled.div`
+         
+     border: 2px dotted ${props => props.color};
+     grid-row-start:${props => props.positionInfo.y};
+     grid-row-end:${props => props.positionInfo.rows};
+     grid-column-start:${props => props.positionInfo.x};
+     grid-column-end:${props => props.positionInfo.cols};
+     padding: 1em;
+     
+`;
+export const H2WithOutMargin = styled.h2`         
+   margin:0;
+     
+`;
+export const TealName = styled.span`         
+   color:#1CA6A6;  
+   font-weight:bold;   
+`;
+export const PreferredBreakSpan = styled.span`         
+   display:inline-block;   
 `;

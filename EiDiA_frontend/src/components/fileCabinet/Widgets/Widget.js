@@ -15,10 +15,7 @@ export class Widget extends React.Component {
         super(props);
         this.state = {
             positionInfo: this.props.positionInfo,
-
-            color: "red"
-
-
+            color: "#8C8C8C"
         }
 
     }
