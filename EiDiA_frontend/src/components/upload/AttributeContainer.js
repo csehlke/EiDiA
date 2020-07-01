@@ -98,7 +98,7 @@ class AttributeContainer extends React.Component {
 
     saveTextFieldData(attrID) {
         let copyArr = this.state.attributeData
-        let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
+        let idx = (this.state.attributeData.findIndex(element => element.attributeId === attrID))
         if (idx === -1) { //If ID doesn't exist yet, add it
             this.setState({
                 attributeData: [...this.state.attributeData, {attributeId: attrID, value: this.state.textValue}]
