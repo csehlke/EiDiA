@@ -38,10 +38,12 @@ class AttributeContainer extends React.Component {
         this.state = {
             attributes: [],
             attributeData: [],
-            metaData: [{}],
             textValue: "",
             isDateSnackbarOpen: false,
-            isNumberSnackbarOpen: false
+            isNumberSnackbarOpen: false,
+            priority: "",
+            department: "",
+            comment: ""
         }
 
         this.saveTextFieldData = this.saveTextFieldData.bind(this);
@@ -57,7 +59,7 @@ class AttributeContainer extends React.Component {
     componentDidMount() {
         this.props.setTitle("Attribute Picker");
 
-        UploadService.addAttributes(this.state.attributeData).then((data) => {
+        UploadService.listAttributes(this.props.selectedDocumentTypeId).then((data) => {
             this.setState({
                 attributes: [...data.attributeTypes]
             });
@@ -76,14 +78,13 @@ class AttributeContainer extends React.Component {
                 });
             })();
         }
-        console.log(this.state.attributeData)
     }
 
     getMetaData(data) { //Get data from MetaData-component
-        let copyArr = this.state.metaData
-        copyArr.splice(0, 1, {priority: data[0], department: data[1], comment: data[2]})
         this.setState({
-            metaData: copyArr
+            priority: data[0],
+            department: data[1],
+            comment: data[2],
         });
     }
 
