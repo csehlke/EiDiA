@@ -26,7 +26,7 @@ const addAttributes = (req, res) => {
         })
         .catch(error => {
             res.status(400).json({
-                error: 'Internal server error',
+                error: error.message,
                 message: error.message,
             });
         });

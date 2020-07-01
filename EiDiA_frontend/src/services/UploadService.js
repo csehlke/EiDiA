@@ -19,7 +19,7 @@ export default class UploadService {
 
     static addAttributes(attributeData) {
         return new Promise((resolve, reject) => {
-            HttpService.post(baseURL + '/data/attributes', attributeData, function (data) {
+            HttpService.post(baseURL + '/upload/add', attributeData, function (data) {
                 resolve(data);
             }, function (textStatus) {
                 reject(textStatus);
