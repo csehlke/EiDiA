@@ -15,27 +15,29 @@ export class Dashboard extends React.Component {
         }
     }
 
-    renderWidget(widget) {
-        switch (widget.type) {
+    renderWidget(widget, index) {
+        switch (widget.Type) {
             case WidgetTypes.LOG:
-                return (<LogWidget positionInfo={widget.positionInfo}/>)
+                return (<LogWidget data={widget.Data}/>)
             case WidgetTypes.GRAPH:
-                return (<GraphsWidget positionInfo={widget.positionInfo}/>)
+                return (<GraphsWidget data={widget.Data}/>)
             case WidgetTypes.INDICATOR:
-                return (<IndicatorWidget positionInfo={widget.positionInfo}/>)
+                return (<IndicatorWidget data={widget.Data}/>)
             default:
-                return (<Widget positionInfo={widget.positionInfo}/>)
+                return (<p>No child part</p>)
+            /*  return (<Widget key={index} title={widget.TITLE} positionInfo={widget.positionInfo}/>)*/
 
         }
     }
 
     render() {
         return (
-            <Grid3Cols2Rows>
+            <DashboardWrapper>
 
-                {this.state.widgets.map((widget) => this.renderWidget(widget))}
+                {this.state.widgets.map((widget, index) => <Widget key={index} title={widget.TITLE}
+                                                                   positionInfo={widget.positionInfo}>{this.renderWidget(widget, index)}</Widget>)}
 
-            </Grid3Cols2Rows>
+            </DashboardWrapper>
 
         );
     }

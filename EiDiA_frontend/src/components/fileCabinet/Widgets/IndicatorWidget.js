@@ -1,5 +1,4 @@
 import React from 'react';
-import {Widget} from "./Widget";
 
 
 /**
@@ -8,15 +7,13 @@ import {Widget} from "./Widget";
  */
 
 
-export class IndicatorWidget extends Widget {
+export class IndicatorWidget extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    childPart() {
-        return ("Log Widget"
-
-        );
+    render() {
+        return (<p>Indicator Widget</p>)
     }
 
 

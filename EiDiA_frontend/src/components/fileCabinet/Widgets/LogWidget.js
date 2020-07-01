@@ -7,15 +7,37 @@ import {Widget} from "./Widget";
  *
  */
 
-export class LogWidget extends Widget {
+/*
+ *Reason for no use of inheritance
+ * https://reactjs.org/docs/composition-vs-inheritance.html#so-what-about-inheritance
+ */
+export class LogWidget extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    childPart(){
-        return ("Log Widget"
+    logEntry(log) {
+        return (
+            <p>
+                <PreferredBreakSpan><TealName>{log.name}</TealName>&nbsp;{log.action}</PreferredBreakSpan>
+                <PreferredBreakSpan>({log.date})</PreferredBreakSpan>
+            </p>
+        )
+    }
 
+    childPart() {
+
+
+        return (
+            <ul>
+                {this.state.sortedLogs.slice(0, 3).map((log, index) => <li key={index}>{this.logEntry(log)} </li>)}
+
+            </ul>
         );
+    }
+
+    render() {
+        return (this.childPart())
     }
 
 

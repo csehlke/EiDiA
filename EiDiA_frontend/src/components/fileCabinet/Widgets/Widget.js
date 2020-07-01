@@ -1,25 +1,15 @@
 import React from 'react';
-import styled from "styled-components";
+import {H2WithOutMargin, WidgetWrapper} from "../../StyleElements";
 
-const Body = styled.div`
-     /*width:30%;
-     height: auto;
-     font-size:3vw;*/
-     text-align:center;
-     
-     border: 2px dotted ${props => props.color};
-     grid-row-start:${props => props.positionInfo.y};
-     grid-row-end:${props => props.positionInfo.rows};
-     grid-column-start:${props => props.positionInfo.x};
-     grid-column-end:${props => props.positionInfo.cols};
-     
-
-`;
 /**
  * TODO:
  *
  */
 
+/*
+ *Reason for no use of inheritance
+ * https://reactjs.org/docs/composition-vs-inheritance.html#so-what-about-inheritance
+ */
 export class Widget extends React.Component {
     constructor(props) {
         super(props);
@@ -37,14 +27,16 @@ export class Widget extends React.Component {
 
     MainPart() {
         return (
-            <Body positionInfo={this.state.positionInfo} color={this.state.color}>
-                {this.childPart()}
-            </Body>
+            <WidgetWrapper positionInfo={this.state.positionInfo} color={this.state.color}>
+                <H2WithOutMargin> {this.props.title} </H2WithOutMargin>
+                {this.props.children}
+            </WidgetWrapper>
 
 
         )
 
     }
+
     childPart(){
         return (<p>No Child Part</p>);
     }
