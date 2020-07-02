@@ -47,6 +47,12 @@ class DocPreview extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.ocrProgress !== this.props.ocrProgress) {
+            console.log(this.props.ocrProgress)
+        }
+    }
+
     readFile(file) {
         const reader = new FileReader()
 
