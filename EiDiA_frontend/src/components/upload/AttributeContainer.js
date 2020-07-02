@@ -45,12 +45,9 @@ class AttributeContainer extends React.Component {
             department: "",
             comment: "",
             pathOnDisk: "PLACEHOLDER",
-            uploadedBy: "5ef9e3d2c4664e04e4003999",
+            uploadedBy: "5ef9e3d2c4664e04e4003999", //Placeholder
             rootFolderId: "5ef9e3d2c4664e04e4003999", //Placeholder
             recordId: "5ef9e3d2c4664e04e4003999", //Placeholder
-            name: this.props.documentName,
-            documentTypeId: this.props.selectedDocumentTypeId,
-            //Setting props as state is not recommended but makes sense in this case as the whole state is being sent to backend
             //TODO Remove Placeholders
         }
         this.attrsToBackend = this.attrsToBackend.bind(this);
@@ -291,7 +288,19 @@ class AttributeContainer extends React.Component {
     }
 
     attrsToBackend() { //Send current state to backend
-        UploadService.addAttributes(this.state).then((response) => {
+        let requestData = {
+            attributeData: this.state.attributeData,
+            priority: this.state.priority,
+            department: this.state.department,
+            comment: this.state.comment,
+            pathOnDisk: this.state.pathOnDisk,
+            uploadedBy: this.state.uploadedBy,
+            rootFolderId: this.state.rootFolderId,
+            recordId: this.state.recordId,
+            name: this.props.documentName,
+            documentTypeId: this.props.selectedDocumentTypeId,
+        }
+        UploadService.addAttributes(requestData).then((response) => {
             console.log(response)
         }).catch((e) => {
             console.error(e);
