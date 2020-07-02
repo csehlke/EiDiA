@@ -1,11 +1,31 @@
 "use strict";
 
+
 const DocumentModel = require('../models/document');
 const ErrorHandling = require('./errorHandling');
+
+const tes = require('tesseract.js')
+
 
 const uploadDocument = (req, res) => {
     res.status(200).json({response: "dummy response"});
 };
+
+
+const fullTextOCR = (base64Image) => { //TODO Send to Backend (OCR IS VERY SLOW) --> Do it on backend?
+    const worker = tes.createWorker({
+        logger: m => console.log(m)
+    });
+
+    (async () => {
+        await worker.load();
+        await worker.loadLanguage('eng');
+        await worker.initialize('eng');
+        const {data: {text}} = await worker.recognize(base64Image);
+        console.log(text);
+        await worker.terminate();
+    })();
+}
 
 
 const addAttributes = (req, res) => {
@@ -28,6 +48,7 @@ const addAttributes = (req, res) => {
             message: errors.join('\n'),
         });
     }
+
     DocumentModel.create({
         name: req.body.name,
         rootFolderId: req.body.rootFolderId,
@@ -39,7 +60,8 @@ const addAttributes = (req, res) => {
         department: req.body.department,
         attributes: req.body.attributeData,
         base64Image: req.body.base64Image,
-    })
+        })
+
         .then(() => {
             res.status(200).json({response: "Inserted attribute-data"});
         })
@@ -49,6 +71,8 @@ const addAttributes = (req, res) => {
                 message: error.message,
             });
         });
+
+
 };
 
 module.exports = {
