@@ -14,11 +14,6 @@ const SplitView = styled.div`
     flex-direction:row;
 `;
 
-const PreviewContainer = styled.div`
-    overflow: auto;
-    width: 50%;
-    height: 88vh; //Not 100 because of border
-`;
 
 export class UploadView extends React.Component {
 
@@ -103,10 +98,8 @@ export class UploadView extends React.Component {
             return (
                 <Page>
                     <SplitView>
-                        <PreviewContainer>
                             <DocPreview picture={this.state.picture}
                                         cropDisabled={true} /* Picture from FileDrop, disable crop for preview */ />
-                        </PreviewContainer>
                         <TypePicker
                             callbackUploadView={this.getDocumentTypeId}
                             picUploaded={this.state.isUploaded} /* Get ID to fill Attributecontainer fields *//>
@@ -117,12 +110,10 @@ export class UploadView extends React.Component {
             return (
                 <Page>
                     <SplitView>
-                        <PreviewContainer>
                             <DocPreview picture={this.state.picture}
                                         cropDisabled={false}
                                         callbackUploadView={this.getCropBlob}
                                         ocrProgress={this.state.ocrProgress}/>
-                        </PreviewContainer>
                         <AttributeContainer picture={this.state.picture}
                                             crop={this.state.cropBlob}
                                             title={this.state.pageTitle}
