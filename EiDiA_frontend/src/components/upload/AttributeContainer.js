@@ -44,7 +44,6 @@ class AttributeContainer extends React.Component {
             priority: "",
             department: "",
             comment: "",
-            pathOnDisk: "PLACEHOLDER",
             uploadedBy: "5ef9e3d2c4664e04e4003999", //Placeholder
             rootFolderId: "5ef9e3d2c4664e04e4003999", //Placeholder
             recordId: "5ef9e3d2c4664e04e4003999", //Placeholder
@@ -196,20 +195,6 @@ class AttributeContainer extends React.Component {
         }
     }
 
-    sendFulltextToBackend() { //TODO Send to Backend (OCR IS VERY SLOW) --> Do it on backend?
-        const worker = createWorker({
-            logger: m => console.log(m)
-        });
-
-        (async () => {
-            await worker.load();
-            await worker.loadLanguage('eng');
-            await worker.initialize('eng');
-            const {data: {text}} = await worker.recognize(this.props.picture[0]);
-            console.log(text);
-            await worker.terminate();
-        })();
-    }
 
     renderTextFields(attrName, attrID) {
         return <Grid item xs style={{padding: 10}}>
@@ -293,12 +278,12 @@ class AttributeContainer extends React.Component {
             priority: this.state.priority,
             department: this.state.department,
             comment: this.state.comment,
-            pathOnDisk: this.state.pathOnDisk,
             uploadedBy: this.state.uploadedBy,
             rootFolderId: this.state.rootFolderId,
             recordId: this.state.recordId,
             name: this.props.documentName,
             documentTypeId: this.props.selectedDocumentTypeId,
+            base64Image: this.props.base64Image
         }
         UploadService.addAttributes(requestData).then((response) => {
             console.log(response)

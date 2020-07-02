@@ -41,9 +41,8 @@ const DocumentSchema = new mongoose.Schema({
         trim: true,
         index: true,
     },
-    pathOnDisk: {
+    base64Image: {
         type: String,
-        required: true,
     },
     uploadedBy: {
         type: mongoose.Schema.Types.ObjectId,

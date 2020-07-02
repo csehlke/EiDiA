@@ -57,6 +57,7 @@ class DocPreview extends React.Component {
             this.setState({
                 base64Image: base64Str
             });
+            this.props.sendB64Image(base64Str) //send to UploadView
         }
         reader.readAsDataURL(file[0]) //read First File
     }
@@ -75,12 +76,12 @@ class DocPreview extends React.Component {
 
     async makeClientCrop(crop) {
         if (this.imageRef && crop.width && crop.height) {
-            const croppedImageUrl = await this.getCroppedImg(
+            const croppedImage = await this.getCroppedImg(
                 this.imageRef,
                 crop,
                 'newFile.jpeg'
             );
-            this.props.callbackUploadView(croppedImageUrl); //Callback to UploadView getCropBlob()
+            this.props.callbackUploadView(croppedImage); //Callback to UploadView getCropBlob()
         }
     }
 

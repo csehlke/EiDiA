@@ -32,12 +32,14 @@ export class UploadView extends React.Component {
             pageTitle: '',
             ocrWorker: this.loadWorker(), // Worker already initializes in UploadView to save startup time in AttributeContainer
             selectedDocumentTypeId: '',
-            documentName: ''
+            documentName: '',
+            base64Image: ''
         }
 
         this.passPicture = this.passPicture.bind(this);
         this.getTypePickerData = this.getTypePickerData.bind(this);
         this.getCropBlob = this.getCropBlob.bind(this);
+        this.getBase64Image = this.getBase64Image.bind(this);
     }
 
     componentDidMount() {
@@ -73,6 +75,12 @@ export class UploadView extends React.Component {
         });
     }
 
+    getBase64Image(b64) { //Callback to be able to hand cropped Image Attributecontainer
+        this.setState({
+            base64Image: b64
+        });
+    }
+
     loadWorker() { //Initialize Worker only once an reuse it, to save startup time
         const worker = createWorker({
             logger: m => console.log(m)
@@ -104,7 +112,8 @@ export class UploadView extends React.Component {
                     <SplitView>
                         <PreviewContainer>
                             <DocPreview picture={this.state.picture}
-                                        cropDisabled={true} /* Picture from FileDrop, disable crop for preview */ />
+                                        cropDisabled={true} /* Picture from FileDrop, disable crop for preview */
+                                        sendB64Image={this.getBase64Image}/>
                         </PreviewContainer>
                         <TypePicker
                             callbackUploadView={this.getTypePickerData}
@@ -119,7 +128,8 @@ export class UploadView extends React.Component {
                         <PreviewContainer>
                             <DocPreview picture={this.state.picture}
                                         cropDisabled={false}
-                                        callbackUploadView={this.getCropBlob}/>
+                                        callbackUploadView={this.getCropBlob}
+                            />
                         </PreviewContainer>
                         <AttributeContainer picture={this.state.picture}
                                             crop={this.state.cropBlob}
@@ -127,7 +137,8 @@ export class UploadView extends React.Component {
                                             documentName={this.state.documentName}
                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}
                                             ocrWorker={this.state.ocrWorker}
-                                            selectedDocumentTypeId={this.state.selectedDocumentTypeId}/>
+                                            selectedDocumentTypeId={this.state.selectedDocumentTypeId}
+                                            base64Image={this.state.base64Image}/>
                     </SplitView>
                 </Page>
             );
