@@ -37,15 +37,20 @@ class AttributeContainer extends React.Component {
 
         this.state = {
             attributes: [],
-            attributeData: [
-                {}
-            ],
-            metaData: [{}],
+            attributeData: [],
             textValue: "",
             isDateSnackbarOpen: false,
-            isNumberSnackbarOpen: false
+            isNumberSnackbarOpen: false,
+            priority: "",
+            department: "",
+            comment: "",
+            pathOnDisk: "PLACEHOLDER",
+            uploadedBy: "5ef9e3d2c4664e04e4003999", //Placeholder
+            rootFolderId: "5ef9e3d2c4664e04e4003999", //Placeholder
+            recordId: "5ef9e3d2c4664e04e4003999", //Placeholder
+            //TODO Remove Placeholders
         }
-
+        this.attrsToBackend = this.attrsToBackend.bind(this);
         this.saveTextFieldData = this.saveTextFieldData.bind(this);
         this.saveDateFieldData = this.saveDateFieldData.bind(this);
         this.getFieldValue = this.getFieldValue.bind(this);
@@ -64,7 +69,7 @@ class AttributeContainer extends React.Component {
                 attributes: [...data.attributeTypes]
             });
         }).catch((e) => {
-            console.error(e);
+            console.error(e.message)
         });
     }
 
@@ -81,22 +86,22 @@ class AttributeContainer extends React.Component {
     }
 
     getMetaData(data) { //Get data from MetaData-component
-        let copyArr = this.state.metaData
-        copyArr.splice(0, 1, {priority: data[0], department: data[1], comment: data[2]})
         this.setState({
-            metaData: copyArr
+            priority: data[0],
+            department: data[1],
+            comment: data[2],
         });
     }
 
     saveTextFieldData(attrID) {
         let copyArr = this.state.attributeData
-        let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
+        let idx = (this.state.attributeData.findIndex(element => element.attributeId === attrID))
         if (idx === -1) { //If ID doesn't exist yet, add it
             this.setState({
-                attributeData: [...this.state.attributeData, {id: attrID, text: this.state.textValue}]
+                attributeData: [...this.state.attributeData, {attributeId: attrID, value: this.state.textValue}]
             });
         } else {
-            copyArr.splice(idx, 1, {id: attrID, text: this.state.textValue}) //If ID exists already, overwrite it with new value
+            copyArr.splice(idx, 1, {attributeId: attrID, value: this.state.textValue}) //If ID exists already, overwrite it with new value
             this.setState({
                 attributeData: copyArr
             });
@@ -105,7 +110,7 @@ class AttributeContainer extends React.Component {
 
     saveDateFieldData(attrID) {
         let copyArr = this.state.attributeData
-        let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
+        let idx = (this.state.attributeData.findIndex(element => element.attributeId === attrID))
         let data = this.state.textValue
         if (!isNaN(Date.parse(data))) { //IF OCR String is date, convert to datatype 'Date'
             let convDate = data.split("/");
@@ -113,10 +118,10 @@ class AttributeContainer extends React.Component {
 
             if (idx === -1) { //If ID doesn't exist yet, add it
                 this.setState({
-                    attributeData: [...this.state.attributeData, {id: attrID, text: dateObject}]
+                    attributeData: [...this.state.attributeData, {attributeId: attrID, value: dateObject}]
                 });
             } else {
-                copyArr.splice(idx, 1, {id: attrID, text: dateObject}) //If ID exists already, overwrite it with new value
+                copyArr.splice(idx, 1, {attributeId: attrID, value: dateObject}) //If ID exists already, overwrite it with new value
                 this.setState({
                     attributeData: copyArr
                 });
@@ -131,14 +136,14 @@ class AttributeContainer extends React.Component {
 
     saveNumberFieldData(attrID) {
         let copyArr = this.state.attributeData
-        let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
+        let idx = (this.state.attributeData.findIndex(element => element.attributeId === attrID))
         if (!isNaN(Number(this.state.textValue))) {
             if (idx === -1) { //If ID doesn't exist yet, add it
                 this.setState({
-                    attributeData: [...this.state.attributeData, {id: attrID, text: this.state.textValue}]
+                    attributeData: [...this.state.attributeData, {attributeId: attrID, value: this.state.textValue}]
                 });
             } else {
-                copyArr.splice(idx, 1, {id: attrID, text: this.state.textValue}) //If ID exists already, overwrite it with new value
+                copyArr.splice(idx, 1, {attributeId: attrID, value: this.state.textValue}) //If ID exists already, overwrite it with new value
                 this.setState({
                     attributeData: copyArr
                 });
@@ -151,9 +156,9 @@ class AttributeContainer extends React.Component {
     }
 
     getFieldValue(attrID) {
-        let idx = (this.state.attributeData.findIndex(element => element.id === attrID)) //find index of ID
+        let idx = (this.state.attributeData.findIndex(element => element.attributeId === attrID)) //find index of ID
         if (idx !== -1) {
-            return Object.values(this.state.attributeData)[idx].text; // Get text at index
+            return Object.values(this.state.attributeData)[idx].value; // Get value at index
         } else {
             return "";
         }
@@ -161,14 +166,14 @@ class AttributeContainer extends React.Component {
 
     handleTextFieldOnChange(event, attrID) { //Updates attributeData based on user input
         let copyArr = this.state.attributeData
-        let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
+        let idx = (this.state.attributeData.findIndex(element => element.attributeId === attrID))
 
         if (idx === -1) { //If ID doesn't exist yet, add it
             this.setState({
-                attributeData: [...this.state.attributeData, {id: attrID, text: event.target.value}]
+                attributeData: [...this.state.attributeData, {attributeId: attrID, value: event.target.value}]
             });
         } else {
-            copyArr.splice(idx, 1, {id: attrID, text: event.target.value}) //Overwrite with new value
+            copyArr.splice(idx, 1, {attributeId: attrID, value: event.target.value}) //Overwrite with new value
             this.setState({
                 attributeData: copyArr
             });
@@ -177,14 +182,14 @@ class AttributeContainer extends React.Component {
 
     handleOnDateChange(date, value, attrID) { //Updates attributeData based on user input
         let copyArr = this.state.attributeData
-        let idx = (this.state.attributeData.findIndex(element => element.id === attrID))
+        let idx = (this.state.attributeData.findIndex(element => element.attributeId === attrID))
 
         if (idx === -1) { //If ID doesn't exist yet, add it
             this.setState({
-                attributeData: [...this.state.attributeData, {id: attrID, text: date}]
+                attributeData: [...this.state.attributeData, {attributeId: attrID, value: date}]
             });
         } else {
-            copyArr.splice(idx, 1, {id: attrID, text: date}) //Overwrite with new value
+            copyArr.splice(idx, 1, {attributeId: attrID, value: date}) //Overwrite with new value
             this.setState({
                 attributeData: copyArr
             });
@@ -282,6 +287,26 @@ class AttributeContainer extends React.Component {
         });
     }
 
+    attrsToBackend() { //Send current state to backend
+        let requestData = {
+            attributeData: this.state.attributeData,
+            priority: this.state.priority,
+            department: this.state.department,
+            comment: this.state.comment,
+            pathOnDisk: this.state.pathOnDisk,
+            uploadedBy: this.state.uploadedBy,
+            rootFolderId: this.state.rootFolderId,
+            recordId: this.state.recordId,
+            name: this.props.documentName,
+            documentTypeId: this.props.selectedDocumentTypeId,
+        }
+        UploadService.addAttributes(requestData).then((response) => {
+            console.log(response)
+        }).catch((e) => {
+            console.error(e);
+        });
+    }
+
     render() {
         let self = this
         let dateAlert = (
@@ -354,7 +379,8 @@ class AttributeContainer extends React.Component {
 
                     <Grid item xs={6} align="center" style={{marginTop: 100}}>
                         <Button variant="contained"
-                                color="primary">
+                                color="primary"
+                                onClick={this.attrsToBackend}>
                             Save
                         </Button>
                     </Grid>

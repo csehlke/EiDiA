@@ -31,11 +31,12 @@ export class UploadView extends React.Component {
             isNextPressed: false, //Next-button
             pageTitle: '',
             ocrWorker: this.loadWorker(), // Worker already initializes in UploadView to save startup time in AttributeContainer
-            selectedDocumentTypeId: ''
+            selectedDocumentTypeId: '',
+            documentName: ''
         }
 
         this.passPicture = this.passPicture.bind(this);
-        this.getDocumentTypeId = this.getDocumentTypeId.bind(this);
+        this.getTypePickerData = this.getTypePickerData.bind(this);
         this.getCropBlob = this.getCropBlob.bind(this);
     }
 
@@ -54,9 +55,11 @@ export class UploadView extends React.Component {
         });
     }
 
-    getDocumentTypeId(documentTypeId) { //Callback to be able get Document Type + Assigned Record
+
+    getTypePickerData(documentTypeId, documentName) { //Callback to be able get Document Type + Assigned Record + Document name
         this.setState({
             selectedDocumentTypeId: documentTypeId,
+            documentName: documentName,
             isNextPressed: true
             //assignedRecord:
 
@@ -104,7 +107,7 @@ export class UploadView extends React.Component {
                                         cropDisabled={true} /* Picture from FileDrop, disable crop for preview */ />
                         </PreviewContainer>
                         <TypePicker
-                            callbackUploadView={this.getDocumentTypeId}
+                            callbackUploadView={this.getTypePickerData}
                             picUploaded={this.state.isUploaded} /* Get ID to fill Attributecontainer fields *//>
                     </SplitView>
                 </Page>
@@ -121,6 +124,7 @@ export class UploadView extends React.Component {
                         <AttributeContainer picture={this.state.picture}
                                             crop={this.state.cropBlob}
                                             title={this.state.pageTitle}
+                                            documentName={this.state.documentName}
                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}
                                             ocrWorker={this.state.ocrWorker}
                                             selectedDocumentTypeId={this.state.selectedDocumentTypeId}/>
