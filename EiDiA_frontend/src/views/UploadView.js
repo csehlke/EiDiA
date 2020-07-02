@@ -30,6 +30,7 @@ export class UploadView extends React.Component {
             isUploaded: false, //if picture has not been dropped yet
             isNextPressed: false, //Next-button
             pageTitle: '',
+            ocrProgress: '',
             ocrWorker: this.loadWorker(), // Worker already initializes in UploadView to save startup time in AttributeContainer
             selectedDocumentTypeId: ''
         }
@@ -72,8 +73,11 @@ export class UploadView extends React.Component {
 
     loadWorker() { //Initialize Worker only once an reuse it, to save startup time
         const worker = createWorker({
-            logger: m => console.log(m)
+            logger: m => this.setState({
+                ocrProgress: m.progress
+            })
         });
+
 
         (async () => {
             await worker.load();
@@ -116,7 +120,8 @@ export class UploadView extends React.Component {
                         <PreviewContainer>
                             <DocPreview picture={this.state.picture}
                                         cropDisabled={false}
-                                        callbackUploadView={this.getCropBlob}/>
+                                        callbackUploadView={this.getCropBlob}
+                                        ocrProgress={this.state.ocrProgress}/>
                         </PreviewContainer>
                         <AttributeContainer picture={this.state.picture}
                                             crop={this.state.cropBlob}
