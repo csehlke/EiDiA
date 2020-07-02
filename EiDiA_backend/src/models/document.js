@@ -48,15 +48,16 @@ const DocumentSchema = new mongoose.Schema({
     uploadedBy: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
+        index: true,
     },
     comment: {
-        type: String
+        type: String,
     },
     priority: {
-        type: String
+        type: String,
     },
     department: {
-        type: [String]
+        type: [String],
     },
 
     attributes: [
@@ -66,7 +67,10 @@ const DocumentSchema = new mongoose.Schema({
                 required: true,
                 index: true,
             },
-            value: {}
+            value: {
+                type: mongoose.Schema.Types.Mixed,
+                required: true,
+            },
         },
     ],
 });
