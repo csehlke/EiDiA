@@ -37,7 +37,8 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "styled-components": "^5.1.1",
-    "webfontloader": "^1.6.28"
+    "webfontloader": "^1.6.28",
+    "recharts": "^1.8.5"
   },
   "devDependencies": {
     "@material-ui/icons": "^4.9.1",

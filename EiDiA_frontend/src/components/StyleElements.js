@@ -14,12 +14,12 @@ export const DashboardWrapper = styled.div`
     grid-template-columns: 33% 33% 33%;
     grid-template-rows: auto auto;
     grid-column-gap: 1em;
-    grid-row-gap: 1em;
+    grid-row-gap: 2vh;
     
 
 `;
 export const WidgetWrapper = styled.div`
-         
+     height:${props => props.height + "vh"};    
      border: 2px dotted ${props => props.color};
      grid-row-start:${props => props.positionInfo.y};
      grid-row-end:${props => (props.positionInfo.rows + props.positionInfo.y)};

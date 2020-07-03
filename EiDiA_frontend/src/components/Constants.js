@@ -62,7 +62,28 @@ export const Widgets =
             },
             TITLE: "Graph One",
             Type: WidgetTypes.GRAPH,
-            Data: []
+            Data: [
+                {
+                    attributeId: 10,
+                    value: 1000,
+                    date: "2009-05-12"
+                },
+                {
+                    attributeId: 11,
+                    value: 1100,
+                    date: "2010-05-13"
+                },
+                {
+                    attributeId: 12,
+                    value: 1200,
+                    date: "2011-05-14"
+                },
+                {
+                    attributeId: 13,
+                    value: 950,
+                    date: "2012-05-15"
+                }
+            ]
         },
         {
             positionInfo: {

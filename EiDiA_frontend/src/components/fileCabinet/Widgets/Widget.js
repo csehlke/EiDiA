@@ -15,7 +15,8 @@ export class Widget extends React.Component {
         super(props);
         this.state = {
             positionInfo: this.props.positionInfo,
-            color: "#8C8C8C"
+            color: "#8C8C8C",
+            height: (this.props.positionInfo.rows == 1 ? 35 : (35 * 2 + 2))
         }
 
     }
@@ -24,7 +25,7 @@ export class Widget extends React.Component {
 
     MainPart() {
         return (
-            <WidgetWrapper positionInfo={this.state.positionInfo} color={this.state.color}>
+            <WidgetWrapper height={this.state.height} positionInfo={this.state.positionInfo} color={this.state.color}>
                 <H2WithOutMargin> {this.props.title} </H2WithOutMargin>
                 {this.props.children}
             </WidgetWrapper>
