@@ -44,12 +44,11 @@ export const TealRight = styled.p`
 export const PreferredBreakSpan = styled.span`         
    display:inline-block;   
 `;
-export const Table = styled.div` 
-${props => console.log(props.elementPercentage)}
+export const IndicatorElement = styled.div` 
 width:${props => props.elementPercentage + "%"};
 padding:1em;        
 `
-export const Flex = styled.div` 
+export const FlexRow = styled.div` 
    
   display: flex;
   flex-wrap:wrap;

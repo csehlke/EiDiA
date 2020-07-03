@@ -1,5 +1,5 @@
 import React from 'react';
-import {Flex, Table, TealRight} from "../../StyleElements";
+import {FlexRow, IndicatorElement, TealRight} from "../../StyleElements";
 
 
 /**
@@ -18,22 +18,21 @@ export class IndicatorWidget extends React.Component {
             }),
             elementPercentage: 100 / (props.positionInfo.cols * 2)
         }
-        console.log(this.state.elementPercentage)
-
     }
 
     createAttribute(attr, index) {
         return (
-            <Table elementPercentage={this.state.elementPercentage} key={index}>
+            <IndicatorElement elementPercentage={this.state.elementPercentage} key={index}>
                 <p>{attr.name}</p>
 
                 <TealRight>{attr.value} </TealRight>
-            </Table>
+            </IndicatorElement>
         )
     }
 
     render() {
-        return (<Flex>{this.state.attributes.map((attribute, index) => this.createAttribute(attribute, index))}</Flex>);
+        return (
+            <FlexRow>{this.state.attributes.map((attribute, index) => this.createAttribute(attribute, index))}</FlexRow>);
     }
 
 
