@@ -22,9 +22,9 @@ export const WidgetWrapper = styled.div`
          
      border: 2px dotted ${props => props.color};
      grid-row-start:${props => props.positionInfo.y};
-     grid-row-end:${props => props.positionInfo.rows};
+     grid-row-end:${props => (props.positionInfo.rows + props.positionInfo.y)};
      grid-column-start:${props => props.positionInfo.x};
-     grid-column-end:${props => props.positionInfo.cols};
+     grid-column-end:${props => (props.positionInfo.cols + props.positionInfo.x)};
      padding: 1em;
      
 `;

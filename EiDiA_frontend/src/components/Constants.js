@@ -33,19 +33,32 @@ export const Widgets =
             positionInfo: {
                 x: 1,
                 y: 1,
-                rows: 1 + 1,
+                rows: 1,
                 cols: 1,
             },
             TITLE: "Indicator One",
             Type: WidgetTypes.INDICATOR,
-            Data: []
+            Data: [
+                {
+                    attributeId: 55,
+                    attributeNo: 1,
+                    name: "Factory Count",
+                    value: "24"
+                },
+                {
+                    attributeId: 56,
+                    attributeNo: 2,
+                    name: "Pending Factory assesments",
+                    value: "18"
+                }
+            ]
         },
         {
             positionInfo: {
                 x: 2,
                 y: 1,
-                rows: 1 + 1,
-                cols: 2 + 1,
+                rows: 1,
+                cols: 1,
             },
             TITLE: "Graph One",
             Type: WidgetTypes.GRAPH,
@@ -55,20 +68,68 @@ export const Widgets =
             positionInfo: {
                 x: 1,
                 y: 2,
-                rows: 1 + 1,
-                cols: 2 + 1,
+                rows: 1,
+                cols: 2,
             },
             TITLE: "Indicator Two",
             Type: WidgetTypes.INDICATOR,
-            Data: []
+            Data: [
+                {
+                    attributeId: 58,
+                    attributeNo: 1,
+                    name: "Last customer Inquiry",
+                    value: "2020-01-03"
+                },
+                {
+                    attributeId: 156,
+                    attributeNo: 2,
+                    name: "Date of Last File Update",
+                    value: "2020-04-20"
+                },
+                {
+                    attributeId: 25,
+                    attributeNo: 3,
+                    name: "Tax Due",
+                    value: "12345$"
+                },
+                {
+                    attributeId: 58,
+                    attributeNo: 1,
+                    name: "Last customer Inquiry",
+                    value: "2020-01-03"
+                },
+                {
+                    attributeId: 156,
+                    attributeNo: 2,
+                    name: "Date of Last File Update",
+                    value: "2020-04-20"
+                },
+                {
+                    attributeId: 58,
+                    attributeNo: 1,
+                    name: "Last customer Inquiry",
+                    value: "2020-01-03"
+                },
+                {
+                    attributeId: 156,
+                    attributeNo: 2,
+                    name: "Date of Last File Update",
+                    value: "2020-04-20"
+                },
+                {
+                    attributeId: 25,
+                    attributeNo: 3,
+                    name: "Tax Due",
+                    value: "12345$"
+                }
+            ]
         },
-
         {
             positionInfo: {
                 x: 3,
                 y: 1,
-                rows: 2 + 1,
-                cols: 3 + 1,
+                rows: 2,
+                cols: 3,
             },
             TITLE: "Log",
             Type: WidgetTypes.LOG,
