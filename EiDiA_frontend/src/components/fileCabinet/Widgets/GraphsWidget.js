@@ -26,18 +26,7 @@ export class GraphsWidget extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            attributeMapping: [
-                {
-                    attrId: 10,
-                    name: "Tax assesment",
-                    color: "red"
-                },
-                {
-                    attrId: 11,
-                    name: "Revenue",
-                    color: "green"
-                }
-            ],
+            attributeMapping: props.attributeMapping,
             type: GraphType.Bar
 
         }

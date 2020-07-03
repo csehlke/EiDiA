@@ -20,9 +20,10 @@ export class Dashboard extends React.Component {
             case WidgetTypes.LOG:
                 return (<LogWidget data={widget.Data}/>)
             case WidgetTypes.GRAPH:
-                return (<GraphsWidget data={widget.Data}/>)
+                return (<GraphsWidget attributeMapping={widget.attributeMapping} data={widget.Data}/>)
             case WidgetTypes.INDICATOR:
-                return (<IndicatorWidget elementPercentage={25} positionInfo={widget.positionInfo} data={widget.Data}/>)
+                return (<IndicatorWidget attributeMapping={widget.attributeMapping} elementPercentage={25}
+                                         positionInfo={widget.positionInfo} data={widget.Data}/>)
             default:
                 return (<p>No child part</p>)
 

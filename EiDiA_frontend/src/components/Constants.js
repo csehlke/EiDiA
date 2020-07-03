@@ -165,18 +165,14 @@ export const Widgets =
             },
             TITLE: "Indicator One",
             Type: WidgetTypes.INDICATOR,
-            Data: [
+            attributeMapping: [
                 {
-                    attributeId: 55,
-                    attributeNo: 1,
+                    attrId: 55,
                     name: "Factory Count",
-                    value: "24"
                 },
                 {
-                    attributeId: 56,
-                    attributeNo: 2,
+                    attrId: 56,
                     name: "Pending Factory assesments",
-                    value: "18"
                 }
             ]
         },
@@ -189,37 +185,16 @@ export const Widgets =
             },
             TITLE: "Graph One",
             Type: WidgetTypes.GRAPH,
-            Data: [
+            attributeMapping: [
                 {
-                    attributeId: 10,
-                    value: 1000,
-                    l: 1050,
-                    date: "2009-05-12"
+                    attrId: 10,
+                    name: "Tax assesment",
+                    color: "red"
                 },
                 {
-                    attributeId: 11,
-                    value: 1100,
-                    l: 1000,
-
-                    date: "2010-05-13"
-                },
-                {
-                    attributeId: 12,
-                    value: 1200,
-
-                    date: "2011-05-14"
-                },
-                {
-                    attributeId: 13,
-                    value: 950,
-                    l: 1300,
-                    date: "2012-05-15"
-                },
-                {
-                    attributeId: 13,
-                    value: 950,
-                    l: 1000,
-                    date: "2012-05-15"
+                    attrId: 11,
+                    name: "Revenue",
+                    color: "green"
                 }
             ]
         },
@@ -232,54 +207,38 @@ export const Widgets =
             },
             TITLE: "Indicator Two",
             Type: WidgetTypes.INDICATOR,
-            Data: [
+            attributeMapping: [
                 {
-                    attributeId: 58,
-                    attributeNo: 1,
+                    attrId: 58,
                     name: "Last customer Inquiry",
-                    value: "2020-01-03"
                 },
                 {
-                    attributeId: 156,
-                    attributeNo: 2,
+                    attrId: 156,
                     name: "Date of Last File Update",
-                    value: "2020-04-20"
                 },
                 {
-                    attributeId: 25,
-                    attributeNo: 3,
+                    attrId: 25,
                     name: "Tax Due",
-                    value: "12345$"
                 },
                 {
-                    attributeId: 58,
-                    attributeNo: 1,
+                    attrId: 58,
                     name: "Last customer Inquiry",
-                    value: "2020-01-03"
                 },
                 {
-                    attributeId: 156,
-                    attributeNo: 2,
+                    attrId: 156,
                     name: "Date of Last File Update",
-                    value: "2020-04-20"
                 },
                 {
-                    attributeId: 58,
-                    attributeNo: 1,
+                    attrId: 58,
                     name: "Last customer Inquiry",
-                    value: "2020-01-03"
                 },
                 {
-                    attributeId: 156,
-                    attributeNo: 2,
+                    attrId: 156,
                     name: "Date of Last File Update",
-                    value: "2020-04-20"
                 },
                 {
-                    attributeId: 25,
-                    attributeNo: 3,
+                    attrId: 25,
                     name: "Tax Due",
-                    value: "12345$"
                 }
             ]
         },
