@@ -36,6 +36,21 @@ export const TealName = styled.span`
    color:#1CA6A6;  
    font-weight:bold;   
 `;
+export const TealRight = styled.p`         
+   color:#1CA6A6;  
+   text-align:right;  
+`;
+
 export const PreferredBreakSpan = styled.span`         
    display:inline-block;   
 `;
+export const Table = styled.div` 
+${props => console.log(props.elementPercentage)}
+width:${props => props.elementPercentage + "%"};
+padding:1em;        
+`
+export const Flex = styled.div` 
+   
+  display: flex;
+  flex-wrap:wrap;
+`
