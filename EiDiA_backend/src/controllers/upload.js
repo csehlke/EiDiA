@@ -34,7 +34,7 @@ const addAttributes = (req, res) => {
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'rootFolderId'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'documentTypeId'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'recordId'));
-    errors.push(ErrorHandling.checkBodyForAttribute(req, 'uploadedBy'));
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'createdBy'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'comment'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'priority'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'department'));
@@ -54,7 +54,7 @@ const addAttributes = (req, res) => {
         rootFolderId: req.body.rootFolderId,
         documentTypeId: req.body.documentTypeId,
         recordId: req.body.recordId,
-        uploadedBy: req.body.uploadedBy,
+        createdBy: req.body.createdBy,
         comment: req.body.comment,
         priority: req.body.priority,
         department: req.body.department,

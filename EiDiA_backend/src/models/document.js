@@ -44,7 +44,7 @@ const DocumentSchema = new mongoose.Schema({
     base64Image: {
         type: String,
     },
-    uploadedBy: {
+    createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         index: true,
