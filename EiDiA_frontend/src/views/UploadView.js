@@ -25,7 +25,7 @@ export class UploadView extends React.Component {
             isUploaded: false, //if picture has not been dropped yet
             isNextPressed: false, //Next-button
             pageTitle: '',
-            ocrProgress: '',
+            ocrProgress: 0,
             ocrWorker: this.loadWorker(), // Worker already initializes in UploadView to save startup time in AttributeContainer
             selectedDocumentTypeId: '',
             documentName: ''

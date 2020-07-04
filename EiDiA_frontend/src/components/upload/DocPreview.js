@@ -22,8 +22,11 @@ const ImageContainer = styled.div`
 
 const PreviewContainer = styled.div`
     overflow: auto;
-    width: 50%;
     height: 88vh; //Not 100 because of border
+`;
+
+const LeftSide = styled.div`
+    width: 50%;
 `;
 
 class DocPreview extends React.Component {
@@ -128,27 +131,31 @@ class DocPreview extends React.Component {
 
     renderProgressBar() {
         if (!this.props.cropDisabled) {
-            return <LinearProgress variant="determinate" value={this.props.ocrProgress * 100}/>
+            return <LinearProgress variant="determinate"
+                                   value={this.props.ocrProgress * 100}
+                                   color={(this.props.ocrProgress !== 1 && this.props.ocrProgress !== 0) ? "secondary" : "primary"}/>
         }
     }
 
     render() {
         return (
-            <PreviewContainer>
+            <LeftSide>
                 {this.renderProgressBar()}
-                <Container>
-                    <ImageContainer>
-                        <ReactCrop
-                            src={this.state.base64Image}
-                            crop={this.state.crop}
-                            ruleOfThirds
-                            disabled={this.props.cropDisabled}
-                            onImageLoaded={this.onImageLoaded}
-                            onComplete={this.onCropComplete}
-                            onChange={this.onCropChange}/>
-                    </ImageContainer>
-                </Container>
-            </PreviewContainer>
+                <PreviewContainer>
+                    <Container>
+                        <ImageContainer>
+                            <ReactCrop
+                                src={this.state.base64Image}
+                                crop={this.state.crop}
+                                ruleOfThirds
+                                disabled={this.props.cropDisabled}
+                                onImageLoaded={this.onImageLoaded}
+                                onComplete={this.onCropComplete}
+                                onChange={this.onCropChange}/>
+                        </ImageContainer>
+                    </Container>
+                </PreviewContainer>
+            </LeftSide>
         )
     }
 }
