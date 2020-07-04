@@ -14,11 +14,6 @@ const SplitView = styled.div`
     flex-direction:row;
 `;
 
-const PreviewContainer = styled.div`
-    overflow: auto;
-    width: 50%;
-    height: 88vh; //Not 100 because of border
-`;
 
 export class UploadView extends React.Component {
 
@@ -30,6 +25,7 @@ export class UploadView extends React.Component {
             isUploaded: false, //if picture has not been dropped yet
             isNextPressed: false, //Next-button
             pageTitle: '',
+            ocrProgress: 0,
             ocrWorker: this.loadWorker(), // Worker already initializes in UploadView to save startup time in AttributeContainer
             selectedDocumentTypeId: '',
             documentName: '',
@@ -82,9 +78,17 @@ export class UploadView extends React.Component {
     }
 
     loadWorker() { //Initialize Worker only once an reuse it, to save startup time
+        const that = this
         const worker = createWorker({
-            logger: m => console.log(m)
+            logger(m) {
+                if (m.status === "recognizing text") {
+                    that.setState({
+                        ocrProgress: m.progress
+                    })
+                }
+            }
         });
+
 
         (async () => {
             await worker.load();
@@ -110,11 +114,9 @@ export class UploadView extends React.Component {
             return (
                 <Page>
                     <SplitView>
-                        <PreviewContainer>
-                            <DocPreview picture={this.state.picture}
-                                        cropDisabled={true} /* Picture from FileDrop, disable crop for preview */
-                                        sendB64Image={this.getBase64Image}/>
-                        </PreviewContainer>
+                        <DocPreview picture={this.state.picture}
+                                    cropDisabled={true} /* Picture from FileDrop, disable crop for preview */
+                                    sendB64Image={this.getBase64Image}/>
                         <TypePicker
                             callbackUploadView={this.getTypePickerData}
                             picUploaded={this.state.isUploaded} /* Get ID to fill Attributecontainer fields *//>
@@ -125,12 +127,11 @@ export class UploadView extends React.Component {
             return (
                 <Page>
                     <SplitView>
-                        <PreviewContainer>
-                            <DocPreview picture={this.state.picture}
-                                        cropDisabled={false}
-                                        callbackUploadView={this.getCropBlob}
-                            />
-                        </PreviewContainer>
+                        <DocPreview picture={this.state.picture}
+                                    cropDisabled={false}
+                                    callbackUploadView={this.getCropBlob}
+                                    ocrProgress={this.state.ocrProgress}/>
+
                         <AttributeContainer picture={this.state.picture}
                                             crop={this.state.cropBlob}
                                             title={this.state.pageTitle}

@@ -3,6 +3,7 @@
 import React from 'react';
 import styled from "styled-components";
 import ReactCrop from 'react-image-crop';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import 'react-image-crop/dist/ReactCrop.css';
 
 
@@ -19,6 +20,14 @@ const ImageContainer = styled.div`
     object-fit: cover;
 `;
 
+const PreviewContainer = styled.div`
+    overflow: auto;
+    height: 88vh; //Not 100 because of border
+`;
+
+const LeftSide = styled.div`
+    width: 50%;
+`;
 
 class DocPreview extends React.Component {
 
@@ -30,7 +39,7 @@ class DocPreview extends React.Component {
             src: null,
             crop: { //set crop state
                 unit: "%"
-            },
+            }
         }
 
         this.onCropChange = this.onCropChange.bind(this);
@@ -46,6 +55,7 @@ class DocPreview extends React.Component {
             console.log("Picture could not be loaded")
         }
     }
+
 
     readFile(file) {
         const reader = new FileReader()
@@ -120,20 +130,33 @@ class DocPreview extends React.Component {
         });
     }
 
+    renderProgressBar() {
+        if (!this.props.cropDisabled) {
+            return <LinearProgress variant="determinate"
+                                   value={this.props.ocrProgress * 100}
+                                   color={(this.props.ocrProgress !== 1 && this.props.ocrProgress !== 0) ? "secondary" : "primary"}/>
+        }
+    }
+
     render() {
         return (
-            <Container>
-                <ImageContainer>
-                    <ReactCrop
-                        src={this.state.base64Image}
-                        crop={this.state.crop}
-                        ruleOfThirds
-                        disabled={this.props.cropDisabled}
-                        onImageLoaded={this.onImageLoaded}
-                        onComplete={this.onCropComplete}
-                        onChange={this.onCropChange}/>
-                </ImageContainer>
-            </Container>
+            <LeftSide>
+                {this.renderProgressBar()}
+                <PreviewContainer>
+                    <Container>
+                        <ImageContainer>
+                            <ReactCrop
+                                src={this.state.base64Image}
+                                crop={this.state.crop}
+                                ruleOfThirds
+                                disabled={this.props.cropDisabled}
+                                onImageLoaded={this.onImageLoaded}
+                                onComplete={this.onCropComplete}
+                                onChange={this.onCropChange}/>
+                        </ImageContainer>
+                    </Container>
+                </PreviewContainer>
+            </LeftSide>
         )
     }
 }
