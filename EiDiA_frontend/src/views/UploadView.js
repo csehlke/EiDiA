@@ -70,10 +70,15 @@ export class UploadView extends React.Component {
     }
 
     loadWorker() { //Initialize Worker only once an reuse it, to save startup time
+        const that = this
         const worker = createWorker({
-            logger: m => this.setState({
-                ocrProgress: m.progress
-            })
+            logger(m) {
+                if (m.status === "recognizing text") {
+                    that.setState({
+                        ocrProgress: m.progress
+                    })
+                }
+            }
         });
 
 
