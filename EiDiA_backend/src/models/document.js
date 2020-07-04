@@ -43,6 +43,7 @@ const DocumentSchema = new mongoose.Schema({
     },
     base64Image: {
         type: String,
+        required: true,
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
