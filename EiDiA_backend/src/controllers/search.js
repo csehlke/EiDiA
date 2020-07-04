@@ -2,6 +2,8 @@
 
 const mongoose = require('mongoose');
 const DocumentModel = require('../models/document');
+const FileTypes = require('../constants').fileTypes;
+const RecordModel = require('../models/record');
 const DateFns = require('date-fns');
 
 
@@ -231,6 +233,69 @@ const advancedSearch = (req, res) => {
             });
         });
 };
+
+function getSearchTable(fileArray) {
+    let sortedByRecords = {};
+    let recordIds = [];
+    fileArray.map(file => {
+        if (recordIds.includes(file.recordId)) {
+            sortedByRecords[file.recordId].push(minimalFile(file));
+        } else {
+            sortedByRecords[file.recordId] = [minimalFile(file)];
+            recordIds.push(file.recordId);
+        }
+    });
+    return Promise.all(recordIds.map(recordId => getDocumentsTable(recordId, sortedByRecords)));
+}
+
+function getDocumentsTable(recordId, sortedByRecords) {
+    return new Promise((resolve, reject) => {
+        RecordModel.findById(recordId, {}, {}, (err, record) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            let table = record === undefined ? null : {
+                parentId: 0,
+                id: recordId,
+                active: false,
+                type: FileTypes.FOLDER,
+                name: record.name,
+                dateCreation: '',
+                dateModification: '',
+                comment: '',
+                actions: [],
+                children: sortedByRecords[recordId].map(document => {
+                    return {
+                        parentId: recordId,
+                        id: document.id,
+                        active: false,
+                        type: FileTypes.NONE,
+                        name: document.name,
+                        dateCreation: document.createdOnDate,
+                        dateModification: document.lastModifiedOnDate,
+                        comment: document.comment,
+                        actions: [],
+                        children: [],
+                    }
+                })
+            };
+            resolve(table);
+        });
+    });
+}
+
+const minimalFile = (file) => {
+    return {
+        id: file._id,
+        name: file.name,
+        createdOnDate: file.createdOnDate,
+        lastModifiedOnDate: file.lastModifiedOnDate,
+        recordId: file.recordId,
+        comment: file.comment,
+    }
+};
+
 
 module.exports = {
     basicSearch,
