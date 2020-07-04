@@ -12,7 +12,7 @@ const uploadDocument = (req, res) => {
 };
 
 
-const fullTextOCR = (base64Image) => { //TODO Send to Backend (OCR IS VERY SLOW) --> Do it on backend?
+const fullTextOCR = (documentId, base64Image) => {
     const worker = tes.createWorker({
         logger: m => console.log(m)
     });
@@ -22,7 +22,13 @@ const fullTextOCR = (base64Image) => { //TODO Send to Backend (OCR IS VERY SLOW)
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
         const {data: {text}} = await worker.recognize(base64Image);
-        console.log(text);
+        DocumentModel.findByIdAndUpdate({_id: documentId}, {completeOcrText: text}, {new: true}, function (err, result) {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log("Inserted completeOcrText")
+            }
+        })
         await worker.terminate();
     })();
 }
@@ -60,10 +66,11 @@ const addAttributes = (req, res) => {
         department: req.body.department,
         attributes: req.body.attributeData,
         base64Image: req.body.base64Image,
-        })
+    })
 
-        .then(() => {
+        .then((insertedData) => {
             res.status(200).json({response: "Inserted attribute-data"});
+            fullTextOCR(insertedData._id, insertedData.base64Image) //Start backend-OCR after inserting attributes
         })
         .catch(error => {
             res.status(400).json({
