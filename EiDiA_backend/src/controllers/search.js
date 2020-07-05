@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const DocumentModel = require('../models/document');
 const FileTypes = require('../constants').fileTypes;
+const FileActions = require('../constants').actions;
 const RecordModel = require('../models/record');
 const DateFns = require('date-fns');
 
@@ -275,7 +276,7 @@ function getDocumentsTable(recordId, sortedByRecords) {
                         dateCreation: document.createdOnDate,
                         dateModification: document.lastModifiedOnDate,
                         comment: document.comment,
-                        actions: [],
+                        actions: [FileActions.EDIT, FileActions.DOWNLOAD],
                         children: [],
                     }
                 })
@@ -295,7 +296,6 @@ const minimalFile = (file) => {
         comment: file.comment,
     }
 };
-
 
 module.exports = {
     basicSearch,

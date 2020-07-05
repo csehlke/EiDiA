@@ -7,6 +7,13 @@ const fileTypes = {
     NONE: 'None'
 }
 
+const actions = {
+    EDIT: 'EDIT',
+    DOWNLOAD: 'DOWNLOAD',
+    DELETE: 'DELETE',
+}
+
 module.exports = {
     fileTypes,
+    actions,
 }
