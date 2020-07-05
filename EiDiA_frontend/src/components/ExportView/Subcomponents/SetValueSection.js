@@ -32,14 +32,11 @@ function createData(variable, value, source) {
     return { variable, value, source };
   }
 
-function convertData(arr, value=null) {
+function convertData(variables, value=null) {
     var out = [];
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i] == "$VARIABLE1") {
-            out.push(createData(arr[i], "BMW", 'DocumentA/$VARIABLE1'));
-        } else {
-            out.push(createData(arr[i], value, null));
-        }
+    for (let k of Object.keys(variables)) {
+        let variable = variables[k];
+        out.push(createData(k, variable["value"], variable["source"]));
     }
     return out;
 }
@@ -48,8 +45,9 @@ export default class SetValueSection extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            input: ""
+            input: "",    
         }
+
         this.handleChangeTextfield = this.handleChangeTextfield.bind(this);
         this.setValueToVariable = this.setValueToVariable.bind(this);
     }
@@ -64,13 +62,14 @@ export default class SetValueSection extends React.Component {
     }
 
     render() {
-        const variables = this.props.variables;
-        const rows = convertData(variables);
+        const variableState = this.props.variables;
+        const variableKeys = Object.keys(variableState);
+        const rows = convertData(variableState);
         return(
             <div>
                 <FormControl style={{margin: "5px"}}>
                     <Select variant="outlined" onChange={this.props.onAction2}>
-                        {variables.map((variable) => <MenuItem key={variable} value={variable}>{variable}</MenuItem>)}
+                        {variableKeys.map((key) => <MenuItem key={key} value={key}>{key}</MenuItem>)}
                     </Select>
                     <FormHelperText>Variables</FormHelperText>
                 </FormControl>

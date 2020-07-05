@@ -8,7 +8,7 @@ import {RichUtils, EditorState, ContentState} from 'draft-js';
 import FloatingWindows from '../components/ExportView/FloatingWindow';
 import {Row, Column, documentMockData, llorem} from '../support files/constants';
 import {convertToRaw} from 'draft-js';
-import { FormatListNumbered } from '@material-ui/icons';
+import { FormatListNumbered, FullscreenExitSharp } from '@material-ui/icons';
 
 function Dialog(props) {
     if (props.currentPage == "Select Template") {
@@ -22,7 +22,14 @@ function Dialog(props) {
             currentPage={props.currentPage}
             selectedDocs={props.selectedDocs}
             download={props.download}
+            editorState={props.editorState}
         />);
+}
+
+
+function fetchDocumentData(docList) {
+    const documentData = documentMockData;
+    return documentData;
 }
 
 
@@ -38,7 +45,7 @@ export class ExportView extends React.Component {
             selectedTemplate: null,
             seen: true,
             open: false,
-            variables: [],
+            variables: {},
             selectedDocs: [],
             selectedVariable: "",
         };
@@ -103,34 +110,45 @@ export class ExportView extends React.Component {
         }
     }
 
-    fetchDocumentData() {
-        const selectedDocs = this.props.selectedDocs;
-        const documentData = documentMockData;
-        return documentData;
-    }
-
     setValueToVariable(value) {
         var newState = this.state;
         var editorText = this.extractTextFromEditorState(newState.editorState);
         editorText = editorText.replace(this.state.selectedVariable, value);
         this.editorText = editorText;
         newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
+
+        var variableState = newState.variables;
+        variableState[this.state.selectedVariable]["value"] = value;
+        variableState[this.state.selectedVariable]["source"] = value;
+        newState.variables = variableState;
+
         this.setState(newState);
     }
 
+    // matches given data from doucment with variables in document text
     mapValues() {
-        const variables = this.state.variables;
-        const documentData = documentMockData;
+        const documentData = fetchDocumentData(this.state.selectedDocs);
+        var variables = this.state.variables;
         var newState = this.state;
         var editorText = this.extractTextFromEditorState(newState.editorState);
-        for (var i = 0; i < variables.length; i++) {
-            const variable = variables[i];
-            if (this.isURI(variable)) {
-                editorText = editorText.replace(variable, documentData[variable]);
+        for (let k of Object.keys(variables)) {
+            if (this.isURI(k)) {
+                let index = variables[k]["index"];
+                let value = documentData[k];
+                
+                // update current value and value source of that variable for state
+                variables[k]["value"] = value;  
+                variables[k]["source"] = k;
+
+                // Replace position of that variable with document data
+                const tmp_arr = editorText.split(" ");
+                const toReplace = tmp_arr[index];
+                editorText = editorText.replace(toReplace, value);
             }
         }
         this.editorText = editorText;
         newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
+        newState.variables = variables
         this.setState(newState);
     }
 
@@ -156,6 +174,8 @@ export class ExportView extends React.Component {
         }
     }
 
+    // replaces document text with text from template
+    // collects all variables of the template
     selectTemplate(value){
         this.editorText = llorem[value] || this.editorText;
         var newState = this.state;
@@ -180,16 +200,29 @@ export class ExportView extends React.Component {
         this.setState(newState);
     }
     
+
+    // update function for editor when usere give input to the editor
+    // scans for new variables entered by user
     onChange(editorState) {
         var newState = this.state;
         newState.editorState = editorState;
-        var tmp_set = new Set(newState.variables);
-        var new_set = new Set(this.extractVariables(editorState));
-        var final_set = new Set([...tmp_set, ...new_set]);
-        newState.variables = Array.from(final_set);
-        console.log(final_set);
+        let currVariables = newState.variables;
+        let newVariables = this.extractVariables(editorState);
+        let newVariableState = {}
+        for (let k of Object.keys(newVariables)) {
+            let index = (k in currVariables) ? currVariables[k]["index"] : newVariables[k]["index"];
+            let value = (k in currVariables) ? currVariables[k]["value"] : newVariables[k]["value"];
+            let source= (k in currVariables) ? currVariables[k]["source"] : newVariables[k]["source"];
+            newVariableState[k] = {
+                index: index,
+                value: value,
+                source: source
+            };
+        }
+        newState.variables = newVariableState;
         this.setState(newState);
     }
+
 
     extractTextFromEditorState(editorState) {
         const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
@@ -197,16 +230,22 @@ export class ExportView extends React.Component {
         return value;
     }
 
+    // Collects variables from document text
+    // retirm objects with index and set value and variable as key
     extractVariables(editorState) {
         const value = this.extractTextFromEditorState(editorState);
         const arr = value.split(" ");
-        var arr2 = []
+        var varObject = {}
         for (var i = 0; i < arr.length; i++) {
             if (arr[i][0] == "$") {
-                arr2.push(arr[i]);
+                varObject[arr[i]] = {
+                    index: i,
+                    value: "",
+                    source: ""
+                }
             }
         }
-        return arr2;
+        return varObject;
     }
 
     changeView(page) {
@@ -286,7 +325,8 @@ export class ExportView extends React.Component {
                 save={this.saveTemplate} 
                 currentPage={this.state.currentPage}
                 selectedDocs={this.state.selectedDocs}
-                download={this.downloadDocument}    
+                download={this.downloadDocument}
+                editorState={this.state.editorState}    
             />
             </div>
         );

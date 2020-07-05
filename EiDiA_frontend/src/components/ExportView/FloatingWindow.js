@@ -51,6 +51,7 @@ export default class FloatingWindow extends React.Component {
                     save={this.props.save}
                     selectedDocs={this.props.selectedDocs}
                     download={this.props.download}
+                    editorState={this.props.editorState}
                 />
           </Dialog>       
         );

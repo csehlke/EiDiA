@@ -12,7 +12,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
-
+import Preview from './Preview';
 
 
 const styles={
@@ -57,8 +57,7 @@ export default class ExportDocumentWindow extends React.Component {
                     <Typography variant="subtitle2">
                         Created Template (Preview)
                     </Typography>
-                    <Box style={styles.box} component="span" display="block" p={1} m={1} bgcolor="LightGray">
-                    </Box>
+                    <Preview editorState={this.props.editorState}/>
                 </Column>
                 <Column style={styles.column}>
                     <Typography variant="subtitle2">
@@ -84,7 +83,7 @@ export default class ExportDocumentWindow extends React.Component {
                             </Typography>
                             <Input placeholder="Search Records ..." fullWidth={true}  inputProps={{ 'aria-label': 'description' }} value={this.props.value} onChange={this.props.updateSearch.bind(this)} />
                             <FlexRow>
-                                {filteredRecords.map(record =>  <RecordSymbol fontSize='3vw' labelFontSize='10px' key={record} name={record}/>)}
+                                {filteredRecords.map(record => <RecordSymbol fontSize='3vw' labelFontSize='10px' key={record} name={record}/>)}
                             </FlexRow>
                         </div>
                     </Row>

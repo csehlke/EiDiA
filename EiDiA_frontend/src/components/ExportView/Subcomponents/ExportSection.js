@@ -9,8 +9,6 @@ const buttonStyle= {
 export default class ExportSection extends React.Component {
     constructor(props) {
         super(props);
-
-
     }
 
     render() {

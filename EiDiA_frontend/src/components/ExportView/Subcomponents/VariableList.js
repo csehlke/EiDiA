@@ -8,7 +8,8 @@ export default class VariableList extends React.Component {
     }
 
     render(){
-        const variable_arr = this.props.variables;
+        const variableState = this.props.variables;
+        const variableKeys = Object.keys(variableState);
         return(
             <div style={{margin: "3%"}}>
                 <p/>
@@ -20,7 +21,7 @@ export default class VariableList extends React.Component {
                     Variables
                 </Typography>
                 <Box component="span" display="block" p={1} m={1} bgcolor="LightGray">
-                    {variable_arr.map((variable) => <li key={variable}>{variable}</li>)}
+                    {variableKeys.map((key) => <li key={key}>{key}</li>)}
                 </Box>
             </div>
         )
