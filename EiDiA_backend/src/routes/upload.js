@@ -6,7 +6,6 @@ const router = express.Router();
 const middleWares = require('../middlewares');
 const UploadController = require('../controllers/upload');
 
-router.post('/document', middleWares.checkAuthentication, UploadController.uploadDocument);
-router.post('/add', middleWares.checkAuthentication, UploadController.addAttributes);
+router.post('/add', middleWares.checkAuthentication, UploadController.addDocument);
 
 module.exports = router;
