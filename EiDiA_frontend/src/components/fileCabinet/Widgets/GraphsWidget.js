@@ -43,7 +43,7 @@ export class GraphsWidget extends React.Component {
                 <CartesianGrid strokeDasharray="3 3"/>
                 <XAxis dataKey="date"/>
                 <YAxis/>
-                <Tooltip/>
+                {this.props.edit ? "" : <Tooltip/>}
                 <Legend/>
                 {attributeMapping.map((mapping, i) => <Line key={i} type="monotone" dataKey={mapping.name}
                                                             stroke={mapping.color}
@@ -123,7 +123,7 @@ export class GraphsWidget extends React.Component {
 
     render() {
 
-        return (<ResponsiveContainer height="95%">{this.createGraph(this.state.attributeMapping)}</ResponsiveContainer>)
+        return (<ResponsiveContainer height="90%">{this.createGraph(this.state.attributeMapping)}</ResponsiveContainer>)
     }
 
 }
