@@ -7,7 +7,6 @@ import {SearchView} from "./views/SearchView";
 import {FileCabinetView} from "./views/FileCabinetView"
 import {RecordView} from "./views/RecordView";
 import Navigation from "./components/Navigation";
-import {RecordMenue} from "./components/fileCabinet/RecordMenue";
 
 
 export default class App extends React.Component {

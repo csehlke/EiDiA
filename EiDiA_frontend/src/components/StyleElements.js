@@ -8,6 +8,13 @@ export const WrapperRecordView = styled.div`
     
 
 `;
+export const WrapperRecordMenue = styled.div`
+    margin: 2vh 5% 2vh 5%;
+    
+    
+    
+
+`;
 export const DashboardWrapper = styled.div`
     height:100%;
     display: grid;

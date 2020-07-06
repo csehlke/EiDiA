@@ -2,11 +2,11 @@
 
 import React from 'react';
 import Page from "../components/Page";
-import {RecordMenue} from "../components/fileCabinet/RecordMenue";
 import FileExplorer from "../components/fileCabinet/FileExplorer";
 import {Dashboard} from "../components/fileCabinet/Dashboard";
 import {recordMenueOptions} from "../components/Constants";
-import {WrapperRecordView} from "../components/StyleElements";
+import {WrapperRecordMenue, WrapperRecordView} from "../components/StyleElements";
+import {Tab, Tabs} from "@material-ui/core";
 
 
 export class RecordView extends React.Component {
@@ -27,16 +27,25 @@ export class RecordView extends React.Component {
         }
     }
     updateSearch(event){
-        this.setState({search: event.target.value.substr(0,20)});
+        this.setState({search: event.target.value.substr(0, 20)});
     }
+
     componentDidMount() {
         //TODO: set a variable title
         this.props.setTitle("Record View");
     }
-    changePage(option){
-        this.state.currentPage=option;
+
+    changePage(option) {
+        this.state.currentPage = option;
         this.setState(this.state);
     }
+
+    handleChange(event, value) {
+        // this.state.currentPage=value;
+        this.setState({currentPage: value})
+        // this.setState(this.state);
+    }
+
     render() {
 
         let toShow;
@@ -55,7 +64,17 @@ export class RecordView extends React.Component {
 
         return (
             <Page title={"Record"}>
-                <RecordMenue handle={(option) => this.changePage(option)}/>
+                <WrapperRecordMenue>
+                    <Tabs
+                        value={this.state.currentPage}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        onChange={this.handleChange.bind(this)}
+                    >
+                        <Tab label="Dashboard" value={recordMenueOptions.DASHBOARD}/>
+                        <Tab label="File Explorer" value={recordMenueOptions.FILEEXPLORER}/>
+                    </Tabs>
+                </WrapperRecordMenue>
                 <WrapperRecordView>
                     {toShow}
                 </WrapperRecordView>
