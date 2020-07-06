@@ -73,7 +73,8 @@ export const Centering = styled.div`
     top: 50%;
     left:50%;
     transform: translate(-50%, -50%);
-    zIndex: 100;
+        z-index: 1000;
+
 `
 export const FoggyDiv = styled.div`
 position:absolute;
