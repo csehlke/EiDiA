@@ -12,7 +12,7 @@ export default class TemplateListItem extends React.Component {
     }
 
     handleClick() {
-        this.props.onAction(this.id, this.index);
+        this.props.onAction(this.text, this.index);
     }
 
 

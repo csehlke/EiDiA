@@ -11,11 +11,12 @@ import DocListItem  from './DocListItem';
 
 const styles = {
     div: {
-        margin: 10
+        margin: 10,
+        height: "300px",
     },
     scrollable: {
-        overflowY: scroll,
-        height: "25%"
+        overflow: "auto",
+        maxHeight: "200px"
     }
 }
 
@@ -31,15 +32,28 @@ const Column = styled.div`
 export default class DocSearch extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            searchResults: []
+        }
+
+        this.search = this.search.bind(this);
+    }
+
+    search(e) {
+        if (e.key == 'Enter') {
+            console.log(e.target.value);
+            let results = ['Document A', 'Document B', 'Document C', 'Document D', 'Document E', 'Document F', 'Document G', 'Document H', 'Document I', 'Document A', 'Document B', 'Document C', 'Document D', 'Document E', 'Document F', 'Document G', 'Document H', 'Document I'];
+            this.setState({searchResults: results});
+        }
     }
 
     render() {
-        const listItems = ['Document A', 'Document B', 'Document C']
+        const listItems = this.state.searchResults;
         const selectedItems = this.props.selectedDocs;
         return(
             <div style={styles.div}>
                 <Row>
-                    <TextField label="Search Document" variant="outlined"/>
+                    <TextField label="Search Document" variant="outlined" onKeyPress={this.search}/>
                 </Row>
                 <Row>
                     <Column>
@@ -59,7 +73,7 @@ export default class DocSearch extends React.Component {
                     <Typography variant="subtitle2">
                         Selected Documents
                     </Typography>
-                        <List dense={true} className="docList">
+                        <List dense={true} className="docList" style={styles.scrollable}>
                                 {selectedItems.map((value) =>
                                     <ListItem key={value}>
                                     <ListItemText

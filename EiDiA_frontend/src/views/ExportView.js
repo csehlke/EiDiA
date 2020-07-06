@@ -40,7 +40,7 @@ export class ExportView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.editorText = llorem["Template0"];
+        this.editorText = llorem["Template 0"];
         this.state = {
             editorState: EditorState.createWithContent(ContentState.createFromText(this.editorText)),
             textAlignment: "left",
@@ -148,8 +148,8 @@ export class ExportView extends React.Component {
         var variables = this.state.variables;
         var selectedDocs = this.state.selectedDocs;
         var documentData = []
-        selectedDocs.map((name) => { if (name in documents) documentData.push(documents[name])});
-        console.log(documentData);
+        selectedDocs.forEach((name) => { if (name in documents) documentData.push(documents[name])});
+        
         var editorText = this.extractTextFromEditorState(newState.editorState);;
         for (let k of Object.keys(variables)) {
             if (isPath(k.slice(1))) {
@@ -172,14 +172,7 @@ export class ExportView extends React.Component {
         this.setState(newState);
     }
 
-    isURI(variable) {
-        // TODO: Check if variable is a URI
-        if (variable == "$VARIABLE1") {
-            return true;
-        }
-        return false;
-    }
-
+    
     toggleDialog() {
         var newState = this.state;
         newState.open = !newState.open;
@@ -314,7 +307,7 @@ export class ExportView extends React.Component {
         const componentSet = this.componentSet[currentPage];
         return (
             <div>
-            <Page title={this.state.currentPage} changeView={this.changeView}>
+            <Page isExportView={true} title={this.state.currentPage} changeView={this.changeView}>
                 <Row>
                     <Column>
                         Sidebar

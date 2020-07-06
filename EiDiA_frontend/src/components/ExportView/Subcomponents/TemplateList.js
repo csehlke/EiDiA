@@ -6,10 +6,21 @@ export default class TemplateList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [0, 1, 2],
+            templateList: [],
             selectedIndex: 0
         }
         this.handleListItemclick = this.handleListItemclick.bind(this);
+        this.fetchTemplates = this.fetchTemplates.bind(this);
+    }
+
+    componentDidMount() {
+        this.fetchTemplates()
+    }
+
+    fetchTemplates() {
+        var newState = this.state;
+        newState.templateList = ["Template 0", "Template 1", "Template 2"];
+        this.setState(newState);
     }
 
     handleListItemclick(value, index) {
@@ -17,24 +28,23 @@ export default class TemplateList extends React.Component {
         newState.selectedIndex = index;
         this.setState(newState);
         this.props.onAction1(value);
-
     }
 
     render() {
-        const items = this.state.data
+        const items = this.state.templateList;
         return(
             <div>
                 <Typography variant="subtitle2">
                     Templates
                 </Typography>
                 <List dense={true}>
-                    {items.map((i) => 
+                    {items.map((item, index) => 
                         <TemplateListItem 
-                            key={i}
-                            text={"Template " + i}
-                            id={"Template" + i}
-                            index={i}
-                            isSelected={this.state.selectedIndex === i}
+                            key={item}
+                            text={item}
+                            id={index}
+                            index={index}
+                            isSelected={this.state.selectedIndex === index}
                             onAction={this.handleListItemclick}
                     />
                     )}

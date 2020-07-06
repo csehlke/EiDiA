@@ -34,7 +34,6 @@ const MenuAppBar = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
-
     const handleMenu = event => {
         setAnchorEl(event.currentTarget);
     };
@@ -42,6 +41,7 @@ const MenuAppBar = (props) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
 
     return (
         <div className={classes.root}>
@@ -54,9 +54,21 @@ const MenuAppBar = (props) => {
                             alt="EiDiA Logo"
                         />
                     </Link>
-                    <Typography variant="h4" align="center" className={classes.title}>
-                        {props.title}
-                    </Typography>
+                   { props.isExportView ?
+                        <React.Fragment>
+                            <Typography variant="h4" align="center" className={props.title == "Select Template" ? classes.title : classes.titleUnselect}>
+                                <div onClick={() => props.changeView("Select Template")}>Select Template</div>
+                            </Typography>
+                            <Typography variant="h4" align="center" className={props.title == "Edit Template" ? classes.title : classes.titleUnselect}>
+                                <div onClick={() => props.changeView("Edit Template")}>Edit Template</div>
+                            </Typography>
+                            <Typography variant="h4" align="center" className={props.title == "Edit" ? classes.title : classes.titleUnselect}>
+                                <div onClick={() => props.changeView("Edit")}>Edit</div>
+                            </Typography> 
+                        </React.Fragment>
+                        : <Typography variant="h4" align="center" className={classes.title}>
+                            {props.title}
+                        </Typography> }
                     <div>
                         <IconButton
                             onClick={handleMenu}
