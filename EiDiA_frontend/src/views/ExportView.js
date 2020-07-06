@@ -1,8 +1,8 @@
 "use strict";
 
 import React from 'react';
-import Page from "../components/Page";
 import ExportMainView from '../components/ExportView/ExportMainView';
+import Header from '../components/ExportView/Header';
 
 export class ExportView extends React.Component {
 
@@ -25,9 +25,10 @@ export class ExportView extends React.Component {
 
     render() {
         return (
-            //<Page isExportView={true} title={this.state.currentPage} changeView={this.changeView}>
+            <div>
+                <Header title={this.state.currentPage} changeView={this.changeView}/>
                 <ExportMainView currentPage={this.state.currentPage} readOnly={this.state.readOnly} changeView={this.changeView}/>
-            //</Page>
+            </div>
         );
     }
 }

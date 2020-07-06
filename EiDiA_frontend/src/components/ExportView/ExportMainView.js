@@ -302,7 +302,6 @@ export default class ExportMainView extends React.Component {
             <div>
                 <Row>
                     <Column>
-                        Sidebar
                     </Column>
                     <Column>
                         <DocEditor 

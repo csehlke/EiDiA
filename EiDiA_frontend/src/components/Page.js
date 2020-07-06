@@ -1,8 +1,6 @@
 "use strict";
 
 import React from 'react';
-
-import Header from './Header';
 import {Footer} from './Footer';
 
 export default class Page extends React.Component {
@@ -14,8 +12,7 @@ export default class Page extends React.Component {
     render() {
         return (
             <section>
-                <Header isExportView={this.props.isExportView} title={this.props.title} changeView={this.props.changeView}/>
-                    {this.props.children}
+                {this.props.children}
                 <Footer/>
             </section>
         );
