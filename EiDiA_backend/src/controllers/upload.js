@@ -7,11 +7,6 @@ const ErrorHandling = require('./errorHandling');
 const tes = require('tesseract.js')
 
 
-const uploadDocument = (req, res) => {
-    res.status(200).json({response: "dummy response"});
-};
-
-
 const fullTextOCR = (documentId, base64Image) => {
     const worker = tes.createWorker({
         logger: m => console.log(m)
@@ -33,8 +28,7 @@ const fullTextOCR = (documentId, base64Image) => {
     })();
 }
 
-
-const addAttributes = (req, res) => {
+const addDocument = (req, res) => {
     let errors = [];
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'name'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'rootFolderId'));
@@ -67,7 +61,6 @@ const addAttributes = (req, res) => {
         attributes: req.body.attributeData,
         base64Image: req.body.base64Image,
     })
-
         .then((insertedData) => {
             res.status(200).json({response: "Inserted attribute-data"});
             fullTextOCR(insertedData._id, insertedData.base64Image) //Start backend-OCR after inserting attributes
@@ -78,11 +71,8 @@ const addAttributes = (req, res) => {
                 message: error.message,
             });
         });
-
-
 };
 
 module.exports = {
-    uploadDocument,
-    addAttributes,
+    addDocument,
 };
