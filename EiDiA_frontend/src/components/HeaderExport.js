@@ -65,7 +65,7 @@ const MenuAppBar = (props) => {
                         <div onClick={() => props.changeView("Edit Template")}>Edit Template</div>
                     </Typography>
                     <Typography variant="h4" align="center" className={props.title == "Edit" ? classes.title : classes.titleUnselect}>
-                    <div onClick={() => props.changeView("Edit")}>Edit</div>
+                        <div onClick={() => props.changeView("Edit")}>Edit</div>
                     </Typography>
                     <div>
                         <IconButton

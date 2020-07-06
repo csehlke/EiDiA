@@ -29,6 +29,17 @@ const Column = styled.div`
 `;
 
 
+function generateData() {
+    var out = []
+    for(let i = 0; i < 9; i++) {
+        var obj =  {name: "Document " + i, id: i };
+        out.push(obj);
+    }
+
+    return out;
+}
+
+
 export default class DocSearch extends React.Component {
     constructor(props) {
         super(props);
@@ -41,8 +52,7 @@ export default class DocSearch extends React.Component {
 
     search(e) {
         if (e.key == 'Enter') {
-            console.log(e.target.value);
-            let results = ['Document A', 'Document B', 'Document C', 'Document D', 'Document E', 'Document F', 'Document G', 'Document H', 'Document I', 'Document A', 'Document B', 'Document C', 'Document D', 'Document E', 'Document F', 'Document G', 'Document H', 'Document I'];
+            let results = generateData();
             this.setState({searchResults: results});
         }
     }
@@ -61,10 +71,10 @@ export default class DocSearch extends React.Component {
                         Search Results
                     </Typography>
                         <List dense={true} style={styles.scrollable}>
-                            {listItems.map((value) =>
+                            {listItems.map((elem) =>
                                 <DocListItem 
-                                    key={value}
-                                    id={value}
+                                    key={elem["id"]}
+                                    id={elem["name"]}
                                     onSelect={this.props.onAction2_2}
                                     />)}
                         </List>

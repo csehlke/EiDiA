@@ -15,7 +15,7 @@ export const Column = styled.div`
 `;
 
 export const documentMockData = {
-    "Document A": {
+    "Document 1": {
         "VARIABLE1": "BMW",
         "VARIABLE2": "500.000€"
     }
