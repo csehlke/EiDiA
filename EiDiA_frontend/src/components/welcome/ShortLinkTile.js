@@ -2,32 +2,33 @@
 
 import React from 'react';
 import styled from "styled-components";
-import {FaFolder} from "react-icons/all";
+import {Link} from "../Link";
 
-
-const Quarter = styled.div`
+const Quarter = styled(Link)`
     height: auto;
-    font-size: 1.5em;
+    font-size: 2.5em;
 `;
 
 const HeadingNoMargin = styled.p`
     margin-top: 0;
     text-align: center;
+    font-size: 0.75em;
 `;
 
-const FolderLogo = styled(FaFolder)`
-     font-size: 6em;
-     margin: 0 0.25em;
-`;
+export default class ShortLinkTile extends React.Component {
 
-export default class RecordSymbol extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
+        const FolderLogo = styled(this.props.icon)`
+            font-size: 6em;
+            margin: 0 0.5em;
+        `;
+
         return (
-            <Quarter>
+            <Quarter to={this.props.link}>
                 <FolderLogo/>
                 <HeadingNoMargin>{this.props.name}</HeadingNoMargin>
             </Quarter>

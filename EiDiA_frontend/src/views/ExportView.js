@@ -15,15 +15,19 @@ export class ExportView extends React.Component {
         this.changeView = this.changeView.bind(this);
     }
 
+    componentDidMount() {
+        this.props.setTitle(this.state.currentPage);
+    }
     changeView(page) {
+        this.props.setTitle(page);
         this.setState({currentPage: page, readOnly: (page=="Select Template")});
     }
 
     render() {
         return (
-            <Page isExportView={true} title={this.state.currentPage} changeView={this.changeView}>
+            //<Page isExportView={true} title={this.state.currentPage} changeView={this.changeView}>
                 <ExportMainView currentPage={this.state.currentPage} readOnly={this.state.readOnly} changeView={this.changeView}/>
-            </Page>
+            //</Page>
         );
     }
 }

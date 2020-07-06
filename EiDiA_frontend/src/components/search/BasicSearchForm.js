@@ -153,6 +153,7 @@ class BasicSearchForm extends React.Component {
                                 label="Full Text"
                                 style={{margin: '0.5em'}}
                                 fullWidth
+                                size={"small"}
                                 value={this.state.fullText}
                                 onChange={this.handleFullTextChange}
                                 variant="outlined"/>
@@ -168,16 +169,17 @@ class BasicSearchForm extends React.Component {
                             <Button
                                 variant="contained"
                                 color="primary"
+                                size={"medium"}
                                 onClick={this.handleReset}
-                                style={{width: '50%', margin: '1em 0.5em'}}>
+                                style={{width: '50%', margin: '0.5em'}}>
                                 Reset
                             </Button>
                             <Button
                                 variant="contained"
                                 color="primary"
-                                size={"large"}
+                                size={"medium"}
                                 onClick={this.handleSearch}
-                                style={{width: '50%', margin: '1em 0.5em'}}>
+                                style={{width: '50%', margin: '0.5em'}}>
                                 Search
                             </Button>
                         </Row>

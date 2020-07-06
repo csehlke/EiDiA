@@ -4,10 +4,7 @@ import React from 'react';
 import {AppBar, IconButton, makeStyles, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import {Link} from "react-router-dom";
-
 import logo from "../assets/logo.png"
-
-// SIEHE: https://material-ui.com/components/app-bar/
 
 const useStyles = makeStyles(theme => ({  //Elemente stylen
     root: {
