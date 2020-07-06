@@ -20,12 +20,15 @@ export const DashboardWrapper = styled.div`
 `;
 export const WidgetWrapper = styled.div`
      height:${props => props.height + "vh"};    
-     border: 2px dotted ${props => props.color};
+     border: ${props => props.edit ? "2px" : "0px"} dotted ${props => props.color};
+
      grid-row-start:${props => props.positionInfo.y};
      grid-row-end:${props => (props.positionInfo.rows + props.positionInfo.y)};
      grid-column-start:${props => props.positionInfo.x};
      grid-column-end:${props => (props.positionInfo.cols + props.positionInfo.x)};
      padding: 1em;
+          position:relative;
+
      
 `;
 export const H2WithOutMargin = styled.h2`         
@@ -52,4 +55,22 @@ export const FlexRow = styled.div`
    
   display: flex;
   flex-wrap:wrap;
+`
+export const ButtonCircle = styled.div`
+
+  float: right;
+
+`
+export const Centering = styled.div`
+    position:absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    zIndex: 100;
+`
+export const FoggyDiv = styled.div`
+position:absolute;
+    height: 100%;
+  width: 100%;
+  ${props => props.edit ? "filter:blur(2px)" : ""};
 `

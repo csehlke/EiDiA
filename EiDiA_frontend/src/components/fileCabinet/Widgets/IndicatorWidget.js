@@ -19,7 +19,6 @@ export class IndicatorWidget extends React.Component {
     }
 
     createAttribute(attr, index) {
-        console.log("hello")
         return (
             <IndicatorElement elementPercentage={this.state.elementPercentage} key={index}>
                 <p>{attr.name}</p>
@@ -32,7 +31,6 @@ export class IndicatorWidget extends React.Component {
     getData(attributeMapping) {
         let data = [];
         let tmp = JSON.parse(JSON.stringify(Attributes));
-
 
         attributeMapping.map(mapping => data.push(
             tmp
