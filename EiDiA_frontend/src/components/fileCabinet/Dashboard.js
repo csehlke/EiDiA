@@ -1,7 +1,7 @@
 import React from 'react';
 import {Widget} from "./Widgets/Widget";
 import {Widgets, WidgetTypes} from "../Constants";
-import {ButtonCircle, DashboardWrapper} from "../StyleElements";
+import {DashboardWrapper} from "../StyleElements";
 import {LogWidget} from "./Widgets/LogWidget";
 import {GraphsWidget} from "./Widgets/GraphsWidget";
 import {IndicatorWidget} from "./Widgets/IndicatorWidget";
@@ -16,6 +16,7 @@ export class Dashboard extends React.Component {
             edit: false
 
         }
+        this.fillUpFreeSlots();
     }
 
     renderWidget(widget) {
@@ -34,6 +35,39 @@ export class Dashboard extends React.Component {
         }
     }
 
+    /**
+     * This method assures that at each slot of the grid there is a Widget.
+     *
+     */
+    fillUpFreeSlots() {
+        let rows = [[0, 0, 0],
+            [0, 0, 0]]
+        this.state.widgets.forEach(function (widget) {
+            for (let x = widget.positionInfo.x; x < widget.positionInfo.cols + widget.positionInfo.x; x++) {
+                for (let y = widget.positionInfo.y; y < widget.positionInfo.rows + widget.positionInfo.y; y++) {
+                    rows[y - 1][x - 1] = 1;
+                }
+
+            }
+        })
+        for (let i = 0; i < rows.length; i++)
+            for (let j = 0; j < rows[i].length; j++)
+                if (rows[i][j] === 0)
+                    this.state.widgets.push({
+                        positionInfo: {
+                            x: j + 1,
+                            y: i + 1,
+                            rows: 1,
+                            cols: 1,
+                        },
+                        TITLE: "",
+                        Type: WidgetTypes.INDICATOR,
+                        attributeMapping: []
+                    })
+
+
+    }
+
     handleEditButton() {
         this.setState({edit: !this.state.edit})
     }
@@ -49,13 +83,9 @@ export class Dashboard extends React.Component {
 
                 </DashboardWrapper>
                 <Fab color="secondary" aria-label="edit" onClick={this.handleEditButton.bind(this)}>
-                    {/*<EditIcon />*/}
                     <FiEdit size={32}/>
                 </Fab>
-                <ButtonCircle>
-                    <FiEdit size={48}/>
 
-                </ButtonCircle>
             </div>
 
 

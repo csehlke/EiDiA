@@ -27,7 +27,7 @@ export const WidgetWrapper = styled.div`
      grid-column-start:${props => props.positionInfo.x};
      grid-column-end:${props => (props.positionInfo.cols + props.positionInfo.x)};
      padding: 1em;
-          position:relative;
+     position:relative;
 
      
 `;

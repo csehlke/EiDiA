@@ -246,8 +246,8 @@ export const Widgets =
             positionInfo: {
                 x: 3,
                 y: 1,
-                rows: 2,
-                cols: 3,
+                rows: 1,
+                cols: 1,
             },
             TITLE: "Log",
             Type: WidgetTypes.LOG,
