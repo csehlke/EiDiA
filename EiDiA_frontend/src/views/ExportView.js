@@ -32,6 +32,9 @@ function fetchDocumentData(docList) {
     return documentData;
 }
 
+function isPath(string) {
+    return /^(?:\/|[a-z]+:\/\/)/.test(string);
+}
 
 export class ExportView extends React.Component {
 
@@ -48,6 +51,7 @@ export class ExportView extends React.Component {
             variables: {},
             selectedDocs: [],
             selectedVariable: "",
+            readOnly: true
         };
 
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
@@ -110,45 +114,61 @@ export class ExportView extends React.Component {
         }
     }
 
+    // Set Value to variable manually (not from document)
     setValueToVariable(value) {
         var newState = this.state;
-        var editorText = this.extractTextFromEditorState(newState.editorState);
-        editorText = editorText.replace(this.state.selectedVariable, value);
-        this.editorText = editorText;
-        newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
 
         var variableState = newState.variables;
-        variableState[this.state.selectedVariable]["value"] = value;
-        variableState[this.state.selectedVariable]["source"] = value;
+        let index = variableState[newState.selectedVariable]["index"]; 
+        variableState[newState.selectedVariable]["value"] = value;
+        variableState[newState.selectedVariable]["source"] = value;
         newState.variables = variableState;
+
+        let editorText = this.setValuesToText(index, value, newState.editorState);
+        newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
 
         this.setState(newState);
     }
 
+    // Replace position of that variable with new value
+    setValuesToText(index, newValue, editorState) {
+        var editorText = this.extractTextFromEditorState(editorState);
+        const tmp_arr = editorText.split(" ");
+        const toReplace = tmp_arr[index];
+        editorText = editorText.replace(toReplace, newValue);
+        return editorText;
+    }
+
+
     // matches given data from doucment with variables in document text
     mapValues() {
-        const documentData = fetchDocumentData(this.state.selectedDocs);
-        var variables = this.state.variables;
+        const documents = fetchDocumentData(this.state.selectedDocs);
         var newState = this.state;
-        var editorText = this.extractTextFromEditorState(newState.editorState);
+
+        var variables = this.state.variables;
+        var selectedDocs = this.state.selectedDocs;
+        var documentData = []
+        selectedDocs.map((name) => { if (name in documents) documentData.push(documents[name])});
+        console.log(documentData);
+        var editorText = this.extractTextFromEditorState(newState.editorState);;
         for (let k of Object.keys(variables)) {
-            if (this.isURI(k)) {
+            if (isPath(k.slice(1))) {
+                let tmp = k.split("/");
+                let variable = tmp[tmp.length - 1];
+                let tmp2 = tmp[tmp.length - 2];
+                let documentIndex = parseInt(tmp2[tmp2.length - 1]) - 1;
                 let index = variables[k]["index"];
-                let value = documentData[k];
-                
+                let value = documentData[documentIndex][variable];
+
                 // update current value and value source of that variable for state
                 variables[k]["value"] = value;  
-                variables[k]["source"] = k;
-
-                // Replace position of that variable with document data
-                const tmp_arr = editorText.split(" ");
-                const toReplace = tmp_arr[index];
-                editorText = editorText.replace(toReplace, value);
+                variables[k]["source"] = "\/" + selectedDocs[documentIndex] + "\/" + variable;
+                editorText = this.setValuesToText(index, value, newState.editorState)
             }
         }
-        this.editorText = editorText;
-        newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
-        newState.variables = variables
+        newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
+        newState.variables = variables;
+
         this.setState(newState);
     }
 
@@ -202,11 +222,20 @@ export class ExportView extends React.Component {
     
 
     // update function for editor when usere give input to the editor
-    // scans for new variables entered by user
+    // scans for new variables entered by user when in "Edit Templatepage"
     onChange(editorState) {
         var newState = this.state;
         newState.editorState = editorState;
-        let currVariables = newState.variables;
+        
+        if (newState.currentPage == "Edit Template") {
+            newState.variables = this.scanForNewVariables(newState.variables, editorState);
+        }
+        
+        this.setState(newState);
+    }
+
+    // Scans editorText for new Variables and returns object of updated variable state
+    scanForNewVariables(currVariables, editorState) {
         let newVariables = this.extractVariables(editorState);
         let newVariableState = {}
         for (let k of Object.keys(newVariables)) {
@@ -219,10 +248,8 @@ export class ExportView extends React.Component {
                 source: source
             };
         }
-        newState.variables = newVariableState;
-        this.setState(newState);
+        return newVariableState;
     }
-
 
     extractTextFromEditorState(editorState) {
         const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
@@ -247,10 +274,11 @@ export class ExportView extends React.Component {
         }
         return varObject;
     }
-
+    // Change between "Select Template", "Edit Template" and "Edit" mode/view
     changeView(page) {
         var newState = this.state;
         newState.currentPage = page;
+        newState.readOnly = (page == "Select Template") // Disable document editing in "Select Template" view
         this.setState(newState);
         if (page == "Edit") {
             this.mapValues();
@@ -276,7 +304,6 @@ export class ExportView extends React.Component {
         let pdfMakeObject = {
             content: editorText.split("\n")
         };
-        console.log(pdfMakeObject);
     }
 
 
@@ -294,6 +321,7 @@ export class ExportView extends React.Component {
                     </Column>
                     <Column>
                         <DocEditor 
+                            readOnly={this.state.readOnly}
                             textAlignment={this.state.textAlignment}
                             ref={(docEditor) => {this.docEditor = docEditor}}
                             editorState={editorState}
