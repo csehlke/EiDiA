@@ -79,4 +79,5 @@ const addDocType = (req, res) => {
 
 module.exports = {
     addDocument,
+    addDocType
 };
