@@ -1,13 +1,7 @@
 import React from 'react';
-import FormatBoldIcon from '@material-ui/icons/FormatBold';
-import FormatItalicIcon from '@material-ui/icons/FormatItalic';
-import StrikethroughSIcon from '@material-ui/icons/StrikethroughS';
 import IconButton from '@material-ui/core/IconButton'
-import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
-import FormatAlignCenterIcon from '@material-ui/icons/FormatAlignCenter';
-import FormatAlignRightIcon from '@material-ui/icons/FormatAlignRight';
-import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify';
-import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
+import {GrTextAlignFull, GrTextAlignLeft, GrTextAlignCenter, GrTextAlignRight} from 'react-icons/gr';
+import {AiOutlineBold, AiOutlineItalic, AiOutlineStrikethrough, AiOutlineUnderline} from 'react-icons/ai';
 import "draft-js/dist/Draft.css";
 
 const styles = {
@@ -19,32 +13,13 @@ const styles = {
     }
 }
 
-const fontSizes = [
-    { text: '4', value: 4 },
-    { text: '8', value: 8 },
-    { text: '10', value: 10 },
-    { text: '12', value: 12 },
-    { text: '14', value: 14 },
-    { text: '16', value: 16 },
-    { text: '20', value: 20 },
-    { text: '24', value: 24 },
-    { text: '30', value: 30 },
-    { text: '36', value: 36 },
-    { text: '42', value: 42 },
-    { text: '50', value: 50 },
-    { text: '64', value: 64 },
-    { text: '72', value: 72 },
-    { text: '90', value: 90 },
-  ];
-
-
 export default class EditorTools extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             bold: false,
             italic: false,
-            underline: false,
+            underlined: false,
             strikethrough: false,
             alignments: {
                 left: true,
@@ -86,49 +61,49 @@ export default class EditorTools extends React.Component {
                     style={this.state.bold ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setEmphasis(e, "bold")}
                 >
-                    <FormatBoldIcon />
+                    <AiOutlineBold />
                 </IconButton>
                 <IconButton 
                     style={this.state.italic ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setEmphasis(e, "italic")}
                 >                    
-                    <FormatItalicIcon />
+                    <AiOutlineItalic />
                 </IconButton>
                 <IconButton 
                     style={this.state.underlined ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setEmphasis(e, "underline")}
                 >                    
-                    <FormatUnderlinedIcon />
+                    <AiOutlineUnderline />
                 </IconButton>
                 <IconButton 
                     style={this.state.striked ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setEmphasis(e, "strikethrough")}
                 >                    
-                    <StrikethroughSIcon />
+                    <AiOutlineStrikethrough />
                 </IconButton>
                 <IconButton 
                     style={this.state.alignments.left ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setAlignment(e, "left")}
                 >
-                    <FormatAlignLeftIcon />
+                    <GrTextAlignLeft />
                 </IconButton>
                 <IconButton 
                     style={this.state.alignments.center ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setAlignment(e, "center")}
                 >
-                    <FormatAlignCenterIcon />
+                    <GrTextAlignCenter />
                 </IconButton>
                 <IconButton
                     style={this.state.alignments.right ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setAlignment(e, "right")}
                 >
-                    <FormatAlignRightIcon />
+                    <GrTextAlignRight />
                 </IconButton>
                 <IconButton
                     style={this.state.alignments.justify ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setAlignment(e, "justify")}
                 >
-                    <FormatAlignJustifyIcon />
+                    <GrTextAlignFull />
                 </IconButton>
             </div>
         )

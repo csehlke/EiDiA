@@ -48,7 +48,6 @@ export default class RightSidePanel extends React.Component {
     const TypeComponent3 = this.typeComponents[this.props.comp3]
     return (
       <div style={styles.drawer}>
-          <div/>
           <Divider />
             <TypeComponent1 
               onAction1={this.props.onAction1_1}
