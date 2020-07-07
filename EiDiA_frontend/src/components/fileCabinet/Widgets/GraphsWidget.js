@@ -123,7 +123,7 @@ export class GraphsWidget extends React.Component {
 
     render() {
 
-        return (<ResponsiveContainer height="90%">{this.createGraph(this.state.attributeMapping)}</ResponsiveContainer>)
+        return (<ResponsiveContainer height="85%">{this.createGraph(this.state.attributeMapping)}</ResponsiveContainer>)
     }
 
 }
