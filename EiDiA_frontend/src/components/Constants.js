@@ -3,7 +3,8 @@ export const recordMenueOptions ={
     FILEEXPLORER:2
 }
 export const DragTypes = {
-    ELEMENT: 'element'
+    ELEMENT: 'element',
+    WIDGET: 'widget'
 }
 export const fileTypes = {
     FOLDER: 'Folder',
@@ -160,10 +161,8 @@ export const Widgets =
             positionInfo: {
                 x: 1,
                 y: 1,
-                rows: 1,
-                cols: 1,
             },
-            TITLE: "Indicator One",
+            title: "Indicator One",
             Type: WidgetTypes.INDICATOR,
             attributeMapping: [
                 {
@@ -180,8 +179,6 @@ export const Widgets =
             positionInfo: {
                 x: 2,
                 y: 1,
-                rows: 1,
-                cols: 1,
             },
             TITLE: "Graph One",
             Type: WidgetTypes.GRAPH,
@@ -202,8 +199,6 @@ export const Widgets =
             positionInfo: {
                 x: 1,
                 y: 2,
-                rows: 1,
-                cols: 2,
             },
             TITLE: "Indicator Two",
             Type: WidgetTypes.INDICATOR,
@@ -227,18 +222,6 @@ export const Widgets =
                 {
                     attrId: 156,
                     name: "Date of Last File Update",
-                },
-                {
-                    attrId: 58,
-                    name: "Last customer Inquiry",
-                },
-                {
-                    attrId: 156,
-                    name: "Date of Last File Update",
-                },
-                {
-                    attrId: 25,
-                    name: "Tax Due",
                 }
             ]
         },
@@ -246,8 +229,6 @@ export const Widgets =
             positionInfo: {
                 x: 3,
                 y: 1,
-                rows: 1,
-                cols: 1,
             },
             TITLE: "Log",
             Type: WidgetTypes.LOG,

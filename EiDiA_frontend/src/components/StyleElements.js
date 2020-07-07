@@ -19,22 +19,25 @@ export const DashboardWrapper = styled.div`
     height:100%;
     display: grid;
     grid-template-columns: 33% 33% 33%;
-    grid-template-rows: auto auto;
+    grid-template-rows: 33vh 33vh;
+    
     grid-column-gap: 1em;
     grid-row-gap: 2vh;
     
 
 `;
 export const WidgetWrapper = styled.div`
-     height:${props => props.height + "vh"};    
+     height: 33vh;
      border: ${props => props.edit ? "2px" : "0px"} dotted ${props => props.color};
 
      grid-row-start:${props => props.positionInfo.y};
-     grid-row-end:${props => (props.positionInfo.rows + props.positionInfo.y)};
+     grid-row-end: span 1;
      grid-column-start:${props => props.positionInfo.x};
-     grid-column-end:${props => (props.positionInfo.cols + props.positionInfo.x)};
+     grid-column-end: span 1;
      padding: 1em;
      position:relative;
+     cursor: ${props => props.edit ? "move" : "default"} ;
+             z-index: 100;
 
      
 `;
@@ -81,4 +84,14 @@ position:absolute;
     height: 100%;
   width: 100%;
   ${props => props.edit ? "filter:blur(2px)" : ""};
+  
 `
+export const ThirdDiv = styled.div`
+width:30vw;
+  
+`
+/*export const HalfWidth = styled.div`
+  min-width:120;
+
+  
+`*/
