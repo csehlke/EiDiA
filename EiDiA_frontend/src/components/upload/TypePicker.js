@@ -222,6 +222,39 @@ class TypePicker extends React.Component {
                         />
                     </DialogTitle>
                     <DialogContent dividers>
+                        <Grid
+                            container
+                            direction="row"
+                            justify="space-evenly"
+                            alignItems="center">
+
+                            <Grid item xs={6} style={{padding: 10}}>
+                                <TextField
+                                    label={"attrName"}
+                                    variant="outlined"/>
+                            </Grid>
+                            <Grid item xs={6} style={{padding: 10}}>
+                                <TextField
+                                    label={"attrName"}
+                                    variant="outlined"/>
+                            </Grid>
+                            <Grid item xs={6} style={{padding: 10}}>
+                                <TextField
+                                    label={"attrName"}
+                                    variant="outlined"/>
+                            </Grid>
+                            <Grid item xs={6} style={{padding: 10}}>
+                                <TextField
+                                    label={"attrName"}
+                                    variant="outlined"/>
+                            </Grid>
+                            <Grid item xs={6} style={{padding: 10}}>
+                                <TextField
+                                    label={"attrName"}
+                                    variant="outlined"/>
+                            </Grid>
+
+                        </Grid>
                     </DialogContent>
                     <DialogActions>
                         <TextField
