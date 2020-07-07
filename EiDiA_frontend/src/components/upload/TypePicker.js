@@ -19,6 +19,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
+import UploadService from "../../services/UploadService";
 
 const Container = styled.div
     // Outer Container
@@ -140,8 +141,15 @@ class TypePicker extends React.Component {
     newDocTypeToBackend() {
         let requestData = {
             newDocumentTypeName: this.state.newDocumentTypeName,
-            newAttributes: this.state.newAttributeName
+            newAttributes: this.state.newAttributes
         }
+
+        UploadService.addNewDoctype(requestData).then((response) => {
+            console.log(response)
+        }).catch((e) => {
+            console.error(e);
+        });
+
     }
 
     handleNewDocumentTypeName(event) {
