@@ -123,7 +123,6 @@ class TypePicker extends React.Component {
         this.setState({
             selectedAttrType: event.target.value,
         });
-        console.log(this.state.selectedAttrType)
     }
 
     openDocDialog() {
@@ -145,10 +144,20 @@ class TypePicker extends React.Component {
         }
 
         UploadService.addNewDoctype(requestData).then((response) => {
+            CommonService.getAllDocumentTypes().then((data) => { // Update dropdown with new DocType
+                this.setState({
+                    documentTypes: [...data.documentTypes],
+                });
+            }).catch((e) => {
+                console.error(e);
+            });
             console.log(response)
         }).catch((e) => {
             console.error(e);
         });
+
+
+        this.closeDocDialog()
 
     }
 
@@ -283,12 +292,16 @@ class TypePicker extends React.Component {
                                 <MenuItem value={'date'}>Date</MenuItem>
                             </Select>
                         </FormControl>
-                        <Button autoFocus color="primary" onClick={this.addNewAttribute}>
+                        <Button autoFocus
+                                disabled={this.state.selectedAttrType === '' || this.state.newAttributeName === ''}
+                                color="primary" onClick={this.addNewAttribute}>
                             Add Attribute
                         </Button>
                     </DialogActions>
                     <DialogActions>
-                        <Button autoFocus color="primary" onClick={this.newDocTypeToBackend}>
+                        <Button autoFocus
+                                disabled={this.state.newDocumentTypeName === '' || !(this.state.newAttributes.length > 0)}
+                                color="primary" onClick={this.newDocTypeToBackend}>
                             Save Document Type
                         </Button>
                     </DialogActions>
