@@ -73,6 +73,10 @@ const addDocument = (req, res) => {
         });
 };
 
+const addDocType = (req, res) => {
+
+};
+
 module.exports = {
     addDocument,
 };

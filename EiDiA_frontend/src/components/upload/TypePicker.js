@@ -138,7 +138,10 @@ class TypePicker extends React.Component {
     }
 
     newDocTypeToBackend() {
-        //TODO SEND NEW DOCTYPES TO BACKEND
+        let requestData = {
+            newDocumentTypeName: this.state.newDocumentTypeName,
+            newAttributes: this.state.newAttributeName
+        }
     }
 
     handleNewDocumentTypeName(event) {
@@ -160,7 +163,6 @@ class TypePicker extends React.Component {
                 dataType: this.state.selectedAttrType
             }]
         });
-        console.log(this.state.newAttributes)
     }
 
     render() {
@@ -238,7 +240,7 @@ class TypePicker extends React.Component {
 
                             {this.state.newAttributes.map(function (item) {
                                 return (
-                                    <Grid item xs={6} style={{padding: 10}}>
+                                    <Grid item xs={6} style={{padding: 10}} key={item.name + item.dataType}>
                                         <TextField
                                             disabled
                                             label={item.name}
