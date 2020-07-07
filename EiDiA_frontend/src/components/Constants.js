@@ -180,7 +180,7 @@ export const Widgets =
                 x: 2,
                 y: 1,
             },
-            TITLE: "Graph One",
+            title: "Graph One",
             Type: WidgetTypes.GRAPH,
             attributeMapping: [
                 {
@@ -200,7 +200,7 @@ export const Widgets =
                 x: 1,
                 y: 2,
             },
-            TITLE: "Indicator Two",
+            title: "Indicator Two",
             Type: WidgetTypes.INDICATOR,
             attributeMapping: [
                 {
@@ -230,7 +230,7 @@ export const Widgets =
                 x: 3,
                 y: 1,
             },
-            TITLE: "Log",
+            title: "Log",
             Type: WidgetTypes.LOG,
             Data: [
                 {
