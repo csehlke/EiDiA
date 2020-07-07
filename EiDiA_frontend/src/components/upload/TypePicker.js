@@ -50,7 +50,8 @@ class TypePicker extends React.Component {
             docDialogOpened: false,
             selectedAttrType: '',
             newDocumentTypeName: '',
-            newAttributeName: ''
+            newAttributeName: '',
+            newAttributes: [],
         }
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
@@ -63,6 +64,7 @@ class TypePicker extends React.Component {
         this.handleAttrTypeChange = this.handleAttrTypeChange.bind(this);
         this.handleNewDocumentTypeName = this.handleNewDocumentTypeName.bind(this);
         this.handleNewAttributeName = this.handleNewAttributeName.bind(this);
+        this.addNewAttribute = this.addNewAttribute.bind(this);
     }
 
     componentDidMount() {
@@ -152,7 +154,13 @@ class TypePicker extends React.Component {
     }
 
     addNewAttribute() {
-        //TODO Add new Attribute to List
+        this.setState({
+            newAttributes: [...this.state.newAttributes, {
+                name: this.state.newAttributeName,
+                dataType: this.state.selectedAttrType
+            }]
+        });
+        console.log(this.state.newAttributes)
     }
 
     render() {
@@ -228,31 +236,22 @@ class TypePicker extends React.Component {
                             justify="space-evenly"
                             alignItems="center">
 
-                            <Grid item xs={6} style={{padding: 10}}>
-                                <TextField
-                                    label={"attrName"}
-                                    variant="outlined"/>
-                            </Grid>
-                            <Grid item xs={6} style={{padding: 10}}>
-                                <TextField
-                                    label={"attrName"}
-                                    variant="outlined"/>
-                            </Grid>
-                            <Grid item xs={6} style={{padding: 10}}>
-                                <TextField
-                                    label={"attrName"}
-                                    variant="outlined"/>
-                            </Grid>
-                            <Grid item xs={6} style={{padding: 10}}>
-                                <TextField
-                                    label={"attrName"}
-                                    variant="outlined"/>
-                            </Grid>
-                            <Grid item xs={6} style={{padding: 10}}>
-                                <TextField
-                                    label={"attrName"}
-                                    variant="outlined"/>
-                            </Grid>
+                            {this.state.newAttributes.map(function (item) {
+                                return (
+                                    <Grid item xs={6} style={{padding: 10}}>
+                                        <TextField
+                                            disabled
+                                            label={item.name}
+                                            value={"Datatype: " + item.dataType}
+                                            variant="outlined"
+                                            InputProps={{
+                                                style: {
+                                                    color: "black" //Textcolor for "disabled"-property
+                                                }
+                                            }}/>
+                                    </Grid>
+                                );
+                            })}
 
                         </Grid>
                     </DialogContent>
