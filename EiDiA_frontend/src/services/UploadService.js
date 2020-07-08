@@ -26,14 +26,4 @@ export default class UploadService {
             });
         });
     }
-
-    static addNewDoctype(docTypeData) {
-        return new Promise((resolve, reject) => {
-            HttpService.post(baseURL + '/upload/adddoctype', docTypeData, function (data) {
-                resolve(data);
-            }, function (textStatus) {
-                reject(textStatus);
-            });
-        });
-    }
 }

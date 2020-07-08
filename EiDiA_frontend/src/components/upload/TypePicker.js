@@ -4,22 +4,11 @@ import React from 'react';
 import styled from "styled-components";
 import {Button} from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
-
 import SmartDropDownBox from "../SmartDropDownBox";
 import Box from "@material-ui/core/Box";
-
 import CommonService from '../../services/CommonService';
 import TextField from "@material-ui/core/TextField";
-
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
-import UploadService from "../../services/UploadService";
+import NewDocumentTypeDialog from "./NewDocumentTypeDialog";
 
 const Container = styled.div
     // Outer Container
@@ -49,10 +38,6 @@ class TypePicker extends React.Component {
             hasAutoCompleteValue: false, // true, if autoComplete has value
             documentName: '',
             docDialogOpened: false,
-            selectedAttrType: '',
-            newDocumentTypeName: '',
-            newAttributeName: '',
-            newAttributes: [],
         }
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
@@ -62,10 +47,6 @@ class TypePicker extends React.Component {
         this.openDocDialog = this.openDocDialog.bind(this);
         this.closeDocDialog = this.closeDocDialog.bind(this);
         this.newDocTypeToBackend = this.newDocTypeToBackend.bind(this);
-        this.handleAttrTypeChange = this.handleAttrTypeChange.bind(this);
-        this.handleNewDocumentTypeName = this.handleNewDocumentTypeName.bind(this);
-        this.handleNewAttributeName = this.handleNewAttributeName.bind(this);
-        this.addNewAttribute = this.addNewAttribute.bind(this);
     }
 
     componentDidMount() {
@@ -104,7 +85,6 @@ class TypePicker extends React.Component {
         }
     }
 
-
     handleNextButtonOnClick() {
         this.props.callbackUploadView(this.state.selectedDocumentTypeId, this.state.documentName);
     }
@@ -116,12 +96,6 @@ class TypePicker extends React.Component {
     handleDocumentNameChange(event) {
         this.setState({
             documentName: event.target.value,
-        });
-    }
-
-    handleAttrTypeChange(event) {
-        this.setState({
-            selectedAttrType: event.target.value,
         });
     }
 
@@ -137,49 +111,19 @@ class TypePicker extends React.Component {
         });
     }
 
-    newDocTypeToBackend() {
-        let requestData = {
-            newDocumentTypeName: this.state.newDocumentTypeName,
-            newAttributes: this.state.newAttributes
-        }
-
-        UploadService.addNewDoctype(requestData).then((response) => {
-            CommonService.getAllDocumentTypes().then((data) => { // Update dropdown with new DocType
+    newDocTypeToBackend(requestData) {
+        CommonService.addNewDocumentType(requestData)
+            .then(() => {
+                return CommonService.getAllDocumentTypes();
+            })
+            .then((data) => { // Update dropdown with new DocType
                 this.setState({
                     documentTypes: [...data.documentTypes],
                 });
-            }).catch((e) => {
+            })
+            .catch((e) => {
                 console.error(e);
             });
-            console.log(response)
-        }).catch((e) => {
-            console.error(e);
-        });
-
-
-        this.closeDocDialog()
-
-    }
-
-    handleNewDocumentTypeName(event) {
-        this.setState({
-            newDocumentTypeName: event.target.value
-        });
-    }
-
-    handleNewAttributeName(event) {
-        this.setState({
-            newAttributeName: event.target.value
-        });
-    }
-
-    addNewAttribute() {
-        this.setState({
-            newAttributes: [...this.state.newAttributes, {
-                name: this.state.newAttributeName,
-                dataType: this.state.selectedAttrType
-            }]
-        });
     }
 
     render() {
@@ -238,75 +182,10 @@ class TypePicker extends React.Component {
                     </Grid>
                 </Grid>
 
-                <Dialog open={this.state.docDialogOpened} onClose={this.closeDocDialog}>
-                    <DialogTitle>
-                        Create New Document Type
-                        <TextField
-                            label="Document Type Name"
-                            variant="outlined"
-                            onChange={this.handleNewDocumentTypeName}
-                            fullWidth
-                        />
-                    </DialogTitle>
-                    <DialogContent dividers>
-                        <Grid
-                            container
-                            direction="row"
-                            justify="space-evenly"
-                            alignItems="center">
-
-                            {this.state.newAttributes.map(function (item) {
-                                return (
-                                    <Grid item xs={6} style={{padding: 10}} key={item.name + item.dataType}>
-                                        <TextField
-                                            disabled
-                                            label={item.name}
-                                            value={"Datatype: " + item.dataType}
-                                            variant="outlined"
-                                            InputProps={{
-                                                style: {
-                                                    color: "black" //Textcolor for "disabled"-property
-                                                }
-                                            }}/>
-                                    </Grid>
-                                );
-                            })}
-
-                        </Grid>
-                    </DialogContent>
-                    <DialogActions>
-                        <TextField
-                            label="Attribute Name"
-                            variant="outlined"
-                            onChange={this.handleNewAttributeName}
-                            fullWidth
-                        />
-                        <FormControl variant="outlined" style={{minWidth: 150}}>
-                            <InputLabel>Attribute Type</InputLabel>
-                            <Select
-                                value={this.state.selectedAttrType}
-                                onChange={this.handleAttrTypeChange}
-                            >
-                                <MenuItem value={'text'}>Text</MenuItem>
-                                <MenuItem value={'number'}>Number</MenuItem>
-                                <MenuItem value={'date'}>Date</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <Button autoFocus
-                                disabled={this.state.selectedAttrType === '' || this.state.newAttributeName === ''}
-                                color="primary" onClick={this.addNewAttribute}>
-                            Add Attribute
-                        </Button>
-                    </DialogActions>
-                    <DialogActions>
-                        <Button autoFocus
-                                disabled={this.state.newDocumentTypeName === '' || !(this.state.newAttributes.length > 0)}
-                                color="primary" onClick={this.newDocTypeToBackend}>
-                            Save Document Type
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-
+                <NewDocumentTypeDialog
+                    open={this.state.docDialogOpened}
+                    onClose={this.closeDocDialog}
+                    createNewDocumentType={(newDocumentType) => this.newDocTypeToBackend(newDocumentType)}/>
             </Container>
         )
     }

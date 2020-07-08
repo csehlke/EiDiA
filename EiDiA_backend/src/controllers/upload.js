@@ -75,28 +75,6 @@ const addDocument = (req, res) => {
         });
 };
 
-const addDocType = (req, res) => {
-    DocumentTypeModel.create({
-        name: req.body.newDocumentTypeName
-    })
-        .then((insertedData) => {
-            req.body.newAttributes.map(item => AttributeModel.create({
-                documentTypeId: insertedData._id, //Insert Attribute with corresponding documentTypeId
-                name: item.name,
-                dataType: item.dataType
-            }))
-            res.status(200).json({response: "Inserted new Document Type"});
-        })
-        .catch(error => {
-            res.status(400).json({
-                error: error.message,
-                message: error.message,
-            });
-        });
-
-};
-
 module.exports = {
     addDocument,
-    addDocType
 };
