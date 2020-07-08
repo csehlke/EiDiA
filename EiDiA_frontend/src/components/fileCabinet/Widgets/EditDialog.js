@@ -31,6 +31,15 @@ export class EditDialog extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps !== this.props) {
+            this.setState({
+                selectedType: this.props.widgetType,
+                selectedTitle: this.props.widgetTitle
+            })
+        }
+    }
+
     indicator() {
         return (
             <p>something</p>
@@ -67,7 +76,6 @@ export class EditDialog extends React.Component {
          * TODO: backendConnection
          *
          */
-        console.log(event)
         this.setState({selectedType: event.target.value})
     }
 
@@ -107,57 +115,28 @@ export class EditDialog extends React.Component {
                         value={this.state.selectedTitle}
                         onChange={this.props.changeData.bind(this, "title")}
                     />
-                    <FormControl style={classes.formControl}>
-                        <InputLabel id="type-label">Widget Type</InputLabel>
-                        <Select
-                            labelId="type-label"
-                            id="type-select"
-                            value={this.state.selectedType}
-                            onChange={this.props.changeData.bind(this, "type")}
-                        >
-                            <MenuItem value={WidgetTypes.INDICATOR}>Indicator</MenuItem>
-                            <MenuItem value={WidgetTypes.GRAPH}>Graph</MenuItem>
-                            <MenuItem value={WidgetTypes.LOG}>Log</MenuItem>
-                        </Select>
-                    </FormControl>
+
                 </DialogTitle>
 
                 <DialogContent>
                     <FlexRow>
                         <FormControl style={classes.formControl}>
-                            <InputLabel htmlFor="x">Horizontal Position</InputLabel>
+                            <InputLabel htmlFor="type-label">Widget Type</InputLabel>
                             <Select
-                                value={this.props.positionInfo.x}
-                                input={<Input id="x"/>}
-                                onChange={this.props.changeData.bind(this, "x")}
-
+                                input={<Input id="type-label"/>}
+                                value={this.state.selectedType}
+                                onChange={this.props.changeData.bind(this, "type")}
                             >
-                                <MenuItem value={1}>One</MenuItem>
-                                <MenuItem value={2}>2</MenuItem>
-                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={WidgetTypes.INDICATOR}>Indicator</MenuItem>
+                                <MenuItem value={WidgetTypes.GRAPH}>Graph</MenuItem>
+                                <MenuItem value={WidgetTypes.LOG}>Log</MenuItem>
                             </Select>
                         </FormControl>
 
-
-                        <FormControl style={classes.formControl}>
-
-                            <InputLabel id="demo-simple-select-label">Vertical Position</InputLabel>
-                            <Select
-                                labelId="y-label"
-                                id="y"
-                                value={this.props.positionInfo.y}
-
-                                onChange={this.props.changeData.bind(this, "y")}
-
-                            >
-                                <MenuItem value={1}>1</MenuItem>
-                                <MenuItem value={2}>2</MenuItem>
-                            </Select>
-                        </FormControl>
+                        {this.dialogPicker()}
 
 
                     </FlexRow>
-                    {this.dialogPicker()}
 
                 </DialogContent>
             </Dialog>

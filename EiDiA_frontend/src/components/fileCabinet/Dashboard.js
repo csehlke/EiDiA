@@ -25,7 +25,7 @@ export class Dashboard extends React.Component {
     }
 
     renderWidget(widget) {
-        switch (widget.Type) {
+        switch (widget.type) {
             case WidgetTypes.LOG:
                 return (<LogWidget data={widget.Data}/>)
             case WidgetTypes.GRAPH:
@@ -59,7 +59,7 @@ export class Dashboard extends React.Component {
                             y: i + 1,
                         },
                         TITLE: "",
-                        Type: WidgetTypes.INDICATOR,
+                        type: WidgetTypes.INDICATOR,
                         attributeMapping: []
                     })
 
@@ -78,7 +78,9 @@ export class Dashboard extends React.Component {
         return false;
     }*/
     changeData(widget, toChange, event) {
-
+        console.log(widget)
+        console.log(toChange)
+        console.log(event.target.value)
         switch (toChange) {
             case "title":
                 widget.title = event.target.value;
@@ -89,25 +91,7 @@ export class Dashboard extends React.Component {
             case "attributeMapping":
                 widget.attributeMapping = event.target.value;
                 break;
-            case "x":
-                widget.positionInfo.x = event.target.value;
-                if (this.testCellOccupation(widget.positionInfo, this.cells)) return false;
-                break;
-            case "y":
-                widget.positionInfo.y = event.target.value;
-                if (this.testCellOccupation(widget.positionInfo, this.cells)) return false;
 
-                break;
-            case "rows":
-                widget.positionInfo.rows = event.target.value;
-                if (this.testCellOccupation(widget.positionInfo, this.cells)) return false;
-
-                break;
-            case "cols":
-                widget.positionInfo.cols = event.target.value;
-                if (this.testCellOccupation(widget.positionInfo, this.cells)) return false;
-
-                break
             default:
                 break;
 
@@ -136,7 +120,7 @@ export class Dashboard extends React.Component {
                                 <WidgetDropTarget positionInfo={widget.positionInfo}>
                                     <Widget changeData={this.changeData.bind(this, widget)}
                                             edit={this.state.edit}
-                                            title={widget.title} type={widget.Type}
+                                            title={widget.title} type={widget.type}
                                             switchWidget={(posA, posB) => this.switchWidget(posA, posB)}
                                             positionInfo={widget.positionInfo}>{this.renderWidget(widget)}</Widget>
                                 </WidgetDropTarget>

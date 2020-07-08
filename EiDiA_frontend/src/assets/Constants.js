@@ -166,7 +166,7 @@ export const Widgets =
                 y: 1,
             },
             title: "Indicator One",
-            Type: WidgetTypes.INDICATOR,
+            type: WidgetTypes.INDICATOR,
             attributeMapping: [
                 {
                     attrId: 55,
@@ -184,7 +184,7 @@ export const Widgets =
                 y: 1,
             },
             title: "Graph One",
-            Type: WidgetTypes.GRAPH,
+            type: WidgetTypes.GRAPH,
             attributeMapping: [
                 {
                     attrId: 10,
@@ -204,7 +204,7 @@ export const Widgets =
                 y: 2,
             },
             title: "Indicator Two",
-            Type: WidgetTypes.INDICATOR,
+            type: WidgetTypes.INDICATOR,
             attributeMapping: [
                 {
                     attrId: 58,
@@ -234,7 +234,7 @@ export const Widgets =
                 y: 1,
             },
             title: "Log",
-            Type: WidgetTypes.LOG,
+            type: WidgetTypes.LOG,
             Data: [
                 {
                     logID: 2,

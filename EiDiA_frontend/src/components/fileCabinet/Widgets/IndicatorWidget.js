@@ -28,9 +28,6 @@ export class IndicatorWidget extends React.Component {
         )
     }
 
-    handleEdit() {
-        console.log("Hello I am an Indicator")
-    }
 
     getData(attributeMapping) {
         let data = [];
