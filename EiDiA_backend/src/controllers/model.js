@@ -65,7 +65,31 @@ const listAttributeTypesByDocumentId = (req, res) => { // Return attributes base
 };
 
 const createDocumentType = (req, res) => {
-    res.status(200).json({response: "dummy response"});
+    if (!Object.prototype.hasOwnProperty.call(req.body, 'newDocumentTypeName')) {
+        return res.status(400).json({
+            error: 'Bad Request',
+            message: 'The request body must contain a newDocumentTypeName property',
+        });
+    }
+
+    DocumentTypeModel.create({
+        name: req.body.newDocumentTypeName
+    })
+        .then((insertedData) => {
+            req.body.newAttributes.map(item =>
+                AttributeTypeModel.create({
+                    documentTypeId: insertedData._id, //Insert Attribute with corresponding documentTypeId
+                    name: item.name,
+                    dataType: item.dataType
+                }))
+            res.status(200).json({response: "Inserted new Document Type"});
+        })
+        .catch(error => {
+            res.status(400).json({
+                error: 'Internal server error',
+                message: error.message,
+            });
+        });
 };
 
 module.exports = {

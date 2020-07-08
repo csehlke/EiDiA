@@ -4,12 +4,11 @@ import React from 'react';
 import styled from "styled-components";
 import {Button} from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
-
 import SmartDropDownBox from "../SmartDropDownBox";
 import Box from "@material-ui/core/Box";
-
 import CommonService from '../../services/CommonService';
 import TextField from "@material-ui/core/TextField";
+import NewDocumentTypeDialog from "./NewDocumentTypeDialog";
 
 const Container = styled.div
     // Outer Container
@@ -37,14 +36,17 @@ class TypePicker extends React.Component {
             selectedDocumentTypeId: '',
             isNextButtonDisabled: true, // true, if "next"-button is disabled
             hasAutoCompleteValue: false, // true, if autoComplete has value
-            documentName: ""
+            documentName: '',
+            docDialogOpened: false,
         }
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
-        this.createNewDocumentType = this.createNewDocumentType.bind(this);
         this.handleNextButtonOnClick = this.handleNextButtonOnClick.bind(this);
         this.assignRecord = this.assignRecord.bind(this);
         this.handleDocumentNameChange = this.handleDocumentNameChange.bind(this);
+        this.openDocDialog = this.openDocDialog.bind(this);
+        this.closeDocDialog = this.closeDocDialog.bind(this);
+        this.newDocTypeToBackend = this.newDocTypeToBackend.bind(this);
     }
 
     componentDidMount() {
@@ -83,11 +85,6 @@ class TypePicker extends React.Component {
         }
     }
 
-    createNewDocumentType() {
-        console.log("Create New Document Type Here")
-        //TODO Add Document Types
-    }
-
     handleNextButtonOnClick() {
         this.props.callbackUploadView(this.state.selectedDocumentTypeId, this.state.documentName);
     }
@@ -100,6 +97,33 @@ class TypePicker extends React.Component {
         this.setState({
             documentName: event.target.value,
         });
+    }
+
+    openDocDialog() {
+        this.setState({
+            docDialogOpened: true
+        });
+    }
+
+    closeDocDialog() {
+        this.setState({
+            docDialogOpened: false
+        });
+    }
+
+    newDocTypeToBackend(requestData) {
+        CommonService.addNewDocumentType(requestData)
+            .then(() => {
+                return CommonService.getAllDocumentTypes();
+            })
+            .then((data) => { // Update dropdown with new DocType
+                this.setState({
+                    documentTypes: [...data.documentTypes],
+                });
+            })
+            .catch((e) => {
+                console.error(e);
+            });
     }
 
     render() {
@@ -135,7 +159,7 @@ class TypePicker extends React.Component {
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={this.createNewDocumentType}>
+                            onClick={this.openDocDialog}>
                             Create new Document Type
                         </Button>
                     </Grid>
@@ -157,6 +181,11 @@ class TypePicker extends React.Component {
                         </Button>
                     </Grid>
                 </Grid>
+
+                <NewDocumentTypeDialog
+                    open={this.state.docDialogOpened}
+                    onClose={this.closeDocDialog}
+                    createNewDocumentType={(newDocumentType) => this.newDocTypeToBackend(newDocumentType)}/>
             </Container>
         )
     }

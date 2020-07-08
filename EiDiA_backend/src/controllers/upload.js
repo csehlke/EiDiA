@@ -2,6 +2,8 @@
 
 
 const DocumentModel = require('../models/document');
+const DocumentTypeModel = require('../models/documentType');
+const AttributeModel = require('../models/attributeType');
 const ErrorHandling = require('./errorHandling');
 
 const tes = require('tesseract.js')

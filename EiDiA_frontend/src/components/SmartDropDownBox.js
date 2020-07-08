@@ -60,7 +60,7 @@ class SmartDropDownBox extends React.Component {
                 onChange={this.handleOnChange}
                 onInputChange={this.handleOnInputChange}
                 getOptionLabel={(option) => option.name}
-                style={{margin: '0.5em'}}
+                style={this.props.style ? this.props.style : {margin: '0.5em'}}
                 renderInput={(params) => (
                     <TextField {...params}
                                label={this.props.label}
@@ -77,5 +77,6 @@ SmartDropDownBox.propTypes = {
     disabled: PropTypes.bool,
     label: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    options: PropTypes.array.isRequired
+    options: PropTypes.array.isRequired,
+    style: PropTypes.object,
 }
