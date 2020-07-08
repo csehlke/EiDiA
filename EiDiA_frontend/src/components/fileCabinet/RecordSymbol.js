@@ -2,42 +2,42 @@
 
 import React from 'react';
 import styled from "styled-components";
-import { Folder } from '@material-ui/icons';
+import {FaFolder} from "react-icons/all";
 
 
 const Quarter = styled.div`
-    width: 14.5%;
     height: auto;
-    font-size: 2vw;
-    
-
+    font-size: 1.5em;
 `;
+
 const HeadingNoMargin = styled.p`
     margin-top: 0;
     text-align: center;
 `;
 
-export class RecordSymbol extends React.Component {
+const FolderLogo = styled(FaFolder)`
+     font-size: 6em;
+     margin: 0 0.25em;
+`;
 
+export class RecordSymbol extends React.Component {
     /*
      *TODO:
      * - add Logo to Record?
-     *
-     *
      */
     constructor(props) {
         super(props);
-        this.state = {
 
+        this.state = {
         }
     }
 
     render() {
-        return(
+        return (
             <Quarter>
-                <Folder style={{fontSize: '14vw'}}/>
+                <FolderLogo/>
                 <HeadingNoMargin>{this.props.name}</HeadingNoMargin>
-            </Quarter> )
-
+            </Quarter>
+        );
     }
 }

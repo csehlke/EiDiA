@@ -16,7 +16,7 @@ export class WelcomeView extends React.Component {
 
     render() {
         return (
-            <Page title={this.props.title}>
+            <Page>
                 <div>
                     Welcome to EiDiA
                 </div>
