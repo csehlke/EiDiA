@@ -22,5 +22,5 @@ export default class Page extends React.Component {
 }
 
 Page.propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.any,
 }
