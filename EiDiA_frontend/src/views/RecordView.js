@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Page from "../components/Page";
-import FileExplorer from "../components/fileCabinet/FileExplorer";
+import FileExplorer from "../components/filetable/FileExplorer";
 import {Dashboard} from "../components/fileCabinet/Dashboard";
 import {recordMenueOptions} from "../components/Constants";
 import {WrapperRecordMenue, WrapperRecordView} from "../components/StyleElements";
@@ -20,14 +20,8 @@ export class RecordView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            records : ["Volkswagen","BMW","Thyssenkrup","Google","Facebook","Microsoft","ABC Company","Adidas","lenovo Limited","IBM","TrueThat","hello","abc","def"],
-            search : '',
-            currentPage: recordMenueOptions.DASHBOARD
-
+            currentPage: recordMenuOptions.DASHBOARD,
         }
-    }
-    updateSearch(event){
-        this.setState({search: event.target.value.substr(0, 20)});
     }
 
     componentDidMount() {
@@ -51,7 +45,7 @@ export class RecordView extends React.Component {
         let toShow;
 
         switch (this.state.currentPage) {
-            case recordMenueOptions.DASHBOARD:
+            case recordMenuOptions.DASHBOARD:
                 toShow = <Dashboard/>;
                 break;
             case recordMenueOptions.FILEEXPLORER:

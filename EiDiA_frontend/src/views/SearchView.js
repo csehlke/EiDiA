@@ -27,7 +27,7 @@ export class SearchView extends React.Component {
 
     render() {
         return (
-            <Page title={this.props.title}>
+            <Page>
                 <Search>
                     <SearchForm/>
                 </Search>

@@ -2,26 +2,24 @@ import React from 'react';
 import {AiFillDelete, AiFillEdit} from 'react-icons/ai'
 import {FaCloudDownloadAlt} from 'react-icons/fa'
 import styled from "styled-components";
-import {IconContext} from "react-icons";
 
 
 const IconButton = styled.button`
-    width: 2.5vw;  
+    width: 2.5em;  
     height: auto;
-    margin: 0 0.5vw 0 0.5vw;
+    margin: 0 0.5em;
     border: none;
     background: transparent;
-    cursor: pointer;
-
-    
+    cursor: pointer; 
 `;
+
 /**
  * TODO:
  * - Button Link Coloring
  * - Remove Button border color when clicked and add Icon Color
  *- or remove whole button and make icon clickable
  */
-const IconSize = '1.5vw'
+const IconSize = '1.5em';
 
 export class ElementActions extends React.Component {
     constructor(props) {
@@ -29,27 +27,40 @@ export class ElementActions extends React.Component {
     }
 
     findTerm(term, actions) {
-        if (actions.includes(term)) return true;
-        else return false;
+        return actions.includes(term);
 
     }
 
     actionSelection(actions) {
         let toReturn = [];
-        if (this.findTerm('EDIT', actions)) toReturn.push(<AiFillEdit size={IconSize}/>);
-        if (this.findTerm('DOWNLOAD', actions)) toReturn.push(<FaCloudDownloadAlt size={IconSize}/>);
-        if (this.findTerm('DELETE', actions)) toReturn.push(<AiFillDelete size={IconSize}/>);
-        if (this.findTerm('HEADING', actions)) toReturn = ['Actions'];
-        if (toReturn == []) toReturn = [''];//TODO Throw Error
-
+        if (actions.includes('EDIT')) {
+            toReturn.push(<AiFillEdit size={IconSize}/>);
+        }
+        if (actions.includes('DOWNLOAD')) {
+            toReturn.push(<FaCloudDownloadAlt size={IconSize}/>);
+        }
+        if (actions.includes('DELETE')) {
+            toReturn.push(<AiFillDelete size={IconSize}/>);
+        }
+        if (actions.includes('HEADING')) {
+            toReturn = ['Actions'];
+        }
+        if (toReturn === []) {
+            //TODO Throw Error
+            toReturn = [''];
+        }
         return toReturn;
     }
 
     render() {
         return (
             //TODO remove button
-            this.actionSelection(this.props.actions).map((button,index) => <IconButton key={this.props.parentKey+"Button"+index}>{button}</IconButton>)
+            this.actionSelection(this.props.actions).map((button, index) =>
+                <IconButton
+                    key={this.props.parentKey + "Button" + index}>
+                    {button}
+                </IconButton>
+            )
         );
     }
 }
-

@@ -130,7 +130,6 @@ export class Dashboard extends React.Component {
     render() {
         return (
             <div>
-                <DndProvider backend={HTML5Backend}>
 
                     <DashboardWrapper>
 
@@ -146,7 +145,6 @@ export class Dashboard extends React.Component {
                             </WidgetWrapper>)}
 
                     </DashboardWrapper>
-                </DndProvider>
                 <Fab color="secondary" aria-label="edit" onClick={this.handleEditDashboardButton.bind(this)}>
                     <FiEdit size={32}/>
                 </Fab>

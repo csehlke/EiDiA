@@ -1,7 +1,7 @@
 import React from 'react';
 import {FaFilePdf, FaFileWord, FaFolder, FaFolderOpen} from 'react-icons/fa'
 import {AiFillFileUnknown} from 'react-icons/ai'
-import {fileTypes} from "../Constants";
+import {fileTypes} from "../../assets/Constants";
 
 export class ElementSymbol extends React.Component {
     constructor(props) {
@@ -19,11 +19,13 @@ export class ElementSymbol extends React.Component {
             case fileTypes.WORD:
                 return <FaFileWord/>;
             case fileTypes.FOLDER:
-                if (this.props.active) return <FaFolderOpen/>;
-                else return <FaFolder/>;
-
+                if (this.props.active) {
+                    return <FaFolderOpen/>;
+                } else {
+                    return <FaFolder/>;
+                }
             case fileTypes.NONE:
-                return <div/>
+                return <div/>;
             default:
                 return <AiFillFileUnknown/>;
         }
@@ -35,4 +37,3 @@ export class ElementSymbol extends React.Component {
         );
     }
 }
-
