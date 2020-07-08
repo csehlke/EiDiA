@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlexRow, IndicatorElement, TealRight} from "../../StyleElements";
-import {Attributes} from "../../Constants";
+import {Attributes} from "../../../assets/Constants";
 
 /**
  * TODO:

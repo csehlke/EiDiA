@@ -2,7 +2,7 @@ import React from 'react';
 import {Centering, FoggyDiv, H2WithOutMargin} from "../../StyleElements";
 import {FiEdit2} from "react-icons/fi";
 import Fab from "@material-ui/core/Fab";
-import {DragTypes} from "../../Constants";
+import {DragTypes} from "../../../assets/Constants";
 import {EditDialog} from "./EditDialog";
 import {DragSource} from "react-dnd";
 /**

@@ -1,15 +1,13 @@
 import React from 'react';
 import Widget from "./Widgets/Widget";
 import WidgetDropTarget from "./Widgets/WidgetDropTarget";
-import {Widgets, WidgetTypes} from "../Constants";
+import {Widgets, WidgetTypes} from "../../assets/Constants";
 import {DashboardWrapper, WidgetWrapper} from "../StyleElements";
 import {LogWidget} from "./Widgets/LogWidget";
 import {GraphsWidget} from "./Widgets/GraphsWidget";
 import {IndicatorWidget} from "./Widgets/IndicatorWidget";
 import {FiEdit} from 'react-icons/fi'
 import Fab from "@material-ui/core/Fab";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
 
 export class Dashboard extends React.Component {
     constructor(props) {

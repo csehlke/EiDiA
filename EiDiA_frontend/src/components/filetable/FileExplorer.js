@@ -86,27 +86,27 @@ export default class FileExplorer extends React.Component {
 
     renderElement(element, index, level) {
         return (
-            <ElementTable key={"ELTable" + element.id}
+            <ElementTable key={index}
                           type={element.type}
                           id={element.id}>
-                <Element key={"EL" + element.id}
-                         active={element.active} index={index}
-                         parentId={element.parentId}
-                         id={element.id}
-                         level={level}
-                         type={element.type}
-                         name={element.name}
-                         dateCreation={element.dateCreation}
-                         dateModification={element.dateModification}
-                         comment={element.comment}
-                         actions={element.actions}
+                <Element
+                    active={element.active} index={index}
+                    parentId={element.parentId}
+                    id={element.id}
+                    level={level}
+                    type={element.type}
+                    name={element.name}
+                    dateCreation={element.dateCreation}
+                    dateModification={element.dateModification}
+                    comment={element.comment}
+                    actions={element.actions}
                          handleDrop={(newParentId) =>
                              this.setNewParent(element, newParentId) /*(oldIndex, newIndex) => this.changeElements(oldIndex, newIndex)*/}
                          activeToggle={this.activeToggle.bind(this, element)}>
 
                     {element.active === true ?
                         element.children.map((child, indexChild) =>
-                            this.renderElement(child, "" + index + indexChild, level + 1)) :
+                            this.renderElement(child, index + "" + indexChild, level + 1)) :
                         null}
 
                 </Element>

@@ -5,7 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 
-import {WidgetTypes} from "../../Constants";
+import {WidgetTypes} from "../../../assets/Constants";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
 
@@ -54,8 +54,6 @@ export class EditDialog extends React.Component {
     dialogPicker() {
         switch (this.state.selectedType) {
             case WidgetTypes.INDICATOR:
-                console.log("gotcha!!!!!")
-
                 return this.indicator();
             case WidgetTypes.GRAPH:
                 return this.graph();
@@ -78,7 +76,6 @@ export class EditDialog extends React.Component {
          * TODO: backendConnection
          * move upwards
          */
-        console.log(event)
         this.setState({selectedTitle: event.target.value})
     }
 

@@ -4,10 +4,9 @@ import React from 'react';
 import Page from "../components/Page";
 import FileExplorer from "../components/filetable/FileExplorer";
 import {Dashboard} from "../components/fileCabinet/Dashboard";
-import {recordMenueOptions} from "../components/Constants";
 import {WrapperRecordMenue, WrapperRecordView} from "../components/StyleElements";
 import {Tab, Tabs} from "@material-ui/core";
-
+import {recordMenuOptions} from "../assets/Constants";
 
 export class RecordView extends React.Component {
 
@@ -48,7 +47,7 @@ export class RecordView extends React.Component {
             case recordMenuOptions.DASHBOARD:
                 toShow = <Dashboard/>;
                 break;
-            case recordMenueOptions.FILEEXPLORER:
+            case recordMenuOptions.FILEEXPLORER:
                 toShow = <FileExplorer/>;
                 break;
             default:
@@ -65,8 +64,8 @@ export class RecordView extends React.Component {
                         textColor="primary"
                         onChange={this.handleChange.bind(this)}
                     >
-                        <Tab label="Dashboard" value={recordMenueOptions.DASHBOARD}/>
-                        <Tab label="File Explorer" value={recordMenueOptions.FILEEXPLORER}/>
+                        <Tab label="Dashboard" value={recordMenuOptions.DASHBOARD}/>
+                        <Tab label="File Explorer" value={recordMenuOptions.FILEEXPLORER}/>
                     </Tabs>
                 </WrapperRecordMenue>
                 <WrapperRecordView>

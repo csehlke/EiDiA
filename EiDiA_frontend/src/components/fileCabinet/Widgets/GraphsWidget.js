@@ -14,7 +14,7 @@ import {
     XAxis,
     YAxis
 } from 'recharts';
-import {Attributes, GraphType} from "../../Constants";
+import {Attributes, GraphType} from "../../../assets/Constants";
 
 /**
  * TODO:

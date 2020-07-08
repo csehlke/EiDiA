@@ -1,5 +1,8 @@
 
-
+export const recordMenuOptions = {
+    DASHBOARD: 1,
+    FILEEXPLORER: 2,
+};
 export const DragTypes = {
     ELEMENT: 'element',
     WIDGET: 'widget'
