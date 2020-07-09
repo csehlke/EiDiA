@@ -18,9 +18,9 @@ export const fileTypes = {
 
 
 export const WidgetTypes = {
-    LOG: 'LOG',
-    GRAPH: 'GRAPH',
-    INDICATOR: 'INDICATOR'
+    LOG: 'Log',
+    GRAPH: 'Graph',
+    INDICATOR: 'Indicator'
 
 
 }

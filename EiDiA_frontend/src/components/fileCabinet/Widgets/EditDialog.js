@@ -1,5 +1,4 @@
 import React from 'react';
-import {FlexRow} from "../../StyleElements";
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -8,12 +7,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import {WidgetTypes} from "../../../assets/Constants";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
-
-import {FormControl} from "@material-ui/core";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import Input from "@material-ui/core/Input";
+import SmartDropDownBox from "../../SmartDropDownBox";
 
 /**
  * TODO:
@@ -42,6 +36,7 @@ export class EditDialog extends React.Component {
 
     indicator() {
         return (
+
             <p>something</p>
         )
     }
@@ -105,7 +100,11 @@ export class EditDialog extends React.Component {
             }
 
         };
-
+        let typeOptions = [
+            {name: WidgetTypes.INDICATOR, type: WidgetTypes.INDICATOR},
+            {name: WidgetTypes.GRAPH, type: WidgetTypes.GRAPH},
+            {name: WidgetTypes.LOG, type: WidgetTypes.LOG}
+        ]
         return (
             <Dialog open={this.props.open} onClose={this.props.onClose}>
                 <DialogTitle style={classes.title} id="simple-dialog-title">
@@ -117,9 +116,11 @@ export class EditDialog extends React.Component {
                     />
 
                 </DialogTitle>
-
                 <DialogContent>
-                    <FlexRow>
+                    <SmartDropDownBox inputValue={{name: this.state.selectedType}} label={"Widget Type"}
+                                      onChange={this.props.changeData.bind(this, "type")} options={typeOptions}/>
+
+                    {/* <FlexRow>
                         <FormControl style={classes.formControl}>
                             <InputLabel htmlFor="type-label">Widget Type</InputLabel>
                             <Select
@@ -133,10 +134,11 @@ export class EditDialog extends React.Component {
                             </Select>
                         </FormControl>
 
-                        {this.dialogPicker()}
 
 
-                    </FlexRow>
+
+                    </FlexRow>*/}
+                    {this.dialogPicker()}
 
                 </DialogContent>
             </Dialog>

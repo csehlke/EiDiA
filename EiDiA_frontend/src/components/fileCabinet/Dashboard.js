@@ -77,7 +77,7 @@ export class Dashboard extends React.Component {
 
         return false;
     }*/
-    changeData(widget, toChange, event) {
+    changeData(widget, toChange, event, value) {
         console.log(widget)
         console.log(toChange)
         console.log(event.target.value)
@@ -86,7 +86,7 @@ export class Dashboard extends React.Component {
                 widget.title = event.target.value;
                 break;
             case "type":
-                widget.type = event.target.value;
+                widget.type = value.type;//event.target.value.type;
                 break;
             case "attributeMapping":
                 widget.attributeMapping = event.target.value;

@@ -9,9 +9,9 @@ class SmartDropDownBox extends React.Component {
         super(props);
 
         this.state = {
-            inputValue: ''
+            inputValue: this.props.inputValue
         }
-
+        console.log(this.state.inputValue)
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.reset = this.reset.bind(this);
@@ -39,6 +39,7 @@ class SmartDropDownBox extends React.Component {
     render() {
         return (
             <Autocomplete
+                defaultValue={this.state.inputValue}
                 id="combo-box"
                 handleHomeEndKeys
                 selectOnFocus
@@ -47,6 +48,7 @@ class SmartDropDownBox extends React.Component {
                 blurOnSelect
                 fullWidth
                 size={"small"}
+
                 options={this.props.options}
                 inputValue={this.state.inputValue}
                 onChange={this.handleOnChange}
@@ -55,7 +57,9 @@ class SmartDropDownBox extends React.Component {
                 style={{margin: '0.5em'}}
                 renderInput={(params) => (
                     <TextField {...params}
+                               active
                                label={this.props.label}
+                               value={this.state.inputValue}
                                variant="outlined" placeholder="Type to filter"/>
                 )}
             />
@@ -68,5 +72,6 @@ export default SmartDropDownBox;
 SmartDropDownBox.propTypes = {
     label: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    options: PropTypes.array.isRequired
+    options: PropTypes.array.isRequired,
+    inputValue: PropTypes.string
 }
