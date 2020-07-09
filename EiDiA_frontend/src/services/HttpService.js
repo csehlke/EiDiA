@@ -17,10 +17,9 @@ export default class HttpService {
             method: 'GET',
             headers: header
         }).then((resp) => {
-            if(this.checkIfUnauthorized(resp)) {
+            if (this.checkIfUnauthorized(resp)) { //redirects to login if unauthorized
                 window.location = "/#login";
-            }
-            else {
+            } else {
                 return resp.json();
             }
         }).then((resp) => {
@@ -139,7 +138,7 @@ export default class HttpService {
     }
 
     static checkIfUnauthorized(res) {
-        return res.status === 401;
+        return res.status === 401; //returns true if unauthorized
 
     }
 

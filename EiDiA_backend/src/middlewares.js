@@ -11,7 +11,7 @@ const allowCrossDomain = (req, res, next) => {
 
     // intercept OPTIONS method
     if ('OPTIONS' === req.method) {
-        res.status(200).send(200);
+        res.sendStatus(200).send(200);
     }
     else {
         next();
@@ -19,39 +19,39 @@ const allowCrossDomain = (req, res, next) => {
 };
 
 const checkAuthentication = (req, res, next) => {
-    next(); // TODO remove to activate authCheck
-    /*
+
         // check header or url parameters or post parameters for token
         let token = ""
         if(req.headers.authorization) {
-            token = req.headers.authorization.substring(4);
+            token = req.headers.authorization.substring(4); // JWT tokenkey starts at position 4
         }
 
-        if (!token)
-            return res.status(401).send({
-                error: 'Unauthorized',
-                message: 'No token provided in the request'
-            });
+    if (!token)
+        return res.sendStatus(401).send({
+            error: 'Unauthorized',
+            message: 'No token provided in the request'
+        });
 
-        // verifies secret and checks exp
-        jwt.verify(token, config.JwtSecret, (err, decoded) => {
-            if (err) return res.status(401).send({
-                error: 'Unauthorized',
-                message: 'Failed to authenticate token.'
-            });
+    // verifies secret and checks exp
+    jwt.verify(token, config.JwtSecret, (err, decoded) => {
+        if (err) return res.sendStatus(401).send({
+            error: 'Unauthorized',
+            message: 'Failed to authenticate token.'
+        });
+        console.log("his")
 
-            // if everything is good, save to request for use in other routes
-            req.userId = decoded.id;
-            next();
-        });*/
+        // if everything is good, save to request for use in other routes
+        req.userId = decoded.id;
+        next();
+    });
 };
 
 const errorHandler = (err, req, res, next) => {
     if (res.headersSent) {
         return next(err)
     }
-    res.status(500);
-    res.render('error', { error: err })
+    res.sendStatus(500);
+    res.render('error', {error: err})
 };
 
 module.exports = {
