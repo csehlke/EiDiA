@@ -25,7 +25,7 @@ const login = (req,res) => {
     UserModel.findOne({username: req.body.username}).exec()
         .then(user => {
             // check if the password is valid
-            const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
+            const isPasswordValid = bcrypt.compareSync(req.body.password, user.password); //compares entered password with hashed pw from db
             if (!isPasswordValid) {
                 return res.status(401).send({token: null});
             }

@@ -9,6 +9,7 @@ import styled from "styled-components";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 
+
 const Background = styled.div`
     background-image: url(${BackgroundImage});
     position: fixed;
@@ -41,7 +42,7 @@ export class LoginView extends React.Component {
     login(user) {
         UserService.login(user.username, user.password)
             .then((data) => {
-                this.props.history.push('/');
+                window.location.reload(); //TODO this.props.history.push('/'); did not work even when importing router
             })
             .catch((e) => {
                 this.setState({
@@ -71,7 +72,6 @@ export class LoginView extends React.Component {
                         To reset your password please contact your administrator.
                     </Alert>
                 </Snackbar>
-                }
             </Page>
         );
     }
