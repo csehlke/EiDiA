@@ -51,7 +51,7 @@ const login = (req, res) => {
 };
 
 
-const register = (req,res) => {
+const register = (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.body, 'password')) {
         return res.status(400).json({
             error: 'Bad Request',
@@ -108,7 +108,11 @@ const me = (req, res) => {
 };
 
 const logout = (req, res) => {
-    res.status(200).send({token: null});
+    let token = req.headers.authorization.substring(4)
+    allowedTokens.delete(token)
+    return res.status(401).send({
+        message: 'Logged out successfully'
+    });
 };
 
 const getSettings = (req, res) => {

@@ -19,4 +19,14 @@ export default class UserService {
     static isAuthenticated() {
         return !!window.localStorage['jwtToken'];
     }
+
+    static logout() {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/auth/logout', function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
 }

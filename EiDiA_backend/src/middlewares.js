@@ -33,7 +33,6 @@ const checkAuthentication = (req, res, next) => {
             message: 'No token provided in the request'
         });
 
-
     if (!auth.exportAllowedTokens().has(token)) //check if user is in whitelist
         return res.status(401).send({
             error: 'Unauthorized',

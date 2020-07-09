@@ -1,6 +1,7 @@
 import {IconButton, Menu, MenuItem} from "@material-ui/core";
 import React from "react";
 import {MdAccountCircle} from "react-icons/all";
+import UserService from "../services/UserService";
 
 const UserMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -12,6 +13,15 @@ const UserMenu = () => {
     };
 
     const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleLogout = () => {
+        UserService.logout().then((response) => {
+            console.log(response)
+        }).catch((e) => {
+            console.error(e);
+        });
         setAnchorEl(null);
     };
 
@@ -41,7 +51,7 @@ const UserMenu = () => {
             >
                 <MenuItem onClick={handleClose}>User Account</MenuItem>
                 <MenuItem onClick={handleClose}>Help</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
         </div>
     );
