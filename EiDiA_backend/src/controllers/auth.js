@@ -1,13 +1,18 @@
 "use strict";
 
-const jwt        = require('jsonwebtoken');
-const bcrypt     = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-const config     = require('../config');
-const UserModel  = require('../models/user');
+const config = require('../config');
+const UserModel = require('../models/user');
 
+let allowedTokens = new Set();
 
-const login = (req,res) => {
+const exportAllowedTokens = () => {
+    return allowedTokens
+}
+
+const login = (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.body, 'password')) {
         return res.status(400).json({
             error: 'Bad Request',
@@ -35,6 +40,8 @@ const login = (req,res) => {
             const token = jwt.sign({id: user._id, username: user.username}, config.JwtSecret, {
                 expiresIn: 86400, // expires in 24 hours
             });
+            // add token to whitelist
+            allowedTokens.add(token)
             res.status(200).json({token: token});
         })
         .catch(error => res.status(404).json({
@@ -140,4 +147,5 @@ module.exports = {
     getSettings,
     saveSettings,
     listUsers,
+    exportAllowedTokens
 };
