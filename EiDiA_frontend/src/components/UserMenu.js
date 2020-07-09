@@ -1,6 +1,7 @@
 import {IconButton, Menu, MenuItem} from "@material-ui/core";
 import React from "react";
 import {MdAccountCircle} from "react-icons/all";
+import {Link} from "./Link";
 import UserService from "../services/UserService";
 
 const UserMenu = () => {
@@ -28,30 +29,35 @@ const UserMenu = () => {
     return (
 
         <div>
-            <IconButton
-                onClick={handleMenu}
-                color="default"
-            >
+            <IconButton onClick={handleMenu}
+                        color="default">
                 <MdAccountCircle/>
             </IconButton>
-            <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                }}
-                keepMounted
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                }}
-                open={open}
-                onClose={handleClose}
-            >
-                <MenuItem onClick={handleClose}>User Account</MenuItem>
-                <MenuItem onClick={handleClose}>Help</MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <Menu id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right"
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right"
+                  }}
+                  open={open}
+                  onClose={handleClose}>
+                <Link to={'/admin'}>
+                    <MenuItem onClick={handleClose}>User Administration</MenuItem>
+                </Link>
+                <Link to={'/settings'}>
+                    <MenuItem onClick={handleClose}>My Account</MenuItem>
+                </Link>
+                <Link to={'/help'}>
+                    <MenuItem onClick={handleClose}>Help</MenuItem>
+                </Link>
+                <Link to={'/login'}>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Link>
             </Menu>
         </div>
     );

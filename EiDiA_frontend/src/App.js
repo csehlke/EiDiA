@@ -9,6 +9,7 @@ import {UploadView} from "./views/UploadView";
 import {WelcomeView} from "./views/WelcomeView";
 import Navigation from "./components/Navigation";
 import UserService from "./services/UserService";
+import {UserAdministrationView} from "./views/UserAdministrationView";
 
 export default class App extends React.Component {
 
@@ -18,24 +19,22 @@ export default class App extends React.Component {
         this.state = {
             title: 'EiDiA - Einfache Digitale Akte',
             routes: [
+                this.getRoute('/', WelcomeView, true),
+                this.getRoute('/browse', DefaultView, true),
+                this.getRoute('/export', DefaultView, true),
+                this.getRoute('/help', DefaultView, true),
+                this.getRoute('/permissionRequests', DefaultView, true),
+                this.getRoute('/record', DefaultView, true),
+                this.getRoute('/record/:id', DefaultView, false),
+                this.getRoute('/search', SearchView, true),
+                this.getRoute('/settings', DefaultView, true),
+                this.getRoute('/upload', UploadView, true),
                 {
-                    path: '/', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
+                    path: '/admin', exact: true, render: () => {
+                        if (UserService.isAuthenticated()) { // TODO check if admin user
                             return (
-                                <WelcomeView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/browse', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                                <UserAdministrationView title={this.state.pageTitle}
+                                                        setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                             )
                         } else {
                             return (<Redirect to={'/login'}/>)
@@ -54,81 +53,24 @@ export default class App extends React.Component {
                         }
                     }
                 },
-                {
-                    path: '/permissionRequests', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/record', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/record/:id', render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/search', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <SearchView title={this.state.pageTitle}
-                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/settings', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/upload', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <UploadView title={this.state.pageTitle}
-                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
             ],
             pageTitle: ''
         };
+    }
+
+    getRoute(path, Component, exact) {
+        return {
+            path: path, exact: exact, render: () => {
+                if (UserService.isAuthenticated()) {
+                    return (
+                        <Component title={this.state.pageTitle}
+                                   setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                } else {
+                    return (<Redirect to={'/login'}/>)
+                }
+            }
+        }
     }
 
     componentDidMount() {
