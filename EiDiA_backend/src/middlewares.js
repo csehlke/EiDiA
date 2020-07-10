@@ -1,9 +1,7 @@
 "use strict";
 
 const jwt = require('jsonwebtoken');
-
 const config = require('./config');
-
 const auth = require('./controllers/auth');
 
 const allowCrossDomain = (req, res, next) => {
@@ -27,17 +25,19 @@ const checkAuthentication = (req, res, next) => {
         token = req.headers.authorization.substring(4); // JWT tokenkey starts at position 4
     }
 
-    if (!token)
+    if (!token) {
         return res.status(401).send({
             error: 'Unauthorized',
             message: 'No token provided in the request'
         });
+    }
 
-    if (!auth.exportAllowedTokens().has(token)) //check if user is in whitelist
+    if (!auth.exportAllowedTokens().has(token)) {//check if user is in whitelist
         return res.status(401).send({
             error: 'Unauthorized',
             message: 'Invalid token'
         });
+    }
 
     // verifies secret and checks exp
     jwt.verify(token, config.JwtSecret, (err, decoded) => {
@@ -53,6 +53,17 @@ const checkAuthentication = (req, res, next) => {
     });
 };
 
+const checkAdmin = (req, res, next) => {
+    if (req.userRole !== 'admin') {
+        return res.status(401).send({
+            error: 'Unauthorized',
+            message: 'Need admin rights'
+        });
+    } else {
+        next();
+    }
+}
+
 const errorHandler = (err, req, res, next) => {
     if (res.headersSent) {
         return next(err)
@@ -64,5 +75,6 @@ const errorHandler = (err, req, res, next) => {
 module.exports = {
     allowCrossDomain,
     checkAuthentication,
-    errorHandler
+    errorHandler,
+    checkAdmin,
 };

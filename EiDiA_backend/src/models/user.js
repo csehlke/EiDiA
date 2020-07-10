@@ -39,6 +39,9 @@ const UserSchema = new mongoose.Schema({
         required: true,
         index: true,
     },
+    settings: {
+        type: Object,
+    }
 });
 
 // Export the model
