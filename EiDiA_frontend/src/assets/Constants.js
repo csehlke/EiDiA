@@ -23,6 +23,7 @@ export const WidgetTypes = {
     INDICATOR: 'Indicator'
 
 
+
 }
 export const GraphType = {
     Line: 'Line Chart',
@@ -72,92 +73,126 @@ export const LogEntries = [
 export const Attributes = [
     {
         attrId: 55, //Factory Count
+        name: "factoryCount",
         value: "24",
         date: "2020-05-15",
         record: "",
-        document: ""
+        docTypeId: 123
     },
     {
         attrId: 56, //Pending Factory Assesments
+        name: "pendingFactoryAssesments",
+
         value: "18",
         date: "2020-05-15",
         record: "",
-        document: ""
+        docTypeId: 123
     },
     {
         attrId: 10, //Some Tax assesment maybe
+        name: "taxAssesment",
+
         value: 1000,
         date: "2009-05-12",
         record: "",
-        document: ""
+        docTypeId: 124
     },
     {
         attrId: 10,
+        name: "taxAssesment",
+
         value: 1100,
         date: "2010-05-13",
         record: "",
-        document: ""
+        docTypeId: 124
     },
     {
         attrId: 10,
+        name: "taxAssesment",
+
         value: 950,
         date: "2012-05-15",
         record: "",
-        document: ""
+        docTypeId: 124
     },
     {
         attrId: 10,
+        name: "taxAssesment",
+
         value: 950,
         date: "2012-05-15",
         record: "",
-        document: ""
+        docTypeId: 124
     },
     {
         attrId: 11,//Some other Tax assesment maybe
+        name: "revenue",
+
         value: 10500,
         date: "2009-05-12",
         record: "",
-        document: ""
+        docTypeId: 124
     },
     {
         attrId: 11,
+        name: "revenue",
+
         value: 11000,
         date: "2010-05-13",
         record: "",
-        document: ""
+        docTypeId: 124
     },
     {
         attrId: 11,
+        name: "revenue",
+
         value: 13000,
         date: "2012-05-15",
         record: "",
-        document: ""
+        docTypeId: 124
     },
     {
         attrId: 11,
+        name: "revenue",
+
         value: 10000,
         date: "2012-05-15",
         record: "",
-        document: ""
+        docTypeId: 124
     },
     {
         attrId: 58,//name: "Last customer Inquiry",
+        name: "lastCustomerInquiry",
+
         date: "2020-01-04",
-        value: "2020-01-03"
+        value: "2020-01-03",
+        docTypeId: 125
 
     },
     {
         attrId: 156, //       name: "Date of Last File Update",
+        name: "lastFileUpdate",
+
         date: "2020-04-19",
-        value: "2020-04-20"
+        value: "2020-04-20",
+        docTypeId: 125,
     },
     {
         attrId: 25,//Tax Due
-        value: "12345$"
+        name: "taxDue",
+
+        value: "12345$",
+        docTypeId: 124,
     }
 
 
 ]
+export const DatabaseDocTypes =
+    [
+        {name: "DocTypA", docTypeId: 123},
+        {name: "DocTypB", docTypeId: 124},
+        {name: "DocTypC", docTypeId: 125}
+    ]
 export const Widgets =
     [
         {
@@ -169,12 +204,16 @@ export const Widgets =
             type: WidgetTypes.INDICATOR,
             attributeMapping: [
                 {
+                    docTypeId: 123,
+
                     attrId: 55,
-                    name: "Factory Count",
+                    displayName: "Factory Count",
                 },
                 {
+                    docTypeId: 123,
                     attrId: 56,
-                    name: "Pending Factory assesments",
+                    displayName: "Pending Factory assesments",
+
                 }
             ]
         },
@@ -185,15 +224,18 @@ export const Widgets =
             },
             title: "Graph One",
             type: WidgetTypes.GRAPH,
+            graph: GraphType.Bar,
             attributeMapping: [
                 {
+                    docTypeId: 124,
                     attrId: 10,
-                    name: "Tax assesment",
+                    displayName: "Tax assesment",
                     color: "red"
                 },
                 {
+                    docTypeId: 124,
                     attrId: 11,
-                    name: "Revenue",
+                    displayName: "Revenue",
                     color: "green"
                 }
             ]
@@ -207,24 +249,33 @@ export const Widgets =
             type: WidgetTypes.INDICATOR,
             attributeMapping: [
                 {
+                    docTypeId: 125,
+
                     attrId: 58,
-                    name: "Last customer Inquiry",
+                    displayName: "Date of Last customer Inquiry",
                 },
                 {
+                    docTypeId: 125,
                     attrId: 156,
-                    name: "Date of Last File Update",
+                    displayName: "Date of Last File Update",
                 },
                 {
+                    docTypeId: 124,
                     attrId: 25,
-                    name: "Tax Due",
+                    displayName: "Tax Due",
+
                 },
                 {
+                    docTypeId: 125,
                     attrId: 58,
-                    name: "Last customer Inquiry",
+                    displayName: "Date of Last customer Inquiry",
+
                 },
                 {
+                    docTypeId: 125,
                     attrId: 156,
-                    name: "Date of Last File Update",
+                    displayName: "Date of Last File Update",
+
                 }
             ]
         },

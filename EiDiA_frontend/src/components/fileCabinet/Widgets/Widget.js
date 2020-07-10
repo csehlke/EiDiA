@@ -21,7 +21,7 @@ const itemSource = {
         return props.edit;
     },
     beginDrag(props) {
-        return {positionInfo: props.positionInfo, switchWidget: props.switchWidget}
+        return {positionInfo: props.widget.positionInfo, switchWidget: props.switchWidget}
 
     },
     endDrag(props, monitor) {
@@ -45,10 +45,19 @@ class Widget extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            positionInfo: this.props.positionInfo,
+            widget: this.props.widget,
+            // positionInfo: this.props.positionInfo,
             editingActive: false
         }
 
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps !== this.props) {
+            this.setState({
+                widget: this.props.widget,
+            })
+        }
     }
 
     toggleEditDialog() {
@@ -73,15 +82,18 @@ class Widget extends React.Component {
                         : ""}
 
                     <FoggyDiv edit={this.props.edit}>
-                        <H2WithOutMargin> {this.props.title} </H2WithOutMargin>
+                        <H2WithOutMargin> {this.state.widget.title} </H2WithOutMargin>
                         {this.props.children}
                     </FoggyDiv>
                     <EditDialog changeData={this.props.changeData}
-                                widgetTitle={this.props.title}
-                                widgetType={this.props.type}
-                                positionInfo={this.props.positionInfo}
+                                addAttribute={this.props.addAttribute}
+                                removeAttributeFromMapping={this.props.removeAttributeFromMapping}
+                                widgetTitle={this.state.widget.title}
+                                widgetType={this.state.widget.type}
+                                graphType={this.state.widget.graph} // TODO: handle undefined
                                 onClose={this.toggleEditDialog.bind(this)}
-                                open={this.state.editingActive}/>
+                                open={this.state.editingActive}
+                                attributeMapping={this.state.widget.attributeMapping}/>
                 </div>
 
                 }

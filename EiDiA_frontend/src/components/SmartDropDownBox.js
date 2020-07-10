@@ -9,12 +9,28 @@ class SmartDropDownBox extends React.Component {
         super(props);
 
         this.state = {
-            inputValue: this.props.inputValue
+            inputValue: '',
+            //TODO default margin value should be zero
+            margin: this.props.margin != null ? this.props.margin : "0.5em",
+            options: this.props.options,
+            label: this.props.label,
+            preselectedValue: this.props.preselectedValue
+
         }
-        console.log(this.state.inputValue)
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.reset = this.reset.bind(this);
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps !== this.props) {
+            this.setState({
+                options: this.props.options,
+                label: this.props.label,
+                preselectedValue: this.props.preselectedValue
+
+            })
+        }
     }
 
     reset() {
@@ -37,9 +53,12 @@ class SmartDropDownBox extends React.Component {
     }
 
     render() {
+
+
         return (
             <Autocomplete
-                defaultValue={this.state.inputValue}
+                value={this.state.preselectedValue}
+
                 id="combo-box"
                 handleHomeEndKeys
                 selectOnFocus
@@ -49,17 +68,16 @@ class SmartDropDownBox extends React.Component {
                 fullWidth
                 size={"small"}
 
-                options={this.props.options}
+                options={this.state.options}
                 inputValue={this.state.inputValue}
                 onChange={this.handleOnChange}
                 onInputChange={this.handleOnInputChange}
                 getOptionLabel={(option) => option.name}
-                style={{margin: '0.5em'}}
+                style={{margin: this.state.margin}}
                 renderInput={(params) => (
                     <TextField {...params}
-                               active
-                               label={this.props.label}
-                               value={this.state.inputValue}
+
+                               label={this.state.label}
                                variant="outlined" placeholder="Type to filter"/>
                 )}
             />
@@ -73,5 +91,5 @@ SmartDropDownBox.propTypes = {
     label: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     options: PropTypes.array.isRequired,
-    inputValue: PropTypes.string
+    preselectedValue: PropTypes.object
 }

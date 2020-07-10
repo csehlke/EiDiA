@@ -6,6 +6,7 @@ import {Attributes} from "../../../assets/Constants";
  * TODO:
  * Add Limit for Titles
  * Add Limit for Attributes
+ * - get only newest attribute
  */
 
 
@@ -14,14 +15,13 @@ export class IndicatorWidget extends React.Component {
         super(props);
         this.state = {
             attributeMapping: props.attributeMapping,
-            elementPercentage: 100 / (props.positionInfo.cols * 2)
         }
     }
 
     createAttribute(attr, index) {
         return (
             <IndicatorElement elementPercentage={this.state.elementPercentage} key={index}>
-                <p>{attr.name}</p>
+                <p>{attr.displayName}</p>
 
                 <TealRight>{attr.value} </TealRight>
             </IndicatorElement>
@@ -36,17 +36,24 @@ export class IndicatorWidget extends React.Component {
         attributeMapping.map(mapping => data.push(
             tmp
                 .filter(attr => attr.attrId === mapping.attrId)
-                .map(foundAttribute => {
-                    foundAttribute['name'] = mapping.name;
-                    return foundAttribute
-                })
+                .map(function (foundAttribute) {
+                        return {
+                            displayName: mapping.displayName,
+                            value: foundAttribute.value
+                        }
+                    }
+                    // foundAttribute['displayName'] = mapping.displayName;
+                    // return foundAttribute
+                )
             )
         )
         return data.flat();
     }
     render() {
+
         let data = this.getData(this.state.attributeMapping);
         return (
+
             <FlexRow>{data.map((attribute, index) => this.createAttribute(attribute, index))}</FlexRow>);
     }
 

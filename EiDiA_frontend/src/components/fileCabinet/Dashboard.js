@@ -29,11 +29,12 @@ export class Dashboard extends React.Component {
             case WidgetTypes.LOG:
                 return (<LogWidget data={widget.Data}/>)
             case WidgetTypes.GRAPH:
-                return (<GraphsWidget edit={this.state.edit} attributeMapping={widget.attributeMapping}
-                                      data={widget.Data}/>)
+                return (
+                    <GraphsWidget graph={widget.graph} edit={this.state.edit} attributeMapping={widget.attributeMapping}
+                    />)
             case WidgetTypes.INDICATOR:
-                return (<IndicatorWidget attributeMapping={widget.attributeMapping} elementPercentage={25}
-                                         positionInfo={widget.positionInfo} data={widget.Data}/>)
+                return (<IndicatorWidget attributeMapping={widget.attributeMapping}
+                />)
             default:
                 return (<p>No child part</p>)
 
@@ -58,7 +59,7 @@ export class Dashboard extends React.Component {
                             x: j + 1,
                             y: i + 1,
                         },
-                        TITLE: "",
+                        title: "",
                         type: WidgetTypes.INDICATOR,
                         attributeMapping: []
                     })
@@ -77,10 +78,16 @@ export class Dashboard extends React.Component {
 
         return false;
     }*/
-    changeData(widget, toChange, event, value) {
-        console.log(widget)
-        console.log(toChange)
-        console.log(event.target.value)
+    /**
+     * TODO: split up the function?
+     * @param widget
+     * @param toChange
+     * @param index
+     * @param event
+     * @param value
+     */
+    changeData(widget, toChange, index, event, value) {
+
         switch (toChange) {
             case "title":
                 widget.title = event.target.value;
@@ -88,16 +95,46 @@ export class Dashboard extends React.Component {
             case "type":
                 widget.type = value.type;//event.target.value.type;
                 break;
-            case "attributeMapping":
-                widget.attributeMapping = event.target.value;
+            case "attrId":
+                widget.attributeMapping[index].attrId = value.attrId;
+                break;
+            case "docTypeId":
+                widget.attributeMapping[index].docTypeId = value.docTypeId;
+                widget.attributeMapping[index].attrId = "";
+
+                break;
+            case "displayName":
+                widget.attributeMapping[index].displayName = event.target.value;
+                break;
+            case "graph":
+                widget.graph = value.type;
+                break;
+            case "color":
+                widget.attributeMapping[index].color = value.color;
                 break;
 
             default:
                 break;
 
         }
-
+        console.log(widget.attributeMapping)
         this.setState({widgets: this.state.widgets})
+    }
+
+    addAttribute(widget) {
+        widget.attributeMapping.push({
+            docTypeId: null,
+            attrId: null,
+            displayName: null,
+        })
+        this.setState({widgets: this.state.widgets})
+
+    }
+
+    removeAttributeFromMapping(widget, index) {
+        widget.attributeMapping.splice(index, 1)
+        this.setState({widgets: this.state.widgets})
+
     }
 
     switchWidget(positionA, positionB) {
@@ -110,24 +147,41 @@ export class Dashboard extends React.Component {
     }
 
     render() {
+        //taken from here https://stackoverflow.com/questions/35828991/make-material-ui-reactjs-floatingactionbutton-float
+        //to let fab button float right
+        const styleFabButton = {
+            margin: 0,
+            top: 'auto',
+            right: 20,
+            left: 'auto',
+            position: 'fixed',
+        };
         return (
             <div>
 
-                    <DashboardWrapper>
+                <DashboardWrapper>
 
-                        {this.state.widgets.map((widget, index) =>
-                            <WidgetWrapper key={index} edit={this.state.edit} positionInfo={widget.positionInfo}>
-                                <WidgetDropTarget positionInfo={widget.positionInfo}>
-                                    <Widget changeData={this.changeData.bind(this, widget)}
-                                            edit={this.state.edit}
-                                            title={widget.title} type={widget.type}
-                                            switchWidget={(posA, posB) => this.switchWidget(posA, posB)}
-                                            positionInfo={widget.positionInfo}>{this.renderWidget(widget)}</Widget>
-                                </WidgetDropTarget>
-                            </WidgetWrapper>)}
+                    {this.state.widgets.map((widget, index) =>
+                        <WidgetWrapper key={index} edit={this.state.edit} positionInfo={widget.positionInfo}>
+                            <WidgetDropTarget positionInfo={widget.positionInfo}>
+                                <Widget changeData={this.changeData.bind(this, widget)}
+                                        addAttribute={this.addAttribute.bind(this, widget)}
+                                        removeAttributeFromMapping={this.removeAttributeFromMapping.bind(this, widget)}
+                                        edit={this.state.edit}
+                                        widget={widget}
+                                    // title={widget.title} type={widget.type}
+                                        switchWidget={(posA, posB) => this.switchWidget(posA, posB)}
+                                    // positionInfo={widget.positionInfo}
+                                    // attributeMapping={widget.attributeMapping}
+                                >{this.renderWidget(widget)}
 
-                    </DashboardWrapper>
-                <Fab color="secondary" aria-label="edit" onClick={this.handleEditDashboardButton.bind(this)}>
+                                </Widget>
+                            </WidgetDropTarget>
+                        </WidgetWrapper>)}
+
+                </DashboardWrapper>
+                <Fab style={styleFabButton} color="secondary" aria-label="edit"
+                     onClick={this.handleEditDashboardButton.bind(this)}>
                     <FiEdit size={32}/>
                 </Fab>
 

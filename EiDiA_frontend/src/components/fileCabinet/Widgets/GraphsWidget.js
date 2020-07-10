@@ -27,8 +27,18 @@ export class GraphsWidget extends React.Component {
         super(props);
         this.state = {
             attributeMapping: props.attributeMapping,
-            type: GraphType.Bar
+            type: props.graph,
 
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps !== this.props) {
+            this.setState({
+                attributeMapping: this.props.attributeMapping,
+                type: this.props.graph,
+
+            })
         }
     }
 
@@ -45,7 +55,7 @@ export class GraphsWidget extends React.Component {
                 <YAxis/>
                 {this.props.edit ? "" : <Tooltip/>}
                 <Legend/>
-                {attributeMapping.map((mapping, i) => <Line key={i} type="monotone" dataKey={mapping.name}
+                {attributeMapping.map((mapping, i) => <Line key={i} type="monotone" dataKey={mapping.displayName}
                                                             stroke={mapping.color}
                                                             activeDot={{r: 8}}/>)}
 
@@ -63,7 +73,8 @@ export class GraphsWidget extends React.Component {
                 <YAxis/>
                 {this.props.edit ? "" : <Tooltip/>}
                 <Legend/>
-                {attributeMapping.map((mapping, i) => <Bar key={i} dataKey={mapping.name} fill={mapping.color}/>)}
+                {attributeMapping.map((mapping, i) => <Bar key={i} dataKey={mapping.displayName}
+                                                           fill={mapping.color}/>)}
 
             </BarChart>
         )
@@ -103,7 +114,7 @@ export class GraphsWidget extends React.Component {
             tmp
                 .filter(attr => attr.attrId === mapping.attrId)
                 .map(foundAttribute => {
-                    foundAttribute[mapping.name] = foundAttribute.value;
+                    foundAttribute[mapping.displayName] = foundAttribute.value;
                     return foundAttribute
                 })
             )

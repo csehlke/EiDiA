@@ -50,6 +50,7 @@ export class LogWidget extends React.Component {
     }
 
     render() {
+
         return (this.childPart())
     }
 

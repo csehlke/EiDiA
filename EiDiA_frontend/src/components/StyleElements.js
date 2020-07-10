@@ -56,7 +56,7 @@ export const PreferredBreakSpan = styled.span`
    display:inline-block;   
 `;
 export const IndicatorElement = styled.div` 
-width:${props => props.elementPercentage + "%"};
+width:50%;
 padding:0.5em;        
 `
 export const FlexRow = styled.div` 
@@ -96,3 +96,23 @@ width:30vw;
 
   
 `*/
+export const Column = styled.div`
+width:48%;
+margin: 0 2%;
+  
+`
+export const TwoColumnGrid = styled.div`
+    display: grid;
+    grid-template-columns: 49% 49%;
+    
+    grid-column-gap: 5%;
+    grid-row-gap: 5%;   
+
+`;
+export const GridElement = styled.div`
+    grid-row-start:${props => props.row};
+     grid-row-end: span ${props => props.rowSpan != null ? props.rowSpan : "1"};
+     grid-column-start:${props => props.col};
+     grid-column-end: span ${props => props.colSpan != null ? props.colSpan : "1"};
+
+`;
