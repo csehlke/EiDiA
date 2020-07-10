@@ -21,31 +21,31 @@ export default class Sidebar extends React.Component {
     render() {
         return (
             <List>
-                <Link to={'/'}>
+                <Link to={'/'} replace>
                     <ListItem button key={"Home"}>
                         <StyledListIcon><FaHome/></StyledListIcon>
                         <ListItemText primary={"Home"}/>
                     </ListItem>
                 </Link>
-                <Link to={'/browse'}>
+                <Link to={'/browse'} replace>
                     <ListItem button key={"Browse"}>
                         <StyledListIcon><FiHardDrive/></StyledListIcon>
                         <ListItemText primary={"Browse"}/>
                     </ListItem>
                 </Link>
-                <Link to={'/search'}>
+                <Link to={'/search'} replace>
                     <ListItem button key={"Search"}>
                         <StyledListIcon><AiOutlineSearch/></StyledListIcon>
                         <ListItemText primary={"Search"}/>
                     </ListItem>
                 </Link>
-                <Link to={'/upload'}>
+                <Link to={'/upload'} replace>
                     <ListItem button key={"UploadDocument"}>
                         <StyledListIcon><FaCloudUploadAlt/></StyledListIcon>
                         <ListItemText primary={"Upload Document"}/>
                     </ListItem>
                 </Link>
-                <Link to={'/export'}>
+                <Link to={'/export'} replace>
                     <ListItem button key={"CreateDocument"}>
                         <StyledListIcon><NewFileIcon/></StyledListIcon>
                         <ListItemText primary={"Create Document"}/>
