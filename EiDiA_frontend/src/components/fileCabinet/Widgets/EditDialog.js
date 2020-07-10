@@ -195,7 +195,7 @@ export class EditDialog extends React.Component {
                             <Grid key={index + "color"} item xs={12} sm={2}>
 
                                 <SmartDropDownBox margin={"0"}
-                                    = label={"Color Options"}
+                                                  label={"Color Options"}
                                                   onChange={this.props.changeData.bind(this, "color", index)}
                                                   options={colorOptions}
                                 />
