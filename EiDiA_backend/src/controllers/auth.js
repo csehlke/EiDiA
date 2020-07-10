@@ -37,7 +37,7 @@ const login = (req, res) => {
 
             // if user is found and password is valid
             // create a token
-            const token = jwt.sign({id: user._id, username: user.username}, config.JwtSecret, {
+            const token = jwt.sign({id: user._id, username: user.username, userRole: user.userRole}, config.JwtSecret, {
                 expiresIn: 86400, // expires in 24 hours
             });
             // add token to whitelist

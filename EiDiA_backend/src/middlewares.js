@@ -47,6 +47,7 @@ const checkAuthentication = (req, res, next) => {
         });
 
         // if everything is good, save to request for use in other routes
+        req.userRole = decoded.userRole
         req.userId = decoded.id;
         next();
     });
