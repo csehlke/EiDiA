@@ -149,7 +149,7 @@ export class EditDialog extends React.Component {
         ]
         return ([
                 <DialogContentText key={"descriptionGraphSelection"}>Select The Graph Type to Show:</DialogContentText>,
-                <SmartDropDownBox margin={"0"}
+                <SmartDropDownBox key={"selectGraphType"} margin={"0"}
                                   preselectedValue={GraphTypeOptions.find(opt => opt.type === this.state.selectedGraph)}
                                   label={"Graph Type"}
                                   onChange={this.props.changeData.bind(this, "graph", -1)}
