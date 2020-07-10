@@ -27,7 +27,7 @@ export default class HttpService {
             }
         }).then((resp) => {
             if (typeof resp === "undefined") {
-                console.error("User is not authorized")
+                console.log("User is not authorized")
             } else if (resp.error) {
                 onError(resp.error);
             } else {
