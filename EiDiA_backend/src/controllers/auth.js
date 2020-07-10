@@ -306,7 +306,7 @@ const updateUser = (req, res) => {
 
 const deleteUser = (req, res) => {
     UserModel.findByIdAndDelete(req.params.id).exec()
-        .then(() => res.status(200).json({message: `User with id${req.params.id} was deleted`}))
+        .then(() => res.status(200).json({message: `User with id ${req.params.id} was deleted`}))
         .catch(error => res.status(500).json({
             error: 'Internal server error',
             message: error.message
