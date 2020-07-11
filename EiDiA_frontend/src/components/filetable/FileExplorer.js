@@ -63,6 +63,7 @@ export default class FileExplorer extends React.Component {
         );
     }
 
+
     render() {
         return (
             <Grid style={{flexGrow: 1}} container spacing={0}>
@@ -89,8 +90,10 @@ export default class FileExplorer extends React.Component {
                     this.renderElement(element, index, 0) : null
                 )}
                 <ElementDropTarget id={0} type={fileTypes.FOLDER}>
-
+                    {/*TODO:
+                    - Drop area*/}
                 </ElementDropTarget>
+                {/*TODO: add FA Button for adding a folder*/}
             </Grid>
         );
     }
