@@ -46,9 +46,11 @@ const UserMenu = () => {
                   }}
                   open={open}
                   onClose={handleClose}>
-                <Link to={'/admin'}>
-                    <MenuItem onClick={handleClose}>User Administration</MenuItem>
-                </Link>
+                {UserService.isAdmin() ?
+                    <Link to={'/admin'}>
+                        <MenuItem onClick={handleClose}>User Administration</MenuItem>
+                    </Link> :
+                    ''}
                 <Link to={'/settings'}>
                     <MenuItem onClick={handleClose}>My Account</MenuItem>
                 </Link>
