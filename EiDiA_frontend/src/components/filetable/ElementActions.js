@@ -57,7 +57,7 @@ export class ElementActions extends React.Component {
             //TODO remove button
             this.actionSelection(this.props.actions).map((button, index) =>
                 <IconButton
-                    key={this.props.parentKey + "Button" + index}>
+                    key={index}>
                     {button}
                 </IconButton>
             )

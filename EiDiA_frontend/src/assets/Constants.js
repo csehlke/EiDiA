@@ -1,4 +1,3 @@
-
 export const recordMenuOptions = {
     DASHBOARD: 1,
     FILEEXPLORER: 2,
@@ -16,12 +15,10 @@ export const fileTypes = {
 };
 
 
-
 export const WidgetTypes = {
     LOG: 'Log',
     GRAPH: 'Graph',
     INDICATOR: 'Indicator'
-
 
 
 }
@@ -307,8 +304,6 @@ export const Widgets =
     ]
 
 
-
-
 export const logs = [
     {
         PERSON: "John Doe",
@@ -340,7 +335,7 @@ export const databaseEntriesPlaceholder = [
         dateModification: '1.1.2020',
         comment: 'This is a long long Lorem Ipsum Comment talking blablabla',
         actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-        children: [],
+
     },
     {
         parentId: 0,
@@ -352,57 +347,56 @@ export const databaseEntriesPlaceholder = [
         dateModification: '',
         comment: 'TJust some Folder',
         actions: ['EDIT', 'DELETE'],
-        children: [
-            {
-                parentId: 3,
-                id: 2,
-                active: false,
-                type: fileTypes.PDF,
-                name: "Sample PDF Document",
-                dateCreation: '2.2.1970',
-                dateModification: '2.2.2020',
-                comment: 'Second Document Comment',
-                actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-                children: [],
-            },
-            {
-                parentId: 3,
-                id: 6,
-                active: false,
-                type: fileTypes.FOLDER,
-                name: "Sample Folder",
-                dateCreation: '',
-                dateModification: '',
-                comment: 'TJust some Folder',
-                actions: ['EDIT', 'DELETE'],
-                children:
-                    [
-                        {
-                            parentId: 3,
-                            id: 5,
-                            active: false,
-                            type: fileTypes.WORD,
-                            name: "Sample Word Document",
-                            dateCreation: '1.1.1970',
-                            dateModification: '1.1.2020',
-                            comment: 'This is a long long Lorem Ipsum Comment talking blablabla',
-                            actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-                            children: [],
-                        },
-                    ],
-            },
-            {
-                parentId: 3,
-                id: 4,
-                active: false,
-                type: fileTypes.PDF,
-                name: "Sample PDF Document",
-                dateCreation: '2.2.1970',
-                dateModification: '2.2.2020',
-                comment: 'Second Document Comment',
-                actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-                children: [],
-            },
-        ],
-    }
+    },
+    {
+        parentId: 3,
+        id: 2,
+        active: false,
+        type: fileTypes.PDF,
+        name: "Sample PDF Document",
+        dateCreation: '2.2.1970',
+        dateModification: '2.2.2020',
+        comment: 'Second Document Comment',
+        actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
+
+    },
+    {
+        parentId: 3,
+        id: 6,
+        active: false,
+        type: fileTypes.FOLDER,
+        name: "Sample Folder",
+        dateCreation: '',
+        dateModification: '',
+        comment: 'TJust some Folder',
+        actions: ['EDIT', 'DELETE'],
+    },
+    {
+        parentId: 6,
+        id: 5,
+        active: false,
+        type: fileTypes.WORD,
+        name: "Sample Word Document",
+        dateCreation: '1.1.1970',
+        dateModification: '1.1.2020',
+        comment: 'This is a long long Lorem Ipsum Comment talking blablabla',
+        actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
+
+    },
+
+
+    {
+        parentId: 3,
+        id: 4,
+        active: false,
+        type: fileTypes.PDF,
+        name: "Sample PDF Document",
+        dateCreation: '2.2.1970',
+        dateModification: '2.2.2020',
+        comment: 'Second Document Comment',
+        actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
+
+    },
+
+
 ];

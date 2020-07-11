@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {DropTarget} from 'react-dnd';
-import {DragTypes} from "../../assets/Constants";
+import {DragTypes, fileTypes} from "../../assets/Constants";
 
 
 const calTarget = {
-    canDrop(props, monitor) {
-        return true;
+    canDrop(props) {
+        return props.type === fileTypes.FOLDER;
     },
 
     drop(props, monitor, component) {
@@ -22,7 +22,7 @@ function collect(connect, monitor) {
     };
 }
 
-class ElementTable extends Component {
+class ElementDropTarget extends Component {
     render() {
         const {connectDropTarget, isOver} = this.props;
         return connectDropTarget(
@@ -35,4 +35,4 @@ class ElementTable extends Component {
     }
 }
 
-export default DropTarget(DragTypes.ELEMENT, calTarget, collect)(ElementTable);
+export default DropTarget(DragTypes.ELEMENT, calTarget, collect)(ElementDropTarget);

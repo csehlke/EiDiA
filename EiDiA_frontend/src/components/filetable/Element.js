@@ -4,7 +4,7 @@ import React from 'react';
 import styled from "styled-components";
 import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
-import {DragTypes, fileTypes} from "../../assets/Constants"
+import {DragTypes} from "../../assets/Constants"
 import {DragSource} from "react-dnd";
 
 const ElementRow = styled.div`
@@ -33,17 +33,13 @@ const Actions = styled.div`
 `;
 
 const itemSource = {
-    beginDrag(props) {
-        return {
-            src: props.src,
-            id: props.index,
-        };
+    beginDrag() {
+        return {};
     },
     endDrag(props, monitor, component) {
         let wrapperProps = monitor.getDropResult().component.props;
-        if (wrapperProps.type === fileTypes.FOLDER) {
-            component.props.handleDrop(wrapperProps.id);
-        }
+        component.props.handleDrop(wrapperProps.id);
+
     }
 }
 
@@ -69,6 +65,7 @@ class Element extends React.Component {
             symbolArray: [],
             padding: this.props.level * 2,
             width: 40 - this.props.level * 2,
+            elementData: this.props.elementData
         };
     }
 
@@ -86,23 +83,23 @@ class Element extends React.Component {
 
                         <Name width={this.state.width}
                               padding={this.state.padding}>
-                            <ElementSymbol type={this.props.type}
-                                           active={this.props.active}/>
-                            {this.props.name}
+                            <ElementSymbol type={this.state.elementData.type}
+                                           active={this.state.elementData.active}/>
+                            {this.state.elementData.name}
                         </Name>
 
                         <Date>
-                            {this.props.dateCreation}
+                            {this.state.elementData.dateCreation}
                         </Date>
                         <Date>
-                            {this.props.dateModification}
+                            {this.state.elementData.dateModification}
                         </Date>
                         <Comment>
-                            {this.props.comment}
+                            {this.state.elementData.comment}
                         </Comment>
                         <Actions>
-                            <ElementActions parentKey={this.props.key}
-                                            actions={this.props.actions}/>
+                            <ElementActions
+                                actions={this.state.elementData.actions}/>
                         </Actions>
                     </ElementRow>
                     {this.props.children}
