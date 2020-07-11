@@ -215,11 +215,12 @@ export class EditDialog extends React.Component {
         );
     }
 
+    /**
+     * So far there are no special options that can be set for the Log widget
+     * @returns {null}
+     */
     log() {
-        return (
-            <DialogContentText>hello</DialogContentText>
-
-        )
+        return null
     }
 
     dialogPicker() {
@@ -257,7 +258,7 @@ export class EditDialog extends React.Component {
         this.setState({selectedGraph: value})
     }
 
-    handleAddAttributeButton = (e) => {
+    handleAddAttributeButton = () => {
         this.state.selectedAttributeMapping.push({
             docTypeId: null,
             attrId: null,
@@ -266,7 +267,7 @@ export class EditDialog extends React.Component {
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping})
     }
 
-    handleRemoveAttributeButton = (index) => (e) => {
+    handleRemoveAttributeButton = (index) => () => {
         this.state.selectedAttributeMapping.splice(index, 1)
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping})
     }
@@ -330,7 +331,7 @@ export class EditDialog extends React.Component {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={
-                        (e) => {
+                        () => {
                             this.props.handleUpdateWidgetButton(
                                 this.state.selectedTitle,
                                 this.state.selectedType,

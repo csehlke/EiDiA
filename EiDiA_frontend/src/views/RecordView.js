@@ -20,6 +20,7 @@ export class RecordView extends React.Component {
         super(props);
         this.state = {
             currentPage: recordMenuOptions.DASHBOARD,
+            recordId: 34//TODO: get this from calling Component
         }
     }
 
@@ -45,13 +46,13 @@ export class RecordView extends React.Component {
 
         switch (this.state.currentPage) {
             case recordMenuOptions.DASHBOARD:
-                toShow = <Dashboard/>;
+                toShow = <Dashboard recordId={this.state.recordId}/>;
                 break;
             case recordMenuOptions.FILEEXPLORER:
-                toShow = <FileExplorer/>;
+                toShow = <FileExplorer recordId={this.state.recordId}/>;
                 break;
             default:
-                toShow = <Dashboard/>;
+                toShow = <Dashboard recordId={this.state.recordId}/>;
                 break;
         }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import Widget from "./Widgets/Widget";
 import WidgetDropTarget from "./Widgets/WidgetDropTarget";
-import {Widgets, WidgetTypes} from "../../assets/Constants";
+import {LogEntries, Widgets, WidgetTypes} from "../../assets/Constants";
 import {DashboardWrapper, WidgetWrapper} from "../StyleElements";
 import {LogWidget} from "./Widgets/LogWidget";
 import {GraphsWidget} from "./Widgets/GraphsWidget";
@@ -15,6 +15,7 @@ export class Dashboard extends React.Component {
         this.state = {
             widgets: Widgets,
             dashboardEditingActive: false,
+            recordId: this.props.recordId
 
 
         }
@@ -27,7 +28,7 @@ export class Dashboard extends React.Component {
     renderWidget(widget) {
         switch (widget.type) {
             case WidgetTypes.LOG:
-                return (<LogWidget data={widget.Data}/>)
+                return (<LogWidget logs={this.getLogData()}/>)
             case WidgetTypes.GRAPH:
                 return (
                     <GraphsWidget graph={widget.graph} dashboardEditingActive={this.state.dashboardEditingActive}
@@ -68,7 +69,10 @@ export class Dashboard extends React.Component {
 
     }
 
-    handleEditDashboardButton = (e) => {
+    getLogData = () => {
+        return LogEntries.filter(entries => entries.recordId === this.state.recordId)
+    }
+    handleEditDashboardButton = () => {
         this.setState({dashboardEditingActive: !this.state.dashboardEditingActive})
     }
 

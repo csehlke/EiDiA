@@ -14,19 +14,12 @@ import {PreferredBreakSpan, TealName} from "../../StyleElements";
 export class LogWidget extends React.Component {
     constructor(props) {
         super(props);
-
-
-        props.data.sort(function (a, b) {
-            return b.data - a.date
-        })
         this.state = {
-            logCount: 3,
-            sortedLogs: props.data.sort(function (a, b) {
+            logCount: 5,
+            sortedLogs: props.logs.sort(function (a, b) {
                 return new Date(b.date) - new Date(a.date);
             })
-
         }
-
     }
 
     logEntry(log) {
@@ -38,20 +31,15 @@ export class LogWidget extends React.Component {
         )
     }
 
-    childPart() {
-
-
-        return (
-            <ul>
-                {this.state.sortedLogs.slice(0, 3).map((log, index) => <li key={index}>{this.logEntry(log)} </li>)}
-
-            </ul>
-        );
-    }
 
     render() {
+        return (
+            <ul>
+                {this.state.sortedLogs.slice(0, this.state.logCount).map((log, index) => <li
+                    key={index}>{this.logEntry(log)} </li>)}
 
-        return (this.childPart())
+            </ul>
+        )
     }
 
 
