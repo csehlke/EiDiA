@@ -44,7 +44,6 @@ const itemSource = {
         if (wrapperProps.type === fileTypes.FOLDER) {
             component.props.handleDrop(wrapperProps.id);
         }
-        //return component.props.handleDrop(component.props.index, monitor.getDropResult().component.props.id)
     }
 }
 
@@ -55,11 +54,7 @@ function collectDrag(connect, monitor) {
     };
 }
 
-function collectDrop(connect, monitor) {
-    return {
-        connectDropTarget: connect.dropTarget()
-    };
-}
+
 
 /*
  *TODO:
@@ -77,25 +72,17 @@ class Element extends React.Component {
         };
     }
 
-    clickHandle(event) {
-        this.props.activeToggle(this);
-    }
+
 
     render() {
-        const {isDragging, connectDragSource, src} = this.props;
+        const {isDragging} = this.props;
 
         const toRender = (
             <div>
                 {!isDragging &&
                 <div>
-                    {/*
-                    * Solution for not firing onClick event
-                    * https://stackoverflow.com/questions/50805710/react-js-onclick-event-not-firing
-                    * other solution is to change stylwe
-                    * <div style = {{cursor:(element.type === 'FOLDER')&& 'pointer'}} onClick = {(element.type === 'FOLDER')?this.addChildren.bind(element.id,element):null}>
-                     */}
                     <ElementRow style={{cursor: (this.props.type === 'FOLDER') && 'pointer'}}
-                                onClick={this.clickHandle.bind(this)}>
+                                onClick={this.props.activeToggle}>
 
                         <Name width={this.state.width}
                               padding={this.state.padding}>

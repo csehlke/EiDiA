@@ -17,7 +17,7 @@ export default class FileExplorer extends React.Component {
 
     constructor(props) {
         super(props);
-        //TODO is this wanted? This unfolds all folder at the beginning
+        //TODO is this wanted? This folds all folder at the beginning
         databaseEntriesPlaceholder.forEach(element => element.active = false);
 
         this.state = {
@@ -68,7 +68,7 @@ export default class FileExplorer extends React.Component {
         }
     }
 
-    setNewParent(child, newParentId) {
+    setNewParent = (child) => (newParentId) => {
         //TODO: this should actually be handled by the backend?
         this.find(newParentId).children.push(child);
         this.removeFromParent(child);
@@ -77,7 +77,7 @@ export default class FileExplorer extends React.Component {
         this.setState(this.state);
     }
 
-    activeToggle(element) {
+    activeToggle = (element) => () => {
         element.active === true ?
             element.active = false :
             element.active = true;
@@ -100,9 +100,8 @@ export default class FileExplorer extends React.Component {
                     dateModification={element.dateModification}
                     comment={element.comment}
                     actions={element.actions}
-                         handleDrop={(newParentId) =>
-                             this.setNewParent(element, newParentId) /*(oldIndex, newIndex) => this.changeElements(oldIndex, newIndex)*/}
-                         activeToggle={this.activeToggle.bind(this, element)}>
+                    handleDrop={this.setNewParent(element) /*(oldIndex, newIndex) => this.changeElements(oldIndex, newIndex)*/}
+                    activeToggle={this.activeToggle(element)}>
 
                     {element.active === true ?
                         element.children.map((child, indexChild) =>
