@@ -1,9 +1,8 @@
 "use strict";
 
 import React from 'react';
-import FileTable from "../filetable/FileTable";
 
-export default class SearchResults extends React.Component {
+export default class FileTable extends React.Component {
 
     constructor(props) {
         super(props);
@@ -12,8 +11,7 @@ export default class SearchResults extends React.Component {
     render() {
         return (
             <div>
-                <h3>Search Results</h3>
-                <FileTable/>
+                FileTable works
             </div>
         );
     }

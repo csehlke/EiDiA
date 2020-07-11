@@ -1,23 +1,18 @@
 import React from 'react';
-import { Dialog, DialogTitle, Typography, Button, Box, Input } from '@material-ui/core';
-import PersonIcon from '@material-ui/icons/Person';
-import AddIcon from '@material-ui/icons/Add';
-import {Row, Column} from '../../support files/constants';
-import {RecordSymbol} from "../fileCabinet/RecordSymbol";
-import styled from "styled-components";
-import SaveTemplateWindow from './Subcomponents/SaveTemplateWindow';
-import ExportDocumentWindow from './Subcomponents/ExportDocumentWindow';
+import {Dialog, DialogTitle} from '@material-ui/core';
+import SaveTemplateWindow from './subcomponents/SaveTemplateWindow';
+import ExportDocumentWindow from './subcomponents/ExportDocumentWindow';
 
 export default class FloatingWindow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            records : ["Volkswagen","BMW","Thyssenkrup","Google","Facebook","Microsoft","ABC Company","Adidas","lenovo Limited","IBM","TrueThat","hello","abc","def"],
-            search : ''
+            records: ["Volkswagen", "BMW", "Thyssenkrup", "Google", "Facebook", "Microsoft", "ABC Company", "Adidas", "lenovo Limited", "IBM", "TrueThat", "hello", "abc", "def"],
+            search: ''
         }
 
         this.dialogContent = {
-            "Edit Template":{ 
+            "Edit Template": {
                 title: "Store Template",
                 content: SaveTemplateWindow
             },
@@ -28,8 +23,8 @@ export default class FloatingWindow extends React.Component {
         }
     }
 
-    updateSearch(event){
-        this.setState({search: event.target.value.substr(0,20)});
+    updateSearch(event) {
+        this.setState({search: event.target.value.substr(0, 20)});
     }
 
     render() {
@@ -40,11 +35,12 @@ export default class FloatingWindow extends React.Component {
                 return record.indexOf(this.state.search) !== -1;
             }
         );
-        return(
-            <Dialog onClose={this.props.onClose} fullWidth={true} maxWidth={'lg'} id="temp" aria-labelledby="simple-dialog-title" open={this.props.open}>
+        return (
+            <Dialog onClose={this.props.onClose} fullWidth={true} maxWidth={'lg'} id="temp"
+                    aria-labelledby="simple-dialog-title" open={this.props.open}>
                 <DialogTitle id="simple-dialog-title">{dialogTitle}</DialogTitle>
-                <DialogContent 
-                    updateSearch={this.updateSearch} 
+                <DialogContent
+                    updateSearch={this.updateSearch}
                     value={this.state.search}
                     filteredRecords={filteredRecords}
                     onClose={this.props.onClose}
@@ -53,7 +49,7 @@ export default class FloatingWindow extends React.Component {
                     download={this.props.download}
                     editorState={this.props.editorState}
                 />
-          </Dialog>       
+            </Dialog>
         );
     }
 }

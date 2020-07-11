@@ -17,7 +17,7 @@ export default class TemplateListItem extends React.Component {
 
 
     render() {
-        return(
+        return (
             <ListItem
                 style={{height: 20}}
                 button

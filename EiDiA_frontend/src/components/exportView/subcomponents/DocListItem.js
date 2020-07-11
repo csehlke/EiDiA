@@ -3,7 +3,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton'
-import AddIcon from '@material-ui/icons/Add';
+import {MdAdd} from "react-icons/all";
 
 export default class DocListItem extends React.Component {
     constructor(props) {
@@ -17,14 +17,14 @@ export default class DocListItem extends React.Component {
     }
 
     render() {
-        return(
+        return (
             <ListItem>
                 <ListItemText
                     primary={this.props.id}
                 />
                 <ListItemSecondaryAction>
                     <IconButton edge="end" onClick={this.addToList}>
-                    <AddIcon />
+                        <MdAdd/>
                     </IconButton>
                 </ListItemSecondaryAction>
             </ListItem>
