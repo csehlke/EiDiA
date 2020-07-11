@@ -104,6 +104,7 @@ export class GraphsWidget extends React.Component {
     }
 
     getData(attributeMapping) {
+
         let data = []
 
 
@@ -126,6 +127,7 @@ export class GraphsWidget extends React.Component {
         /*
          *TODO: Do this for multiple attributes not only two
          * - check wether datapoints where left out
+         * - make it stable: right now, if only one attribute mapping currently it crashes, if >2 the extra attributes are ignored
          */
         data = mergeByDate(data[0], data[1]);
 

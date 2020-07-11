@@ -18,7 +18,7 @@ import {DragSource} from "react-dnd";
 
 const itemSource = {
     canDrag(props) {
-        return props.edit;
+        return props.dashboardEditingActive;
     },
     beginDrag(props) {
         return {positionInfo: props.widget.positionInfo, switchWidget: props.switchWidget}
@@ -46,7 +46,8 @@ class Widget extends React.Component {
         super(props);
         this.state = {
             widget: this.props.widget,
-            // positionInfo: this.props.positionInfo,
+            widgetEditingActive: false,
+            dashboardEditingActive: this.props.dashboardEditingActive,
             editingActive: false
         }
 
@@ -56,44 +57,44 @@ class Widget extends React.Component {
         if (prevProps !== this.props) {
             this.setState({
                 widget: this.props.widget,
+                dashboardEditingActive: this.props.dashboardEditingActive
+
             })
         }
     }
 
-    toggleEditDialog() {
-        this.setState({editingActive: !this.state.editingActive})
+    toggleEditDialog = (e) => {
+        this.setState({widgetEditingActive: !this.state.widgetEditingActive})
 
     }
 
     MainPart() {
         const {isDragging} = this.props
-
         return (
             <div>
 
                 {!isDragging &&
                 <div>
-                    {this.props.edit ?
+                    {this.state.dashboardEditingActive ?
                         <Centering>
-                            <Fab onClick={this.toggleEditDialog.bind(this)} aria-label="edit">
+                            <Fab onClick={this.toggleEditDialog} aria-label="edit">
                                 <FiEdit2 size={32}/>
                             </Fab>
                         </Centering>
                         : ""}
 
-                    <FoggyDiv edit={this.props.edit}>
+                    <FoggyDiv edit={this.state.dashboardEditingActive}>
                         <H2WithOutMargin> {this.state.widget.title} </H2WithOutMargin>
                         {this.props.children}
                     </FoggyDiv>
-                    <EditDialog changeData={this.props.changeData}
-                                addAttribute={this.props.addAttribute}
-                                removeAttributeFromMapping={this.props.removeAttributeFromMapping}
-                                widgetTitle={this.state.widget.title}
-                                widgetType={this.state.widget.type}
-                                graphType={this.state.widget.graph} // TODO: handle undefined
-                                onClose={this.toggleEditDialog.bind(this)}
-                                open={this.state.editingActive}
-                                attributeMapping={this.state.widget.attributeMapping}/>
+                    <EditDialog
+                        handleUpdateWidgetButton={this.props.handleUpdateWidgetButton}
+                        widgetTitle={this.state.widget.title}
+                        widgetType={this.state.widget.type}
+                        graphType={this.state.widget.graph} // TODO: handle undefined
+                        onClose={this.toggleEditDialog}
+                        open={this.state.widgetEditingActive}
+                        attributeMapping={this.state.widget.attributeMapping}/>
                 </div>
 
                 }

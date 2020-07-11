@@ -14,7 +14,7 @@ export class Dashboard extends React.Component {
         super(props);
         this.state = {
             widgets: Widgets,
-            edit: false,
+            dashboardEditingActive: false,
 
 
         }
@@ -30,7 +30,8 @@ export class Dashboard extends React.Component {
                 return (<LogWidget data={widget.Data}/>)
             case WidgetTypes.GRAPH:
                 return (
-                    <GraphsWidget graph={widget.graph} edit={this.state.edit} attributeMapping={widget.attributeMapping}
+                    <GraphsWidget graph={widget.graph} dashboardEditingActive={this.state.dashboardEditingActive}
+                                  attributeMapping={widget.attributeMapping}
                     />)
             case WidgetTypes.INDICATOR:
                 return (<IndicatorWidget attributeMapping={widget.attributeMapping}
@@ -67,82 +68,25 @@ export class Dashboard extends React.Component {
 
     }
 
-    handleEditDashboardButton() {
-        this.setState({edit: !this.state.edit})
+    handleEditDashboardButton = (e) => {
+        this.setState({dashboardEditingActive: !this.state.dashboardEditingActive})
     }
 
-    /*testCellOccupation(positionInfo,cells){
-        for (let i = 0; i < cells.length; i++)
-            for (let j = 0; j < cells[i].length; j++)
-                if (cells[i][j] === 1) console.log(true);//return true;
 
-        return false;
-    }*/
-    /**
-     * TODO: split up the function?
-     * @param widget
-     * @param toChange
-     * @param index
-     * @param event
-     * @param value
-     */
-    changeData(widget, toChange, index, event, value) {
-
-        switch (toChange) {
-            case "title":
-                widget.title = event.target.value;
-                break;
-            case "type":
-                widget.type = value.type;//event.target.value.type;
-                break;
-            case "attrId":
-                widget.attributeMapping[index].attrId = value.attrId;
-                break;
-            case "docTypeId":
-                widget.attributeMapping[index].docTypeId = value.docTypeId;
-                widget.attributeMapping[index].attrId = "";
-
-                break;
-            case "displayName":
-                widget.attributeMapping[index].displayName = event.target.value;
-                break;
-            case "graph":
-                widget.graph = value.type;
-                break;
-            case "color":
-                widget.attributeMapping[index].color = value.color;
-                break;
-
-            default:
-                break;
-
-        }
-        console.log(widget.attributeMapping)
+    handleUpdateWidgetButton = (widget) => (title, type, attributeMapping, graphType) => {
+        widget.title = title;
+        widget.type = type;
+        widget.attributeMapping = attributeMapping;
+        if (type === WidgetTypes.GRAPH) widget.graph = graphType;
         this.setState({widgets: this.state.widgets})
     }
 
-    addAttribute(widget) {
-        widget.attributeMapping.push({
-            docTypeId: null,
-            attrId: null,
-            displayName: null,
-        })
-        this.setState({widgets: this.state.widgets})
 
-    }
-
-    removeAttributeFromMapping(widget, index) {
-        widget.attributeMapping.splice(index, 1)
-        this.setState({widgets: this.state.widgets})
-
-    }
-
-    switchWidget(positionA, positionB) {
+    switchWidget = (positionA, positionB) => {
         let a = this.state.widgets.find(widget => widget.positionInfo === positionA)
         let b = this.state.widgets.find(widget => widget.positionInfo === positionB)
         a.positionInfo = positionB;
         b.positionInfo = positionA;
-
         this.setState({widgets: this.state.widgets})
     }
 
@@ -162,26 +106,23 @@ export class Dashboard extends React.Component {
                 <DashboardWrapper>
 
                     {this.state.widgets.map((widget, index) =>
-                        <WidgetWrapper key={index} edit={this.state.edit} positionInfo={widget.positionInfo}>
+                        <WidgetWrapper key={index} dashboardEditingActive={this.state.dashboardEditingActive}
+                                       positionInfo={widget.positionInfo}>
                             <WidgetDropTarget positionInfo={widget.positionInfo}>
-                                <Widget changeData={this.changeData.bind(this, widget)}
-                                        addAttribute={this.addAttribute.bind(this, widget)}
-                                        removeAttributeFromMapping={this.removeAttributeFromMapping.bind(this, widget)}
-                                        edit={this.state.edit}
-                                        widget={widget}
-                                    // title={widget.title} type={widget.type}
-                                        switchWidget={(posA, posB) => this.switchWidget(posA, posB)}
-                                    // positionInfo={widget.positionInfo}
-                                    // attributeMapping={widget.attributeMapping}
-                                >{this.renderWidget(widget)}
-
+                                <Widget
+                                    handleUpdateWidgetButton={this.handleUpdateWidgetButton(widget)}
+                                    dashboardEditingActive={this.state.dashboardEditingActive}
+                                    widget={widget}
+                                    switchWidget={this.switchWidget}
+                                >
+                                    {this.renderWidget(widget)}
                                 </Widget>
                             </WidgetDropTarget>
                         </WidgetWrapper>)}
 
                 </DashboardWrapper>
                 <Fab style={styleFabButton} color="secondary" aria-label="edit"
-                     onClick={this.handleEditDashboardButton.bind(this)}>
+                     onClick={this.handleEditDashboardButton}>
                     <FiEdit size={32}/>
                 </Fab>
 

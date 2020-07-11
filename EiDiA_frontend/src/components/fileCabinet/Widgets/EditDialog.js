@@ -9,8 +9,10 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
 import SmartDropDownBox from "../../SmartDropDownBox";
 import Grid from "@material-ui/core/Grid";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import {MdAddCircleOutline, MdRemoveCircleOutline} from "react-icons/all";
+import {IoMdAddCircleOutline, IoMdRemoveCircleOutline} from "react-icons/io/index";
 
 /**
  * TODO:
@@ -28,7 +30,7 @@ export class EditDialog extends React.Component {
             selectedType: this.props.widgetType,
             selectedTitle: this.props.widgetTitle,
             selectedAttributeMapping: this.props.attributeMapping,
-            selectedGraph: this.props.graphType,//if accessible TODO: maybe add some exception handling
+            selectedGraph: this.props.graphType
         }
     }
 
@@ -38,7 +40,7 @@ export class EditDialog extends React.Component {
                 selectedType: this.props.widgetType,
                 selectedTitle: this.props.widgetTitle,
                 selectedAttributeMapping: this.props.attributeMapping,
-                selectedGraph: this.props.graphType,//if accessible TODO: maybe add some exception handling
+                selectedGraph: this.props.graphType
 
 
             })
@@ -53,12 +55,17 @@ export class EditDialog extends React.Component {
     }
 
     getAttributes() {
+        /**
+         * TODO: database connection
+         */
         return Attributes;
     }
+
 
     getAttributesForDocType(docTypeId) {
         /**
          * TODO make sure that each attribute object as a name attribute
+         * of same id return only the one with the newest date
          */
         return (this.getAttributes().filter(attr => attr.docTypeId === docTypeId))
     }
@@ -71,66 +78,23 @@ export class EditDialog extends React.Component {
          * - set max length for Display name and display error if too long
          * - style description texts
          * */
-        return ([
-
-                <DialogContentText key={"descriptionIndicatorAttributes"}>Select Attributes to
-                    Display:</DialogContentText>,
-                <Grid key={"attributesIndicator"} style={{flexGrow: 1}} container spacing={2}>
-
-                    {this.state.selectedAttributeMapping.map((mapping, index) =>
-
-                        [<Grid key={index + "a"} item xs={12} sm={3}>
-
-                            <SmartDropDownBox margin={"0"}
-                                              preselectedValue={this.getRecordDocTypes().find(opt => opt.docTypeId === mapping.docTypeId)}
-                                              label={"Document Type"}
-                                              onChange={this.props.changeData.bind(this, "docTypeId", index)}
-                                              options={this.getRecordDocTypes()}
-                            />
-                        </Grid>,
-                            <Grid key={index + "b"} item xs={12} sm={3}>
-
-                                <SmartDropDownBox margin={"0"}
-                                                  preselectedValue={this.getAttributes().find(opt => opt.attrId === mapping.attrId)}
-                                                  label={"Attribute"}
-                                                  onChange={this.props.changeData.bind(this, "attrId", index)}
-                                                  options={this.getAttributesForDocType(mapping.docTypeId)}
-                                />
-                            </Grid>,
-                            <Grid key={index + "c"} item xs={12} sm={5}>
-                                <TextField
-                                    size={"small"}
-                                    fullWidth={true}
-                                    id="displayName"
-                                    label="Display Name"
-                                    value={mapping.displayName}
-                                    variant="outlined"
-                                    onChange={this.props.changeData.bind(this, "displayName", index)}
-                                />
-                            </Grid>,
-
-                            <Grid key={"addButton"} item xs={12} sm={1}>
-                                <IconButton onClick={this.props.removeAttributeFromMapping.bind(this, index)}
-                                            aria-label="Add">
-                                    <MdRemoveCircleOutline/>
-                                </IconButton>
-                            </Grid>
-                        ]
-                    )}
-                    {/**
-                     * TODO: DIsable Button if there are already to many attributes*/}
-                    {this.state.selectedAttributeMapping.length <= 5 ?
-                        <Grid container key={"addButton"} item xs={12} sm={12} justify="center">
-                            <IconButton onClick={this.props.addAttribute.bind(this)} aria-label="Add">
-                                <MdAddCircleOutline/>
-                            </IconButton>
-                        </Grid>
-                        : null}
-
-                </Grid>
+        return (
+            [
+                <Grid key={"descriptionIndicatorAttributes"} item xs={12}>
+                    <DialogContentText>
+                        Select Attributes to Display:
+                    </DialogContentText>
+                </Grid>,
+                this.state.selectedAttributeMapping.map((mapping, index) =>
+                    [
+                        this.getDocTypeSelector(index, mapping, 3),
+                        this.getAttributeSelector(index, mapping, 3),
+                        this.getDisplayNameField(index, mapping, 5),
+                        this.getRemoveAttributeLineButton(index, 1)
+                    ]
+                ),
+                this.state.selectedAttributeMapping.length <= 5 ? this.getAddAttributeLineButton(12) : null
             ]
-
-
         )
     }
 
@@ -148,83 +112,107 @@ export class EditDialog extends React.Component {
             // {name: GraphType.Pie, type:GraphType.Pie}
         ]
         return ([
-                <DialogContentText key={"descriptionGraphSelection"}>Select The Graph Type to Show:</DialogContentText>,
-                <SmartDropDownBox key={"selectGraphType"} margin={"0"}
-                                  preselectedValue={GraphTypeOptions.find(opt => opt.type === this.state.selectedGraph)}
-                                  label={"Graph Type"}
-                                  onChange={this.props.changeData.bind(this, "graph", -1)}
-                                  options={GraphTypeOptions}
-                />,
-
-                <DialogContentText key={"descriptionGraphAttributes"}>Select Attributes to
-                    Display:</DialogContentText>,
-
-                <Grid key={"attributeList"} style={{flexGrow: 1}} container spacing={2}>
-
-                    {this.state.selectedAttributeMapping.map((mapping, index) =>
-
-                        [<Grid key={index + "docTypeId"} item xs={12} sm={3}>
-
-                            <SmartDropDownBox margin={"0"}
-                                              preselectedValue={this.getRecordDocTypes().find(opt => opt.docTypeId === mapping.docTypeId)}
-                                              label={"Document Type"}
-                                              onChange={this.props.changeData.bind(this, "docTypeId", index)}
-                                              options={this.getRecordDocTypes()}
-                            />
-                        </Grid>,
-                            <Grid key={index + "attributeId"} item xs={12} sm={3}>
-
-                                <SmartDropDownBox margin={"0"}
-                                                  preselectedValue={this.getAttributes().find(opt => opt.attrId === mapping.attrId)}
-                                                  label={"Attribute"}
-                                                  onChange={this.props.changeData.bind(this, "attrId", index)}
-                                                  options={this.getAttributesForDocType(mapping.docTypeId)}
-                                />
-                            </Grid>,
-                            <Grid key={index + "displayName"} item xs={12} sm={3}>
-                                <TextField
-                                    size={"small"}
-                                    fullWidth={true}
-                                    id="displayName"
-                                    label="Display Name"
-                                    value={mapping.displayName}
-                                    variant="outlined"
-                                    onChange={this.props.changeData.bind(this, "displayName", index)}
-                                />
-                            </Grid>,
-                            <Grid key={index + "color"} item xs={12} sm={2}>
-
-                                <SmartDropDownBox margin={"0"}
-                                                  label={"Color Options"}
-                                                  onChange={this.props.changeData.bind(this, "color", index)}
-                                                  options={colorOptions}
-                                />
-                            </Grid>,
-
-                            <Grid key={"addButton"} item xs={12} sm={1}>
-                                <IconButton onClick={this.props.removeAttributeFromMapping.bind(this, index)}
-                                            aria-label="Add">
-                                    <MdRemoveCircleOutline/>
-                                </IconButton>
-                            </Grid>
-                        ]
-                    )}
-                    {/**
-                     * TODO: DIsable Button if there are already to many attributes*/}
-                    {this.state.selectedAttributeMapping.length <= 5 ?
-                        <Grid container key={"addButton"} item xs={12} sm={12} justify="center">
-                            <IconButton onClick={this.props.addAttribute.bind(this)} aria-label="Add">
-                                <MdAddCircleOutline/>
-                            </IconButton>
-                        </Grid>
-                        : null}
-
-                </Grid>
+                <Grid key={"descriptionGraphSelection"} item xs={12}>
+                    <DialogContentText>Select The Graph Type to Show:</DialogContentText>
+                </Grid>,
+                <Grid key={"selectGraphType"} item xs={12}>
+                    <SmartDropDownBox margin={"0"}
+                                      preselectedValue={GraphTypeOptions.find(opt => opt.type === this.state.selectedGraph)}
+                                      label={"Graph Type"}
+                                      onChange={(event, value) => this.changeGraphType(value.type)}
+                                      options={GraphTypeOptions}
+                    />
+                </Grid>,
+                <Grid key={"descriptionGraphAttributes"} item xs={12}>
+                    <DialogContentText>Select Attributes to
+                        Display:</DialogContentText>
+                </Grid>,
+                this.state.selectedAttributeMapping.map((mapping, index) =>
+                    [
+                        this.getDocTypeSelector(index, mapping, 3),
+                        this.getAttributeSelector(index, mapping, 3),
+                        this.getDisplayNameField(index, mapping, 3),
+                        this.getColorSelector(colorOptions, index, mapping, 2),
+                        this.getRemoveAttributeLineButton(index, 1)
+                    ]
+                ),
+                this.state.selectedAttributeMapping.length <= 5 ? this.getAddAttributeLineButton(12) : null
             ]
-
-
         )
+    }
 
+    getAddAttributeLineButton = (sm) => {
+        return (
+            <Grid container key={"addButton"} item xs={12} sm={sm} justify="center">
+                <IconButton onClick={this.handleAddAttributeButton} aria-label="Add">
+                    <IoMdAddCircleOutline/>
+                </IconButton>
+            </Grid>
+        )
+    }
+
+    getRemoveAttributeLineButton = (index, sm) => {
+        return (
+            <Grid key={index + "removeButton"} item xs={12} sm={sm}>
+                <IconButton onClick={this.handleRemoveAttributeButton(index)}
+                            aria-label="Remove Line">
+                    <IoMdRemoveCircleOutline/>
+                </IconButton>
+            </Grid>);
+    }
+
+    getColorSelector = (colorOptions, index, mapping, sm) => {
+        return (
+            <Grid key={index + "color"} item xs={12} sm={sm}>
+                <SmartDropDownBox margin={"0"}
+                                  label={"Color Options"}
+                                  preselectedValue={colorOptions.find(opt => opt.color === mapping.color)}
+                                  onChange={(event, value) => this.changeAttributeMapping(index, "color", value.color)}
+                                  options={colorOptions}
+                />
+            </Grid>);
+    }
+
+    getDisplayNameField = (index, mapping, sm) => {
+        return (
+            <Grid key={index + "c"} item xs={12} sm={sm}>
+                <TextField
+                    size={"small"}
+                    fullWidth={true}
+                    id="displayName"
+                    label="Display Name"
+                    value={mapping.displayName}
+                    variant="outlined"
+                    onChange={(event) => this.changeAttributeMapping(index, "displayName", event.target.value)}
+                />
+            </Grid>
+        );
+    }
+
+    getAttributeSelector = (index, mapping, sm) => {
+        return (
+            <Grid key={index + "attributeId"} item xs={12} sm={sm}>
+                <SmartDropDownBox margin={"0"}
+                                  preselectedValue={this.getAttributes().find(opt => opt.attrId === mapping.attrId)}
+                                  label={"Attribute"}
+                                  onChange={(event, value) => this.changeAttributeMapping(index, "attrId", value.attrId)}
+                                  options={this.getAttributesForDocType(mapping.docTypeId)}
+                />
+            </Grid>
+        );
+    }
+
+    getDocTypeSelector = (index, mapping, sm) => {
+        return (
+            <Grid key={index + "a"} item xs={12} sm={sm}>
+                <SmartDropDownBox margin={"0"}
+                                  preselectedValue={this.getRecordDocTypes().find(opt => opt.docTypeId === mapping.docTypeId)}
+                                  label={"Document Type"}
+                                  onChange={(event, value) => this.changeAttributeMapping(index, "docTypeId", value.docTypeId)}
+                                  options={this.getRecordDocTypes()}
+                />
+            </Grid>
+        );
     }
 
     log() {
@@ -242,23 +230,45 @@ export class EditDialog extends React.Component {
                 return this.graph();
             case WidgetTypes.LOG:
                 return this.log();
+            default:
+                console.error("The dialog Picker received an non registered WidgetType")
         }
     }
 
-    changeWidgetType(event) {
-        /**
-         * TODO: backendConnection
-         *
-         */
-        this.setState({selectedType: event.target.value})
+    changeTitle = (value) => {
+        this.setState({selectedTitle: value});
     }
 
-    changeWidgetTitle(event) {
-        /**
-         * TODO: backendConnection
-         * move upwards
-         */
-        this.setState({selectedTitle: event.target.value})
+    changeType = (value) => {
+        if (value === WidgetTypes.GRAPH && this.state.selectedGraph === undefined)
+            this.setState({selectedType: value, selectedGraph: GraphType.Line});
+        else
+            this.setState({selectedType: value});
+    }
+
+    changeAttributeMapping = (index, attr, value) => {
+        //this line has to come before adding changing the actual attribute of attributeMapping
+        if (attr === "docTypeId" && this.state.selectedAttributeMapping[index][attr] !== value) this.state.selectedAttributeMapping[index]["attrId"] = "";
+        this.state.selectedAttributeMapping[index][attr] = value;
+        this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping});
+    }
+
+    changeGraphType = (value) => {
+        this.setState({selectedGraph: value})
+    }
+
+    handleAddAttributeButton = (e) => {
+        this.state.selectedAttributeMapping.push({
+            docTypeId: null,
+            attrId: null,
+            displayName: null,
+        })
+        this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping})
+    }
+
+    handleRemoveAttributeButton = (index) => (e) => {
+        this.state.selectedAttributeMapping.splice(index, 1)
+        this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping})
     }
 
     render() {
@@ -294,7 +304,7 @@ export class EditDialog extends React.Component {
 
                 </DialogTitle>
                 <DialogContent key={"content"} style={{overflow: "hidden"}}>
-                    <Grid style={{flexGrow: 1}} container spacing={3}>
+                    <Grid style={{flexGrow: 1}} container spacing={2}>
                         <Grid key={"titleInput"} item xs={12}>
                             <TextField
                                 size={"small"}
@@ -303,22 +313,36 @@ export class EditDialog extends React.Component {
                                 label="Title"
                                 value={this.state.selectedTitle}
                                 variant={"outlined"}
-                                onChange={this.props.changeData.bind(this, "title", -1)}
+                                onChange={(event) => this.changeTitle(event.target.value)}
                             />
                         </Grid>
                         <Grid key={"widgetSelect"} item xs={12}>
                             <SmartDropDownBox margin={"0"}
                                               preselectedValue={typeOptions.find(type => type.type === this.state.selectedType)}
                                               label={"Widget Type"}
-                                              onChange={this.props.changeData.bind(this, "type", -1)}
+                                              onChange={(event, value) => this.changeType(value.type)}
                                               options={typeOptions}/>
                         </Grid>
-
+                        {this.dialogPicker()}
                     </Grid>
-                    {this.dialogPicker()}
 
 
                 </DialogContent>
+                <DialogActions>
+                    <Button onClick={
+                        (e) => {
+                            this.props.handleUpdateWidgetButton(
+                                this.state.selectedTitle,
+                                this.state.selectedType,
+                                this.state.selectedAttributeMapping,
+                                this.state.selectedGraph
+                            );
+                            this.props.onClose();
+                        }
+                    }>
+                        Save
+                    </Button>
+                </DialogActions>
             </Dialog>
         );
     }
