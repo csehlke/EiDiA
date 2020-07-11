@@ -299,7 +299,8 @@ export class EditDialog extends React.Component {
          * TODO: THeme needs to be set for Typography to style e.g. the different headings
          */
         return (
-            <Dialog open={this.props.open} onClose={this.props.onClose}>
+            <Dialog open={this.props.open} onClose={this.props.onClose} style={{flexGrow: 1}} fullWidth={true}
+                    maxWidth={'lg'}>
                 <DialogTitle key={"title"} style={classes.title} id="simple-dialog-title">
                     Edit Widget
 
