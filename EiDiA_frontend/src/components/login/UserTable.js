@@ -63,6 +63,7 @@ export default class UserTable extends React.Component {
 
         this.state = {
             data: [],
+            isLoading: true,
         }
     }
 
@@ -70,6 +71,7 @@ export default class UserTable extends React.Component {
         UserService.getAllUsersForAdministration().then((data) => {
             this.setState({
                 data: [...data.users],
+                isLoading: false,
             });
         }).catch((e) => {
             console.error(e);
@@ -77,11 +79,13 @@ export default class UserTable extends React.Component {
     }
 
     render() {
+        // https://material-table.com/#/docs/all-props
         return (
             <MaterialTable title="Users"
                            columns={columns}
                            data={this.state.data}
                            icons={tableIcons}
+                           isLoading={this.state.isLoading}
                            editable={{
                                isDeletable: rowData => rowData.userRole !== "admin",
                                onRowAdd: (newData) =>
