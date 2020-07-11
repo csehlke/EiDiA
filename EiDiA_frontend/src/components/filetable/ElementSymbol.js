@@ -6,34 +6,33 @@ import {fileTypes} from "../../assets/Constants";
 export class ElementSymbol extends React.Component {
     constructor(props) {
         super(props);
+
     }
 
     /*
      *TODO:
      * - Add more symbols like folder, excel etc.
      */
-    symbolSelection(type) {
-        switch (type) {
+
+
+    render() {
+        //TODO: size should ideally be scaled together with text
+        let size = '1.5em';
+        switch (this.props.type) {
             case fileTypes.PDF:
-                return <FaFilePdf/>;
+                return <FaFilePdf size={size}/>;
             case fileTypes.WORD:
-                return <FaFileWord/>;
+                return <FaFileWord size={size}/>;
             case fileTypes.FOLDER:
                 if (this.props.active) {
-                    return <FaFolderOpen/>;
+                    return <FaFolderOpen size={size}/>;
                 } else {
-                    return <FaFolder/>;
+                    return <FaFolder size={size}/>;
                 }
             case fileTypes.NONE:
                 return <div/>;
             default:
-                return <AiFillFileUnknown/>;
+                return <AiFillFileUnknown size={size}/>;
         }
-    }
-
-    render() {
-        return (
-            this.symbolSelection(this.props.type)
-        );
     }
 }

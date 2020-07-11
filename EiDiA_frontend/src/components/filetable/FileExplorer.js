@@ -3,11 +3,12 @@ import Element from './Element'
 import styled from "styled-components";
 import ElementDropTarget from "./ElementDropTarget";
 import {databaseEntriesPlaceholder, fileTypes} from "../../assets/Constants";
+import Grid from "@material-ui/core/Grid";
 
-const ElementBoundary = styled.div`
-    height: auto;
+
+const Center = styled.div`
+   text-align:center;
 `;
-
 /**
  * TODO:
  * - Cant drag files to toplevel at the moment
@@ -36,50 +37,61 @@ export default class FileExplorer extends React.Component {
     }
 
     renderElement(element, index, level) {
-        return (
-            <ElementDropTarget key={index}
-                               type={element.type}
-                               id={element.id}>
-                <Element
-                    level={level}
-                    elementData={element}
-                    handleDrop={this.setNewParent(element)}
-                    activeToggle={this.activeToggle(element)}>
+        return ([
+                <Grid key={index} item xs={12}>
+                    <ElementDropTarget
+                        type={element.type}
+                        id={element.id}>
+                        <Element
+                            level={level}
+                            elementData={element}
+                            handleDrop={this.setNewParent(element)}
+                            activeToggle={this.activeToggle(element)}>
 
-                    {element.active === true ?
-                        this.state.elements.map((child, indexChild) =>
-                            child.parentId === element.id ? this.renderElement(child, indexChild, level + 1) : null
-                        ) : null
-                    }
 
-                </Element>
-            </ElementDropTarget>
+                        </Element>
+                    </ElementDropTarget>
+                </Grid>
+                ,
+                element.active === true ?
+                    this.state.elements.map((child, indexChild) =>
+                        child.parentId === element.id ? this.renderElement(child, indexChild, level + 1) : null
+                    ) : null
+            ]
+
+
         );
     }
 
     render() {
         return (
-            <ElementBoundary>
+            <Grid style={{flexGrow: 1}} container spacing={0}>
+                <Grid item xs={12} sm={4}>
+                    Name
+                </Grid>
+                <Grid item xs={12} sm={1}>
+                    Created
+                </Grid>
+                <Grid item xs={12} sm={1}>
+                    Last Modified
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                    Comment
+                </Grid>
+                <Grid item xs={12} sm={2}>
+                    <Center>Actions</Center>
+                </Grid>
 
-                {/**
-                 *TODO: Add Header for File Explorer
-                 * */}
-                {/*
-                <Element level={0}
-                         type={fileTypes.NONE}
-                         name={'Name'}
-                         dateCreation={'Date'}
-                         dateModification={'Last Modified'}
-                         comment={'Comment'}
-                         actions={['HEADING']}/>*/}
-                <hr/>
+                <Grid item xs={12}>
+                    <hr/>
+                </Grid>
+                {this.state.elements.map((element, index) => element.parentId === 0 ?
+                    this.renderElement(element, index, 0) : null
+                )}
                 <ElementDropTarget id={0} type={fileTypes.FOLDER}>
-                    {this.state.elements.map((element, index) => element.parentId === 0 ?
-                        this.renderElement(element, index, 0) : null
-                    )}
-                </ElementDropTarget>
 
-            </ElementBoundary>
+                </ElementDropTarget>
+            </Grid>
         );
     }
 }

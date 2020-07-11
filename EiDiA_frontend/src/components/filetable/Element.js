@@ -6,37 +6,22 @@ import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
 import {DragTypes} from "../../assets/Constants"
 import {DragSource} from "react-dnd";
+import Grid from "@material-ui/core/Grid";
 
-const ElementRow = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap
-`;
 
 const Name = styled.div`
-    width: ${props => props.width + "%"}; 
-    flex-direction: row;
-    flex-wrap: nowrap;
+    
     padding-left: ${props => props.padding + "%"};
 `;
 
-const Date = styled.div`
-    width: 7.5%;  
-`;
 
-const Comment = styled.div`
-    width: 35%;  
-`;
-
-const Actions = styled.div`
-    width: 15%;  
-`;
 
 const itemSource = {
     beginDrag() {
         return {};
     },
     endDrag(props, monitor, component) {
+        if (!monitor.getDropResult()) return
         let wrapperProps = monitor.getDropResult().component.props;
         component.props.handleDrop(wrapperProps.id);
 
@@ -50,12 +35,6 @@ function collectDrag(connect, monitor) {
     };
 }
 
-
-
-/*
- *TODO:
- * - make not draggable if type is Heading
- */
 class Element extends React.Component {
 
     constructor(props) {
@@ -63,12 +42,11 @@ class Element extends React.Component {
 
         this.state = {
             symbolArray: [],
-            padding: this.props.level * 2,
+            padding: this.props.level * 5,
             width: 40 - this.props.level * 2,
             elementData: this.props.elementData
         };
     }
-
 
 
     render() {
@@ -77,33 +55,31 @@ class Element extends React.Component {
         const toRender = (
             <div>
                 {!isDragging &&
-                <div>
-                    <ElementRow style={{cursor: (this.props.type === 'FOLDER') && 'pointer'}}
-                                onClick={this.props.activeToggle}>
-
-                        <Name width={this.state.width}
-                              padding={this.state.padding}>
+                //TODO: cursor doesnt work yet
+                <Grid container spacing={2} style={{cursor: (this.props.type === 'FOLDER') && 'pointer'}}
+                      onClick={this.props.activeToggle}>
+                    <Grid item xs={12} sm={4}>
+                        <Name padding={this.state.padding}>
                             <ElementSymbol type={this.state.elementData.type}
                                            active={this.state.elementData.active}/>
                             {this.state.elementData.name}
                         </Name>
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                        {this.state.elementData.dateCreation}
+                    </Grid>
+                    <Grid item xs={12} sm={1}>
+                        {this.state.elementData.dateModification}
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        {this.state.elementData.comment}
+                    </Grid>
+                    <Grid item xs={12} sm={2}>
+                        <ElementActions actions={this.state.elementData.actions}/>
+                    </Grid>
 
-                        <Date>
-                            {this.state.elementData.dateCreation}
-                        </Date>
-                        <Date>
-                            {this.state.elementData.dateModification}
-                        </Date>
-                        <Comment>
-                            {this.state.elementData.comment}
-                        </Comment>
-                        <Actions>
-                            <ElementActions
-                                actions={this.state.elementData.actions}/>
-                        </Actions>
-                    </ElementRow>
-                    {this.props.children}
-                </div>
+
+                </Grid>
                 }
             </div>
         );
