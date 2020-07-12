@@ -22,15 +22,22 @@ const Row = styled.div`
 `;
 
 const Column2 = styled.div`
-    flex: 45%;
+    flex: 50%;
 `;
 
-const ButtonColumn = styled.div`
-    flex: 10%;
+const DialogContentFixedSize = styled(DialogContent)`
+    min-width: 40vw;
+    max-width: 40vw;
+    min-height: 40vh;
+    max-height: 40vh;
 `;
 
 const Column3 = styled.div`
     flex: 33%;
+`;
+
+const DialogActionsFixedSize = styled(DialogActions)`
+    padding: 8px 2em;
 `;
 
 class NewDocumentTypeDialog extends React.Component {
@@ -130,7 +137,7 @@ class NewDocumentTypeDialog extends React.Component {
                 <DialogTitle>
                     Create New Document Type
                 </DialogTitle>
-                <DialogContent dividers style={{minHeight: '40vh', maxHeight: '40vh'}}>
+                <DialogContentFixedSize dividers>
                     <TextField
                         label="New Document Type Name"
                         variant="outlined"
@@ -172,19 +179,17 @@ class NewDocumentTypeDialog extends React.Component {
                                         style={{margin: '0.5em 0', padding: '0 0 0 5px'}}
                                         size={"small"}/>
                                 </Column2>
-                                <ButtonColumn>
-                                    <IconButton onClick={() => {
-                                        this.removeAttribute(i)
-                                    }}><IoMdRemoveCircleOutline/></IconButton>
-                                </ButtonColumn>
+                                <IconButton onClick={() => {
+                                    this.removeAttribute(i)
+                                }}><IoMdRemoveCircleOutline/></IconButton>
                             </Row>
                         );
                     })}
-                </DialogContent>
+                </DialogContentFixedSize>
                 <DialogContentText style={{margin: '10px'}}>
                     Create Attributes for this Document Type
                 </DialogContentText>
-                <DialogActions>
+                <DialogActionsFixedSize>
                     <Row>
                         <Column3>
                             <TextField
@@ -217,7 +222,7 @@ class NewDocumentTypeDialog extends React.Component {
                             </Button>
                         </Column3>
                     </Row>
-                </DialogActions>
+                </DialogActionsFixedSize>
                 <DialogActions>
                     <Button color={"secondary"}
                             onClick={this.closeDialog}>
