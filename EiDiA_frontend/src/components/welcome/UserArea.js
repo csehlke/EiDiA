@@ -50,7 +50,7 @@ export default class UserArea extends React.Component {
             firstName: '',
             lastName: '',
             workPosition: '',
-            locatedAt: '',
+            workLocation: '',
         }
     }
 
