@@ -1,7 +1,7 @@
 import React from 'react';
-import Element from './Element'
+import Element from './filetable/Element'
 import styled from "styled-components";
-import ElementDropTarget from "./ElementDropTarget";
+import ElementDropTarget from "./filetable/ElementDropTarget";
 import {databaseEntriesPlaceholder, fileTypes} from "../../assets/Constants";
 import Grid from "@material-ui/core/Grid";
 

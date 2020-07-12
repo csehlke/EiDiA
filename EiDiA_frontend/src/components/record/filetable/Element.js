@@ -4,7 +4,7 @@ import React from 'react';
 import styled from "styled-components";
 import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
-import {DragTypes} from "../../assets/Constants"
+import {DragTypes} from "../../../assets/Constants"
 import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
 

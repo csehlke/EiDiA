@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Page from "../components/Page";
-import FileExplorer from "../components/filetable/FileExplorer";
-import {Dashboard} from "../components/fileCabinet/Dashboard";
+import FileExplorer from "../components/record/FileExplorer";
+import {Dashboard} from "../components/record/Dashboard";
 import {WrapperRecordMenue, WrapperRecordView} from "../components/StyleElements";
 import {Tab, Tabs} from "@material-ui/core";
 import {recordMenuOptions} from "../assets/Constants";

@@ -1,7 +1,7 @@
 import React from 'react';
 import {FaFilePdf, FaFileWord, FaFolder, FaFolderOpen} from 'react-icons/fa'
 import {AiFillFileUnknown} from 'react-icons/ai'
-import {fileTypes} from "../../assets/Constants";
+import {fileTypes} from "../../../assets/Constants";
 
 export class ElementSymbol extends React.Component {
     constructor(props) {

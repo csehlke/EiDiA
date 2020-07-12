@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {DropTarget} from 'react-dnd';
-import {DragTypes, fileTypes} from "../../assets/Constants";
+import {DragTypes, fileTypes} from "../../../assets/Constants";
 
 
 const calTarget = {

@@ -1,7 +1,7 @@
 "use strict";
 
 import React from 'react';
-import FileExplorer from "../filetable/FileExplorer";
+import FileExplorer from "../record/FileExplorer";
 
 export default class SearchResults extends React.Component {
 
