@@ -1,16 +1,16 @@
 import React from 'react';
-import DocEditor from "./Subcomponents/DocEditor";
+import DocEditor from "./subcomponents/DocEditor";
 import RightSidepanel from "./RightSidepanel";
 import {ContentState, convertToRaw, EditorState, RichUtils} from 'draft-js';
 import FloatingWindows from './FloatingWindow';
 import {Column, documentMockData, llorem, Row} from '../../support files/constants';
 
 function Dialog(props) {
-    if (props.currentPage == "Select Template") {
-        return <div />
+    if (props.currentPage === "Select Template") {
+        return <div/>
     }
     return (
-        <FloatingWindows 
+        <FloatingWindows
             open={props.open}
             onClose={props.onClose}
             save={props.saveTemplate}
@@ -23,8 +23,7 @@ function Dialog(props) {
 
 
 function fetchDocumentData(docList) {
-    const documentData = documentMockData;
-    return documentData;
+    return documentMockData;
 }
 
 function isPath(string) {
@@ -53,7 +52,7 @@ export default class ExportMainView extends React.Component {
     constructor(props) {
         super(props);
         this.editorText = llorem["Template 0"];
-        
+
         this.state = {
             editorState: EditorState.createWithContent(ContentState.createFromText(this.editorText)),
             textAlignment: "left",
@@ -107,10 +106,10 @@ export default class ExportMainView extends React.Component {
 
     // Set Value to variable manually (not from document)
     setValueToVariable(value) {
-        var newState = this.state;
+        let newState = this.state;
 
-        var variableState = newState.variables;
-        let index = variableState[newState.selectedVariable]["index"]; 
+        let variableState = newState.variables;
+        let index = variableState[newState.selectedVariable]["index"];
         variableState[newState.selectedVariable]["value"] = value;
         variableState[newState.selectedVariable]["source"] = value;
         newState.variables = variableState;
@@ -123,7 +122,7 @@ export default class ExportMainView extends React.Component {
 
     // Replace position of that variable with new value
     setValuesToText(index, newValue, editorState) {
-        var editorText = this.getTextFromEditorstate(editorState);
+        let editorText = this.getTextFromEditorstate(editorState);
         const tmp_arr = editorText.split(" ");
         const toReplace = tmp_arr[index];
         editorText = editorText.replace(toReplace, newValue);
@@ -168,15 +167,15 @@ export default class ExportMainView extends React.Component {
         }
     }
 
-    
+
     toggleDialog() {
-        var newState = this.state;
+        let newState = this.state;
         newState.open = !newState.open;
         this.setState(newState);
     }
 
     addToList(element) {
-        var newState = this.state;
+        let newState = this.state;
         if (!newState.selectedDocs.includes(element)) {
             newState.selectedDocs.push(element);
             this.setState(newState);
@@ -187,7 +186,7 @@ export default class ExportMainView extends React.Component {
     // collects all variables of the template
     selectTemplate(value) {
         this.editorText = llorem[value] || this.editorText;
-        var newState = this.state;
+        let newState = this.state;
 
         newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
         newState.selectedTemplate = value;
@@ -197,7 +196,7 @@ export default class ExportMainView extends React.Component {
 
     toggleInlineStyle(style) {
         const inlineStyle = style.toUpperCase();
-        var newState = this.state;
+        let newState = this.state;
 
         newState.editorState = RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
         this.setState(newState);
@@ -205,23 +204,23 @@ export default class ExportMainView extends React.Component {
     }
 
     toggleBlockType(align) {
-        var newState = this.state;
+        let newState = this.state;
 
         newState.editorState = RichUtils.toggleBlockType(this.state.editorState, align);
         newState.textAlignment = align;
         this.setState(newState);
     }
-    
+
 
     // update function for editor when usere give input to the editor
     // scans for new variables entered by user when in "Edit Templatepage"
     onChange(editorState) {
-        var newState = this.state;
+        let newState = this.state;
         newState.editorState = editorState;
-        if (this.props.currentPage == "Edit Template") {
+        if (this.props.currentPage === "Edit Template") {
             newState.variables = this.scanForNewVariables(newState.variables, editorState);
         }
-        
+
         this.setState(newState);
     }
 
@@ -232,7 +231,7 @@ export default class ExportMainView extends React.Component {
         for (let k of Object.keys(newVariables)) {
             let index = (k in currVariables) ? currVariables[k]["index"] : newVariables[k]["index"];
             let value = (k in currVariables) ? currVariables[k]["value"] : newVariables[k]["value"];
-            let source= (k in currVariables) ? currVariables[k]["source"] : newVariables[k]["source"];
+            let source = (k in currVariables) ? currVariables[k]["source"] : newVariables[k]["source"];
             newVariableState[k] = {
                 index: index,
                 value: value,
@@ -245,8 +244,7 @@ export default class ExportMainView extends React.Component {
 
     getTextFromEditorstate(editorState) {
         const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
-        const value = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
-        return value;
+        return blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
     }
 
     // Collects variables from document text
@@ -254,9 +252,9 @@ export default class ExportMainView extends React.Component {
     extractVariables(editorState) {
         const value = this.getTextFromEditorstate(editorState);
         const arr = value.split(" ");
-        var varObject = {}
+        let varObject = {}
         for (let i = 0; i < arr.length; i++) {
-            if (arr[i][0] == "$") {
+            if (arr[i][0] === "$") {
                 varObject[arr[i]] = {
                     index: i,
                     value: "",
@@ -267,22 +265,22 @@ export default class ExportMainView extends React.Component {
         return varObject;
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.currentPage !== prevProps.currentPage) {
-            if (this.props.currentPage == "Edit") this.mapValues();
-        }  
+            if (this.props.currentPage === "Edit") this.mapValues();
+        }
     }
-    
+
     //Edit View:  User chose variable to manually assign value
-    setSelectedVariable(event){
-        var newState = this.state;
+    setSelectedVariable(event) {
+        let newState = this.state;
         newState.selectedVariable = event.target.value;
         this.setState(newState);
     }
-    
+
     // TODO: Let User save template
     saveTemplate() {
-        var newState = this.state;
+        let newState = this.state;
         newState.open = false;
         this.setState(newState);
     }
@@ -299,7 +297,7 @@ export default class ExportMainView extends React.Component {
 
     render() {
         const currentPage = this.props.currentPage
-        const editorState=this.state.editorState;
+        const editorState = this.state.editorState;
         const actionSet = this.actionSet[currentPage];
         const componentSet = components[currentPage];
         return (
@@ -308,10 +306,12 @@ export default class ExportMainView extends React.Component {
                     <Column>
                     </Column>
                     <Column>
-                        <DocEditor 
+                        <DocEditor
                             readOnly={this.props.readOnly}
                             textAlignment={this.state.textAlignment}
-                            ref={(docEditor) => {this.docEditor = docEditor}}
+                            ref={(docEditor) => {
+                                this.docEditor = docEditor
+                            }}
                             editorState={editorState}
                             onChange={this.onChange}
                         />
@@ -334,15 +334,15 @@ export default class ExportMainView extends React.Component {
                         />
                     </Column>
                 </Row>
-            <Dialog 
-                open={this.state.open} 
-                onClose={this.toggleDialog} 
-                save={this.saveTemplate} 
-                currentPage={this.props.currentPage}
-                selectedDocs={this.state.selectedDocs}
-                download={this.downloadDocument}
-                editorState={this.state.editorState}    
-            />
+                <Dialog
+                    open={this.state.open}
+                    onClose={this.toggleDialog}
+                    save={this.saveTemplate}
+                    currentPage={this.props.currentPage}
+                    selectedDocs={this.state.selectedDocs}
+                    download={this.downloadDocument}
+                    editorState={this.state.editorState}
+                />
             </div>
         );
     }

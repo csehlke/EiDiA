@@ -6,8 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
-import DocListItem  from './DocListItem';
+import DocListItem from './DocListItem';
 
 const styles = {
     div: {
@@ -30,9 +29,9 @@ const Column = styled.div`
 
 
 function generateData() {
-    var out = []
-    for(let i = 0; i < 9; i++) {
-        var obj =  {name: "Document " + i, id: i };
+    let out = []
+    for (let i = 0; i < 9; i++) {
+        const obj = {name: "Document " + i, id: i};
         out.push(obj);
     }
 
@@ -51,7 +50,7 @@ export default class DocSearch extends React.Component {
     }
 
     search(e) {
-        if (e.key == 'Enter') {
+        if (e.key === 'Enter') {
             let results = generateData();
             this.setState({searchResults: results});
         }
@@ -60,32 +59,32 @@ export default class DocSearch extends React.Component {
     render() {
         const listItems = this.state.searchResults;
         const selectedItems = this.props.selectedDocs;
-        return(
+        return (
             <div style={styles.div}>
                 <Row>
                     <TextField label="Search Document" variant="outlined" onKeyPress={this.search}/>
                 </Row>
                 <Row>
                     <Column>
-                    <Typography variant="subtitle2">
-                        Search Results
-                    </Typography>
+                        <Typography variant="subtitle2">
+                            Search Results
+                        </Typography>
                         <List dense={true} style={styles.scrollable}>
                             {listItems.map((elem) =>
-                                <DocListItem 
+                                <DocListItem
                                     key={elem["id"]}
                                     id={elem["name"]}
                                     onSelect={this.props.onAction2_2}
-                                    />)}
+                                />)}
                         </List>
                     </Column>
                     <Column>
-                    <Typography variant="subtitle2">
-                        Selected Documents
-                    </Typography>
+                        <Typography variant="subtitle2">
+                            Selected Documents
+                        </Typography>
                         <List dense={true} className="docList" style={styles.scrollable}>
-                                {selectedItems.map((value) =>
-                                    <ListItem key={value}>
+                            {selectedItems.map((value) =>
+                                <ListItem key={value}>
                                     <ListItemText
                                         primary={value}
                                     />

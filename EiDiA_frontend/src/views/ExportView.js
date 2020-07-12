@@ -1,8 +1,9 @@
 "use strict";
 
 import React from 'react';
-import ExportMainView from '../components/ExportView/ExportMainView';
-import Header from '../components/ExportView/Header';
+import ExportMainView from '../components/exportView/ExportMainView';
+import Header from '../components/exportView/Header';
+import Page from "../components/Page";
 
 export class ExportView extends React.Component {
 
@@ -18,17 +19,22 @@ export class ExportView extends React.Component {
     componentDidMount() {
         this.props.setTitle(this.state.currentPage);
     }
+
     changeView(page) {
         this.props.setTitle(page);
-        this.setState({currentPage: page, readOnly: (page=="Select Template")});
+        this.setState({
+            currentPage: page,
+            readOnly: (page === "Select Template")
+        });
     }
 
     render() {
         return (
-            <div>
+            <Page>
                 <Header title={this.state.currentPage} changeView={this.changeView}/>
-                <ExportMainView currentPage={this.state.currentPage} readOnly={this.state.readOnly} changeView={this.changeView}/>
-            </div>
+                <ExportMainView currentPage={this.state.currentPage} readOnly={this.state.readOnly}
+                                changeView={this.changeView}/>
+            </Page>
         );
     }
 }

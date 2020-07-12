@@ -130,10 +130,12 @@ export default class App extends React.Component {
                 {
                     path: '/export', exact: true, render: () => {
                         if (UserService.isAuthenticated()) {
-                            return(
+                            return (
                                 <ExportView title={this.state.pageTitle}
                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                             )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
                         }
                     }
                 }

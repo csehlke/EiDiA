@@ -1,8 +1,7 @@
 import React from 'react';
-import { render } from 'react-dom';
 import Button from '@material-ui/core/Button';
 
-const buttonStyle= {
+const buttonStyle = {
     margin: "15px"
 }
 
@@ -12,7 +11,7 @@ export default class ExportSection extends React.Component {
     }
 
     render() {
-        return(
+        return (
             <div>
                 <Button
                     style={buttonStyle}
@@ -23,10 +22,10 @@ export default class ExportSection extends React.Component {
                 >
                     Edit Template
                 </Button>
-                <Button 
-                    style={buttonStyle} 
-                    variant="contained" 
-                    color="primary" 
+                <Button
+                    style={buttonStyle}
+                    variant="contained"
+                    color="primary"
                     disableElevation
                     onClick={() => this.props.onAction1("Edit")}
                 >

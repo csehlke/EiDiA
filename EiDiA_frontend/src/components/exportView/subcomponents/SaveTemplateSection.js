@@ -12,7 +12,7 @@ export default class SaveTemplateSection extends React.Component {
 
 
     render() {
-        return(
+        return (
             <div>
                 <Button
                     style={buttonStyle}
@@ -21,7 +21,7 @@ export default class SaveTemplateSection extends React.Component {
                     disableElevation
                     onClick={this.props.onAction1}
                 >
-                    Save Template 
+                    Save Template
                 </Button>
             </div>
         )

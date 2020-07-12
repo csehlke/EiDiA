@@ -1,6 +1,6 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton'
-import {GrTextAlignFull, GrTextAlignLeft, GrTextAlignCenter, GrTextAlignRight} from 'react-icons/gr';
+import {GrTextAlignCenter, GrTextAlignFull, GrTextAlignLeft, GrTextAlignRight} from 'react-icons/gr';
 import {AiOutlineBold, AiOutlineItalic, AiOutlineStrikethrough, AiOutlineUnderline} from 'react-icons/ai';
 import "draft-js/dist/Draft.css";
 
@@ -35,15 +35,15 @@ export default class EditorTools extends React.Component {
     setEmphasis(e, style) {
         e.preventDefault();
         this.props.onAction1(style);
-        var newState = this.state;
-        newState[style] = !newState[style] ;
+        let newState = this.state;
+        newState[style] = !newState[style];
         this.setState(newState);
     }
 
     setAlignment(e, align) {
         e.preventDefault()
         this.props.onAction2(align)
-        var newState = this.state
+        let newState = this.state
         const newFlag = !newState.alignments[align]
         for (let key in newState.alignments) {
             newState.alignments[key] = false
@@ -55,55 +55,55 @@ export default class EditorTools extends React.Component {
     }
 
     render() {
-        return(
+        return (
             <div style={styles.div}>
-                <IconButton 
+                <IconButton
                     style={this.state.bold ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setEmphasis(e, "bold")}
                 >
-                    <AiOutlineBold />
+                    <AiOutlineBold/>
                 </IconButton>
-                <IconButton 
+                <IconButton
                     style={this.state.italic ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setEmphasis(e, "italic")}
-                >                    
-                    <AiOutlineItalic />
+                >
+                    <AiOutlineItalic/>
                 </IconButton>
-                <IconButton 
+                <IconButton
                     style={this.state.underlined ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setEmphasis(e, "underline")}
-                >                    
-                    <AiOutlineUnderline />
+                >
+                    <AiOutlineUnderline/>
                 </IconButton>
-                <IconButton 
-                    style={this.state.striked ? styles.iconClicked : null}
+                <IconButton
+                    style={this.state.strikethrough ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setEmphasis(e, "strikethrough")}
-                >                    
-                    <AiOutlineStrikethrough />
+                >
+                    <AiOutlineStrikethrough/>
                 </IconButton>
-                <IconButton 
+                <IconButton
                     style={this.state.alignments.left ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setAlignment(e, "left")}
                 >
-                    <GrTextAlignLeft />
+                    <GrTextAlignLeft/>
                 </IconButton>
-                <IconButton 
+                <IconButton
                     style={this.state.alignments.center ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setAlignment(e, "center")}
                 >
-                    <GrTextAlignCenter />
+                    <GrTextAlignCenter/>
                 </IconButton>
                 <IconButton
                     style={this.state.alignments.right ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setAlignment(e, "right")}
                 >
-                    <GrTextAlignRight />
+                    <GrTextAlignRight/>
                 </IconButton>
                 <IconButton
                     style={this.state.alignments.justify ? styles.iconClicked : null}
                     onMouseDown={(e) => this.setAlignment(e, "justify")}
                 >
-                    <GrTextAlignFull />
+                    <GrTextAlignFull/>
                 </IconButton>
             </div>
         )

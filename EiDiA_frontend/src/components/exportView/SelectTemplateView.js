@@ -1,12 +1,11 @@
 import React from 'react';
-import {Row, Column} from '../../support files/constants';
+import {Column, llorem, Row} from '../../support files/constants';
 import RightSidepanel from './RightSidepanel';
-import TemplateList from './Subcomponents/TemplateList';
-import DocSearch from './Subcomponents/DocSearch';
-import ExportSection from './Subcomponents/ExportSection';
-import {llorem} from '../../support files/constants';
-import {RichUtils, EditorState, ContentState} from 'draft-js';
-import DocEditor from './Subcomponents/DocEditor';
+import TemplateList from './subcomponents/TemplateList';
+import DocSearch from './subcomponents/DocSearch';
+import ExportSection from './subcomponents/ExportSection';
+import {ContentState, EditorState} from 'draft-js';
+import DocEditor from './subcomponents/DocEditor';
 
 export default class SelectTemplateView extends React.Component {
     constructor(props) {
@@ -26,7 +25,7 @@ export default class SelectTemplateView extends React.Component {
         this.selectTemplate = this.selectTemplate.bind(this);
     }
 
-    selectTemplate(value){
+    selectTemplate(value) {
         this.editorText = llorem[value] || this.editorText;
         var newState = this.state;
         newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
@@ -36,16 +35,18 @@ export default class SelectTemplateView extends React.Component {
 
     render() {
         const editorState = this.state.editorState;
-        return(
+        return (
             <div>
                 <Row>
                     <Column>
                         Sidebar
                     </Column>
                     <Column>
-                        <DocEditor 
+                        <DocEditor
                             textAlignment={this.state.textAlignment}
-                            ref={(docEditor) => {this.docEditor = docEditor}}
+                            ref={(docEditor) => {
+                                this.docEditor = docEditor
+                            }}
                             editorState={editorState}
                             onChange={this.onChange}
                         />

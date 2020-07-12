@@ -1,7 +1,5 @@
 import React from 'react';
-import {RichUtils, Editor, EditorState, ContentState} from 'draft-js';
-import {llorem} from '../../../support files/constants';
-import { Dropdown, Modal } from 'semantic-ui-react';
+import {Editor} from 'draft-js';
 import 'draft-js/dist/Draft.css'
 
 
