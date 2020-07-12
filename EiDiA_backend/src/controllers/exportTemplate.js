@@ -4,14 +4,14 @@ const ExportTemplateModel = require('../models/exportTemplate');
 
 const listTemplates = (req, res) => {
     ExportTemplateModel.find()
-        .then(exportTemplates => {
-            let response = exportTemplates.map(exportTemplate => {
-                return {
-                    id: exportTemplate._id,
-                    name: exportTemplate.name,
-                };
-            });
-            res.status(200).json({exportTemplates: response});
+        .then(() => {
+            const dummyData = [
+                {name: "Template 0", id: "t_0"},
+                {name: "Template 1", id: "t_1"},
+                {name: "Template 2", id: "t_2"},
+            ];
+
+            res.status(200).json(dummyData);
         })
         .catch(error => {
             res.status(400).json({

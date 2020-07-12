@@ -21,6 +21,10 @@ export const documentMockData = {
     }
 };
 
+export const endpoints = {
+    getTemplateList: "exporttemplate/list"
+}
+
 export const fontSizes = [
     {text: '4', value: 4},
     {text: '8', value: 8},

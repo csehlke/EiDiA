@@ -1,5 +1,6 @@
 import React from 'react';
 import {List, Typography} from '@material-ui/core';
+import {endpoints} from '../../../support files/constants';
 import TemplateListItem from './TemplateListItem';
 
 export default class TemplateList extends React.Component {
@@ -19,8 +20,18 @@ export default class TemplateList extends React.Component {
 
     fetchTemplates() {
         let newState = this.state;
-        newState.templateList = ["Template 0", "Template 1", "Template 2"];
-        this.setState(newState);
+        fetch("http://localhost:3000/" + endpoints.getTemplateList)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    console.log(result);
+                    newState.templateList = result;
+                    this.setState(newState);
+                },
+                (error) => {
+                    console.log(error);
+                }
+            )
     }
 
     handleListItemclick(value, index) {
@@ -38,11 +49,11 @@ export default class TemplateList extends React.Component {
                     Templates
                 </Typography>
                 <List dense={true}>
-                    {items.map((item, index) =>
+                    {items.map((elem, index) =>
                         <TemplateListItem
-                            key={item}
-                            text={item}
-                            id={index}
+                            key={elem["id"]}
+                            text={elem["name"]}
+                            id={elem["id"]}
                             index={index}
                             isSelected={this.state.selectedIndex === index}
                             onAction={this.handleListItemclick}
