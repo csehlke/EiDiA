@@ -61,7 +61,7 @@ export default class UserArea extends React.Component {
                 lastName: data.lastName,
                 workPosition: data.workPosition,
                 workLocation: data.workLocation,
-                //picture: data.picture //TODO Add picture
+                picture: data.picture ? data.picture : null,
             });
         }).catch((e) => {
             console.error(e);
