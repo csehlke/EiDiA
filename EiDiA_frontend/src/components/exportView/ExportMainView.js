@@ -181,6 +181,10 @@ export default class ExportMainView extends React.Component {
             newState.selectedDocs.push(element);
             this.setState(newState);
         }
+
+        if (this.props.currentPage === "Edit") {
+            this.mapValues();
+        }
     }
 
     // replaces document text with text from template
@@ -287,8 +291,9 @@ export default class ExportMainView extends React.Component {
         this.setState(newState);
     }
 
-    // TODO: Let User save template
     saveTemplate() {
+        // TODO: Let User save template
+        console.log("save Template");
         let newState = this.state;
         newState.open = false;
         this.setState(newState);

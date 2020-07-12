@@ -1,8 +1,8 @@
 import React from 'react';
-import {Box, Button, Input, Typography} from '@material-ui/core';
+import {Button, Input, Typography} from '@material-ui/core';
 import {Column, Row} from '../../../support files/constants';
-import RecordSymbol from "../../fileCabinet/RecordSymbol";
 import styled from "styled-components";
+import Preview from './Preview';
 
 const styles = {
     box: {
@@ -42,8 +42,7 @@ export default class SaveTemplateSection extends React.Component {
                     <Typography variant="subtitle2">
                         Created Template (Preview)
                     </Typography>
-                    <Box style={styles.box} component="span" display="block" p={1} m={1} bgcolor="LightGray">
-                    </Box>
+                    <Preview editorState={this.props.editorState}/>
                 </Column>
                 <Column>
                     <Row>
@@ -53,20 +52,6 @@ export default class SaveTemplateSection extends React.Component {
                     </Row>
                     <Row>
                         <Input placeholder="Template Name" inputProps={{'aria-label': 'description'}}/>
-                    </Row>
-                    <Row>
-                        <div width="80%">
-                            <Typography variant="subtitle2">
-                                Template Name
-                            </Typography>
-                            <Input placeholder="Search Records ..." fullWidth={true}
-                                   inputProps={{'aria-label': 'description'}} value={this.props.value}
-                                   onChange={this.props.updateSearch.bind(this)}/>
-                            <FlexRow>
-                                {filteredRecords.map(record => <RecordSymbol fontSize='3vw' labelFontSize='10px'
-                                                                             key={record} name={record}/>)}
-                            </FlexRow>
-                        </div>
                     </Row>
                     <Row>
                         <Button
