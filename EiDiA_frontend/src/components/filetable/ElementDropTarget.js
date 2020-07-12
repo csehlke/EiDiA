@@ -27,7 +27,8 @@ class ElementDropTarget extends Component {
         const {connectDropTarget, isOver} = this.props;
         return connectDropTarget(
             <div style={{
-                backgroundColor: isOver ? 'darkgreen' : ''
+                //TODO: better color handling
+                backgroundColor: isOver ? 'rgba(28, 166, 166,0.3)' : ''
             }}>
                 {this.props.children}
             </div>
