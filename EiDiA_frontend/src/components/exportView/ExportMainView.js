@@ -3,7 +3,7 @@ import DocEditor from "./subcomponents/DocEditor";
 import RightSidepanel from "./RightSidepanel";
 import {ContentState, convertToRaw, EditorState, RichUtils} from 'draft-js';
 import FloatingWindows from './FloatingWindow';
-import {Column, documentMockData, llorem, Row} from '../../support files/constants';
+import {Column, documentMockData, endpoints, Row} from '../../support files/constants';
 
 function Dialog(props) {
     if (props.currentPage === "Select Template") {
@@ -51,10 +51,8 @@ const components = {
 export default class ExportMainView extends React.Component {
     constructor(props) {
         super(props);
-        this.editorText = llorem["Template 0"];
-
         this.state = {
-            editorState: EditorState.createWithContent(ContentState.createFromText(this.editorText)),
+            editorState: EditorState.createEmpty(),
             textAlignment: "left",
             selectedTemplate: null,
             open: false,
@@ -103,6 +101,21 @@ export default class ExportMainView extends React.Component {
             }
         }
     }
+
+    componentDidMount() {
+        fetch("http://localhost:3000/" + endpoints.getTemplateList)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    let initTemplate = result[0]
+                    this.selectTemplate(initTemplate.name, initTemplate.id);
+                },
+                (error) => {
+                    console.log(error);
+                }
+            )
+    }
+
 
     // Set Value to variable manually (not from document)
     setValueToVariable(value) {
@@ -189,14 +202,20 @@ export default class ExportMainView extends React.Component {
 
     // replaces document text with text from template
     // collects all variables of the template
-    selectTemplate(value) {
-        this.editorText = llorem[value] || this.editorText;
-        let newState = this.state;
+    selectTemplate(name, id) {
+        fetch("http://localhost:3000/" + endpoints.getTemplate + id)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.editorText = result;
+                    let newState = this.state;
 
-        newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
-        newState.selectedTemplate = value;
-        newState.variables = this.extractVariables(newState.editorState);
-        this.setState(newState);
+                    newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
+                    newState.selectedTemplate = name;
+                    newState.variables = this.extractVariables(newState.editorState);
+                    this.setState(newState);
+                }
+            )
     }
 
     toggleInlineStyle(style) {

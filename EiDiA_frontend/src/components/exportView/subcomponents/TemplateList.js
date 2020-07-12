@@ -10,7 +10,7 @@ export default class TemplateList extends React.Component {
             templateList: [],
             selectedIndex: 0
         }
-        this.handleListItemclick = this.handleListItemclick.bind(this);
+        this.handleListItemClick = this.handleListItemClick.bind(this);
         this.fetchTemplates = this.fetchTemplates.bind(this);
     }
 
@@ -24,7 +24,6 @@ export default class TemplateList extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    console.log(result);
                     newState.templateList = result;
                     this.setState(newState);
                 },
@@ -34,11 +33,12 @@ export default class TemplateList extends React.Component {
             )
     }
 
-    handleListItemclick(value, index) {
+    handleListItemClick(value, index) {
         let newState = this.state;
+        let template_id = this.state.templateList[index]["id"]
         newState.selectedIndex = index;
         this.setState(newState);
-        this.props.onAction1(value);
+        this.props.onAction1(value, template_id);
     }
 
     render() {
@@ -56,7 +56,7 @@ export default class TemplateList extends React.Component {
                             id={elem["id"]}
                             index={index}
                             isSelected={this.state.selectedIndex === index}
-                            onAction={this.handleListItemclick}
+                            onAction={this.handleListItemClick}
                         />
                     )}
 

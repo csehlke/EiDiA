@@ -21,6 +21,18 @@ const listTemplates = (req, res) => {
         });
 };
 
+const getTemplate = (req, res) => {
+    const dummyTemplates = {
+        t_0: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam 25%. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. ',
+        t_1: '$\/Document1\/VARIABLE1 On the date of $DATE ,\n $\/Document1\/VARIABLE1 has made a revenue of $VARIABLE2',
+        t_2: 'Eins Zwei Drei Vier \n mit zeilenbruch'
+    }
+
+    const templateId = req.params.templateId;
+
+    res.status(200).json(dummyTemplates[templateId]);
+};
+
 const saveTemplate = (req, res) => {
     res.status(200).json({response: "dummy response"});
 };
@@ -38,4 +50,5 @@ module.exports = {
     saveTemplate,
     exportDocument,
     download,
+    getTemplate
 };

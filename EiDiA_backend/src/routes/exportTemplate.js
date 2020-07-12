@@ -7,6 +7,7 @@ const middleWares = require('../middlewares');
 const ExportTemplateController = require('../controllers/exportTemplate');
 
 router.get('/list', middleWares.checkAuthentication, ExportTemplateController.listTemplates);
+router.get('/template/:templateId', middleWares.checkAuthentication, ExportTemplateController.getTemplate);
 router.post('/save', middleWares.checkAuthentication, ExportTemplateController.saveTemplate);
 router.get('/exportDocument', middleWares.checkAuthentication, ExportTemplateController.exportDocument);
 router.get('/download', middleWares.checkAuthentication, ExportTemplateController.download);
