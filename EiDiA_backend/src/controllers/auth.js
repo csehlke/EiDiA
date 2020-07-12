@@ -269,7 +269,7 @@ const updateUser = (req, res) => {
     if (req.body.password) {
         user['password'] = bcrypt.hashSync(req.body.password, 8);
     }
-    if (req.body.userRole) {
+    if (req.body.userRole && req.userId !== req.params.id) {
         user['userRole'] = req.body.userRole;
     }
     if (req.body.firstName) {
