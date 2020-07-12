@@ -86,4 +86,15 @@ export default class UserService {
             });
         });
     }
+
+    static getMe() {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/auth/me', function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    };
 }
+
