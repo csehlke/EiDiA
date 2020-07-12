@@ -63,7 +63,7 @@ class Widget extends React.Component {
         }
     }
 
-    toggleEditDialog = (e) => {
+    toggleEditDialog = () => {
         this.setState({widgetEditingActive: !this.state.widgetEditingActive})
 
     }
