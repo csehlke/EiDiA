@@ -13,6 +13,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import styled from "styled-components";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import PropTypes from "prop-types";
+import {IoMdRemoveCircleOutline} from "react-icons/all";
+import IconButton from '@material-ui/core/IconButton';
 
 
 const Row = styled.div`
@@ -20,7 +22,11 @@ const Row = styled.div`
 `;
 
 const Column2 = styled.div`
-    flex: 50%;
+    flex: 45%;
+`;
+
+const ButtonColumn = styled.div`
+    flex: 10%;
 `;
 
 const Column3 = styled.div`
@@ -52,6 +58,7 @@ class NewDocumentTypeDialog extends React.Component {
         this.handleNewAttributeName = this.handleNewAttributeName.bind(this);
         this.addNewAttribute = this.addNewAttribute.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
+        this.removeAttribute = this.removeAttribute.bind(this);
     }
 
     handleAttrTypeChange(event, value) {
@@ -95,6 +102,14 @@ class NewDocumentTypeDialog extends React.Component {
         this.setState({
             newAttributes: [...this.state.newAttributes, newAttributeType],
             newAttributeName: '',
+        });
+    }
+
+    removeAttribute(index) {
+        let copyArr = this.state.newAttributes
+        copyArr.splice(index, 1);
+        this.setState({
+            newAttributes: copyArr
         });
     }
 
@@ -151,13 +166,17 @@ class NewDocumentTypeDialog extends React.Component {
                                         variant="outlined"
                                         InputProps={{
                                             style: {
-                                                color: "black" //Textcolor for "disabled"-property
+                                                color: "black", //Textcolor for "disabled"-property
                                             }
                                         }}
-                                        fullWidth
                                         style={{margin: '0.5em 0', padding: '0 0 0 5px'}}
                                         size={"small"}/>
                                 </Column2>
+                                <ButtonColumn>
+                                    <IconButton onClick={() => {
+                                        this.removeAttribute(i)
+                                    }}><IoMdRemoveCircleOutline/></IconButton>
+                                </ButtonColumn>
                             </Row>
                         );
                     })}
