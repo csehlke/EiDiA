@@ -24,7 +24,7 @@ export class ExportView extends React.Component {
         this.props.setTitle(page);
         this.setState({
             currentPage: page,
-            readOnly: (page === "Select Template")
+            readOnly: (page !== "Edit Template")
         });
     }
 
