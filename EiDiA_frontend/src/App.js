@@ -1,15 +1,19 @@
 "use strict";
 
 import React from 'react';
-import {HashRouter as Router, Route, Switch} from 'react-router-dom';
-import {WelcomeView} from "./views/WelcomeView";
+import {HashRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
+import {DefaultView} from "./views/DefaultView";
+import {LoginView} from "./views/LoginView";
 import {SearchView} from "./views/SearchView";
 import {FileCabinetView} from "./views/FileCabinetView"
 import {RecordView} from "./views/RecordView";
+import {UploadView} from "./views/UploadView";
+import {WelcomeView} from "./views/WelcomeView";
 import Navigation from "./components/Navigation";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
 
+import UserService from "./services/UserService";
 
 export default class App extends React.Component {
 
@@ -20,28 +24,123 @@ export default class App extends React.Component {
             title: 'EiDiA - Einfache Digitale Akte',
             routes: [
                 {
-                    path: '/', exact: true, render: () => (
-                        <WelcomeView title={this.state.pageTitle}
-                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                    )
+                    path: '/', exact: true, render: () => {
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <WelcomeView title={this.state.pageTitle}
+                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
+                    }
                 },
                 {
-                    path: '/search', exact: true, render: () => (
-                        <SearchView title={this.state.pageTitle}
-                                    setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                    )
+                    path: '/browse', exact: true, render: () => {
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <DefaultView title={this.state.pageTitle}
+                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
+                    }
                 },
                 {
+                    path: '/login', exact: true, render: () => {
+                        if (!UserService.isAuthenticated()) {
+                            return (
+                                <LoginView title={this.state.pageTitle}
+                                           setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/'}/>)
+                        }
+                    }
+                },
+                {
+                    path: '/permissionRequests', exact: true, render: () => {
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <DefaultView title={this.state.pageTitle}
+                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
+                    }
+                },
+                /*{
                     path: '/record', exact: true, render: () => (
                         <RecordView title={this.state.pageTitle}
                                     setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                     )
-                },
+                },*/
                 {
                     path: '/cabinet', exact: true, render: () => (
                         <FileCabinetView title={this.state.pageTitle}
                                          setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                     )
+                },
+                {   path: '/record', exact: true, render: () => {
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <DefaultView title={this.state.pageTitle}
+                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
+                    }
+                },
+                {
+                    path: '/record/:id', render: () => {
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <DefaultView title={this.state.pageTitle}
+                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
+                    }
+                },
+                {
+                    path: '/search', exact: true, render: () => {
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <SearchView title={this.state.pageTitle}
+                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
+                    }
+                },
+                {
+                    path: '/settings', exact: true, render: () => {
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <DefaultView title={this.state.pageTitle}
+                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
+                    }
+                },
+                {
+                    path: '/upload', exact: true, render: () => {
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <UploadView title={this.state.pageTitle}
+                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
+                    }
                 },
             ],
             pageTitle: '',
@@ -76,4 +175,3 @@ export default class App extends React.Component {
         );
     }
 }
-

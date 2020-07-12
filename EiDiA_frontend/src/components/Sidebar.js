@@ -9,7 +9,7 @@ import {AiOutlineSearch, FaCloudUploadAlt, FaHome, FiHardDrive} from "react-icon
 import styled from "styled-components";
 
 const StyledListIcon = styled(ListItemIcon)`
-        font-size: 1.75em;
+    font-size: 1.75em;
 `;
 
 export default class Sidebar extends React.Component {

@@ -5,6 +5,8 @@ import {Link} from "react-router-dom";
 import logo from "../assets/logo.png";
 import UserMenu from "./UserMenu";
 import Sidebar from "./Sidebar";
+import UserService from "../services/UserService";
+import PropTypes from "prop-types";
 
 // code taken from https://material-ui.com/components/drawers/#mini-variant-drawer
 
@@ -86,7 +88,9 @@ export default function Navigation(props) {
                     <Typography variant="h4" align="center" className={classes.title}>
                         {props.title}
                     </Typography>
-                    <UserMenu/>
+                    {UserService.isAuthenticated() ?
+                        <UserMenu/> :
+                        <div style={{width: '3em'}}/>/*3em als  Ausgleich, damit der Titel noch in der Mitte bleibt*/}
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -113,4 +117,9 @@ export default function Navigation(props) {
             </main>
         </div>
     );
+}
+
+Navigation.propTypes = {
+    title: PropTypes.string,
+    children: PropTypes.object,
 }

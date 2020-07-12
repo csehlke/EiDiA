@@ -1,3 +1,5 @@
+"use strict";
+
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -14,9 +16,11 @@ class SmartDropDownBox extends React.Component {
             margin: this.props.margin != null ? this.props.margin : "0.5em",
             options: this.props.options,
             label: this.props.label,
-            preselectedValue: this.props.preselectedValue
+            value: this.props.preselectedValue
 
         }
+
+
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.reset = this.reset.bind(this);
@@ -35,30 +39,29 @@ class SmartDropDownBox extends React.Component {
 
     reset() {
         this.setState({
-            inputValue: ''
+            inputValue: '',
+            value: null,
         });
     }
 
     handleOnChange(event, value) {
+        const inputValue = (value === null) ? '' : value.name;
         this.setState({
-            inputValue: value.name
+            inputValue: inputValue,
+            value: value,
         });
         this.props.onChange(event, value);
     }
 
     handleOnInputChange(event, value) {
         this.setState({
-            inputValue: value
+            inputValue: value,
         });
     }
 
     render() {
-
-
         return (
             <Autocomplete
-                value={this.state.preselectedValue}
-
                 id="combo-box"
                 handleHomeEndKeys
                 selectOnFocus
@@ -67,16 +70,18 @@ class SmartDropDownBox extends React.Component {
                 blurOnSelect
                 fullWidth
                 size={"small"}
-
+                //TODO: change this to state and therefore controlled
+                disabled={this.props.disabled ? this.props.disabled : false}
                 options={this.state.options}
                 inputValue={this.state.inputValue}
+                value={this.state.value}
                 onChange={this.handleOnChange}
                 onInputChange={this.handleOnInputChange}
                 getOptionLabel={(option) => option.name}
-                style={{margin: this.state.margin}}
+                //TODO: better solution for style
+                style={this.props.style ? this.props.style : {margin: this.state.margin}}
                 renderInput={(params) => (
                     <TextField {...params}
-
                                label={this.state.label}
                                variant="outlined" placeholder="Type to filter"/>
                 )}
@@ -88,8 +93,10 @@ class SmartDropDownBox extends React.Component {
 export default SmartDropDownBox;
 
 SmartDropDownBox.propTypes = {
+    disabled: PropTypes.bool,
     label: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     options: PropTypes.array.isRequired,
+    style: PropTypes.object,
     preselectedValue: PropTypes.object
 }
