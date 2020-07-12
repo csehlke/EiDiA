@@ -331,6 +331,14 @@ export class EditDialog extends React.Component {
 
                 </DialogContent>
                 <DialogActions>
+                    {/*TODO: coloring of Buttons*/}
+                    <Button onClick={
+
+                        this.props.onClose
+
+                    }>
+                        Cancel
+                    </Button>
                     <Button onClick={
                         () => {
                             this.props.handleUpdateWidgetButton(
