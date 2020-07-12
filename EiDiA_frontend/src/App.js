@@ -6,7 +6,7 @@ import {DefaultView} from "./views/DefaultView";
 import {LoginView} from "./views/LoginView";
 import {SearchView} from "./views/SearchView";
 import {FileCabinetView} from "./views/FileCabinetView"
-import {RecordView} from "./views/RecordView";
+import RecordView from "./views/RecordView";
 import {UploadView} from "./views/UploadView";
 import {WelcomeView} from "./views/WelcomeView";
 import Navigation from "./components/Navigation";
@@ -71,35 +71,21 @@ export default class App extends React.Component {
                         }
                     }
                 },
-                /*{
-                    path: '/record', exact: true, render: () => (
-                        <RecordView title={this.state.pageTitle}
-                                    setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                    )
-                },*/
+
                 {
                     path: '/cabinet', exact: true, render: () => (
                         <FileCabinetView title={this.state.pageTitle}
                                          setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                     )
                 },
-                {   path: '/record', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
+
                 {
                     path: '/record/:id', render: () => {
                         if (UserService.isAuthenticated()) {
                             return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                                <RecordView title={this.state.pageTitle}
+                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}
+                                />
                             )
                         } else {
                             return (<Redirect to={'/login'}/>)

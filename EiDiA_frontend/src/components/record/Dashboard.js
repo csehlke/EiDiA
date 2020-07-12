@@ -70,7 +70,7 @@ export class Dashboard extends React.Component {
     }
 
     getLogData = () => {
-        return LogEntries.filter(entries => entries.recordId === this.state.recordId)
+        return LogEntries.filter(entries => entries.recordId == this.state.recordId)
     }
     handleEditDashboardButton = () => {
         this.setState({dashboardEditingActive: !this.state.dashboardEditingActive})

@@ -7,8 +7,9 @@ import {Dashboard} from "../components/record/Dashboard";
 import {WrapperRecordMenue, WrapperRecordView} from "../components/StyleElements";
 import {Tab, Tabs} from "@material-ui/core";
 import {recordMenuOptions} from "../assets/Constants";
+import {withRouter} from "react-router-dom";
 
-export class RecordView extends React.Component {
+class RecordView extends React.Component {
 
     /*
      *TODO:
@@ -20,7 +21,7 @@ export class RecordView extends React.Component {
         super(props);
         this.state = {
             currentPage: recordMenuOptions.DASHBOARD,
-            recordId: 34//TODO: get this from calling Component
+            recordId: this.props.match.params.id
         }
     }
 
@@ -76,3 +77,5 @@ export class RecordView extends React.Component {
         );
     }
 }
+
+export default withRouter(RecordView);
