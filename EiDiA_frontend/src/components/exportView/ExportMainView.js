@@ -22,7 +22,7 @@ function Dialog(props) {
 }
 
 
-function fetchDocumentData(docList) {
+function fetchDocumentData() {
     return documentMockData;
 }
 
@@ -120,12 +120,14 @@ export default class ExportMainView extends React.Component {
         this.setState(newState);
     }
 
-    // Replace position of that variable with new value
-    setValuesToText(index, newValue, editorState) {
+    // Replace positions of given variable with new value
+    setValuesToText(indices, newValue, editorState) {
         let editorText = this.getTextFromEditorstate(editorState);
         const tmp_arr = editorText.split(" ");
-        const toReplace = tmp_arr[index];
-        editorText = editorText.replace(toReplace, newValue);
+        for (let i of indices) {
+            const toReplace = tmp_arr[i];
+            editorText = editorText.replace(toReplace, newValue);
+        }
         return editorText;
     }
 
@@ -133,31 +135,30 @@ export default class ExportMainView extends React.Component {
     // matches given data from document with variables in document text
     mapValues() {
         var selectedDocs = this.state.selectedDocs;
-        if (selectedDocs.length != 0) {
+
+        if (selectedDocs.length !== 0) {
             const documents = fetchDocumentData(this.state.selectedDocs);
             var newState = this.state;
-
             var variables = this.state.variables;
             var documentData = []
             selectedDocs.forEach((name) => {
                 if (name in documents) documentData.push(documents[name])
             });
-
             var editorText = this.getTextFromEditorstate(newState.editorState);
-            
+
             for (let k of Object.keys(variables)) {
                 if (isPath(k.slice(1))) {
                     let tmp = k.split("/");
                     let variable = tmp[tmp.length - 1];
                     let tmp2 = tmp[tmp.length - 2];
                     let documentIndex = parseInt(tmp2[tmp2.length - 1]) - 1;
-                    let index = variables[k]["index"];
+                    let indices = variables[k]["index"];
                     let value = documentData[documentIndex][variable];
 
                     // update current value and value source of that variable for state
                     variables[k]["value"] = value;
                     variables[k]["source"] = "\/" + selectedDocs[documentIndex] + "\/" + variable;
-                    editorText = this.setValuesToText(index, value, newState.editorState)
+                    editorText = this.setValuesToText(indices, value, newState.editorState)
                 }
             }
             newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
@@ -229,14 +230,18 @@ export default class ExportMainView extends React.Component {
         let newVariables = this.extractVariables(editorState);
         let newVariableState = {}
         for (let k of Object.keys(newVariables)) {
-            let index = (k in currVariables) ? currVariables[k]["index"] : newVariables[k]["index"];
-            let value = (k in currVariables) ? currVariables[k]["value"] : newVariables[k]["value"];
-            let source = (k in currVariables) ? currVariables[k]["source"] : newVariables[k]["source"];
-            newVariableState[k] = {
-                index: index,
-                value: value,
-                source: source
-            };
+            if (k in currVariables) {
+                let indices = new Set(currVariables[k]["index"].concat(newVariables[k]["index"])); // remove duplicate indices
+                indices = Array.from(indices);
+
+                newVariableState[k] = {
+                    index: indices,
+                    value: currVariables[k]["value"],
+                    source: currVariables[k]["source"]
+                };
+            } else {
+                newVariableState[k] = newVariables[k];
+            }
         }
         return newVariableState;
     }
@@ -247,18 +252,22 @@ export default class ExportMainView extends React.Component {
         return blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
     }
 
-    // Collects variables from document text
-    // retirm objects with index and set value and variable as key
+    // Collects variables from document text as it is
+    // return objects with index and set value and variable as key
     extractVariables(editorState) {
         const value = this.getTextFromEditorstate(editorState);
         const arr = value.split(" ");
         let varObject = {}
         for (let i = 0; i < arr.length; i++) {
             if (arr[i][0] === "$") {
-                varObject[arr[i]] = {
-                    index: i,
-                    value: "",
-                    source: ""
+                if (arr[i] in varObject) {
+                    varObject[arr[i]]["index"].push(i);
+                } else {
+                    varObject[arr[i]] = {
+                        index: [i],
+                        value: "",
+                        source: ""
+                    }
                 }
             }
         }
@@ -286,12 +295,8 @@ export default class ExportMainView extends React.Component {
     }
 
 
-    // TODO: Let User download created and linked documents
     downloadDocument() {
-        let editorText = this.getTextFromEditorstate(this.state.editorState);
-        let pdfMakeObject = {
-            content: editorText.split("\n")
-        };
+        // TODO: Let User download created and linked documents
     }
 
 
