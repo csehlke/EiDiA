@@ -130,39 +130,41 @@ export default class ExportMainView extends React.Component {
     }
 
 
-    // matches given data from doucment with variables in document text
+    // matches given data from document with variables in document text
     mapValues() {
-        const documents = fetchDocumentData(this.state.selectedDocs);
-        let newState = this.state;
+        var selectedDocs = this.state.selectedDocs;
+        if (selectedDocs.length != 0) {
+            const documents = fetchDocumentData(this.state.selectedDocs);
+            var newState = this.state;
 
-        let variables = this.state.variables;
-        let selectedDocs = this.state.selectedDocs;
-        let documentData = []
-        selectedDocs.forEach((name) => {
-            if (name in documents) documentData.push(documents[name])
-        });
+            var variables = this.state.variables;
+            var documentData = []
+            selectedDocs.forEach((name) => {
+                if (name in documents) documentData.push(documents[name])
+            });
 
-        let editorText = this.getTextFromEditorstate(newState.editorState);
+            var editorText = this.getTextFromEditorstate(newState.editorState);
+            
+            for (let k of Object.keys(variables)) {
+                if (isPath(k.slice(1))) {
+                    let tmp = k.split("/");
+                    let variable = tmp[tmp.length - 1];
+                    let tmp2 = tmp[tmp.length - 2];
+                    let documentIndex = parseInt(tmp2[tmp2.length - 1]) - 1;
+                    let index = variables[k]["index"];
+                    let value = documentData[documentIndex][variable];
 
-        for (let k of Object.keys(variables)) {
-            if (isPath(k.slice(1))) {
-                let tmp = k.split("/");
-                let variable = tmp[tmp.length - 1];
-                let tmp2 = tmp[tmp.length - 2];
-                let documentIndex = parseInt(tmp2[tmp2.length - 1]) - 1;
-                let index = variables[k]["index"];
-                let value = documentData[documentIndex][variable];
-
-                // update current value and value source of that variable for state
-                variables[k]["value"] = value;
-                variables[k]["source"] = "\/" + selectedDocs[documentIndex] + "\/" + variable;
-                editorText = this.setValuesToText(index, value, newState.editorState)
+                    // update current value and value source of that variable for state
+                    variables[k]["value"] = value;
+                    variables[k]["source"] = "\/" + selectedDocs[documentIndex] + "\/" + variable;
+                    editorText = this.setValuesToText(index, value, newState.editorState)
+                }
             }
-        }
-        newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
-        newState.variables = variables;
+            newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
+            newState.variables = variables;
 
-        this.setState(newState);
+            this.setState(newState);
+        }
     }
 
 
