@@ -61,7 +61,7 @@ class Element extends React.Component {
                     <Grid item xs={12} sm={4}>
                         <Name padding={this.state.padding}>
                             <ElementSymbol type={this.state.elementData.type}
-                                           active={this.state.elementData.active}/>
+                                           activeFolder={this.state.elementData.activeFolder}/>
                             {this.state.elementData.name}
                         </Name>
                     </Grid>

@@ -18,7 +18,7 @@ export default class FileExplorer extends React.Component {
 
     constructor(props) {
         super(props);
-        databaseEntriesPlaceholder.forEach(element => element.active = false);
+        databaseEntriesPlaceholder.forEach(element => element.activeFolder = false);
         this.state = {
             elements: databaseEntriesPlaceholder,
         }
@@ -30,9 +30,8 @@ export default class FileExplorer extends React.Component {
         this.setState(this.state);
     }
     activeToggle = (element) => () => {
-        element.active === true ?
-            element.active = false :
-            element.active = true;
+        element.activeFolder = !element.activeFolder;
+
         this.setState(this.state);
     }
 
@@ -53,7 +52,7 @@ export default class FileExplorer extends React.Component {
                     </ElementDropTarget>
                 </Grid>
                 ,
-                element.active === true ?
+                element.activeFolder === true ?
                     this.state.elements.map((child, indexChild) =>
                         child.parentId === element.id ? this.renderElement(child, indexChild, level + 1) : null
                     ) : null

@@ -328,7 +328,7 @@ export const databaseEntriesPlaceholder = [
     {
         parentId: 0,
         id: 1,
-        active: false,
+        activeFolder: false,
         type: fileTypes.WORD,
         name: "Sample Word Document",
         dateCreation: '1.1.1970',
@@ -340,7 +340,7 @@ export const databaseEntriesPlaceholder = [
     {
         parentId: 0,
         id: 3,
-        active: false,
+        activeFolder: false,
         type: fileTypes.FOLDER,
         name: "Sample Folder",
         dateCreation: '',
@@ -351,7 +351,7 @@ export const databaseEntriesPlaceholder = [
     {
         parentId: 3,
         id: 2,
-        active: false,
+        activeFolder: false,
         type: fileTypes.PDF,
         name: "Sample PDF Document",
         dateCreation: '2.2.1970',
@@ -363,7 +363,7 @@ export const databaseEntriesPlaceholder = [
     {
         parentId: 3,
         id: 6,
-        active: false,
+        activeFolder: false,
         type: fileTypes.FOLDER,
         name: "Sample Folder",
         dateCreation: '',
@@ -374,7 +374,7 @@ export const databaseEntriesPlaceholder = [
     {
         parentId: 6,
         id: 5,
-        active: false,
+        activeFolder: false,
         type: fileTypes.WORD,
         name: "Sample Word Document",
         dateCreation: '1.1.1970',
@@ -388,7 +388,7 @@ export const databaseEntriesPlaceholder = [
     {
         parentId: 3,
         id: 4,
-        active: false,
+        activeFolder: false,
         type: fileTypes.PDF,
         name: "Sample PDF Document",
         dateCreation: '2.2.1970',

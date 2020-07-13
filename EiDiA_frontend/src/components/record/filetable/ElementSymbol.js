@@ -24,7 +24,7 @@ export class ElementSymbol extends React.Component {
             case fileTypes.WORD:
                 return <FaFileWord size={size}/>;
             case fileTypes.FOLDER:
-                if (this.props.active) {
+                if (this.props.activeFolder) {
                     return <FaFolderOpen size={size}/>;
                 } else {
                     return <FaFolder size={size}/>;
