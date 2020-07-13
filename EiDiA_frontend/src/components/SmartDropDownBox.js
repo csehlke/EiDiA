@@ -98,6 +98,6 @@ SmartDropDownBox.propTypes = {
     onChange: PropTypes.func.isRequired,
     options: PropTypes.array.isRequired,
     style: PropTypes.object,
-    preselectedValue: PropTypes.object.
+    preselectedValue: PropTypes.object,
     margin: PropTypes.string,
 }
