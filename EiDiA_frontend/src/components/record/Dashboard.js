@@ -19,13 +19,12 @@ export class Dashboard extends React.Component {
 
 
         }
-        this.cells = [[0, 0, 0],
-            [0, 0, 0]];
-        this.fillUpFreeSlots(this.cells);
+
+        this.fillUpFreeSlots();
 
     }
 
-    renderWidget(widget) {
+    renderConcreteWidget(widget) {
         switch (widget.type) {
             case WidgetTypes.LOG:
                 return (<LogWidget logs={this.getLogData()}/>)
@@ -47,8 +46,9 @@ export class Dashboard extends React.Component {
      * This method assures that at each slot of the grid there is a Widget.
      *
      */
-    fillUpFreeSlots(cells) {
-
+    fillUpFreeSlots() {
+        let cells = [[0, 0, 0],
+            [0, 0, 0]];
         this.state.widgets.forEach(function (widget) {
             cells[widget.positionInfo.y - 1][widget.positionInfo.x - 1] = 1
         })
@@ -119,7 +119,7 @@ export class Dashboard extends React.Component {
                                     widget={widget}
                                     switchWidget={this.switchWidget}
                                 >
-                                    {this.renderWidget(widget)}
+                                    {this.renderConcreteWidget(widget)}
                                 </Widget>
                             </WidgetDropTarget>
                         </WidgetWrapper>)}
