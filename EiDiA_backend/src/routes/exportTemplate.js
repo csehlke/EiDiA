@@ -12,5 +12,5 @@ router.post('/save', middleWares.checkAuthentication, ExportTemplateController.s
 router.get('/exportDocument', middleWares.checkAuthentication, ExportTemplateController.exportDocument);
 router.get('/download', middleWares.checkAuthentication, ExportTemplateController.download);
 router.get('/search/:query', middleWares.checkAuthentication, ExportTemplateController.search);
-
+router.get('/documents/:docNames', middleWares.checkAuthentication, ExportTemplateController.getDocuments);
 module.exports = router;

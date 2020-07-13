@@ -8,17 +8,11 @@ export const Column = styled.div`
     flex: 50%;
 `;
 
-export const documentMockData = {
-    "Document 1": {
-        "VARIABLE1": "BMW",
-        "VARIABLE2": "500.000€"
-    }
-};
-
 export const endpoints = {
     getTemplateList: "exporttemplate/list",
     getTemplate: "exporttemplate/template/",
     searchDoc: "exporttemplate/search/",
+    getDocs: "exporttemplate/documents/",
 }
 
 export const fontSizes = [

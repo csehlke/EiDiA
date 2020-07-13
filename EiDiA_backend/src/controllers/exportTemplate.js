@@ -57,11 +57,25 @@ const search = (req, res) => {
     res.status(200).json({response: out});
 };
 
+const getDocuments = (req, res) => {
+    const docNames = req.params.docNames;
+
+    const documentMockData = {
+        "Document 1": {
+            "VARIABLE1": "BMW",
+            "VARIABLE2": "500.000€"
+        }
+    };
+
+    res.status(200).json({response: documentMockData});
+}
+
 module.exports = {
     listTemplates,
     saveTemplate,
     exportDocument,
     download,
     getTemplate,
-    search
+    search,
+    getDocuments
 };

@@ -3,7 +3,7 @@ import DocEditor from "./subcomponents/DocEditor";
 import RightSidepanel from "./RightSidepanel";
 import {ContentState, convertToRaw, EditorState, RichUtils} from 'draft-js';
 import FloatingWindows from './FloatingWindow';
-import {Column, documentMockData, endpoints, Row} from '../../support files/constants';
+import {Column, endpoints, Row} from '../../support files/constants';
 
 function Dialog(props) {
     if (props.currentPage === "Select Template") {
@@ -19,11 +19,6 @@ function Dialog(props) {
             download={props.download}
             editorState={props.editorState}
         />);
-}
-
-
-function fetchDocumentData() {
-    return documentMockData;
 }
 
 function isPath(string) {
@@ -148,36 +143,42 @@ export default class ExportMainView extends React.Component {
     // matches given data from document with variables in document text
     mapValues() {
         var selectedDocs = this.state.selectedDocs;
-
         if (selectedDocs.length !== 0) {
-            const documents = fetchDocumentData(this.state.selectedDocs);
-            var newState = this.state;
-            var variables = this.state.variables;
-            var documentData = []
-            selectedDocs.forEach((name) => {
-                if (name in documents) documentData.push(documents[name])
-            });
-            var editorText = this.getTextFromEditorState(newState.editorState);
+            const param = JSON.stringify(selectedDocs);
+            fetch("http://localhost:3000/" + endpoints.getDocs + param)
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        const documents = result.response;
+                        var newState = this.state;
+                        var variables = this.state.variables;
+                        var documentData = []
+                        selectedDocs.forEach((name) => {
+                            if (name in documents) documentData.push(documents[name])
+                        });
+                        var editorText = this.getTextFromEditorState(newState.editorState);
 
-            for (let k of Object.keys(variables)) {
-                if (isPath(k.slice(1))) {
-                    let tmp = k.split("/");
-                    let variable = tmp[tmp.length - 1];
-                    let tmp2 = tmp[tmp.length - 2];
-                    let documentIndex = parseInt(tmp2[tmp2.length - 1]) - 1;
-                    let indices = variables[k]["index"];
-                    let value = documentData[documentIndex][variable];
+                        for (let k of Object.keys(variables)) {
+                            if (isPath(k.slice(1))) {
+                                let tmp = k.split("/");
+                                let variable = tmp[tmp.length - 1];
+                                let tmp2 = tmp[tmp.length - 2];
+                                let documentIndex = parseInt(tmp2[tmp2.length - 1]) - 1;
+                                let indices = variables[k]["index"];
+                                let value = documentData[documentIndex][variable];
 
-                    // update current value and value source of that variable for state
-                    variables[k]["value"] = value;
-                    variables[k]["source"] = "\/" + selectedDocs[documentIndex] + "\/" + variable;
-                    editorText = this.setValuesToText(indices, value, newState.editorState)
-                }
-            }
-            newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
-            newState.variables = variables;
+                                // update current value and value source of that variable for state
+                                variables[k]["value"] = value;
+                                variables[k]["source"] = "\/" + selectedDocs[documentIndex] + "\/" + variable;
+                                editorText = this.setValuesToText(indices, value, newState.editorState)
+                            }
+                        }
+                        newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
+                        newState.variables = variables;
 
-            this.setState(newState);
+                        this.setState(newState);
+                    }
+                )
         }
     }
 
