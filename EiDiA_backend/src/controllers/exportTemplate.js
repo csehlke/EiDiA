@@ -40,6 +40,8 @@ const saveTemplate = (req, res) => {
 };
 
 const exportDocument = (req, res) => {
+    const params = req.params.documents;
+    console.log(params);
     res.status(200).json({response: "dummy response"});
 };
 

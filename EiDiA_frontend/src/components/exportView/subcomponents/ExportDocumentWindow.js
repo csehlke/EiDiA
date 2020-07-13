@@ -117,7 +117,7 @@ export default class ExportDocumentWindow extends React.Component {
                             variant="contained"
                             color="primary"
                             disableElevation
-                            onClick={this.props.save}
+                            onClick={this.props.download}
                         >
                             Export
                         </Button>

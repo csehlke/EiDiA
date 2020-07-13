@@ -16,6 +16,7 @@ export const endpoints = {
     searchDoc: "exporttemplate/search/",
     getDocs: "exporttemplate/documents/",
     saveTemplate: "exporttemplate/save/",
+    exportDocs: "exporttemplate/export/"
 }
 
 export const fontSizes = [

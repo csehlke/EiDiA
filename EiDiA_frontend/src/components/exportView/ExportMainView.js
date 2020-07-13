@@ -111,7 +111,6 @@ export default class ExportMainView extends React.Component {
             )
     }
 
-
     // Set Value to variable manually (not from document)
     setValueToVariable(value) {
         let newState = this.state;
@@ -313,12 +312,12 @@ export default class ExportMainView extends React.Component {
 
     saveTemplate() {
         // TODO: Let User save template
-        console.log("save Template");
-        const editorText = this.getTextFromEditorState(this.state.editorState.editorState);
+        const editorText = this.getTextFromEditorState(this.state.editorState);
         fetch(BASE_URL + endpoints.saveTemplate + editorText)
             .then(res => res.json())
             .then(
                 (result) => {
+                    let res = result.response;
                     let newState = this.state;
                     newState.open = false;
                     this.setState(newState);
@@ -326,9 +325,21 @@ export default class ExportMainView extends React.Component {
             )
     }
 
-
     downloadDocument() {
         // TODO: Let User download created and linked documents
+        const editorText = this.getTextFromEditorState(this.state.editorState);
+        const linkedDocs = []
+        const params = {text: editorText, docs: linkedDocs}
+        fetch(BASE_URL + endpoints.exportDocs + encodeURIComponent(JSON.stringify(params)))
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    let res = result.response;
+                    let newState = this.state;
+                    newState.open = false;
+                    this.setState(newState);
+                }
+            )
     }
 
 
