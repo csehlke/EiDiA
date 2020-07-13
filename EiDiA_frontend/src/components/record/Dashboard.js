@@ -98,9 +98,9 @@ export class Dashboard extends React.Component {
         //taken from here https://stackoverflow.com/questions/35828991/make-material-ui-reactjs-floatingactionbutton-float
         //to let fab button float right
         const styleFabButton = {
-            margin: 0,
             top: 'auto',
-            right: 20,
+            bottom: '2em',
+            right: '2em',
             left: 'auto',
             position: 'fixed',
         };
@@ -136,4 +136,3 @@ export class Dashboard extends React.Component {
         );
     }
 }
-
