@@ -60,14 +60,18 @@ export default class App extends React.Component {
                         }
                     }
                 },
-
                 {
-                    path: '/browse', exact: true, render: () => (
-                        <FileCabinetView title={this.state.pageTitle}
-                                         setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                    )
+                    path: '/browse', exact: true, render: () => {
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <FileCabinetView title={this.state.pageTitle}
+                                                 setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
+                    }
                 },
-
                 {
                     path: '/record/:id', render: () => {
                         if (UserService.isAuthenticated()) {
