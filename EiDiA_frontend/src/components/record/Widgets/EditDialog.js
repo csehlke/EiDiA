@@ -301,7 +301,7 @@ export class EditDialog extends React.Component {
         return (
             <Dialog open={this.props.open} onClose={this.props.onClose} style={{flexGrow: 1}} fullWidth={true}
                     maxWidth={'lg'}>
-                <DialogTitle key={"title"} style={classes.title} id="simple-dialog-title">
+                <DialogTitle key={"title"} style={classes.title}>
                     Edit Widget
 
                 </DialogTitle>
