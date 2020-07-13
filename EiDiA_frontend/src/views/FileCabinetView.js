@@ -77,13 +77,10 @@ export class FileCabinetView extends React.Component {
 
 
                 <FlexRow>
-                    {/*
-                    TODO: make Link depending on the records
-                    */}
-                    {filteredRecords.map((record, i, records) =>
+                    {filteredRecords.map((record, i) =>
                         <Link
-                            key={records[i]}
-                            to={"/record"}>
+                            key={i}
+                            to={"/record/" + record.id}>
                             <RecordSymbol name={record}/>
                         </Link>
                     )}
