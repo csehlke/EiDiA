@@ -41,7 +41,6 @@ export default class FileExplorer extends React.Component {
                     <ElementDropTarget
                         type={element.type}
                         id={element.id}
-                        isFolder={element.type === fileTypes.FOLDER}
                     >
 
                         <Element
