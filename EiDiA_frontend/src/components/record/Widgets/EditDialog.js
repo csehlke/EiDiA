@@ -12,7 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import {IoMdAddCircleOutline, IoMdRemoveCircleOutline} from "react-icons/io/index";
+import {IoMdAddCircleOutline, IoMdRemoveCircleOutline} from "react-icons/all";
 
 /**
  * TODO:
