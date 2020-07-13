@@ -54,12 +54,14 @@ export class FileCabinetView extends React.Component {
         this.props.setTitle("File Cabinet");
     }
 
-    updateSearch(event) {
-        this.setState({search: event.target.value.substr(0, 20)});
+    updateSearch = (event) => {
+        this.setState({search: event.target.value});
     }
 
     render() {
+
         let filteredRecords = this.state.records.filter((record) => {
+            //TODO: maybe transform all records to lowercase
             return record.indexOf(this.state.search) !== -1;
         });
 
@@ -71,7 +73,7 @@ export class FileCabinetView extends React.Component {
                         fullWidth={true}
                         inputProps={{'aria-label': 'description'}}
                         value={this.state.search}
-                        onChange={this.updateSearch.bind(this)}/>
+                        onChange={this.updateSearch}/>
                 </SearchBar>
 
 
