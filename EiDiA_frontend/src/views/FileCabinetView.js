@@ -71,7 +71,6 @@ export class FileCabinetView extends React.Component {
                     <Input
                         placeholder="Search Records ..."
                         fullWidth={true}
-                        inputProps={{'aria-label': 'description'}}
                         value={this.state.search}
                         onChange={this.updateSearch}/>
                 </SearchBar>
