@@ -4,7 +4,7 @@ import React from 'react';
 import styled from "styled-components";
 import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
-import {DragTypes} from "../../../assets/Constants"
+import {DragTypes, fileTypes} from "../../../assets/Constants"
 import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
 
@@ -56,7 +56,8 @@ class Element extends React.Component {
             <div>
                 {!isDragging &&
                 //TODO: cursor doesnt work yet
-                <Grid container spacing={2} style={{cursor: (this.props.type === 'FOLDER') && 'pointer'}}
+                <Grid container spacing={2}
+                      style={{cursor: (this.state.elementData.type === fileTypes.FOLDER) && 'pointer'}}
                       onClick={this.props.activeToggle}>
                     <Grid item xs={12} sm={4}>
                         <Name padding={this.state.padding}>
