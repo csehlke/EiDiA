@@ -53,7 +53,7 @@ export class GraphsWidget extends React.Component {
                 <CartesianGrid strokeDasharray="3 3"/>
                 <XAxis dataKey="date"/>
                 <YAxis/>
-                {this.props.edit ? "" : <Tooltip/>}
+                {this.props.dashboardEditingActive ? "" : <Tooltip/>}
                 <Legend/>
                 {attributeMapping.map((mapping, i) => <Line key={i} type="monotone" dataKey={mapping.displayName}
                                                             stroke={mapping.color}
@@ -71,7 +71,7 @@ export class GraphsWidget extends React.Component {
                 <CartesianGrid strokeDasharray="3 3"/>
                 <XAxis dataKey="date"/>
                 <YAxis/>
-                {this.props.edit ? "" : <Tooltip/>}
+                {this.props.dashboardEditingActive ? "" : <Tooltip/>}
                 <Legend/>
                 {attributeMapping.map((mapping, i) => <Bar key={i} dataKey={mapping.displayName}
                                                            fill={mapping.color}/>)}
