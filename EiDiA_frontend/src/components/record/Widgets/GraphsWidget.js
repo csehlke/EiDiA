@@ -96,11 +96,9 @@ export class GraphsWidget extends React.Component {
                 return this.createLineChart(attributeMapping, data);
             case GraphType.Bar:
                 return this.createBarChart(attributeMapping, data)
+            default:
+                this.createLineChart(attributeMapping, data)
         }
-
-        return (
-            this.createLineChart(attributeMapping, data)
-        )
     }
 
     getData(attributeMapping) {
@@ -121,6 +119,7 @@ export class GraphsWidget extends React.Component {
             )
         )
         //Taken from https://stackoverflow.com/questions/46849286/merge-two-array-of-objects-based-on-a-key
+        //TODO: first check if exist to prevent crash
         const mergeByDate = (a1, a2) =>
             a1.map(itm => Object.assign(itm, a2.find((item) => (item.date === itm.date)))
             );
