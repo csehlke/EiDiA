@@ -66,7 +66,7 @@ export class FileCabinetView extends React.Component {
         });
 
         return (
-            <Page title={"File Cabinet"}>
+            <Page>
                 <SearchBar>
                     <Input
                         placeholder="Search Records ..."
