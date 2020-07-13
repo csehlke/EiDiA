@@ -40,7 +40,10 @@ export default class FileExplorer extends React.Component {
                 <Grid key={index} item xs={12}>
                     <ElementDropTarget
                         type={element.type}
-                        id={element.id}>
+                        id={element.id}
+                        isFolder={element.type === fileTypes.FOLDER}
+                    >
+
                         <Element
                             level={level}
                             elementData={element}

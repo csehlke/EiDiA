@@ -24,11 +24,11 @@ function collect(connect, monitor) {
 
 class ElementDropTarget extends Component {
     render() {
-        const {connectDropTarget, isOver} = this.props;
+        const {connectDropTarget, isOver, isFolder} = this.props;
         return connectDropTarget(
             <div style={{
                 //TODO: better color handling
-                backgroundColor: isOver ? 'rgba(28, 166, 166,0.3)' : ''
+                backgroundColor: (isOver && isFolder) ? 'rgba(28, 166, 166,0.3)' : ''
             }}>
                 {this.props.children}
             </div>
