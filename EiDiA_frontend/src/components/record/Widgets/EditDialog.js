@@ -104,7 +104,7 @@ export class EditDialog extends React.Component {
          */
         const colorOptions = [
             {name: "Red", color: "red"},
-            {name: "green", color: "green"},
+            {name: "Green", color: "green"},
         ]
         const GraphTypeOptions = [
             {name: GraphType.Line, type: GraphType.Line},
