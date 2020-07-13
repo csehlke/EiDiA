@@ -36,9 +36,7 @@ class RecordView extends React.Component {
     }
 
     handleChange(event, value) {
-        // this.state.currentPage=value;
         this.setState({currentPage: value})
-        // this.setState(this.state);
     }
 
     render() {
