@@ -1,6 +1,6 @@
 import React from 'react';
 import {List, Typography} from '@material-ui/core';
-import {endpoints} from '../../../support files/constants';
+import {BASE_URL, endpoints} from '../../../support files/constants';
 import TemplateListItem from './TemplateListItem';
 
 export default class TemplateList extends React.Component {
@@ -20,7 +20,7 @@ export default class TemplateList extends React.Component {
 
     fetchTemplates() {
         let newState = this.state;
-        fetch("http://localhost:3000/" + endpoints.getTemplateList)
+        fetch(BASE_URL + endpoints.getTemplateList)
             .then(res => res.json())
             .then(
                 (result) => {

@@ -7,7 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import Typography from '@material-ui/core/Typography';
 import DocListItem from './DocListItem';
-import {endpoints} from '../../../support files/constants';
+import {BASE_URL, endpoints} from '../../../support files/constants';
 
 const styles = {
     div: {
@@ -40,7 +40,7 @@ export default class DocSearch extends React.Component {
 
     search(e) {
         if (e.key === 'Enter') {
-            fetch("http://localhost:3000/" + endpoints.searchDoc + e.target.value)
+            fetch(BASE_URL + endpoints.searchDoc + e.target.value)
                 .then(res => res.json())
                 .then(
                     (result) => {

@@ -8,11 +8,14 @@ export const Column = styled.div`
     flex: 50%;
 `;
 
+export const BASE_URL = "http://localhost:3000/";
+
 export const endpoints = {
     getTemplateList: "exporttemplate/list",
     getTemplate: "exporttemplate/template/",
     searchDoc: "exporttemplate/search/",
     getDocs: "exporttemplate/documents/",
+    saveTemplate: "exporttemplate/save/",
 }
 
 export const fontSizes = [

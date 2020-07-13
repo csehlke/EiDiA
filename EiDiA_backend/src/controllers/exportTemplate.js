@@ -34,7 +34,9 @@ const getTemplate = (req, res) => {
 };
 
 const saveTemplate = (req, res) => {
-    res.status(200).json({response: "dummy response"});
+    const template = req.params.template;
+
+    res.status(200).json({response: "success!"});
 };
 
 const exportDocument = (req, res) => {

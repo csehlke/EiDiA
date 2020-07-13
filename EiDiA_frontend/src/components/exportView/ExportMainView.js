@@ -3,7 +3,7 @@ import DocEditor from "./subcomponents/DocEditor";
 import RightSidepanel from "./RightSidepanel";
 import {ContentState, convertToRaw, EditorState, RichUtils} from 'draft-js';
 import FloatingWindows from './FloatingWindow';
-import {Column, endpoints, Row} from '../../support files/constants';
+import {BASE_URL, Column, endpoints, Row} from '../../support files/constants';
 
 function Dialog(props) {
     if (props.currentPage === "Select Template") {
@@ -13,7 +13,7 @@ function Dialog(props) {
         <FloatingWindows
             open={props.open}
             onClose={props.onClose}
-            save={props.saveTemplate}
+            save={props.save}
             currentPage={props.currentPage}
             selectedDocs={props.selectedDocs}
             download={props.download}
@@ -98,7 +98,7 @@ export default class ExportMainView extends React.Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:3000/" + endpoints.getTemplateList)
+        fetch(BASE_URL + endpoints.getTemplateList)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -131,7 +131,7 @@ export default class ExportMainView extends React.Component {
     // Replace positions of given variable with new value
     setValuesToText(indices, newValue, editorState) {
         let editorText = this.getTextFromEditorState(editorState);
-        const tmp_arr = editorText.split(" ");
+        const tmp_arr = editorText.split(/\s+/);
         for (let i of indices) {
             const toReplace = tmp_arr[i];
             editorText = editorText.replace(toReplace, newValue);
@@ -145,7 +145,7 @@ export default class ExportMainView extends React.Component {
         var selectedDocs = this.state.selectedDocs;
         if (selectedDocs.length !== 0) {
             const param = JSON.stringify(selectedDocs);
-            fetch("http://localhost:3000/" + endpoints.getDocs + param)
+            fetch(BASE_URL + endpoints.getDocs + param)
                 .then(res => res.json())
                 .then(
                     (result) => {
@@ -204,7 +204,7 @@ export default class ExportMainView extends React.Component {
     // replaces document text with text from template
     // collects all variables of the template
     selectTemplate(name, id) {
-        fetch("http://localhost:3000/" + endpoints.getTemplate + id)
+        fetch(BASE_URL + endpoints.getTemplate + id)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -280,10 +280,10 @@ export default class ExportMainView extends React.Component {
     // return objects with index and set value and variable as key
     extractVariables(editorState) {
         const value = this.getTextFromEditorState(editorState);
-        const arr = value.split(" ");
+        const arr = value.split(/\s+/);
         let varObject = {}
         for (let i = 0; i < arr.length; i++) {
-            if (arr[i][0] === "$") {
+            if (arr[i][0] === "$" || (arr[i][0] === "\n" && arr[i][1] === "$")) {
                 if (arr[i] in varObject) {
                     varObject[arr[i]]["index"].push(i);
                 } else {
@@ -314,9 +314,16 @@ export default class ExportMainView extends React.Component {
     saveTemplate() {
         // TODO: Let User save template
         console.log("save Template");
-        let newState = this.state;
-        newState.open = false;
-        this.setState(newState);
+        const editorText = this.getTextFromEditorState(this.state.editorState.editorState);
+        fetch(BASE_URL + endpoints.saveTemplate + editorText)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    let newState = this.state;
+                    newState.open = false;
+                    this.setState(newState);
+                }
+            )
     }
 
 
