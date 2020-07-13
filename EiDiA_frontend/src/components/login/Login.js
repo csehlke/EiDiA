@@ -51,7 +51,6 @@ export default class Login extends React.Component {
         event.preventDefault();
 
         const password = this.state.password;
-        // TODO encrypt
         let user = {
             username: this.state.username,
             password: password,
