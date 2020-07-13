@@ -40,14 +40,14 @@ export const LogEntries = [
         name: "John Doe",
         action: "added Document \"Tax Assesment\"",
         date: "2009-05-12",
-        recordId: 34 //e.g. BMW
+        recordId: "34" //e.g. BMW
     },
     {
         logID: 2,
         name: "Max Mustermann",
         action: "added Widget \"Indicator One\"",
         date: "2011-05-14",
-        recordId: 34
+        recordId: "34"
 
     },
     {
@@ -55,14 +55,14 @@ export const LogEntries = [
         name: "John Doe",
         action: "added Document \"Tax Assesment\"",
         date: "2009-05-12",
-        recordId: 34 //e.g. BMW
+        recordId: "34" //e.g. BMW
     },
     {
         logID: 2,
         name: "Max Mustermann",
         action: "added Widget \"Indicator One\"",
         date: "2011-05-14",
-        recordId: 34
+        recordId: "34"
 
     },
     {
@@ -70,7 +70,7 @@ export const LogEntries = [
         name: "Jane Doe",
         action: "did something that should not show up it is simply to old and outside of the count (if set to three)",
         date: "1900-06-13",
-        recordId: 2 //e.g. VW
+        recordId: "2" //e.g. VW
 
     },
     {
@@ -78,7 +78,7 @@ export const LogEntries = [
         name: "Jane Doe",
         action: "changed Widget \"Indicator One\"",
         date: "2012-06-13",
-        recordId: 34
+        recordId: "34"
 
     }
 ]
