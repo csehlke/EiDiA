@@ -83,7 +83,8 @@ class SmartDropDownBox extends React.Component {
                 renderInput={(params) => (
                     <TextField {...params}
                                label={this.state.label}
-                               variant="outlined" placeholder="Type to filter"/>
+                               variant="outlined" placeholder="Type to filter"
+                getOptionSelected={(option, value) => option.id === value.id && option.name === value.name}/>
                 )}
             />
         );
