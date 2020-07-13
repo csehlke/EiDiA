@@ -71,7 +71,7 @@ export default class ExportMainView extends React.Component {
         this.saveTemplate = this.saveTemplate.bind(this);
         this.addToList = this.addToList.bind(this);
         this.mapValues = this.mapValues.bind(this);
-        this.getTextFromEditorstate = this.getTextFromEditorstate.bind(this);
+        this.getTextFromEditorState = this.getTextFromEditorState.bind(this);
         this.downloadDocument = this.downloadDocument.bind(this);
         this.setValueToVariable = this.setValueToVariable.bind(this);
 
@@ -135,7 +135,7 @@ export default class ExportMainView extends React.Component {
 
     // Replace positions of given variable with new value
     setValuesToText(indices, newValue, editorState) {
-        let editorText = this.getTextFromEditorstate(editorState);
+        let editorText = this.getTextFromEditorState(editorState);
         const tmp_arr = editorText.split(" ");
         for (let i of indices) {
             const toReplace = tmp_arr[i];
@@ -157,7 +157,7 @@ export default class ExportMainView extends React.Component {
             selectedDocs.forEach((name) => {
                 if (name in documents) documentData.push(documents[name])
             });
-            var editorText = this.getTextFromEditorstate(newState.editorState);
+            var editorText = this.getTextFromEditorState(newState.editorState);
 
             for (let k of Object.keys(variables)) {
                 if (isPath(k.slice(1))) {
@@ -270,7 +270,7 @@ export default class ExportMainView extends React.Component {
     }
 
 
-    getTextFromEditorstate(editorState) {
+    getTextFromEditorState(editorState) {
         const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
         return blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
     }
@@ -278,7 +278,7 @@ export default class ExportMainView extends React.Component {
     // Collects variables from document text as it is
     // return objects with index and set value and variable as key
     extractVariables(editorState) {
-        const value = this.getTextFromEditorstate(editorState);
+        const value = this.getTextFromEditorState(editorState);
         const arr = value.split(" ");
         let varObject = {}
         for (let i = 0; i < arr.length; i++) {

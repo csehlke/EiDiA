@@ -17,7 +17,8 @@ export const documentMockData = {
 
 export const endpoints = {
     getTemplateList: "exporttemplate/list",
-    getTemplate: "exporttemplate/template/"
+    getTemplate: "exporttemplate/template/",
+    searchDoc: "exporttemplate/search/",
 }
 
 export const fontSizes = [

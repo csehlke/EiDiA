@@ -45,10 +45,23 @@ const download = (req, res) => {
     res.status(200).json({response: "dummy response"});
 };
 
+const search = (req, res) => {
+    const searchQuery = req.params.query;
+
+    let out = []
+    for (let i = 0; i < 9; i++) {
+        const obj = {name: "Document " + i, id: i};
+        out.push(obj);
+    }
+
+    res.status(200).json(out);
+};
+
 module.exports = {
     listTemplates,
     saveTemplate,
     exportDocument,
     download,
-    getTemplate
+    getTemplate,
+    search
 };

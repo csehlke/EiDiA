@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import Typography from '@material-ui/core/Typography';
 import DocListItem from './DocListItem';
+import {endpoints} from '../../../support files/constants';
 
 const styles = {
     div: {
@@ -27,18 +28,6 @@ const Column = styled.div`
     flex: 50%;
 `;
 
-
-function generateData() {
-    let out = []
-    for (let i = 0; i < 9; i++) {
-        const obj = {name: "Document " + i, id: i};
-        out.push(obj);
-    }
-
-    return out;
-}
-
-
 export default class DocSearch extends React.Component {
     constructor(props) {
         super(props);
@@ -51,8 +40,14 @@ export default class DocSearch extends React.Component {
 
     search(e) {
         if (e.key === 'Enter') {
-            let results = generateData();
-            this.setState({searchResults: results});
+            fetch("http://localhost:3000/" + endpoints.searchDoc + e.target.value)
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        let results = result;
+                        this.setState({searchResults: results});
+                    }
+                )
         }
     }
 
