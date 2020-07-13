@@ -92,7 +92,7 @@ export class GraphsWidget extends React.Component {
     createGraph(attributeMapping) {
         let data = this.getData(attributeMapping);
         switch (this.state.type) {
-            case GraphType.line:
+            case GraphType.Line:
                 return this.createLineChart(attributeMapping, data);
             case GraphType.Bar:
                 return this.createBarChart(attributeMapping, data)
