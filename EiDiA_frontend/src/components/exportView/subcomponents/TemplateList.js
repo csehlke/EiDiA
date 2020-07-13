@@ -24,7 +24,7 @@ export default class TemplateList extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    newState.templateList = result;
+                    newState.templateList = result.response;
                     this.setState(newState);
                 },
                 (error) => {

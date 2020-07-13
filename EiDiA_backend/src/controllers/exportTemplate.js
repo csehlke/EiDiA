@@ -11,7 +11,7 @@ const listTemplates = (req, res) => {
                 {name: "Template 2", id: "t_2"},
             ];
 
-            res.status(200).json(dummyData);
+            res.status(200).json({response: dummyData});
         })
         .catch(error => {
             res.status(400).json({
@@ -30,7 +30,7 @@ const getTemplate = (req, res) => {
 
     const templateId = req.params.templateId;
 
-    res.status(200).json(dummyTemplates[templateId]);
+    res.status(200).json({response: dummyTemplates[templateId]});
 };
 
 const saveTemplate = (req, res) => {
@@ -54,7 +54,7 @@ const search = (req, res) => {
         out.push(obj);
     }
 
-    res.status(200).json(out);
+    res.status(200).json({response: out});
 };
 
 module.exports = {

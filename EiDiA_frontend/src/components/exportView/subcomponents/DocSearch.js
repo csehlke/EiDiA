@@ -44,7 +44,7 @@ export default class DocSearch extends React.Component {
                 .then(res => res.json())
                 .then(
                     (result) => {
-                        let results = result;
+                        let results = result.response;
                         this.setState({searchResults: results});
                     }
                 )

@@ -107,7 +107,7 @@ export default class ExportMainView extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    let initTemplate = result[0]
+                    let initTemplate = result.response[0]
                     this.selectTemplate(initTemplate.name, initTemplate.id);
                 },
                 (error) => {
@@ -207,7 +207,7 @@ export default class ExportMainView extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    this.editorText = result;
+                    this.editorText = result.response;
                     let newState = this.state;
 
                     newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
