@@ -35,18 +35,7 @@ export default class App extends React.Component {
                         }
                     }
                 },
-                {
-                    path: '/browse', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
+
                 {
                     path: '/login', exact: true, render: () => {
                         if (!UserService.isAuthenticated()) {
@@ -73,7 +62,7 @@ export default class App extends React.Component {
                 },
 
                 {
-                    path: '/cabinet', exact: true, render: () => (
+                    path: '/browse', exact: true, render: () => (
                         <FileCabinetView title={this.state.pageTitle}
                                          setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                     )
