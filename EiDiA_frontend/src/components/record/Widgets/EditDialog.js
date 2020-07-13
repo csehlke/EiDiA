@@ -262,7 +262,7 @@ export class EditDialog extends React.Component {
         this.state.selectedAttributeMapping.push({
             docTypeId: null,
             attrId: null,
-            displayName: null,
+            displayName: '',
         })
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping})
     }
