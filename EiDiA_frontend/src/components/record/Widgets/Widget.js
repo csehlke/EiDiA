@@ -105,9 +105,6 @@ class Widget extends React.Component {
 
     }
 
-    childPart() {
-        return (<p>No Child Part</p>);
-    }
 
     render() {
         return this.props.connectDragSource(this.MainPart());
