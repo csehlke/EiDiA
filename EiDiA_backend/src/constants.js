@@ -4,6 +4,7 @@ const fileTypes = {
     FOLDER: 'Folder',
     PDF: 'PDF',
     WORD: 'Word',
+    IMAGE: 'Image',
     NONE: 'None'
 }
 

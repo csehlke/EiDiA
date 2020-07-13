@@ -235,28 +235,48 @@ const advancedSearch = (req, res) => {
         });
 };
 
-function getSearchTable(fileArray) {
-    let sortedByRecords = {};
+function getSearchTable(fileArray, userId) {
     let recordIds = [];
     fileArray.map(file => {
-        if (recordIds.includes(file.recordId)) {
-            sortedByRecords[file.recordId].push(minimalFile(file));
-        } else {
-            sortedByRecords[file.recordId] = [minimalFile(file)];
+        if (!recordIds.includes(file.recordId)) {
             recordIds.push(file.recordId);
         }
     });
-    return Promise.all(recordIds.map(recordId => getDocumentsTable(recordId, sortedByRecords)));
+
+    return new Promise((resolve, reject) => {
+        Promise.all(recordIds.map(recordId => getRecordFolderElements(recordId)))
+            .then(folders => {
+                fileArray.map(document => {
+                    let fileActions = [FileActions.EDIT, FileActions.DOWNLOAD];
+                    if (document.createdBy === userId) {
+                        fileActions.push(FileActions.DELETE);
+                    }
+                    folders.push({
+                        parentId: document.recordId,
+                        id: document._id,
+                        active: false,
+                        type: document.fileType,
+                        name: document.name,
+                        dateCreation: document.createdOnDate,
+                        dateModification: document.lastModifiedOnDate,
+                        comment: document.comment,
+                        actions: fileActions,
+                    });
+                });
+                return resolve(folders);
+            })
+            .catch(error => reject(error));
+    });
 }
 
-function getDocumentsTable(recordId, sortedByRecords) {
+function getRecordFolderElements(recordId) {
     return new Promise((resolve, reject) => {
         RecordModel.findById(recordId, {}, {}, (err, record) => {
             if (err) {
                 console.log(err);
                 reject(err);
             }
-            let table = record === undefined ? null : {
+            let folderElement = record === undefined ? null : {
                 parentId: 0,
                 id: recordId,
                 active: false,
@@ -266,36 +286,11 @@ function getDocumentsTable(recordId, sortedByRecords) {
                 dateModification: '',
                 comment: '',
                 actions: [],
-                children: sortedByRecords[recordId].map(document => {
-                    return {
-                        parentId: recordId,
-                        id: document.id,
-                        active: false,
-                        type: FileTypes.NONE,
-                        name: document.name,
-                        dateCreation: document.createdOnDate,
-                        dateModification: document.lastModifiedOnDate,
-                        comment: document.comment,
-                        actions: [FileActions.EDIT, FileActions.DOWNLOAD],
-                        children: [],
-                    }
-                })
             };
-            resolve(table);
+            resolve(folderElement);
         });
     });
 }
-
-const minimalFile = (file) => {
-    return {
-        id: file._id,
-        name: file.name,
-        createdOnDate: file.createdOnDate,
-        lastModifiedOnDate: file.lastModifiedOnDate,
-        recordId: file.recordId,
-        comment: file.comment,
-    }
-};
 
 module.exports = {
     basicSearch,
