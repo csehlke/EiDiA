@@ -1,6 +1,18 @@
 "use strict";
 
+var fonts = {
+    Roboto: {
+        normal: 'fonts/Roboto-Regular.ttf',
+        bold: 'fonts/Roboto-Medium.ttf',
+        italics: 'fonts/Roboto-Italic.ttf',
+        bolditalics: 'fonts/Roboto-MediumItalic.ttf'
+    }
+};
+
 const ExportTemplateModel = require('../models/exportTemplate');
+var PdfPrinter = require('pdfmake');
+var printer = new PdfPrinter(fonts);
+
 
 const listTemplates = (req, res) => {
     ExportTemplateModel.find()
@@ -41,7 +53,6 @@ const saveTemplate = (req, res) => {
 
 const exportDocument = (req, res) => {
     const params = req.params.documents;
-    console.log(params);
     res.status(200).json({response: "dummy response"});
 };
 
@@ -73,6 +84,13 @@ const getDocuments = (req, res) => {
 
     res.status(200).json({response: documentMockData});
 }
+
+const createPdf = (text) => {
+    var docDefinition = {content: text};
+    var pdfDoc = printer.createPdfKitDocument(docDefinition);
+    pdfDoc.end();
+}
+
 
 module.exports = {
     listTemplates,

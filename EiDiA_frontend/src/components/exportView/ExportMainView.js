@@ -4,6 +4,10 @@ import RightSidepanel from "./RightSidepanel";
 import {ContentState, convertToRaw, EditorState, RichUtils} from 'draft-js';
 import FloatingWindows from './FloatingWindow';
 import {BASE_URL, Column, endpoints, Row} from '../../support files/constants';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function Dialog(props) {
     if (props.currentPage === "Select Template") {
@@ -334,6 +338,11 @@ export default class ExportMainView extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
+                    const docDefinition = {content: editorText};
+                    const pdf = pdfMake.createPdf(docDefinition);
+                    pdf.open();
+                    pdf.download();
+
                     let res = result.response;
                     let newState = this.state;
                     newState.open = false;

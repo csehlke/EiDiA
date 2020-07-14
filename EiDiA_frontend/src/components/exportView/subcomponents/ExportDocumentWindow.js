@@ -1,13 +1,11 @@
 import React from 'react';
 import {Button, Input, Typography} from '@material-ui/core';
 import {Column, Row} from '../../../support files/constants';
-import RecordSymbol from "../../fileCabinet/RecordSymbol";
 import styled from "styled-components";
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Preview from './Preview';
-
 
 const styles = {
     column: {
@@ -42,6 +40,7 @@ const FlexRow = styled.div`
 
 
 export default class ExportDocumentWindow extends React.Component {
+
     render() {
         let filteredRecords = this.props.filteredRecords;
         let selectedDocs = this.props.selectedDocs;
@@ -72,7 +71,7 @@ export default class ExportDocumentWindow extends React.Component {
                         <Input placeholder="Template Name" inputProps={{'aria-label': 'description'}}/>
                     </Row>
                     <Row>
-                        <div width="80%">
+                        {/*                        <div width="80%">
                             <Typography variant="subtitle2">
                                 Template Name
                             </Typography>
@@ -83,7 +82,7 @@ export default class ExportDocumentWindow extends React.Component {
                                 {filteredRecords.map(record => <RecordSymbol fontSize='3vw' labelFontSize='10px'
                                                                              key={record} name={record}/>)}
                             </FlexRow>
-                        </div>
+                        </div>*/}
                     </Row>
                     <Row>
                         <Button

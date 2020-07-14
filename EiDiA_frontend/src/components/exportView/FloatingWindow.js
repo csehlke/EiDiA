@@ -36,8 +36,12 @@ export default class FloatingWindow extends React.Component {
             }
         );
         return (
-            <Dialog onClose={this.props.onClose} fullWidth={true} maxWidth={'lg'} id="temp"
-                    aria-labelledby="simple-dialog-title" open={this.props.open}>
+            <Dialog onClose={this.props.onClose}
+                    fullWidth={true}
+                    maxWidth={'lg'}
+                    classes={{minHeight: '80vh', maxHeight: '80vh'}}
+                    aria-labelledby="simple-dialog-title"
+                    open={this.props.open}>
                 <DialogTitle id="simple-dialog-title">{dialogTitle}</DialogTitle>
                 <DialogContent
                     updateSearch={this.updateSearch}
