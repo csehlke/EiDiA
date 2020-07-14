@@ -1,5 +1,5 @@
 import React from 'react';
-import {FaFilePdf, FaFileWord, FaFolder, FaFolderOpen} from 'react-icons/fa'
+import {FaFileImage, FaFilePdf, FaFileWord, FaFolder, FaFolderOpen} from 'react-icons/fa'
 import {AiFillFileUnknown} from 'react-icons/ai'
 import {fileTypes} from "../../../assets/Constants";
 
@@ -32,7 +32,7 @@ export class ElementSymbol extends React.Component {
             case fileTypes.NONE:
                 return <div/>;
             case fileTypes.IMAGE:
-                return <FiImage size={size}/>;
+                return <FaFileImage size={size}/>;
             default:
                 return <AiFillFileUnknown size={size}/>;
         }
