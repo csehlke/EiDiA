@@ -7,6 +7,7 @@ import {LoginView} from "./views/LoginView";
 import {SearchView} from "./views/SearchView";
 import {UploadView} from "./views/UploadView";
 import {WelcomeView} from "./views/WelcomeView";
+import {ExportView} from "./views/ExportView";
 import Navigation from "./components/Navigation";
 import UserService from "./services/UserService";
 
@@ -126,6 +127,18 @@ export default class App extends React.Component {
                         }
                     }
                 },
+                {
+                    path: '/export', exact: true, render: () => {
+                        if (UserService.isAuthenticated()) {
+                            return (
+                                <ExportView title={this.state.pageTitle}
+                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                            )
+                        } else {
+                            return (<Redirect to={'/login'}/>)
+                        }
+                    }
+                }
             ],
             pageTitle: ''
         };
