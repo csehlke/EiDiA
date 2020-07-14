@@ -42,8 +42,6 @@ export class IndicatorWidget extends React.Component {
                             value: foundAttribute.value
                         }
                     }
-                    // foundAttribute['displayName'] = mapping.displayName;
-                    // return foundAttribute
                 )
             )
         )
@@ -59,4 +57,3 @@ export class IndicatorWidget extends React.Component {
 
 
 }
-
