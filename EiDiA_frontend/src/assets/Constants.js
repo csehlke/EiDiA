@@ -12,6 +12,7 @@ export const fileTypes = {
     PDF: 'PDF',
     WORD: 'Word',
     NONE: 'None',
+    IMAGE: 'Image'
 };
 
 

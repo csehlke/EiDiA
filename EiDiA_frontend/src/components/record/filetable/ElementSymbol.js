@@ -31,6 +31,8 @@ export class ElementSymbol extends React.Component {
                 }
             case fileTypes.NONE:
                 return <div/>;
+            case fileTypes.IMAGE:
+                return <FiImage size={size}/>;
             default:
                 return <AiFillFileUnknown size={size}/>;
         }

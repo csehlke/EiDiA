@@ -107,7 +107,7 @@ class Widget extends React.Component {
 
 
     render() {
-        return this.props.connectDragSource(this.MainPart());
+        return this.props.connectDragSource(this.renderMainPart());
     }
 }
 
