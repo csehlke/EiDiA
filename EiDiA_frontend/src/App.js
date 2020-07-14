@@ -25,12 +25,12 @@ export default class App extends React.Component {
             title: 'EiDiA - Einfache Digitale Akte',
             routes: [
                 this.getRoute('/', WelcomeView, true),
-                this.getRoute('/browse', DefaultView, true),
+                this.getRoute('/browse', FileCabinetView, true),
                 this.getRoute('/export', DefaultView, true),
                 this.getRoute('/help', DefaultView, true),
                 this.getRoute('/permissionRequests', DefaultView, true),
-                this.getRoute('/record', DefaultView, true),
-                this.getRoute('/record/:id', DefaultView, false),
+                this.getRoute('/record', RecordView, true), //TODO<- this should later be deleted
+                this.getRoute('/record/:id', RecordView, false),
                 this.getRoute('/search', SearchView, true),
                 this.getRoute('/settings', DefaultView, true),
                 this.getRoute('/upload', UploadView, true),
