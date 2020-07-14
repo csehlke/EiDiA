@@ -5,9 +5,14 @@ import {HashRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import {DefaultView} from "./views/DefaultView";
 import {LoginView} from "./views/LoginView";
 import {SearchView} from "./views/SearchView";
+import {FileCabinetView} from "./views/FileCabinetView"
+import RecordView from "./views/RecordView";
 import {UploadView} from "./views/UploadView";
 import {WelcomeView} from "./views/WelcomeView";
 import Navigation from "./components/Navigation";
+import {HTML5Backend} from "react-dnd-html5-backend";
+import {DndProvider} from "react-dnd";
+
 import UserService from "./services/UserService";
 import {UserAdministrationView} from "./views/UserAdministrationView";
 
@@ -20,12 +25,12 @@ export default class App extends React.Component {
             title: 'EiDiA - Einfache Digitale Akte',
             routes: [
                 this.getRoute('/', WelcomeView, true),
-                this.getRoute('/browse', DefaultView, true),
+                this.getRoute('/browse', FileCabinetView, true),
                 this.getRoute('/export', DefaultView, true),
                 this.getRoute('/help', DefaultView, true),
                 this.getRoute('/permissionRequests', DefaultView, true),
-                this.getRoute('/record', DefaultView, true),
-                this.getRoute('/record/:id', DefaultView, false),
+                this.getRoute('/record', RecordView, true), //TODO<- this should later be deleted
+                this.getRoute('/record/:id', RecordView, false),
                 this.getRoute('/search', SearchView, true),
                 this.getRoute('/settings', DefaultView, true),
                 this.getRoute('/upload', UploadView, true),
@@ -88,11 +93,13 @@ export default class App extends React.Component {
             <div>
                 <Router>
                     <Navigation title={this.state.pageTitle}>
-                        <Switch>
-                            {this.state.routes.map((route, i) => (
-                                <Route key={i} {...route}/>
-                            ))}
-                        </Switch>
+                        <DndProvider backend={HTML5Backend}>
+                            <Switch>
+                                {this.state.routes.map((route, i) => (
+                                    <Route key={i} {...route}/>
+                                ))}
+                            </Switch>
+                        </DndProvider>
                     </Navigation>
                 </Router>
             </div>

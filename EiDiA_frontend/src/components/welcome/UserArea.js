@@ -5,6 +5,8 @@ import styled from "styled-components";
 import {FaUser} from "react-icons/all";
 import {Link} from "../Link";
 
+import UserService from "../../services/UserService";
+
 const Row = styled.div`
     display: flex;
     margin: 10px;
@@ -45,11 +47,25 @@ export default class UserArea extends React.Component {
 
         this.state = {
             picture: null,
-            fistName: 'John',
-            lastName: 'Doe',
-            workPosition: 'Software Engineer',
-            locatedAt: 'Munich',
+            firstName: '',
+            lastName: '',
+            workPosition: '',
+            workLocation: '',
         }
+    }
+
+    componentDidMount() {
+        UserService.getMe().then((data) => {
+            this.setState({
+                firstName: data.firstName,
+                lastName: data.lastName,
+                workPosition: data.workPosition,
+                workLocation: data.workLocation,
+                picture: data.picture ? data.picture : null,
+            });
+        }).catch((e) => {
+            console.error(e);
+        });
     }
 
     render() {
@@ -61,10 +77,10 @@ export default class UserArea extends React.Component {
                         <Image src={this.state.picture} alt={"Profile Picture"}/>}
                 </Picture>
                 <NameRow>
-                    {[this.state.fistName, this.state.lastName].filter(value => value).join(" ")}
+                    {[this.state.firstName, this.state.lastName].filter(value => value).join(" ")}
                 </NameRow>
                 <WorkRow>
-                    {[this.state.workPosition, this.state.locatedAt].filter(value => value).join(", ")}
+                    {[this.state.workPosition, this.state.workLocation].filter(value => value).join(", ")}
                 </WorkRow>
                 <LinkRow>
                     <Link to={'/settings'}>

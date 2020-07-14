@@ -20,9 +20,15 @@ const FolderLogo = styled(FaFolder)`
      margin: 0 0.25em;
 `;
 
-export default class RecordSymbol extends React.Component {
+export class RecordSymbol extends React.Component {
+    /*
+     *TODO:
+     * - add Logo to Record?
+     */
     constructor(props) {
         super(props);
+
+        this.state = {}
     }
 
     render() {
