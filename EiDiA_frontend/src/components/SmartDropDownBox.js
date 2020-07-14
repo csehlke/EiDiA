@@ -16,7 +16,7 @@ class SmartDropDownBox extends React.Component {
             margin: this.props.margin != null ? this.props.margin : "0.5em",
             options: this.props.options,
             label: this.props.label,
-            value: this.props.preselectedValue
+            value: this.props.preselectedValue ? this.props.preselectedValue : null,
 
         }
 
