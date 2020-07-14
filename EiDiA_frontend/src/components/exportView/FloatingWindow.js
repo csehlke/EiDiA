@@ -30,33 +30,16 @@ const styles = {
 }
 
 export default class FloatingWindow extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            records: ["Volkswagen", "BMW", "Thyssenkrup", "Google", "Facebook", "Microsoft", "ABC Company", "Adidas", "lenovo Limited", "IBM", "TrueThat", "hello", "abc", "def"],
-            search: ''
-        }
-
-        this.dialogContent = {
-            [pageNames.editTemplate]: {
-                title: "Store Template",
-                content: SaveTemplateWindow
-            },
-            [pageNames.edit]: {
-                title: "Export Document",
-                content: ExportDocumentWindow
-            }
-        }
-    }
-
     render() {
-        const DialogContent = this.dialogContent[this.props.currentPage].content;
-        const dialogTitle = this.dialogContent[this.props.currentPage].title;
-        let filteredRecords = this.state.records.filter(
-            (record) => {
-                return record.indexOf(this.state.search) !== -1;
-            }
-        );
+        let DialogContent;
+        let dialogTitle;
+        if (this.props.currentPage === pageNames.editTemplate) {
+            dialogTitle = "Save Template";
+            DialogContent = SaveTemplateWindow;
+        } else {
+            dialogTitle = "Export Document";
+            DialogContent = ExportDocumentWindow;
+        }
         return (
             <Dialog onClose={this.props.onClose}
                     fullWidth={true}
@@ -72,8 +55,6 @@ export default class FloatingWindow extends React.Component {
                         <Preview editorState={this.props.editorState}/>
                     </Column>
                     <DialogContent
-                        value={this.state.search}
-                        filteredRecords={filteredRecords}
                         onClose={this.props.onClose}
                         save={this.props.save}
                         selectedDocs={this.props.selectedDocs}

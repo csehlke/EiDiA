@@ -11,25 +11,10 @@ const styles = {
 }
 
 export default class RightSidePanel extends React.Component {
-    constructor(props) {
-        super(props);
-        this.changeInlineStyle = this.changeInlineStyle.bind(this);
-        this.changeAlignment = this.changeAlignment.bind(this);
-    }
-
-    changeInlineStyle(style) {
-        this.props.onToggleInlineStyle(style);
-    }
-
-    changeAlignment(align) {
-        this.props.onToggleBlockType(align);
-    }
-
     render() {
         const TypeComponent1 = this.props.componentSet.comp1;
         const TypeComponent2 = this.props.componentSet.comp2;
         const TypeComponent3 = this.props.componentSet.comp3;
-
         return (
             <div style={styles.drawer}>
                 <Divider/>

@@ -5,16 +5,12 @@ import {ListItem, ListItemText} from '@material-ui/core';
 export default class TemplateListItem extends React.Component {
     constructor(props) {
         super(props);
-        this.id = this.props.id;
-        this.index = this.props.index;
-        this.text = this.props.text;
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick() {
-        this.props.onAction(this.text, this.index);
+        this.props.onAction(this.props.text, this.props.index);
     }
-
 
     render() {
         return (
@@ -24,7 +20,7 @@ export default class TemplateListItem extends React.Component {
                 selected={this.props.isSelected}
                 onClick={this.handleClick}
             >
-                <ListItemText primary={this.text}/>
+                <ListItemText primary={this.props.text}/>
             </ListItem>
         )
     }

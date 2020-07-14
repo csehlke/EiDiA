@@ -3,10 +3,11 @@ import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-
 import Typography from '@material-ui/core/Typography';
 import DocListItem from './DocListItem';
-import {BASE_URL, Column, endpoints, Row} from '../../../support files/constants';
+import {Column, endpoints, Row} from '../../../support files/constants';
+import {makeGetRequest} from "../../../support files/utils";
+
 
 const styles = {
     root: {
@@ -30,14 +31,10 @@ export default class DocSearch extends React.Component {
 
     search(e) {
         if (e.key === 'Enter') {
-            fetch(BASE_URL + endpoints.searchDoc + e.target.value)
-                .then(res => res.json())
-                .then(
-                    (result) => {
-                        let results = result.response;
-                        this.setState({searchResults: results});
-                    }
-                )
+            makeGetRequest(endpoints.searchDoc + e.target.value, (response) => {
+                let searchResults = response;
+                this.setState({searchResults: searchResults});
+            })
         }
     }
 

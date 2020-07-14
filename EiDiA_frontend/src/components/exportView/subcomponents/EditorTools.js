@@ -17,6 +17,7 @@ export default class EditorTools extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+        // If true: mark as active
             bold: false,
             italic: false,
             underlined: false,
@@ -28,29 +29,27 @@ export default class EditorTools extends React.Component {
                 justify: false
             }
         }
-        this.setEmphasis = this.setEmphasis.bind(this);
+        this.setInlineStyle = this.setInlineStyle.bind(this);
         this.setAlignment = this.setAlignment.bind(this);
     }
 
-    setEmphasis(e, style) {
+    setInlineStyle(e, inlineStyle) {
         e.preventDefault();
-        this.props.onAction1(style);
+        this.props.onAction1(inlineStyle);
         let newState = this.state;
-        newState[style] = !newState[style];
+        newState[inlineStyle] = !newState[inlineStyle];
         this.setState(newState);
     }
 
-    setAlignment(e, align) {
+    setAlignment(e, alignmentStyle) {
         e.preventDefault()
-        this.props.onAction2(align)
-        let newState = this.state
-        const newFlag = !newState.alignments[align]
+        this.props.onAction2(alignmentStyle);
+        let newState = this.state;
+        const newFlag = !newState.alignments[alignmentStyle]
         for (let key in newState.alignments) {
             newState.alignments[key] = false
         }
-
-        newState.alignments[align] = newFlag;
-
+        newState.alignments[alignmentStyle] = newFlag;
         this.setState(newState)
     }
 
@@ -59,25 +58,25 @@ export default class EditorTools extends React.Component {
             <div style={styles.div}>
                 <IconButton
                     style={this.state.bold ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setEmphasis(e, "bold")}
+                    onMouseDown={(e) => this.setInlineStyle(e, "bold")}
                 >
                     <AiOutlineBold/>
                 </IconButton>
                 <IconButton
                     style={this.state.italic ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setEmphasis(e, "italic")}
+                    onMouseDown={(e) => this.setInlineStyle(e, "italic")}
                 >
                     <AiOutlineItalic/>
                 </IconButton>
                 <IconButton
                     style={this.state.underlined ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setEmphasis(e, "underline")}
+                    onMouseDown={(e) => this.setInlineStyle(e, "underline")}
                 >
                     <AiOutlineUnderline/>
                 </IconButton>
                 <IconButton
                     style={this.state.strikethrough ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setEmphasis(e, "strikethrough")}
+                    onMouseDown={(e) => this.setInlineStyle(e, "strikethrough")}
                 >
                     <AiOutlineStrikethrough/>
                 </IconButton>

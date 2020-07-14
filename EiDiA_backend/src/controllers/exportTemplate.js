@@ -10,11 +10,9 @@ let fonts = {
 };
 
 const ExportTemplateModel = require('../models/exportTemplate');
-let PdfPrinter = require('pdfmake');
-let printer = new PdfPrinter(fonts);
-
 
 const listTemplates = (req, res) => {
+    // TODO: provide templates in database
     ExportTemplateModel.find()
         .then(() => {
             const dummyData = [
@@ -34,6 +32,7 @@ const listTemplates = (req, res) => {
 };
 
 const getTemplate = (req, res) => {
+    // TODO: provide templates in database
     const dummyTemplates = {
         t_0: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam 25%. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. ',
         t_1: '$\/Document1\/VARIABLE1 On the date of $DATE ,\n $\/Document1\/VARIABLE1 has made a revenue of $VARIABLE2',
@@ -46,21 +45,19 @@ const getTemplate = (req, res) => {
 };
 
 const saveTemplate = (req, res) => {
-    const template = req.params.template;
-
+    // TODO: save templates in database
+    const template = req.body.content;
     res.status(200).json({response: "success!"});
 };
 
 const exportDocument = (req, res) => {
+    // TODO: provide documents from database
     const params = req.params.documents;
     res.status(200).json({response: "dummy response"});
 };
 
-const download = (req, res) => {
-    res.status(200).json({response: "dummy response"});
-};
-
 const search = (req, res) => {
+    // TODO: provide documents in database for search
     const searchQuery = req.params.query;
 
     let out = []
@@ -73,6 +70,7 @@ const search = (req, res) => {
 };
 
 const getDocuments = (req, res) => {
+    // TODO: provide documents for variable extraction
     const docNames = req.params.docNames;
 
     const documentMockData = {
@@ -85,18 +83,11 @@ const getDocuments = (req, res) => {
     res.status(200).json({response: documentMockData});
 }
 
-const createPdf = (text) => {
-    let docDefinition = {content: text};
-    let pdfDoc = printer.createPdfKitDocument(docDefinition);
-    pdfDoc.end();
-}
-
 
 module.exports = {
     listTemplates,
     saveTemplate,
     exportDocument,
-    download,
     getTemplate,
     search,
     getDocuments

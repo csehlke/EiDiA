@@ -8,7 +8,7 @@ export default class TemplateList extends React.Component {
         super(props);
         this.state = {
             templateList: [],
-            selectedIndex: 0
+            selectedIndex: 0 // index of marked/selected template
         }
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.fetchTemplates = this.fetchTemplates.bind(this);
@@ -35,7 +35,7 @@ export default class TemplateList extends React.Component {
 
     handleListItemClick(value, index) {
         let newState = this.state;
-        let template_id = this.state.templateList[index]["id"]
+        let template_id = this.state.templateList[index].id;
         newState.selectedIndex = index;
         this.setState(newState);
         this.props.onAction1(value, template_id);
@@ -51,9 +51,9 @@ export default class TemplateList extends React.Component {
                 <List dense={true}>
                     {items.map((elem, index) =>
                         <TemplateListItem
-                            key={elem["id"]}
-                            text={elem["name"]}
-                            id={elem["id"]}
+                            key={elem.id}
+                            text={elem.name}
+                            id={elem.id}
                             index={index}
                             isSelected={this.state.selectedIndex === index}
                             onAction={this.handleListItemClick}

@@ -28,7 +28,6 @@ const useStyles = makeStyles(() => ({
 
 const MenuAppBar = (props) => {
     const classes = useStyles();
-
     return (
         <div className={classes.root}>
             <Toolbar disableGutters={true} className={classes.toolBar}>
