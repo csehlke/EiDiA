@@ -27,7 +27,7 @@ export default class SelectTemplateView extends React.Component {
 
     selectTemplate(value) {
         this.editorText = llorem[value] || this.editorText;
-        var newState = this.state;
+        let newState = this.state;
         newState.editorState = EditorState.createWithContent(ContentState.createFromText(this.editorText));
         newState.selectedTemplate = value;
         this.setState(newState);

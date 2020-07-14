@@ -37,7 +37,7 @@ export default class ExportDocumentWindow extends React.Component {
     }
 
     selectDocument(doc) {
-        var newState = this.state;
+        let newState = this.state;
         newState.selectedDocs.push(doc);
         this.setState(newState);
     }

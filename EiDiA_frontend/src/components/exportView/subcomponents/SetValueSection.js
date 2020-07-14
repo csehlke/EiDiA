@@ -33,7 +33,7 @@ function convertData(variables, value = null) {
     let out = [];
     for (let k of Object.keys(variables)) {
         let variable = variables[k];
-        out.push(createData(k, variable["value"], variable["source"]));
+        out.push(createData(k, variable.value, variable.source));
     }
     return out;
 }

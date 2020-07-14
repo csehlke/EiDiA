@@ -4,6 +4,7 @@ import React from 'react';
 import {AppBar, IconButton, makeStyles, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import {Link} from "react-router-dom";
+import {pageNames} from "../support files/constants";
 
 import logo from "../assets/logo.png"
 
@@ -58,13 +59,16 @@ const MenuAppBar = (props) => {
                             alt="EiDiA Logo"
                         />
                     </Link>
-                    <Typography variant="h4" align="center" className={props.title == "Select Template" ? classes.title : classes.titleUnselect}>
+                    <Typography variant="h4" align="center"
+                                className={props.title == "Select Template" ? classes.title : classes.titleUnselect}>
                         <div onClick={() => props.changeView("Select Template")}>Select Template</div>
                     </Typography>
-                    <Typography variant="h4" align="center" className={props.title == "Edit Template" ? classes.title : classes.titleUnselect}>
-                        <div onClick={() => props.changeView("Edit Template")}>Edit Template</div>
+                    <Typography variant="h4" align="center"
+                                className={props.title == pageNames.editTemplate ? classes.title : classes.titleUnselect}>
+                        <div onClick={() => props.changeView(pageNames.editTemplate)}>Edit Template</div>
                     </Typography>
-                    <Typography variant="h4" align="center" className={props.title == "Edit" ? classes.title : classes.titleUnselect}>
+                    <Typography variant="h4" align="center"
+                                className={props.title == "Edit" ? classes.title : classes.titleUnselect}>
                         <div onClick={() => props.changeView("Edit")}>Edit</div>
                     </Typography>
                     <div>

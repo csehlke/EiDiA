@@ -1,6 +1,6 @@
 "use strict";
 
-var fonts = {
+let fonts = {
     Roboto: {
         normal: 'fonts/Roboto-Regular.ttf',
         bold: 'fonts/Roboto-Medium.ttf',
@@ -10,8 +10,8 @@ var fonts = {
 };
 
 const ExportTemplateModel = require('../models/exportTemplate');
-var PdfPrinter = require('pdfmake');
-var printer = new PdfPrinter(fonts);
+let PdfPrinter = require('pdfmake');
+let printer = new PdfPrinter(fonts);
 
 
 const listTemplates = (req, res) => {
@@ -86,8 +86,8 @@ const getDocuments = (req, res) => {
 }
 
 const createPdf = (text) => {
-    var docDefinition = {content: text};
-    var pdfDoc = printer.createPdfKitDocument(docDefinition);
+    let docDefinition = {content: text};
+    let pdfDoc = printer.createPdfKitDocument(docDefinition);
     pdfDoc.end();
 }
 

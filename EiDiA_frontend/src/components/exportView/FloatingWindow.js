@@ -3,7 +3,8 @@ import {Dialog, DialogTitle, Typography} from '@material-ui/core';
 import SaveTemplateWindow from './subcomponents/SaveTemplateWindow';
 import ExportDocumentWindow from './subcomponents/ExportDocumentWindow';
 import Preview from "./subcomponents/Preview";
-import {Column, Row} from "../../support files/constants";
+import {Column, pageNames, Row} from "../../support files/constants";
+
 
 const styles = {
     column: {
@@ -37,7 +38,7 @@ export default class FloatingWindow extends React.Component {
         }
 
         this.dialogContent = {
-            "Edit Template": {
+            [pageNames.editTemplate]: {
                 title: "Store Template",
                 content: SaveTemplateWindow
             },

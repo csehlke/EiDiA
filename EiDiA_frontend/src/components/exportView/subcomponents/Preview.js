@@ -16,7 +16,7 @@ export default class Preview extends React.Component {
         let editorState = this.props.editorState;
         const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
         const editorText = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
-        var docDefinition = {content: editorText}
+        let docDefinition = {content: editorText}
         const pdfDocGenerator = pdfMake.createPdf(docDefinition);
         pdfDocGenerator.getDataUrl((dataUrl) => {
             this.setState({url: dataUrl});
