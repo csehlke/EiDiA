@@ -2,7 +2,6 @@ import React from 'react';
 import {Editor} from 'draft-js';
 import 'draft-js/dist/Draft.css'
 
-
 const styles = {
     editor: {
         width: '21cm',
