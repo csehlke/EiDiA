@@ -5,6 +5,7 @@ import styled from "styled-components";
 import {Button, TextField} from "@material-ui/core";
 import SmartDropDownBox from "../SmartDropDownBox";
 import DatePicker from "./DatePicker";
+import PropTypes from "prop-types";
 
 const Row = styled.div`
     display: flex;
@@ -19,31 +20,18 @@ const Box = styled.div`
     margin-bottom: 1em;
 `;
 
-// TODO fetch options for drop downs
-// TODO send search request
-
 class BasicSearchForm extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            records: [
-                {name: 'BMW', id: '1'},
-                {name: 'TUM', id: '2'}],
-            documentTypes: [
-                {name: 'type1', id: '1'},
-                {name: 'type2', id: '2'}],
-            users: [
-                {name: 'user1', username: 'username1'},
-                {name: 'user2', username: 'username2'}
-            ],
             recordId: '',
             documentTypeId: '',
             dateFrom: null,
             dateTo: null,
             fullText: '',
-            username: ''
+            username: '',
         }
 
         this.recordRef = React.createRef();
@@ -61,38 +49,41 @@ class BasicSearchForm extends React.Component {
     }
 
     handleRecordChange(event, value) {
+        const id = (value === null) ? '' : value.id;
         this.setState({
-            recordId: value.id
+            recordId: id,
         });
     }
 
     handleDocumentTypeChange(event, value) {
+        const id = (value === null) ? '' : value.id;
         this.setState({
-            documentTypeId: value.id
+            documentTypeId: id,
         });
     }
 
-    handleDateFromChange(event, value) {
+    handleDateFromChange(event) {
         this.setState({
-            dateFrom: value
-        })
+            dateFrom: event,
+        });
     }
 
-    handleDateToChange(event, value) {
+    handleDateToChange(event) {
         this.setState({
-            dateTo: value
-        })
+            dateTo: event,
+        });
     }
 
     handleFullTextChange(event) {
         this.setState({
-            fullText: event.target.value
+            fullText: event.target.value,
         });
     }
 
     handleUserChange(event, value) {
+        const username = (value === null) ? '' : value.username;
         this.setState({
-            username: value.username
+            username: username,
         });
     }
 
@@ -103,7 +94,7 @@ class BasicSearchForm extends React.Component {
             dateFrom: null,
             dateTo: null,
             fullText: '',
-            username: ''
+            username: '',
         });
         this.recordRef.current.reset();
         this.documentTypeRef.current.reset();
@@ -111,7 +102,12 @@ class BasicSearchForm extends React.Component {
     }
 
     handleSearch() {
-        console.log("here the basic search is triggered");
+        // TODO send search request
+        console.log("here the basic search is triggered\n" + "recordId: " + this.state.recordId +
+            "\ndocumentTypeId: " + this.state.documentTypeId +
+            "\nbetween: " + this.state.dateFrom + " and " + this.state.dateTo +
+            "\ntext: " + this.state.fullText +
+            "\nusername: " + this.state.username);
     }
 
     render() {
@@ -123,14 +119,14 @@ class BasicSearchForm extends React.Component {
                             <SmartDropDownBox
                                 ref={this.recordRef}
                                 onChange={this.handleRecordChange}
-                                options={this.state.records}
+                                options={this.props.records}
                                 label='Record'/>
                         </Row>
                         <Row>
                             <SmartDropDownBox
                                 ref={this.documentTypeRef}
                                 onChange={this.handleDocumentTypeChange}
-                                options={this.state.documentTypes}
+                                options={this.props.documentTypes}
                                 label='Document Type'/>
                         </Row>
                         <Row>
@@ -162,7 +158,7 @@ class BasicSearchForm extends React.Component {
                             <SmartDropDownBox
                                 ref={this.userRef}
                                 onChange={this.handleUserChange}
-                                options={this.state.users}
+                                options={this.props.users}
                                 label='User'/>
                         </Row>
                         <Row>
@@ -191,3 +187,9 @@ class BasicSearchForm extends React.Component {
 }
 
 export default BasicSearchForm;
+
+BasicSearchForm.propTypes = {
+    records: PropTypes.array.isRequired,
+    documentTypes: PropTypes.array.isRequired,
+    users: PropTypes.array.isRequired,
+}

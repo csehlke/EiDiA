@@ -1,3 +1,5 @@
+"use strict";
+
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -9,30 +11,51 @@ class SmartDropDownBox extends React.Component {
         super(props);
 
         this.state = {
-            inputValue: ''
+            inputValue: '',
+            //TODO default margin value should be zero
+            margin: this.props.margin != null ? this.props.margin : "0.5em",
+            options: this.props.options,
+            label: this.props.label,
+            value: this.props.preselectedValue ? this.props.preselectedValue : null,
+
         }
+
 
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleOnInputChange = this.handleOnInputChange.bind(this);
         this.reset = this.reset.bind(this);
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps !== this.props) {
+            this.setState({
+                options: this.props.options,
+                label: this.props.label,
+                preselectedValue: this.props.preselectedValue
+
+            })
+        }
+    }
+
     reset() {
         this.setState({
-            inputValue: ''
+            inputValue: '',
+            value: null,
         });
     }
 
     handleOnChange(event, value) {
+        const inputValue = (value === null) ? '' : value.name;
         this.setState({
-            inputValue: value.name
+            inputValue: inputValue,
+            value: value,
         });
         this.props.onChange(event, value);
     }
 
     handleOnInputChange(event, value) {
         this.setState({
-            inputValue: value
+            inputValue: value,
         });
     }
 
@@ -47,16 +70,21 @@ class SmartDropDownBox extends React.Component {
                 blurOnSelect
                 fullWidth
                 size={"small"}
-                options={this.props.options}
+                //TODO: change this to state and therefore controlled
+                disabled={this.props.disabled ? this.props.disabled : false}
+                options={this.state.options}
                 inputValue={this.state.inputValue}
+                value={this.state.value}
                 onChange={this.handleOnChange}
                 onInputChange={this.handleOnInputChange}
                 getOptionLabel={(option) => option.name}
-                style={{margin: '0.5em'}}
+                //TODO: better solution for style
+                style={this.props.style ? this.props.style : {margin: this.state.margin}}
                 renderInput={(params) => (
                     <TextField {...params}
-                               label={this.props.label}
-                               variant="outlined" placeholder="Type to filter"/>
+                               label={this.state.label}
+                               variant="outlined" placeholder="Type to filter"
+                getOptionSelected={(option, value) => option.id === value.id && option.name === value.name}/>
                 )}
             />
         );
@@ -66,7 +94,11 @@ class SmartDropDownBox extends React.Component {
 export default SmartDropDownBox;
 
 SmartDropDownBox.propTypes = {
+    disabled: PropTypes.bool,
     label: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    options: PropTypes.array.isRequired
+    options: PropTypes.array.isRequired,
+    style: PropTypes.object,
+    preselectedValue: PropTypes.object,
+    margin: PropTypes.string,
 }

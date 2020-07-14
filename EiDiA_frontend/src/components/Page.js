@@ -1,7 +1,9 @@
 "use strict";
 
 import React from 'react';
-import {Footer} from './Footer';
+
+import {Footer} from "./Footer";
+import PropTypes from "prop-types";
 
 export default class Page extends React.Component {
 
@@ -17,4 +19,8 @@ export default class Page extends React.Component {
             </section>
         );
     }
+}
+
+Page.propTypes = {
+    children: PropTypes.any,
 }

@@ -26,4 +26,14 @@ export default class CommonService { //Contains API-calls that need to be access
             });
         });
     }
+
+    static addNewDocumentType(docTypeData) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(baseURL + '/model/document/create', docTypeData, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
 }

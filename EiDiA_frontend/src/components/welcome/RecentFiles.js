@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from "styled-components";
 import {Link} from "../Link";
-import RecordSymbol from "../fileCabinet/RecordSymbol";
+import {RecordSymbol} from "../record/RecordSymbol";
 
 const FlexRow = styled.div`
     display: flex;

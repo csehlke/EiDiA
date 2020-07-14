@@ -4,12 +4,10 @@ export default class HttpService {
     constructor() {
     }
 
-    static apiURL() {return "http://localhost:3000"; }
-
     static get(url, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
-        if(token) {
+        if (token) {
             header.append('Authorization', `JWT ${token}`);
         }
 
@@ -17,18 +15,19 @@ export default class HttpService {
             method: 'GET',
             headers: header
         }).then((resp) => {
-            if(this.checkIfUnauthorized(resp)) {
+            if (this.checkIfUnauthorized(resp)) { //redirects to login if unauthorized
+                window.localStorage.removeItem('jwtToken') //clear token if unauthorized
                 window.location = "/#login";
-            }
-            else {
+            } else {
                 return resp.json();
             }
         }).then((resp) => {
-            if(resp.error) {
+            if (typeof resp === "undefined") {
+                console.log("User is not authorized")
+            } else if (resp.error) {
                 onError(resp.error);
-            }
-            else {
-                if(resp.hasOwnProperty('token')) {
+            } else {
+                if (resp.hasOwnProperty('token')) {
                     window.localStorage['jwtToken'] = resp.token;
                 }
                 onSuccess(resp);
@@ -41,7 +40,7 @@ export default class HttpService {
     static put(url, data, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
-        if(token) {
+        if (token) {
             header.append('Authorization', `JWT ${token}`);
         }
         header.append('Content-Type', 'application/json');
@@ -51,19 +50,18 @@ export default class HttpService {
             headers: header,
             body: JSON.stringify(data)
         }).then((resp) => {
-            if(this.checkIfUnauthorized(resp)) {
+            if (this.checkIfUnauthorized(resp)) {
+                window.localStorage.removeItem('jwtToken') //clear token if unauthorized
                 window.location = "/#login";
                 return;
-            }
-            else {
+            } else {
                 return resp.json();
             }
         }).then((resp) => {
-            if(resp.error) {
+            if (resp.error) {
                 onError(resp.error);
-            }
-            else {
-                if(resp.hasOwnProperty('token')) {
+            } else {
+                if (resp.hasOwnProperty('token')) {
                     window.localStorage['jwtToken'] = resp.token;
                 }
                 onSuccess(resp);
@@ -76,7 +74,7 @@ export default class HttpService {
     static post(url, data, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
-        if(token) {
+        if (token) {
             header.append('Authorization', `JWT ${token}`);
         }
         header.append('Content-Type', 'application/json');
@@ -86,19 +84,18 @@ export default class HttpService {
             headers: header,
             body: JSON.stringify(data)
         }).then((resp) => {
-            if(this.checkIfUnauthorized(resp)) {
+            if (this.checkIfUnauthorized(resp)) {
+                window.localStorage.removeItem('jwtToken') //clear token if unauthorized
                 window.location = "/#login";
                 return;
-            }
-            else {
+            } else {
                 return resp.json();
             }
         }).then((resp) => {
-            if(resp.error) {
+            if (resp.error) {
                 onError(resp.error);
-            }
-            else {
-                if(resp.hasOwnProperty('token')) {
+            } else {
+                if (resp.hasOwnProperty('token')) {
                     window.localStorage['jwtToken'] = resp.token;
                 }
                 onSuccess(resp);
@@ -111,7 +108,7 @@ export default class HttpService {
     static remove(url, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
-        if(token) {
+        if (token) {
             header.append('Authorization', `JWT ${token}`);
         }
 
@@ -119,18 +116,17 @@ export default class HttpService {
             method: 'DELETE',
             headers: header
         }).then((resp) => {
-            if(this.checkIfUnauthorized(resp)) {
+            if (this.checkIfUnauthorized(resp)) {
+                window.localStorage.removeItem('jwtToken') //clear token if unauthorized
                 window.location = "/#login";
                 return;
-            }
-            else {
+            } else {
                 return resp.json();
             }
         }).then((resp) => {
-            if(resp.error) {
+            if (resp.error) {
                 onError(resp.error);
-            }
-            else {
+            } else {
                 onSuccess(resp)
             }
         }).catch((e) => {
@@ -139,8 +135,6 @@ export default class HttpService {
     }
 
     static checkIfUnauthorized(res) {
-        return res.status === 401;
-
+        return res.status === 401; //returns true if unauthorized
     }
-
 }

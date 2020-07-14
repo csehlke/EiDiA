@@ -8,6 +8,7 @@ import BackgroundImage from "../assets/loginBackground.jpg";
 import styled from "styled-components";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
+import {Redirect} from "react-router-dom";
 
 const Background = styled.div`
     background-image: url(${BackgroundImage});
@@ -29,6 +30,7 @@ export class LoginView extends React.Component {
         this.state = {
             error: null,
             isErrorBarOpen: false,
+            redirect: null
         }
 
         this.handleErrorBarClose = this.handleErrorBarClose.bind(this);
@@ -41,7 +43,9 @@ export class LoginView extends React.Component {
     login(user) {
         UserService.login(user.username, user.password)
             .then((data) => {
-                this.props.history.push('/');
+                this.setState({
+                    redirect: '/',
+                })
             })
             .catch((e) => {
                 this.setState({
@@ -58,6 +62,9 @@ export class LoginView extends React.Component {
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect}/>
+        }
         return (
             <Page>
                 <Background/>
@@ -71,7 +78,6 @@ export class LoginView extends React.Component {
                         To reset your password please contact your administrator.
                     </Alert>
                 </Snackbar>
-                }
             </Page>
         );
     }

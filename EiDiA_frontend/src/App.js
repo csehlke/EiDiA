@@ -5,11 +5,16 @@ import {HashRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import {DefaultView} from "./views/DefaultView";
 import {LoginView} from "./views/LoginView";
 import {SearchView} from "./views/SearchView";
+import {FileCabinetView} from "./views/FileCabinetView"
+import RecordView from "./views/RecordView";
 import {UploadView} from "./views/UploadView";
 import {WelcomeView} from "./views/WelcomeView";
-import {ExportView} from "./views/ExportView";
 import Navigation from "./components/Navigation";
+import {HTML5Backend} from "react-dnd-html5-backend";
+import {DndProvider} from "react-dnd";
+
 import UserService from "./services/UserService";
+import {UserAdministrationView} from "./views/UserAdministrationView";
 
 export default class App extends React.Component {
 
@@ -19,24 +24,22 @@ export default class App extends React.Component {
         this.state = {
             title: 'EiDiA - Einfache Digitale Akte',
             routes: [
+                this.getRoute('/', WelcomeView, true),
+                this.getRoute('/browse', FileCabinetView, true),
+                this.getRoute('/export', DefaultView, true),
+                this.getRoute('/help', DefaultView, true),
+                this.getRoute('/permissionRequests', DefaultView, true),
+                this.getRoute('/record', RecordView, true), //TODO<- this should later be deleted
+                this.getRoute('/record/:id', RecordView, false),
+                this.getRoute('/search', SearchView, true),
+                this.getRoute('/settings', DefaultView, true),
+                this.getRoute('/upload', UploadView, true),
                 {
-                    path: '/', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
+                    path: '/admin', exact: true, render: () => {
+                        if (UserService.isAuthenticated()) { // TODO check if admin user
                             return (
-                                <WelcomeView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/browse', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                                <UserAdministrationView title={this.state.pageTitle}
+                                                        setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
                             )
                         } else {
                             return (<Redirect to={'/login'}/>)
@@ -55,93 +58,24 @@ export default class App extends React.Component {
                         }
                     }
                 },
-                {
-                    path: '/permissionRequests', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/record', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/record/:id', render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/search', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <SearchView title={this.state.pageTitle}
-                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/settings', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <DefaultView title={this.state.pageTitle}
-                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/upload', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <UploadView title={this.state.pageTitle}
-                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                },
-                {
-                    path: '/export', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) {
-                            return (
-                                <ExportView title={this.state.pageTitle}
-                                            setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
-                            )
-                        } else {
-                            return (<Redirect to={'/login'}/>)
-                        }
-                    }
-                }
             ],
             pageTitle: ''
         };
+    }
+
+    getRoute(path, Component, exact) {
+        return {
+            path: path, exact: exact, render: () => {
+                if (UserService.isAuthenticated()) {
+                    return (
+                        <Component title={this.state.pageTitle}
+                                   setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
+                    )
+                } else {
+                    return (<Redirect to={'/login'}/>)
+                }
+            }
+        }
     }
 
     componentDidMount() {
@@ -159,11 +93,13 @@ export default class App extends React.Component {
             <div>
                 <Router>
                     <Navigation title={this.state.pageTitle}>
-                        <Switch>
-                            {this.state.routes.map((route, i) => (
-                                <Route key={i} {...route}/>
-                            ))}
-                        </Switch>
+                        <DndProvider backend={HTML5Backend}>
+                            <Switch>
+                                {this.state.routes.map((route, i) => (
+                                    <Route key={i} {...route}/>
+                                ))}
+                            </Switch>
+                        </DndProvider>
                     </Navigation>
                 </Router>
             </div>
