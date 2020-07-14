@@ -104,7 +104,7 @@ const register = (req, res) => {
         .catch(error => {
             if (error.code === 11000) {
                 res.status(400).json({
-                    error: 'User exists',
+                    error: 'Username already exists',
                     message: error.message,
                 });
             } else {
@@ -320,10 +320,15 @@ const listUsers = (req, res) => {
     UserModel.find()
         .then(users => {
             let response = users.map(user => {
+                const name = [user.firstName, user.lastName].filter(a => a).join(" "); // First and Last Name are not required
                 return {
+                    id: user._id,
                     username: user.username,
-                    name: user.firstName + " " + user.lastName,
+                    name: name ? name : user.username,
                 };
+            });
+            response.sort((a, b) => {
+                return ('' + a.name).localeCompare(b.name);
             });
             res.status(200).json({users: response});
         })
