@@ -68,7 +68,7 @@ class Widget extends React.Component {
 
     }
 
-    MainPart() {
+    renderMainPart() {
         const {isDragging} = this.props
         return (
             <div>
@@ -112,4 +112,3 @@ class Widget extends React.Component {
 }
 
 export default DragSource(DragTypes.WIDGET, itemSource, collectDrag)(Widget);
-
