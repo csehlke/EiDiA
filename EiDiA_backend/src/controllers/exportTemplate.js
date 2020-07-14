@@ -65,7 +65,7 @@ const search = (req, res) => {
 
     let out = []
     for (let i = 0; i < 9; i++) {
-        const obj = {name: "Document " + i, id: i};
+        const obj = {name: "Document " + i, id: "doc_" + i};
         out.push(obj);
     }
 
@@ -76,7 +76,7 @@ const getDocuments = (req, res) => {
     const docNames = req.params.docNames;
 
     const documentMockData = {
-        "Document 1": {
+        "doc_1": {
             "VARIABLE1": "BMW",
             "VARIABLE2": "500.000€"
         }

@@ -12,15 +12,13 @@ export default class DocListItem extends React.Component {
     }
 
     addToList() {
-        const content = this.props.id;
-        this.props.onSelect(content)
+        this.props.onSelect({name: this.props.name, id: this.props.id});
     }
-
     render() {
         return (
             <ListItem>
                 <ListItemText
-                    primary={this.props.id}
+                    primary={this.props.name}
                 />
                 <ListItemSecondaryAction>
                     <IconButton edge="end" onClick={this.addToList}>

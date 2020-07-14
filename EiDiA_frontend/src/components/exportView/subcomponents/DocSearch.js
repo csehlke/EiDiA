@@ -1,16 +1,15 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import styled from 'styled-components';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import Typography from '@material-ui/core/Typography';
 import DocListItem from './DocListItem';
-import {BASE_URL, endpoints} from '../../../support files/constants';
+import {BASE_URL, Column, endpoints, Row} from '../../../support files/constants';
 
 const styles = {
-    div: {
+    root: {
         margin: 10,
         height: "300px",
     },
@@ -20,21 +19,12 @@ const styles = {
     }
 }
 
-const Row = styled.div`
-    display: flex;
-`;
-
-const Column = styled.div`
-    flex: 50%;
-`;
-
 export default class DocSearch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             searchResults: []
         }
-
         this.search = this.search.bind(this);
     }
 
@@ -55,7 +45,7 @@ export default class DocSearch extends React.Component {
         const listItems = this.state.searchResults;
         const selectedItems = this.props.selectedDocs;
         return (
-            <div style={styles.div}>
+            <div style={styles.root}>
                 <Row>
                     <TextField label="Search Document" variant="outlined" onKeyPress={this.search}/>
                 </Row>
@@ -68,7 +58,8 @@ export default class DocSearch extends React.Component {
                             {listItems.map((elem) =>
                                 <DocListItem
                                     key={elem["id"]}
-                                    id={elem["name"]}
+                                    id={elem["id"]}
+                                    name={elem["name"]}
                                     onSelect={this.props.onAction2_2}
                                 />)}
                         </List>
@@ -78,10 +69,10 @@ export default class DocSearch extends React.Component {
                             Selected Documents
                         </Typography>
                         <List dense={true} className="docList" style={styles.scrollable}>
-                            {selectedItems.map((value) =>
-                                <ListItem key={value}>
+                            {selectedItems.map((doc) =>
+                                <ListItem key={doc["id"]}>
                                     <ListItemText
-                                        primary={value}
+                                        primary={doc["name"]}
                                     />
                                 </ListItem>)}
                         </List>

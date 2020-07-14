@@ -161,8 +161,9 @@ export default class ExportMainView extends React.Component {
     // matches given data from document with variables in document text
     mapValues() {
         let selectedDocs = this.state.selectedDocs;
+        let selectedDocsIds = selectedDocs.map((docElem) => docElem.id)
         if (selectedDocs.length !== 0) {
-            const param = JSON.stringify(selectedDocs);
+            const param = JSON.stringify(selectedDocsIds);
             fetch(BASE_URL + endpoints.getDocs + param)
                 .then(res => res.json())
                 .then(
@@ -173,7 +174,7 @@ export default class ExportMainView extends React.Component {
                             let templateVariables = this.state.variables;
 
                             let documentData = []
-                            selectedDocs.forEach((docName) => {
+                            selectedDocsIds.forEach((docName) => {
                                 if (docName in documents) documentData.push(documents[docName])
                             });
                             let editorText = this.getTextFromEditorState(newState.editorState);
@@ -190,7 +191,7 @@ export default class ExportMainView extends React.Component {
 
                                     // update current value and value source of that variable for state
                                     templateVariables[k].value = docValue;
-                                    templateVariables[k].source = "\/" + selectedDocs[documentIndex] + "\/" + docVariable;
+                                    templateVariables[k].source = "\/" + selectedDocs[documentIndex].name + "\/" + docVariable;
                                     editorText = this.setValuesToText(indices, docValue, newState.editorState)
                                 }
                             }
@@ -211,10 +212,10 @@ export default class ExportMainView extends React.Component {
         this.setState(newState);
     }
 
-    addSelectedDocumentToList(element) {
+    addSelectedDocumentToList(docItem) {
         let newState = this.state;
-        if (!newState.selectedDocs.includes(element)) {
-            newState.selectedDocs.push(element);
+        if (!newState.selectedDocs.includes(docItem)) {
+            newState.selectedDocs.push(docItem);
             this.setState(newState);
         }
 
