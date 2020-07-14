@@ -34,6 +34,7 @@
     "mongoose": "^5.9.18",
     "pdfmake": "^0.1.66",
     "react": "^16.13.1",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.1",
     "react-icons": "^3.10.0",

@@ -44,7 +44,7 @@ export default class TemplateList extends React.Component {
     render() {
         const items = this.state.templateList;
         return (
-            <div>
+            <div style={{margin: 10}}>
                 <Typography variant="subtitle2">
                     Templates
                 </Typography>

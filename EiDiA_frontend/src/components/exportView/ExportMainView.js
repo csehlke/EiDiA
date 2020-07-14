@@ -329,10 +329,11 @@ export default class ExportMainView extends React.Component {
             )
     }
 
-    downloadDocument() {
+    downloadDocument(docNames) {
         // TODO: Let User download created and linked documents
         const editorText = this.getTextFromEditorState(this.state.editorState);
-        const linkedDocs = []
+        const linkedDocs = docNames;
+        console.log(linkedDocs);
         const params = {text: editorText, docs: linkedDocs}
         fetch(BASE_URL + endpoints.exportDocs + encodeURIComponent(JSON.stringify(params)))
             .then(res => res.json())
@@ -340,7 +341,6 @@ export default class ExportMainView extends React.Component {
                 (result) => {
                     const docDefinition = {content: editorText};
                     const pdf = pdfMake.createPdf(docDefinition);
-                    pdf.open();
                     pdf.download();
 
                     let res = result.response;
@@ -363,7 +363,7 @@ export default class ExportMainView extends React.Component {
                     <Column>
                     </Column>
                     <Column>
-                        <DocEditor
+                        <div style={{overflow: "auto"}}><DocEditor
                             readOnly={this.props.readOnly}
                             textAlignment={this.state.textAlignment}
                             ref={(docEditor) => {
@@ -372,6 +372,7 @@ export default class ExportMainView extends React.Component {
                             editorState={editorState}
                             onChange={this.onChange}
                         />
+                        </div>
                     </Column>
                     <Column>
                         <RightSidepanel

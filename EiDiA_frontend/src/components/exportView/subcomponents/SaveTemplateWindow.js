@@ -2,7 +2,6 @@ import React from 'react';
 import {Button, Input, Typography} from '@material-ui/core';
 import {Column, Row} from '../../../support files/constants';
 import styled from "styled-components";
-import Preview from './Preview';
 
 const styles = {
     box: {
@@ -35,46 +34,37 @@ const FlexRow = styled.div`
 
 export default class SaveTemplateSection extends React.Component {
     render() {
-        let filteredRecords = this.props.filteredRecords;
         return (
-            <Row style={{margin: "10px"}}>
-                <Column>
+            <Column>
+                <Row>
                     <Typography variant="subtitle2">
-                        Created Template (Preview)
+                        Template Name
                     </Typography>
-                    <Preview editorState={this.props.editorState}/>
-                </Column>
-                <Column>
-                    <Row>
-                        <Typography variant="subtitle2">
-                            Template Name
-                        </Typography>
-                    </Row>
-                    <Row>
-                        <Input placeholder="Template Name" inputProps={{'aria-label': 'description'}}/>
-                    </Row>
-                    <Row>
-                        <Button
-                            style={styles.button_left}
-                            variant="contained"
-                            color="primary"
-                            disableElevation
-                            onClick={this.props.onClose}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            style={styles.button_right}
-                            variant="contained"
-                            color="primary"
-                            disableElevation
-                            onClick={this.props.save}
-                        >
-                            Save Template
-                        </Button>
-                    </Row>
-                </Column>
-            </Row>
+                </Row>
+                <Row>
+                    <Input placeholder="Template Name" inputProps={{'aria-label': 'description'}}/>
+                </Row>
+                <Row>
+                    <Button
+                        style={styles.button_left}
+                        variant="contained"
+                        color="primary"
+                        disableElevation
+                        onClick={this.props.onClose}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        style={styles.button_right}
+                        variant="contained"
+                        color="primary"
+                        disableElevation
+                        onClick={this.props.save}
+                    >
+                        Save Template
+                    </Button>
+                </Row>
+            </Column>
         )
     }
 }

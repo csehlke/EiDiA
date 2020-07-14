@@ -1,11 +1,9 @@
 import React from 'react';
 import {Button, Input, Typography} from '@material-ui/core';
 import {Column, Row} from '../../../support files/constants';
-import styled from "styled-components";
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Preview from './Preview';
 
 const styles = {
     column: {
@@ -30,38 +28,39 @@ const styles = {
     }
 }
 
-const FlexRow = styled.div`
-    margin: 0 5% 0 5%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    height: 50%;
-`;
-
-
 export default class ExportDocumentWindow extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {selectedDocs: []}
+        this.selectDocument = this.selectDocument.bind(this);
+        this.download = this.download.bind(this);
+    }
+
+    selectDocument(doc) {
+        var newState = this.state;
+        newState.selectedDocs.push(doc);
+        this.setState(newState);
+    }
+
+    download() {
+        this.props.download(this.state.selectedDocs);
+    }
 
     render() {
-        let filteredRecords = this.props.filteredRecords;
         let selectedDocs = this.props.selectedDocs;
         return (
-            <Row style={{margin: "10px"}}>
-                <Column style={styles.column}>
-                    <Typography variant="subtitle2">
-                        Created Template (Preview)
-                    </Typography>
-                    <Preview editorState={this.props.editorState}/>
-                </Column>
-                <Column style={styles.column}>
+            <div>
+                <Column>
                     <Typography variant="subtitle2">
                         Used Documents
                     </Typography>
                     <FormGroup>
-                        {selectedDocs.map((doc) => <FormControlLabel control={<Checkbox color="primary"/>}
-                                                                     label={doc}/>)}
+                        {selectedDocs.map((doc) => <FormControlLabel
+                            control={<Checkbox color="primary" onChange={() => this.selectDocument(doc)}/>}
+                            label={doc}/>)}
                     </FormGroup>
                 </Column>
-                <Column style={styles.column}>
+                <Column>
                     <Row>
                         <Typography variant="subtitle2">
                             Template Name
@@ -69,20 +68,6 @@ export default class ExportDocumentWindow extends React.Component {
                     </Row>
                     <Row>
                         <Input placeholder="Template Name" inputProps={{'aria-label': 'description'}}/>
-                    </Row>
-                    <Row>
-                        {/*                        <div width="80%">
-                            <Typography variant="subtitle2">
-                                Template Name
-                            </Typography>
-                            <Input placeholder="Search Records ..." fullWidth={true}
-                                   inputProps={{'aria-label': 'description'}} value={this.props.value}
-                                   onChange={this.props.updateSearch.bind(this)}/>
-                            <FlexRow>
-                                {filteredRecords.map(record => <RecordSymbol fontSize='3vw' labelFontSize='10px'
-                                                                             key={record} name={record}/>)}
-                            </FlexRow>
-                        </div>*/}
                     </Row>
                     <Row>
                         <Button
@@ -107,7 +92,7 @@ export default class ExportDocumentWindow extends React.Component {
                             variant="contained"
                             color="primary"
                             disableElevation
-                            onClick={this.props.download}
+                            onClick={this.download}
                         >
                             Download
                         </Button>
@@ -116,13 +101,13 @@ export default class ExportDocumentWindow extends React.Component {
                             variant="contained"
                             color="primary"
                             disableElevation
-                            onClick={this.props.download}
+                            onClick={this.download}
                         >
                             Export
                         </Button>
                     </Row>
                 </Column>
-            </Row>
+            </div>
         )
     }
 }

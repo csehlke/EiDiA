@@ -5,8 +5,8 @@ import 'draft-js/dist/Draft.css'
 
 const styles = {
     editor: {
-        width: '14cm',
-        height: '20cm',
+        width: '21cm',
+        height: '30cm',
         align: 'center',
         margin: 10,
         backgroundColor: "white",

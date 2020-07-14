@@ -24,19 +24,8 @@ export default class Preview extends React.Component {
     }
 
     render() {
-        let editorState = this.props.editorState;
-        const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
-        const editorText = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
         return (
-            <Iframe url={this.state.url}/>
-            /*            <PDFViewer>
-                            <Document>
-                                <Page size="A4" style={styles.page}>
-                                    <Text>{editorText}</Text>
-                                </Page>
-                            </Document>
-                        </PDFViewer>*/
-
+            <Iframe width="450px" height="450px" url={this.state.url}/>
         )
     }
 }
