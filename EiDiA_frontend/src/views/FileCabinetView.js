@@ -6,6 +6,7 @@ import {RecordSymbol} from "../components/record/RecordSymbol";
 import styled from "styled-components";
 import {Input} from '@material-ui/core';
 import {Link} from "../components/Link";
+import RecordService from "../services/RecordService";
 
 const FlexRow = styled.div`
     display: flex;
@@ -24,30 +25,21 @@ export class FileCabinetView extends React.Component {
 
     /*
      *TODO:
-     * - add getRecordFromDatabase functionality
      * - add Pages if too many records
      * - add Add Button
      */
     constructor(props) {
         super(props);
         this.state = {
-            records: ["Volkswagen",
-                "BMW",
-                "Thyssenkrup",
-                "Google",
-                "Facebook",
-                "Microsoft",
-                "ABC Company",
-                "Adidas",
-                "lenovo Limited",
-                "IBM",
-                "TrueThat",
-                "hello",
-                "abc",
-                "def"
-            ],
+            //TODO: show spinning cirlce maybe as long its empty?
+            records: [],
             search: '',
         }
+        RecordService.getAllRecords().then(result => {
+            this.setState({records: result.records});
+            console.log(this.state.records)
+        })
+
     }
 
     componentDidMount() {
@@ -62,7 +54,7 @@ export class FileCabinetView extends React.Component {
 
         let filteredRecords = this.state.records.filter((record) => {
             //TODO: maybe transform all records to lowercase
-            return record.indexOf(this.state.search) !== -1;
+            return record.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
         });
 
         return (
@@ -81,7 +73,7 @@ export class FileCabinetView extends React.Component {
                         <Link
                             key={i}
                             to={"/record/" + record.id}>
-                            <RecordSymbol name={record}/>
+                            <RecordSymbol name={record.name}/>
                         </Link>
                     )}
                 </FlexRow>
