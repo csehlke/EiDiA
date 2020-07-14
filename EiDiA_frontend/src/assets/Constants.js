@@ -25,7 +25,6 @@ export const WidgetTypes = {
 export const GraphType = {
     Line: 'Line Chart',
     Bar: 'Bar Chart',
-    Pie: 'Pie Chart'
 }
 export const ActionTypes = {
     NewDocument: "new Document",

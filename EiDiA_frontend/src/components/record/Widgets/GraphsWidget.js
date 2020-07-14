@@ -7,8 +7,6 @@ import {
     Legend,
     Line,
     LineChart,
-    Pie,
-    PieChart,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -80,14 +78,6 @@ export class GraphsWidget extends React.Component {
         )
     }
 
-    //TODO Pie chart attribute mapping especially
-    createPieChart() {
-        return (
-            <PieChart>
-                <Pie data={this.props.data} dataKey="value" nameKey="date" cx="50%" cy="50%" fill="#8884d8" label/>
-            </PieChart>
-        )
-    }
 
     createGraph(attributeMapping) {
         let data = this.getData(attributeMapping);
