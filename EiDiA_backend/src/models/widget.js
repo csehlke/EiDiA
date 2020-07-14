@@ -5,32 +5,59 @@ const mongoose = require('mongoose');
 // Define the schema
 
 const WidgetSchema = new mongoose.Schema({
-    dashboardId: {
+    recordId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        index: true,
     },
-    columnNo: {
-        type: Number,
-        required: true,
+    positionInfo: {
+        type: {
+            x: {
+                type: Number,
+                required: true,
+            },
+            y: {
+                type: Number,
+                required: true,
+            }
+        }
     },
-    rowNo: {
-        type: Number,
-        required: true,
-    },
-    height: {
-        type: Number,
-        required: true,
-    },
-    width: {
-        type: Number,
+
+    title: {
+        type: String,
         required: true,
     },
     widgetType: {
         type: String,
-        enum: ['activity', 'graph', 'indicator'],
+        enum: ['Log', 'Graph', 'Indicator'],
         required: true,
-    }
+    },
+    graphType: {
+        type: String,
+        enum: ['Line Chart', 'Bar Chart'],
+        required: false,
+    },
+    attributeMapping: [
+        {
+            docTypeId: {
+                type: Number,
+                required: true,
+            },
+            attributeId: {
+                type: Number,
+                required: true,
+            },
+            displayName: {
+                type: String,
+                required: true,
+            },
+            color: {
+                type: String,
+                enum: ['red', 'green', 'blue'],
+                required: false,
+            }
+        }
+    ]
+
 });
 
 // Export the model

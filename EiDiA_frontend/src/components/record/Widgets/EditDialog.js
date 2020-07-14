@@ -107,9 +107,8 @@ export class EditDialog extends React.Component {
             {name: "Green", color: "green"},
         ]
         const GraphTypeOptions = [
-            {name: GraphType.Line, type: GraphType.Line},
-            {name: GraphType.Bar, type: GraphType.Bar},
-            // {name: GraphType.Pie, type:GraphType.Pie}
+            {name: GraphType.Line, graphType: GraphType.Line},
+            {name: GraphType.Bar, graphType: GraphType.Bar},
         ]
         return ([
                 <Grid key={"descriptionGraphSelection"} item xs={12}>
@@ -117,9 +116,9 @@ export class EditDialog extends React.Component {
                 </Grid>,
                 <Grid key={"selectGraphType"} item xs={12}>
                     <SmartDropDownBox margin={"0"}
-                                      preselectedValue={GraphTypeOptions.find(opt => opt.type === this.state.selectedGraph)}
+                                      preselectedValue={GraphTypeOptions.find(opt => opt.graphType === this.state.selectedGraph)}
                                       label={"Graph Type"}
-                                      onChange={(event, value) => this.changeGraphType(value.type)}
+                                      onChange={(event, value) => this.changeGraphType(value.graphType)}
                                       options={GraphTypeOptions}
                     />
                 </Grid>,
@@ -249,7 +248,7 @@ export class EditDialog extends React.Component {
 
     changeAttributeMapping = (index, attr, value) => {
         //this line has to come before adding changing the actual attribute of attributeMapping
-        if (attr === "docTypeId" && this.state.selectedAttributeMapping[index][attr] !== value) this.state.selectedAttributeMapping[index]["attrId"] = "";
+        if (attr === "docTypeId" && this.state.selectedAttributeMapping[index][attr] !== value) this.state.selectedAttributeMapping[index]["attributeId"] = "";
         this.state.selectedAttributeMapping[index][attr] = value;
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping});
     }
@@ -261,7 +260,7 @@ export class EditDialog extends React.Component {
     handleAddAttributeButton = () => {
         this.state.selectedAttributeMapping.push({
             docTypeId: null,
-            attrId: null,
+            attributeId: null,
             displayName: '',
         })
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping})
@@ -291,9 +290,9 @@ export class EditDialog extends React.Component {
 
         };
         let typeOptions = [
-            {name: WidgetTypes.INDICATOR, type: WidgetTypes.INDICATOR},
-            {name: WidgetTypes.GRAPH, type: WidgetTypes.GRAPH},
-            {name: WidgetTypes.LOG, type: WidgetTypes.LOG}
+            {name: WidgetTypes.INDICATOR, widgetType: WidgetTypes.INDICATOR},
+            {name: WidgetTypes.GRAPH, widgetType: WidgetTypes.GRAPH},
+            {name: WidgetTypes.LOG, widgetType: WidgetTypes.LOG}
         ]
         /**
          * TODO: THeme needs to be set for Typography to style e.g. the different headings
@@ -320,9 +319,9 @@ export class EditDialog extends React.Component {
                         </Grid>
                         <Grid key={"widgetSelect"} item xs={12}>
                             <SmartDropDownBox margin={"0"}
-                                              preselectedValue={typeOptions.find(type => type.type === this.state.selectedType)}
+                                              preselectedValue={typeOptions.find(opt => opt.widgetType === this.state.selectedType)}
                                               label={"Widget Type"}
-                                              onChange={(event, value) => this.changeType(value.type)}
+                                              onChange={(event, value) => this.changeType(value.widgetType)}
                                               options={typeOptions}/>
                         </Grid>
                         {this.dialogPicker()}

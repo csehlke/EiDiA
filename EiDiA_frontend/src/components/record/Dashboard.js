@@ -1,43 +1,45 @@
 import React from 'react';
 import Widget from "./Widgets/Widget";
 import WidgetDropTarget from "./Widgets/WidgetDropTarget";
-import {LogEntries, Widgets, WidgetTypes} from "../../assets/Constants";
+import {LogEntries, WidgetTypes} from "../../assets/Constants";
 import {DashboardWrapper, WidgetWrapper} from "../StyleElements";
 import {LogWidget} from "./Widgets/LogWidget";
 import {GraphsWidget} from "./Widgets/GraphsWidget";
 import {IndicatorWidget} from "./Widgets/IndicatorWidget";
 import {FiEdit} from 'react-icons/fi'
 import Fab from "@material-ui/core/Fab";
+import RecordService from "../../services/RecordService";
 
 export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            widgets: Widgets,
+            widgets: [],
             dashboardEditingActive: false,
-            recordId: this.props.recordId
-
-
         }
-
         this.fillUpFreeSlots();
 
     }
 
+    componentDidMount() {
+        this.getWidgetsFromBackend()
+    }
+
     renderConcreteWidget(widget) {
-        switch (widget.type) {
+        switch (widget.widgetType) {
             case WidgetTypes.LOG:
                 return (<LogWidget logs={this.getLogData()}/>)
             case WidgetTypes.GRAPH:
                 return (
-                    <GraphsWidget graph={widget.graph} dashboardEditingActive={this.state.dashboardEditingActive}
+                    <GraphsWidget graphType={widget.graphType}
+                                  dashboardEditingActive={this.state.dashboardEditingActive}
                                   attributeMapping={widget.attributeMapping}
                     />)
             case WidgetTypes.INDICATOR:
                 return (<IndicatorWidget attributeMapping={widget.attributeMapping}
                 />)
             default:
-                return (<p>No child part</p>)
+                return (<p>No WidgetType selected</p>)
 
         }
     }
@@ -62,7 +64,7 @@ export class Dashboard extends React.Component {
                             y: i + 1,
                         },
                         title: "",
-                        type: WidgetTypes.INDICATOR,
+                        widgetType: WidgetTypes.INDICATOR,
                         attributeMapping: []
                     })
 
@@ -70,19 +72,43 @@ export class Dashboard extends React.Component {
     }
 
     getLogData = () => {
-        return LogEntries.filter(entries => entries.recordId === this.state.recordId)
+        return LogEntries.filter(entries => entries.recordId === this.props.recordId)
     }
     handleEditDashboardButton = () => {
         this.setState({dashboardEditingActive: !this.state.dashboardEditingActive})
     }
 
+    getWidgetsFromBackend() {
 
-    handleUpdateWidgetButton = (widget) => (title, type, attributeMapping, graphType) => {
+        RecordService.getWidgets(this.props.recordId).then(response => {
+            this.setState({widgets: response});
+            this.fillUpFreeSlots()
+        }).catch(e => console.error(e))
+    }
+
+    sendWidgetToBackend(widget) {
+        const requestData = {
+            recordId: this.props.recordId,
+            positionInfo: widget.positionInfo,
+            title: widget.title,
+            widgetType: widget.widgetType,
+
+            attributeMapping: widget.attributeMapping
+        }
+        if (widget.graphType) requestData['graphType'] = widget.graphType
+        console.log(requestData)
+
+        RecordService.addWidget(requestData).then(response => console.log(response)).catch(e => console.error(e))
+    }
+
+    handleUpdateWidgetButton = (widget) => (title, widgetType, attributeMapping, graphType) => {
         widget.title = title;
-        widget.type = type;
+        widget.widgetType = widgetType;
         widget.attributeMapping = attributeMapping;
-        if (type === WidgetTypes.GRAPH) widget.graph = graphType;
+        if (widgetType === WidgetTypes.GRAPH) widget.graphType = graphType;
         this.setState({widgets: this.state.widgets})
+        console.log(widget)
+        this.sendWidgetToBackend(widget);
     }
 
 

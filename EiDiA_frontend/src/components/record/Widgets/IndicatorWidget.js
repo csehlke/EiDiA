@@ -16,6 +16,15 @@ export class IndicatorWidget extends React.Component {
         this.state = {
             attributeMapping: props.attributeMapping,
         }
+
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps !== this.props) {
+            this.setState({
+                attributeMapping: this.props.attributeMapping
+            })
+        }
     }
 
     createAttribute(attr, index) {
@@ -35,7 +44,7 @@ export class IndicatorWidget extends React.Component {
 
         attributeMapping.map(mapping => data.push(
             tmp
-                .filter(attr => attr.attrId === mapping.attrId)
+                .filter(attr => attr.attributeId === mapping.attributeId)
                 .map(function (foundAttribute) {
                         return {
                             displayName: mapping.displayName,

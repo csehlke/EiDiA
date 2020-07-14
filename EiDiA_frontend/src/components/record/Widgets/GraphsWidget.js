@@ -25,7 +25,7 @@ export class GraphsWidget extends React.Component {
         super(props);
         this.state = {
             attributeMapping: props.attributeMapping,
-            type: props.graph,
+            graphType: props.graphType,
 
         }
     }
@@ -34,7 +34,7 @@ export class GraphsWidget extends React.Component {
         if (prevProps !== this.props) {
             this.setState({
                 attributeMapping: this.props.attributeMapping,
-                type: this.props.graph,
+                graphType: this.props.graphType,
 
             })
         }
@@ -81,7 +81,7 @@ export class GraphsWidget extends React.Component {
 
     createGraph(attributeMapping) {
         let data = this.getData(attributeMapping);
-        switch (this.state.type) {
+        switch (this.state.graphType) {
             case GraphType.Line:
                 return this.createLineChart(attributeMapping, data);
             case GraphType.Bar:
@@ -101,7 +101,7 @@ export class GraphsWidget extends React.Component {
 
         attributeMapping.map(mapping => data.push(
             tmp
-                .filter(attr => attr.attrId === mapping.attrId)
+                .filter(attr => attr.attributeId === mapping.attributeId)
                 .map(foundAttribute => {
                     foundAttribute[mapping.displayName] = foundAttribute.value;
                     return foundAttribute

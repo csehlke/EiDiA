@@ -90,8 +90,8 @@ class Widget extends React.Component {
                     <EditDialog
                         handleUpdateWidgetButton={this.props.handleUpdateWidgetButton}
                         widgetTitle={this.state.widget.title}
-                        widgetType={this.state.widget.type}
-                        graphType={this.state.widget.graph} // TODO: handle undefined
+                        widgetType={this.state.widget.widgetType}
+                        graphType={this.state.widget.graphType} // TODO: handle undefined
                         onClose={this.toggleEditDialog}
                         open={this.state.widgetEditingActive}
                         attributeMapping={this.state.widget.attributeMapping}/>
