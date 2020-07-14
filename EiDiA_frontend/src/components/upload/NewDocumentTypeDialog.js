@@ -13,6 +13,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import styled from "styled-components";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import PropTypes from "prop-types";
+import {IoMdRemoveCircleOutline} from "react-icons/all";
+import IconButton from '@material-ui/core/IconButton';
 
 
 const Row = styled.div`
@@ -23,8 +25,19 @@ const Column2 = styled.div`
     flex: 50%;
 `;
 
+const DialogContentFixedSize = styled(DialogContent)`
+    min-width: 40vw;
+    max-width: 40vw;
+    min-height: 40vh;
+    max-height: 40vh;
+`;
+
 const Column3 = styled.div`
     flex: 33%;
+`;
+
+const DialogActionsFixedSize = styled(DialogActions)`
+    padding: 8px 2em;
 `;
 
 class NewDocumentTypeDialog extends React.Component {
@@ -52,6 +65,7 @@ class NewDocumentTypeDialog extends React.Component {
         this.handleNewAttributeName = this.handleNewAttributeName.bind(this);
         this.addNewAttribute = this.addNewAttribute.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
+        this.removeAttribute = this.removeAttribute.bind(this);
     }
 
     handleAttrTypeChange(event, value) {
@@ -98,6 +112,14 @@ class NewDocumentTypeDialog extends React.Component {
         });
     }
 
+    removeAttribute(index) {
+        let copyArr = this.state.newAttributes
+        copyArr.splice(index, 1);
+        this.setState({
+            newAttributes: copyArr
+        });
+    }
+
     closeDialog() {
         this.attributeTypeRef.current.reset();
         this.setState({
@@ -115,7 +137,7 @@ class NewDocumentTypeDialog extends React.Component {
                 <DialogTitle>
                     Create New Document Type
                 </DialogTitle>
-                <DialogContent dividers style={{minHeight: '40vh', maxHeight: '40vh'}}>
+                <DialogContentFixedSize dividers>
                     <TextField
                         label="New Document Type Name"
                         variant="outlined"
@@ -151,21 +173,23 @@ class NewDocumentTypeDialog extends React.Component {
                                         variant="outlined"
                                         InputProps={{
                                             style: {
-                                                color: "black" //Textcolor for "disabled"-property
+                                                color: "black", //Textcolor for "disabled"-property
                                             }
                                         }}
-                                        fullWidth
                                         style={{margin: '0.5em 0', padding: '0 0 0 5px'}}
                                         size={"small"}/>
                                 </Column2>
+                                <IconButton onClick={() => {
+                                    this.removeAttribute(i)
+                                }}><IoMdRemoveCircleOutline/></IconButton>
                             </Row>
                         );
                     })}
-                </DialogContent>
+                </DialogContentFixedSize>
                 <DialogContentText style={{margin: '10px'}}>
                     Create Attributes for this Document Type
                 </DialogContentText>
-                <DialogActions>
+                <DialogActionsFixedSize>
                     <Row>
                         <Column3>
                             <TextField
@@ -198,7 +222,7 @@ class NewDocumentTypeDialog extends React.Component {
                             </Button>
                         </Column3>
                     </Row>
-                </DialogActions>
+                </DialogActionsFixedSize>
                 <DialogActions>
                     <Button color={"secondary"}
                             onClick={this.closeDialog}>

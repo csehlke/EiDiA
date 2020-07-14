@@ -38,7 +38,7 @@ const login = (req, res) => {
             // if user is found and password is valid
             // create a token
             const token = jwt.sign({id: user._id, username: user.username, userRole: user.userRole}, config.JwtSecret, {
-                expiresIn: 86400, // expires in 24 hours
+                expiresIn: 60 * 60 * 10, // expires in 10 hours
             });
             // add token to whitelist
             allowedTokens.add(token)
@@ -66,7 +66,7 @@ const register = (req, res) => {
         });
     }
 
-    if (!Object.prototype.hasOwnProperty.call(req.body, 'userRole') || req.body.userRole !== 'admin' || req.body.userRole !== 'user') {
+    if (!Object.prototype.hasOwnProperty.call(req.body, 'userRole') || !(req.body.userRole === 'admin' || req.body.userRole === 'user')) {
         return res.status(400).json({
             error: 'Bad Request',
             message: 'The request body must contain a userRole property which is either admin or user',
@@ -94,6 +94,7 @@ const register = (req, res) => {
                     username: user.username,
                     firstName: user.firstName,
                     lastName: user.lastName,
+                    password: '⬤⬤⬤⬤⬤',
                     workPosition: user.workPosition,
                     workLocation: user.workLocation,
                     userRole: user.userRole,
@@ -240,6 +241,7 @@ const listUsersForAdministration = (req, res) => {
                     username: user.username,
                     firstName: user.firstName,
                     lastName: user.lastName,
+                    password: '⬤⬤⬤⬤⬤',
                     workPosition: user.workPosition,
                     workLocation: user.workLocation,
                     userRole: user.userRole,
@@ -267,7 +269,7 @@ const updateUser = (req, res) => {
     if (req.body.password) {
         user['password'] = bcrypt.hashSync(req.body.password, 8);
     }
-    if (req.body.userRole) {
+    if (req.body.userRole && req.userId !== req.params.id) {
         user['userRole'] = req.body.userRole;
     }
     if (req.body.firstName) {
@@ -293,6 +295,7 @@ const updateUser = (req, res) => {
                 username: user.username,
                 firstName: user.firstName,
                 lastName: user.lastName,
+                password: '⬤⬤⬤⬤⬤',
                 workPosition: user.workPosition,
                 workLocation: user.workLocation,
                 userRole: user.userRole,

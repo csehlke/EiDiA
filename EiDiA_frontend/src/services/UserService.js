@@ -16,6 +16,46 @@ export default class UserService {
         });
     }
 
+    static getAllUsersForAdministration() {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/auth/admin/list', function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static addUserAdmin(user) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(baseURL + '/auth/admin/register', user, function (data) {
+                resolve(data.user);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static updateUserAdmin(updatedUser) {
+        return new Promise((resolve, reject) => {
+            HttpService.put(baseURL + '/auth/admin/update/' + updatedUser.id, updatedUser, function (data) {
+                resolve(data.user);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static deleteUserAdmin(deletedUserId) {
+        return new Promise((resolve, reject) => {
+            HttpService.remove(baseURL + '/auth/admin/delete/' + deletedUserId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
     static isAuthenticated() {
         return !!window.localStorage['jwtToken'];
     }
@@ -46,4 +86,15 @@ export default class UserService {
             });
         });
     }
+
+    static getMe() {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/auth/me', function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    };
 }
+

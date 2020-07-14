@@ -4,10 +4,6 @@ export default class HttpService {
     constructor() {
     }
 
-    static apiURL() {
-        return "http://localhost:3000";
-    }
-
     static get(url, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
