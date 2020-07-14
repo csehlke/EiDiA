@@ -20,7 +20,7 @@ export class IndicatorWidget extends React.Component {
 
     createAttribute(attr, index) {
         return (
-            <IndicatorElement elementPercentage={this.state.elementPercentage} key={index}>
+            <IndicatorElement key={index}>
                 <p>{attr.displayName}</p>
 
                 <TealRight>{attr.value} </TealRight>
