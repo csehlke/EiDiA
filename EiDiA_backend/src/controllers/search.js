@@ -279,7 +279,7 @@ function getRecordFolderElements(recordId) {
             let folderElement = record === undefined ? null : {
                 parentId: 0,
                 id: recordId,
-                active: false,
+                active: true,
                 type: FileTypes.FOLDER,
                 name: record.name,
                 dateCreation: '',
