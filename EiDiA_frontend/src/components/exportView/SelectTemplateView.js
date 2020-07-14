@@ -14,10 +14,10 @@ export default class SelectTemplateView extends React.Component {
         this.state = {
             editorState: EditorState.createWithContent(ContentState.createFromText(this.editorText)),
             textAlignment: "left",
-            currentPage: "Select Template",
+            currentPage: pageNames.selectTemplate,
             selectedTemplate: null,
             seen: true,
-            open: false,
+            showDialog: false,
             variables: []
         };
         this.docEditor = React.createRef();

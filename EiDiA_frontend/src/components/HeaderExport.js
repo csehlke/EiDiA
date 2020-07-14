@@ -60,16 +60,16 @@ const MenuAppBar = (props) => {
                         />
                     </Link>
                     <Typography variant="h4" align="center"
-                                className={props.title == "Select Template" ? classes.title : classes.titleUnselect}>
-                        <div onClick={() => props.changeView("Select Template")}>Select Template</div>
+                                className={props.title === pageNames.selectTemplate ? classes.title : classes.titleUnselect}>
+                        <div onClick={() => props.changeView(pageNames.selectTemplate)}>Select Template</div>
                     </Typography>
                     <Typography variant="h4" align="center"
-                                className={props.title == pageNames.editTemplate ? classes.title : classes.titleUnselect}>
+                                className={props.title === pageNames.editTemplate ? classes.title : classes.titleUnselect}>
                         <div onClick={() => props.changeView(pageNames.editTemplate)}>Edit Template</div>
                     </Typography>
                     <Typography variant="h4" align="center"
-                                className={props.title == "Edit" ? classes.title : classes.titleUnselect}>
-                        <div onClick={() => props.changeView("Edit")}>Edit</div>
+                                className={props.title === pageNames.edit ? classes.title : classes.titleUnselect}>
+                        <div onClick={() => props.changeView(pageNames.edit)}>Edit</div>
                     </Typography>
                     <div>
                         <IconButton

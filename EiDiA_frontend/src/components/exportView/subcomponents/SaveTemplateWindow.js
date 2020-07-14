@@ -1,15 +1,8 @@
 import React from 'react';
 import {Button, Input, Typography} from '@material-ui/core';
 import {Column, Row} from '../../../support files/constants';
-import styled from "styled-components";
 
 const styles = {
-    box: {
-        width: '7cm',
-        height: '10cm',
-        align: 'center',
-        padding: "20px",
-    },
     button_left: {
         margin: "15px",
         align: "left",
@@ -22,15 +15,6 @@ const styles = {
         right: 0,
     }
 }
-
-const FlexRow = styled.div`
-    margin: 0 5% 0 5%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    height: 50%;
-`;
-
 
 export default class SaveTemplateSection extends React.Component {
     render() {

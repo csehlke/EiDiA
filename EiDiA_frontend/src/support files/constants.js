@@ -11,7 +11,7 @@ export const Column = styled.div`
 export const BASE_URL = "http://localhost:3000/";
 
 export const pageNames = {
-    selectTemplate: "Select Template",
+    selectTemplate: pageNames.selectTemplate,
     editTemplate: "Edit Template",
     edit: "Edit"
 }

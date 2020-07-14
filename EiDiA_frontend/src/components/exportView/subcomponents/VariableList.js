@@ -12,11 +12,6 @@ export default class VariableList extends React.Component {
         const variableKeys = Object.keys(variableState);
         return (
             <div style={{margin: "3%"}}>
-                <p/>
-                Use <input defaultValue="3" width="10px" type="number"/> documents.
-                <p/>
-                <p/>
-                <p/>
                 <Typography variant="subtitle2">
                     Variables
                 </Typography>

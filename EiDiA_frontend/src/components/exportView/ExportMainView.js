@@ -4,25 +4,33 @@ import RightSidepanel from "./RightSidepanel";
 import {ContentState, convertToRaw, EditorState, RichUtils} from 'draft-js';
 import FloatingWindows from './FloatingWindow';
 import {BASE_URL, Column, endpoints, pageNames, Row} from '../../support files/constants';
+import EditorTools from './subcomponents/EditorTools';
+import DocSearch from './subcomponents/DocSearch';
+import ExportSection from './subcomponents/ExportSection';
+import TemplateList from './subcomponents/TemplateList';
+import SaveTemplateSection from './subcomponents/SaveTemplateSection';
+import VariableList from './subcomponents/VariableList';
+import SetValueSection from './subcomponents/SetValueSection';
+
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function Dialog(props) {
-    if (props.currentPage === "Select Template") {
-        return <div/>
-    }
     return (
-        <FloatingWindows
-            open={props.open}
-            onClose={props.onClose}
-            save={props.save}
-            currentPage={props.currentPage}
-            selectedDocs={props.selectedDocs}
-            download={props.download}
-            editorState={props.editorState}
-        />);
+        <React.Fragment>
+            {props.currentPage === pageNames.selectTemplate ? "" : <FloatingWindows
+                showDialog={props.showDialog}
+                onClose={props.onClose}
+                save={props.save}
+                currentPage={props.currentPage}
+                selectedDocs={props.selectedDocs}
+                download={props.download}
+                editorState={props.editorState}
+            />}
+        </React.Fragment>
+    )
 }
 
 // Checks if string/variable is URI, e.g. Document1/VARIABLE1
@@ -32,20 +40,20 @@ function isPath(string) {
 
 // pass to RightSidePanel, so the right components are rendered according to currentPage
 const components = {
-    "Select Template": {
-        comp1: "templateList",
-        comp2: "docSearch",
-        comp3: "exportSection"
+    [pageNames.selectTemplate]: {
+        comp1: TemplateList,
+        comp2: DocSearch,
+        comp3: ExportSection
     },
     [pageNames.editTemplate]: {
-        comp1: "editorTools",
-        comp2: "variableList",
-        comp3: "saveTemplateSection"
+        comp1: EditorTools,
+        comp2: VariableList,
+        comp3: SaveTemplateSection
     },
-    "Edit": {
-        comp1: "editorTools",
-        comp2: "docSearch",
-        comp3: "setValueSection"
+    [pageNames.edit]: {
+        comp1: EditorTools,
+        comp2: DocSearch,
+        comp3: SetValueSection
     }
 }
 
@@ -56,7 +64,7 @@ export default class ExportMainView extends React.Component {
             editorState: EditorState.createEmpty(),
             textAlignment: "left",
             selectedTemplate: null, // e.g. "Template 1"
-            open: false,
+            showDialog: false,
             // e.g. { "$Document1/VARIABLE1": { index: [1], value: "Euro", source: "Document A/VARIABLE1
             //key: Variable name, index: position of variable in template, value: set value, source: source of value
             variables: {},
@@ -84,7 +92,7 @@ export default class ExportMainView extends React.Component {
 
         // Methods specific for each subcomponent in RightSidePanel
         this.actionSet = {
-            "Select Template": {
+            [pageNames.selectTemplate]: {
                 onAction1_1: this.selectTemplate,
                 onAction1_2: this.toggleBlockType,
                 onAction2_2: this.addSelectedDocumentToList,
@@ -97,7 +105,7 @@ export default class ExportMainView extends React.Component {
                 onAction3_1: this.toggleDialog,
                 onAction3_2: this.setSelectedVariable
             },
-            "Edit": {
+            [pageNames.edit]: {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
                 onAction2_2: this.addSelectedDocumentToList,
@@ -199,7 +207,7 @@ export default class ExportMainView extends React.Component {
 
     toggleDialog() {
         let newState = this.state;
-        newState.open = !newState.open;
+        newState.showDialog = !newState.showDialog;
         this.setState(newState);
     }
 
@@ -210,7 +218,7 @@ export default class ExportMainView extends React.Component {
             this.setState(newState);
         }
 
-        if (this.props.currentPage === "Edit") {
+        if (this.props.currentPage === pageNames.edit) {
             this.mapValues();
         }
     }
@@ -313,7 +321,7 @@ export default class ExportMainView extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.currentPage !== prevProps.currentPage && this.props.currentPage === "Edit") {
+        if (this.props.currentPage !== prevProps.currentPage && this.props.currentPage === pageNames.edit) {
             this.mapValues();
         }
     }
@@ -334,7 +342,7 @@ export default class ExportMainView extends React.Component {
                 (result) => {
                     let res = result.response;
                     let newState = this.state;
-                    newState.open = false;
+                    newState.showDialog = false;
                     this.setState(newState);
                 }
             )
@@ -356,7 +364,7 @@ export default class ExportMainView extends React.Component {
 
                     let res = result.response;
                     let newState = this.state;
-                    newState.open = false;
+                    newState.showDialog = false;
                     this.setState(newState);
                 }
             )
@@ -372,6 +380,7 @@ export default class ExportMainView extends React.Component {
             <div>
                 <Row>
                     <Column>
+                        {/*Insert left column next to editor, so editor is centered*/}
                     </Column>
                     <Column>
                         <div style={{overflow: "auto"}}><DocEditor
@@ -387,9 +396,7 @@ export default class ExportMainView extends React.Component {
                     </Column>
                     <Column>
                         <RightSidepanel
-                            comp1={componentSet.comp1}
-                            comp2={componentSet.comp2}
-                            comp3={componentSet.comp3}
+                            componentSet={componentSet}
                             onAction1_1={actionSet.onAction1_1 || null}
                             onAction1_2={actionSet.onAction1_2 || null}
                             onAction2_2={actionSet.onAction2_2 || null}
@@ -404,7 +411,7 @@ export default class ExportMainView extends React.Component {
                     </Column>
                 </Row>
                 <Dialog
-                    open={this.state.open}
+                    showDialog={this.state.showDialog}
                     onClose={this.toggleDialog}
                     save={this.saveTemplate}
                     currentPage={this.props.currentPage}

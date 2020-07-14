@@ -42,15 +42,11 @@ export default class FloatingWindow extends React.Component {
                 title: "Store Template",
                 content: SaveTemplateWindow
             },
-            "Edit": {
+            [pageNames.edit]: {
                 title: "Export Document",
                 content: ExportDocumentWindow
             }
         }
-    }
-
-    updateSearch(event) {
-        this.setState({search: event.target.value.substr(0, 20)});
     }
 
     render() {
@@ -66,8 +62,7 @@ export default class FloatingWindow extends React.Component {
                     fullWidth={true}
                     maxWidth={'lg'}
                     classes={{minHeight: '80vh', maxHeight: '80vh'}}
-                    aria-labelledby="simple-dialog-title"
-                    open={this.props.open}>
+                    open={this.props.showDialog}>
                 <DialogTitle id="simple-dialog-title">{dialogTitle}</DialogTitle>
                 <Row style={{margin: "10px"}}>
                     <Column style={styles.column}>
@@ -77,7 +72,6 @@ export default class FloatingWindow extends React.Component {
                         <Preview editorState={this.props.editorState}/>
                     </Column>
                     <DialogContent
-                        updateSearch={this.updateSearch}
                         value={this.state.search}
                         filteredRecords={filteredRecords}
                         onClose={this.props.onClose}

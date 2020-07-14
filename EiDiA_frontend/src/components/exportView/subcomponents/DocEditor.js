@@ -18,17 +18,18 @@ const styles = {
 export default class DocEditor extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {editor: null} // reference to editor component
         this.setEditor = this.setEditor.bind(this);
         this.focusEditor = this.focusEditor.bind(this);
     }
 
     setEditor(editor) {
-        this.editor = editor;
+        this.setState({editor: editor})
     }
 
     focusEditor() {
-        if (this.editor) {
-            this.editor.focus();
+        if (this.state.editor) {
+            this.state.editor.focus();
         }
     }
 

@@ -4,7 +4,7 @@ import React from 'react';
 import {makeStyles, Toolbar, Typography} from "@material-ui/core";
 import {pageNames} from "../../support files/constants";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
         root: {
             position: "relative",
         },
@@ -33,8 +33,8 @@ const MenuAppBar = (props) => {
         <div className={classes.root}>
             <Toolbar disableGutters={true} className={classes.toolBar}>
                 <Typography variant="subtitle1" align="center"
-                            className={props.title === "Select Template" ? classes.title : classes.titleUnselect}
-                            onClick={() => props.changeView("Select Template")}
+                            className={props.title === pageNames.selectTemplate ? classes.title : classes.titleUnselect}
+                            onClick={() => props.changeView(pageNames.selectTemplate)}
                 >
                     Select Template
                 </Typography>
@@ -45,8 +45,8 @@ const MenuAppBar = (props) => {
                     Edit Template
                 </Typography>
                 <Typography variant="subtitle1" align="center"
-                            className={props.title === "Edit" ? classes.title : classes.titleUnselect}
-                            onClick={() => props.changeView("Edit")}
+                            className={props.title === pageNames.edit ? classes.title : classes.titleUnselect}
+                            onClick={() => props.changeView(pageNames.edit)}
                 >
                     Edit
                 </Typography>

@@ -6,15 +6,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 const styles = {
-    column: {
-        margin: "15px",
-    },
-    box: {
-        width: '7cm',
-        height: '10cm',
-        align: 'center',
-        padding: "20px",
-    },
     button_left: {
         margin: "15px",
         align: "left",
@@ -47,7 +38,7 @@ export default class ExportDocumentWindow extends React.Component {
     }
 
     render() {
-        let selectedDocs = this.props.selectedDocs;
+        let usedDocs = this.props.selectedDocs;
         return (
             <div>
                 <Column>
@@ -55,7 +46,7 @@ export default class ExportDocumentWindow extends React.Component {
                         Used Documents
                     </Typography>
                     <FormGroup>
-                        {selectedDocs.map((doc) => <FormControlLabel
+                        {usedDocs.map((doc) => <FormControlLabel
                             control={<Checkbox color="primary" onChange={() => this.selectDocument(doc)}/>}
                             label={doc}/>)}
                     </FormGroup>
