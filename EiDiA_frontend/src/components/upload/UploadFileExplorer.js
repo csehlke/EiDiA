@@ -1,6 +1,6 @@
 import React from 'react';
 import Element from './uploadFiletable/Element'
-import {databaseEntriesPlaceholder} from "../../assets/Constants";
+import {databaseEntriesPlaceholder, fileTypes} from "../../assets/Constants";
 import Grid from "@material-ui/core/Grid";
 
 /**
@@ -12,9 +12,17 @@ export default class UploadFileExplorer extends React.Component {
 
     constructor(props) {
         super(props);
-        databaseEntriesPlaceholder.forEach(element => element.activeFolder = false); //initially show folders unopened
+
+        let onlyFolders = []; // Does not contain elements other than folders
+        databaseEntriesPlaceholder.forEach(function (element) {
+            if (element.type === fileTypes.FOLDER) {
+                element.activeFolder = false  //initially show folders unopened
+                onlyFolders.push(element)
+            }
+
+        });
         this.state = {
-            elements: databaseEntriesPlaceholder,
+            elements: onlyFolders,
         }
     }
 
