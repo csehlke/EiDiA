@@ -26,7 +26,7 @@ export default class SaveTemplateSection extends React.Component {
                     </Typography>
                 </Row>
                 <Row>
-                    <Input placeholder="Template Name" inputProps={{'aria-label': 'description'}}/>
+                    <Input placeholder="Template Name"/>
                 </Row>
                 <Row>
                     <Button
