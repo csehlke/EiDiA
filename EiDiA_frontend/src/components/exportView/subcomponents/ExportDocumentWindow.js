@@ -75,23 +75,6 @@ export default class ExportDocumentWindow extends React.Component {
                             variant="contained"
                             color="primary"
                             disableElevation
-                        >
-                            Send as E-Mail
-                        </Button>
-                        <Button
-                            style={styles.button_right}
-                            variant="contained"
-                            color="primary"
-                            disableElevation
-                            onClick={this.download}
-                        >
-                            Download
-                        </Button>
-                        <Button
-                            style={styles.button_right}
-                            variant="contained"
-                            color="primary"
-                            disableElevation
                             onClick={this.download}
                         >
                             Export
