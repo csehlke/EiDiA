@@ -45,8 +45,6 @@ class AttributeContainer extends React.Component {
             department: "",
             comment: "",
             createdBy: "5ef9e3d2c4664e04e4003999", //Placeholder
-            parentFolderId: "5ef9e3d2c4664e04e4003999", //Placeholder
-            recordId: "5ef9e3d2c4664e04e4003999", //Placeholder
             //TODO Remove Placeholders
         }
         this.attrsToBackend = this.attrsToBackend.bind(this);
@@ -279,8 +277,8 @@ class AttributeContainer extends React.Component {
             department: this.state.department,
             comment: this.state.comment,
             createdBy: this.state.createdBy,
-            parentFolderId: this.state.parentFolderId,
-            recordId: this.state.recordId,
+            parentFolderId: this.props.assignedFolder,
+            recordId: this.props.assignedRecord,
             name: this.props.documentName,
             documentTypeId: this.props.selectedDocumentTypeId,
             base64Image: this.props.base64Image

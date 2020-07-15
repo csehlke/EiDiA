@@ -29,7 +29,9 @@ export class UploadView extends React.Component {
             ocrWorker: this.loadWorker(), // Worker already initializes in UploadView to save startup time in AttributeContainer
             selectedDocumentTypeId: '',
             documentName: '',
-            base64Image: ''
+            base64Image: '',
+            assignedRecord: '',
+            assignedFolder: ''
         }
 
         this.passPicture = this.passPicture.bind(this);
@@ -54,14 +56,13 @@ export class UploadView extends React.Component {
     }
 
 
-    getTypePickerData(documentTypeId, documentName) { //Callback to be able get Document Type + Assigned Record + Document name
+    getTypePickerData(documentTypeId, documentName, selectedRecord, selectedFolder) { //Callback to be able get Document Type + Assigned Record + Document name
         this.setState({
             selectedDocumentTypeId: documentTypeId,
             documentName: documentName,
-            isNextPressed: true
-            //assignedRecord:
-
-            //TODO Add Assigned record
+            isNextPressed: true,
+            assignedRecord: selectedRecord,
+            assignedFolder: selectedFolder
         });
     }
 
@@ -139,7 +140,9 @@ export class UploadView extends React.Component {
                                             setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}
                                             ocrWorker={this.state.ocrWorker}
                                             selectedDocumentTypeId={this.state.selectedDocumentTypeId}
-                                            base64Image={this.state.base64Image}/>
+                                            base64Image={this.state.base64Image}
+                                            assignedRecord={this.state.assignedRecord}
+                                            assignedFolder={this.state.assignedFolder}/>
                     </SplitView>
                 </Page>
             );

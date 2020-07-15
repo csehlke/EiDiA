@@ -43,14 +43,13 @@ class RecordPickerDialog extends React.Component {
             search: '',
             renderRecordPicker: true, // show record picker before FileExplorer
             selectedRecord: '',
-            selectedFolder: 'Root-Folder', //intermediate value
-            finalSelectedFolder: '' //final value
+            selectedFolder: 'Root-Folder',
         }
         this.closeDialog = this.closeDialog.bind(this);
         this.updateSearch = this.updateSearch.bind(this);
         this.handleRecordClick = this.handleRecordClick.bind(this);
         this.getSelectedFolder = this.getSelectedFolder.bind(this);
-        this.saveFinalSelectedFolder = this.saveFinalSelectedFolder.bind(this);
+        this.saveSelectedData = this.saveSelectedData.bind(this);
     }
 
     componentDidMount() {
@@ -83,15 +82,16 @@ class RecordPickerDialog extends React.Component {
 
     getSelectedFolder(element) {
         this.setState({
-            selectedFolder: element.name
+            selectedFolder: element
         });
     }
 
-    saveFinalSelectedFolder() {
-        this.setState({
-            finalSelectedFolder: this.state.selectedFolder
-        });
+    saveSelectedData() {
+        this.props.sendData(this.state.selectedRecord.id, this.state.selectedFolder.id)
         this.props.onClose()
+        this.setState({
+            selectedFolder: 'Root-Folder' //Reset state after close
+        });
     }
 
     render() {
@@ -136,14 +136,14 @@ class RecordPickerDialog extends React.Component {
                                             recordId={this.state.selectedRecord.id}/>
                     </SizedDialogContent>
                     <DialogActions>
-                        <b>Current Selection: &nbsp;</b> {this.state.selectedFolder}
+                        <b>Current Selection: &nbsp;</b> {this.state.selectedFolder.name}
                         <Button color={"secondary"}
                                 onClick={this.closeDialog}>
                             Cancel
                         </Button>
                         <Button autoFocus
                                 color="primary"
-                                onClick={this.saveFinalSelectedFolder}
+                                onClick={this.saveSelectedData}
                         >
                             Save
                         </Button>

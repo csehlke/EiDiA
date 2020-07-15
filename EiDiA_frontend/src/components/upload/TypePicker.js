@@ -39,7 +39,9 @@ class TypePicker extends React.Component {
             hasAutoCompleteValue: false, // true, if autoComplete has value
             documentName: '',
             docDialogOpened: false,
-            recDialogOpened: false
+            recDialogOpened: false,
+            selectedRecord: '',
+            selectedFolder: ''
         }
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
@@ -50,6 +52,7 @@ class TypePicker extends React.Component {
         this.newDocTypeToBackend = this.newDocTypeToBackend.bind(this);
         this.openRecDialog = this.openRecDialog.bind(this);
         this.closeRecDialog = this.closeRecDialog.bind(this);
+        this.getDataFromRecDialog = this.getDataFromRecDialog.bind(this);
     }
 
     componentDidMount() {
@@ -89,7 +92,7 @@ class TypePicker extends React.Component {
     }
 
     handleNextButtonOnClick() {
-        this.props.callbackUploadView(this.state.selectedDocumentTypeId, this.state.documentName);
+        this.props.callbackUploadView(this.state.selectedDocumentTypeId, this.state.documentName, this.state.selectedRecord, this.state.selectedFolder);
     }
 
 
@@ -122,6 +125,14 @@ class TypePicker extends React.Component {
             recDialogOpened: false
         });
     }
+
+    getDataFromRecDialog(selectedRecord, selectedFolder) {
+        this.setState({
+            selectedRecord: selectedRecord,
+            selectedFolder: selectedFolder
+        });
+    }
+
 
     newDocTypeToBackend(requestData) {
         CommonService.addNewDocumentType(requestData)
@@ -202,7 +213,7 @@ class TypePicker extends React.Component {
                 <RecordPickerDialog
                     open={this.state.recDialogOpened}
                     onClose={this.closeRecDialog}
-                    createNewDocumentType={(newDocumentType) => this.newDocTypeToBackend(newDocumentType)}/>
+                    sendData={this.getDataFromRecDialog}/>
             </Container>
         )
     }
