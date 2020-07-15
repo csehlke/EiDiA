@@ -82,7 +82,7 @@ const listDocumentByRecordId = (req, res) => { // Return attributes based on sel
                     id: document._id,
                     name: document.name,
                     parentFolderId: document.parentFolderId,
-                    fileType: document.fileType, //TODO: implement filetype in database
+                    fileType: document.fileType,
                     createdOnDate: document.createdOnDate,
                     lastModifiedOnDate: document.lastModifiedOnDate,
                     comment: document.comment,
