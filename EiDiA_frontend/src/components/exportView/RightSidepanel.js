@@ -7,6 +7,8 @@ const styles = {
         align: "right",
         backgroundColor: "white",
         boxShadow: "-10px 0px 6px -10px rgba(0,0,0,0.5)",
+        maxWidth: "52vh",
+        minWidth: "52vh",
     }
 }
 

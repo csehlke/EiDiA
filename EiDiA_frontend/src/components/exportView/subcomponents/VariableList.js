@@ -1,13 +1,16 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import DocTypeSelector from './DocTypeSelector';
 
 export default class VariableList extends React.Component {
     render() {
         const variableState = this.props.variables;
         const variableKeys = Object.keys(variableState);
         return (
+
             <div style={{margin: "3%"}}>
+                <DocTypeSelector/>
                 <Typography variant="subtitle2">
                     Variables
                 </Typography>

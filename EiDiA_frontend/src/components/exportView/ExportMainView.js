@@ -15,7 +15,6 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import HttpService from "../../services/HttpService";
 
-
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function Dialog(props) {

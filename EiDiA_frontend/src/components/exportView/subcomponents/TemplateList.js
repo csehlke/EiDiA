@@ -26,7 +26,7 @@ export default class TemplateList extends React.Component {
                 this.setState(newState);
             },
             (err) => {
-                console.log(error);
+                console.log(err);
             })
     }
 
