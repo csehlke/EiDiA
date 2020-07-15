@@ -64,7 +64,7 @@ export default class SetValueSection extends React.Component {
         const rows = convertData(variableState);
         return (
             <div>
-                <FormControl style={{margin: "5px"}}>
+                <FormControl style={{margin: "5px", width: '100%', padding: '0 10px 0 0'}}>
                     <Select variant="outlined" onChange={this.props.onAction2}>
                         {variableKeys.map((key) => <MenuItem key={key} value={key}>{key}</MenuItem>)}
                     </Select>
