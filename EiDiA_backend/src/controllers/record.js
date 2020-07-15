@@ -2,11 +2,8 @@
 
 const RecordModel = require('../models/record');
 const DocumentModel = require('../models/document')
-const DocumentTypeModel = require('../models/documentType')
 const mongoose = require("mongoose")
 const listRecords = (req, res) => {
-    //TODO: error handling
-
     RecordModel.find()
         .then(records => {
             let response = records.map(record => {
@@ -29,7 +26,6 @@ const listRecords = (req, res) => {
 };
 
 const addRecord = (req, res) => {
-    //TODO: error handling
     if (!Object.prototype.hasOwnProperty.call(req.body, "recordName")) {
         return res.status(400).json({
             error: 'Bad Request',
