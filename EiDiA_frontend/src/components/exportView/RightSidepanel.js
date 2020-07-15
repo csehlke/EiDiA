@@ -9,6 +9,8 @@ const styles = {
         boxShadow: "-10px 0px 6px -10px rgba(0,0,0,0.5)",
         maxWidth: "52vh",
         minWidth: "52vh",
+        minHeight: '83vh',
+        maxHeight: '83vh'
     }
 }
 
@@ -30,6 +32,7 @@ export default class RightSidePanel extends React.Component {
                     variables={this.props.variables}
                     selectedDocs={this.props.selectedDocs}
                     onAction2_1={this.props.onAction2_1}
+                    onAction2_2={this.props.onAction2_2}
                 />
                 <Divider/>
                 <TypeComponent3

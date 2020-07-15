@@ -1,7 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import DocTypeSelector from './DocTypeSelector';
 
 export default class VariableList extends React.Component {
     render() {
@@ -10,11 +9,10 @@ export default class VariableList extends React.Component {
         return (
 
             <div style={{margin: "3%"}}>
-                <DocTypeSelector/>
                 <Typography variant="subtitle2">
                     Variables
                 </Typography>
-                <Box style={{ height: "200px", maxHeight: "200px", overflow: "auto"}}
+                <Box style={{minHeight: "220px", maxHeight: "220px", overflow: "auto"}}
                      component="span"
                      display="block"
                      p={1}

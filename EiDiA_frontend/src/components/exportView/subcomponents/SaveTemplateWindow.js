@@ -17,6 +17,23 @@ const styles = {
 }
 
 export default class SaveTemplateSection extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            templateName: ""
+        }
+        this.updateName = this.updateName.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    updateName(e) {
+        this.setState({templateName: e.target.value})
+    }
+
+    handleClick() {
+        this.props.save(this.state.templateName);
+    }
+
     render() {
         return (
             <Column>
@@ -26,7 +43,7 @@ export default class SaveTemplateSection extends React.Component {
                     </Typography>
                 </Row>
                 <Row>
-                    <Input placeholder="Template Name" inputProps={{'aria-label': 'description'}}/>
+                    <Input placeholder="Template Name" onChange={this.updateName}/>
                 </Row>
                 <Row>
                     <Button
@@ -43,7 +60,7 @@ export default class SaveTemplateSection extends React.Component {
                         variant="contained"
                         color="primary"
                         disableElevation
-                        onClick={this.props.save}
+                        onClick={this.handleClick}
                     >
                         Save Template
                     </Button>

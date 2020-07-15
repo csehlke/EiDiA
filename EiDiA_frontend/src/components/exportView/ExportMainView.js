@@ -9,11 +9,11 @@ import DocSearch from './subcomponents/DocSearch';
 import ExportSection from './subcomponents/ExportSection';
 import TemplateList from './subcomponents/TemplateList';
 import SaveTemplateSection from './subcomponents/SaveTemplateSection';
-import VariableList from './subcomponents/VariableList';
 import SetValueSection from './subcomponents/SetValueSection';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import HttpService from "../../services/HttpService";
+import DocTypeSelector from "./subcomponents/DocTypeSelector";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -47,7 +47,7 @@ const subComponents = {
     },
     [pageNames.editTemplate]: {
         comp1: EditorTools,
-        comp2: VariableList,
+        comp2: DocTypeSelector,
         comp3: SaveTemplateSection
     },
     [pageNames.edit]: {
@@ -69,6 +69,7 @@ export default class ExportMainView extends React.Component {
             variables: {},
             selectedDocs: [], // e.g. ["Document A", "Document B"] --> array of documents selected for mapping values to variables
             selectedVariable: "", // e.g. $Variable1 --> necessary for manually assigning value to selected variable
+            linkedDocTypes: [],
         };
 
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
@@ -84,6 +85,7 @@ export default class ExportMainView extends React.Component {
         this.getTextFromEditorState = this.getTextFromEditorState.bind(this);
         this.downloadDocument = this.downloadDocument.bind(this);
         this.setValueToVariable = this.setValueToVariable.bind(this);
+        this.addLinkedDocType = this.addLinkedDocType.bind(this);
 
         // reference to document editor, allows access to focus() method (focus editor)
         // necessary for setting inline styles
@@ -95,6 +97,7 @@ export default class ExportMainView extends React.Component {
                 onAction1_1: this.selectTemplate,
                 onAction1_2: this.toggleBlockType,
                 onAction2_1: this.addSelectedDocumentToList,
+                onAction2_2: null,
                 onAction3_1: this.props.changeView,
                 onAction3_2: this.setSelectedVariable,
                 onAction3_3: null
@@ -103,6 +106,7 @@ export default class ExportMainView extends React.Component {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
                 onAction2_1: null,
+                onAction2_2: this.addLinkedDocType,
                 onAction3_1: this.toggleDialog,
                 onAction3_2: this.setSelectedVariable,
                 onAction3_3: null
@@ -111,6 +115,7 @@ export default class ExportMainView extends React.Component {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
                 onAction2_1: this.addSelectedDocumentToList,
+                onAction2_2: null,
                 onAction3_1: this.toggleDialog,
                 onAction3_2: this.setSelectedVariable,
                 onAction3_3: this.setValueToVariable
@@ -131,6 +136,10 @@ export default class ExportMainView extends React.Component {
         if (this.props.currentPage !== prevProps.currentPage && this.props.currentPage === pageNames.edit) {
             this.mapDocumentsWithVariables();
         }
+    }
+
+    addLinkedDocType(docType) {
+        this.setState({linkedDocTypes: this.state.linkedDocTypes.concat(docType.id)})
     }
 
     // Set Value to variable manually (not from document)
@@ -330,10 +339,15 @@ export default class ExportMainView extends React.Component {
         this.setState(newState);
     }
 
-    saveTemplate() {
+    saveTemplate(templateName) {
         // TODO: Let User save template
-        const editorText = this.getTextFromEditorState(this.state.editorState);
-        HttpService.post(endpoints.saveTemplate, editorText, (response) => {
+        const params = {
+            editorText: this.getTextFromEditorState(this.state.editorState),
+            linkedDocTypeIds: this.state.linkedDocTypes,
+            name: templateName
+        }
+        console.log(params);
+        HttpService.post(endpoints.saveTemplate, params, (response) => {
             let res = response;
             console.log(res);
             let newState = this.state;
@@ -391,6 +405,7 @@ export default class ExportMainView extends React.Component {
                             onAction1_1={actionSet.onAction1_1}
                             onAction1_2={actionSet.onAction1_2}
                             onAction2_1={actionSet.onAction2_1}
+                            onAction2_2={actionSet.onAction2_2}
                             onAction3_1={actionSet.onAction3_1}
                             onAction3_2={actionSet.onAction3_2}
                             onAction3_3={actionSet.onAction3_3}
