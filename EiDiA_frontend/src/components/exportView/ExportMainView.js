@@ -140,7 +140,7 @@ export default class ExportMainView extends React.Component {
         let variableState = newState.variables;
         let index = variableState[newState.selectedVariable].index;
         variableState[newState.selectedVariable].value = value;
-        variableState[newState.selectedVariable].source = value;
+        variableState[newState.selectedVariable].source = 'user';
         newState.variables = variableState;
 
         let editorText = this.setValuesToText(index, value, newState.editorState);
