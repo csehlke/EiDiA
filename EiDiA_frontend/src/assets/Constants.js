@@ -342,7 +342,7 @@ export const databaseEntriesPlaceholder = [
         id: 3,
         activeFolder: false,
         type: fileTypes.FOLDER,
-        name: "Sample Folder",
+        name: "Sample Tom Folder",
         dateCreation: '',
         dateModification: '',
         comment: 'TJust some Folder',
