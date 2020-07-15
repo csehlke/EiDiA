@@ -26,15 +26,17 @@ export default class UploadFileExplorer extends React.Component {
         }
     }
 
+    componentDidMount() {
+        //TODO get all elements based on this.props.recordId
+    }
+
     setNewParent = (child) => (newParentId) => {
         child.parentId = newParentId;
 
         this.setState(this.state);
     }
     onFolderClicked = (element) => () => {
-        //element.activeFolder = !element.activeFolder;
-        this.props.sendFolder(element)
-        //TODO send ID to BACKEND here
+        this.props.sendFolder(element) // --> Current selected Folder to Dialog
 
         this.setState(this.state);
     }

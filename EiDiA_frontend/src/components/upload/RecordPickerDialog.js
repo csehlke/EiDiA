@@ -120,7 +120,8 @@ class RecordPickerDialog extends React.Component {
                         Set Save Location in Record "{this.state.selectedRecord.name}"
                     </DialogTitle>
                     <SizedDialogContent dividers>
-                        <UploadFileExplorer sendFolder={this.getSelectedFolder}/>
+                        <UploadFileExplorer sendFolder={this.getSelectedFolder}
+                                            recordId={this.state.selectedRecord.id}/>
                     </SizedDialogContent>
                     <DialogContentText>
                         <b>Current Selection:</b> {this.state.selectedFolder}
