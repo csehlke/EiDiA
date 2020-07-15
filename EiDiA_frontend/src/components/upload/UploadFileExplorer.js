@@ -1,7 +1,6 @@
 import React from 'react';
 import Element from './uploadFiletable/Element'
-import ElementDropTarget from "./uploadFiletable/ElementDropTarget";
-import {databaseEntriesPlaceholder, fileTypes} from "../../assets/Constants";
+import {databaseEntriesPlaceholder} from "../../assets/Constants";
 import Grid from "@material-ui/core/Grid";
 
 /**
@@ -13,7 +12,7 @@ export default class UploadFileExplorer extends React.Component {
 
     constructor(props) {
         super(props);
-        databaseEntriesPlaceholder.forEach(element => element.activeFolder = false);
+        databaseEntriesPlaceholder.forEach(element => element.activeFolder = false); //initially show folders unopened
         this.state = {
             elements: databaseEntriesPlaceholder,
         }
@@ -33,20 +32,12 @@ export default class UploadFileExplorer extends React.Component {
     renderElement(element, index, level) {
         return ([
                 <Grid key={index} item xs={12}>
-                    <ElementDropTarget
-                        type={element.type}
-                        id={element.id}
-                    >
-
-                        <Element
-                            level={level}
-                            elementData={element}
-                            handleDrop={this.setNewParent(element)}
-                            activeToggle={this.activeToggle(element)}>
-
-
-                        </Element>
-                    </ElementDropTarget>
+                    <Element
+                        level={level}
+                        elementData={element}
+                        handleDrop={this.setNewParent(element)}
+                        activeToggle={this.activeToggle(element)}>
+                    </Element>
                 </Grid>
                 ,
                 element.activeFolder === true ?
@@ -72,11 +63,6 @@ export default class UploadFileExplorer extends React.Component {
                 {this.state.elements.map((element, index) => element.parentId === 0 ?
                     this.renderElement(element, index, 0) : null
                 )}
-                <ElementDropTarget id={0} type={fileTypes.FOLDER}>
-                    {/*TODO:
-                    - Drop area*/}
-                </ElementDropTarget>
-                {/*TODO: add FA Button for adding a folder*/}
             </Grid>
         );
     }

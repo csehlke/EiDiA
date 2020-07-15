@@ -17,19 +17,13 @@ const Name = styled.div`
 const itemSource = {
     beginDrag() {
         return {};
-    },
-    endDrag(props, monitor, component) {
-        if (!monitor.getDropResult()) return
-        let wrapperProps = monitor.getDropResult().component.props;
-        component.props.handleDrop(wrapperProps.id);
-
     }
 }
 
 function collectDrag(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
-        isDragging: monitor.isDragging()
+        isDragging: false
     };
 }
 
@@ -55,7 +49,7 @@ class Element extends React.Component {
                 {!isDragging &&
                 //TODO: cursor doesnt work yet
                 <Grid container spacing={2}
-                      style={{cursor: (this.state.elementData.type === fileTypes.FOLDER) && 'pointer'}}
+                      style={{cursor: (this.state.elementData.type === fileTypes.FOLDER) && 'pointer'}} //Set cursor style when folder
                       onClick={this.props.activeToggle}>
                     <Grid item xs={12} sm={4}>
                         <Name padding={this.state.padding}>
