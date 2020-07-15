@@ -16,13 +16,13 @@ export default class UploadFileExplorer extends React.Component {
         let onlyFolders = []; // Does not contain elements other than folders
         databaseEntriesPlaceholder.forEach(function (element) {
             if (element.type === fileTypes.FOLDER) {
-                element.activeFolder = false  //initially show folders unopened
+                element.activeFolder = true  // show all folders opened
                 onlyFolders.push(element)
             }
 
         });
         this.state = {
-            elements: onlyFolders,
+            elements: onlyFolders
         }
     }
 
@@ -31,8 +31,10 @@ export default class UploadFileExplorer extends React.Component {
 
         this.setState(this.state);
     }
-    activeToggle = (element) => () => {
-        element.activeFolder = !element.activeFolder;
+    onFolderClicked = (element) => () => {
+        //element.activeFolder = !element.activeFolder;
+        this.props.sendFolder(element)
+        //TODO send ID to BACKEND here
 
         this.setState(this.state);
     }
@@ -44,7 +46,7 @@ export default class UploadFileExplorer extends React.Component {
                         level={level}
                         elementData={element}
                         handleDrop={this.setNewParent(element)}
-                        activeToggle={this.activeToggle(element)}>
+                        onFolderClicked={this.onFolderClicked(element)}>
                     </Element>
                 </Grid>
                 ,

@@ -23,7 +23,7 @@ const itemSource = {
 function collectDrag(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
-        isDragging: false
+        isDragging: false,
     };
 }
 
@@ -36,21 +36,20 @@ class Element extends React.Component {
             symbolArray: [],
             padding: this.props.level * 5,
             width: 40 - this.props.level * 2,
-            elementData: this.props.elementData
+            elementData: this.props.elementData,
         };
     }
 
 
     render() {
         const {isDragging} = this.props;
-
         const toRender = (
             <div>
                 {!isDragging &&
                 //TODO: cursor doesnt work yet
                 <Grid container spacing={2}
                       style={{cursor: (this.state.elementData.type === fileTypes.FOLDER) && 'pointer'}} //Set cursor style when folder
-                      onClick={this.props.activeToggle}>
+                      onClick={this.props.onFolderClicked}>
                     <Grid item xs={12} sm={4}>
                         <Name padding={this.state.padding}>
                             <ElementSymbol type={this.state.elementData.type}

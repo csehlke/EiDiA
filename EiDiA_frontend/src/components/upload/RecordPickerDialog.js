@@ -10,6 +10,7 @@ import {RecordSymbol} from "../record/RecordSymbol";
 import IconButton from "@material-ui/core/IconButton";
 import RecordService from "../../services/RecordService";
 import UploadFileExplorer from "./UploadFileExplorer";
+import DialogContentText from "@material-ui/core/DialogContentText";
 
 const FlexRow = styled.div`
     display: flex;
@@ -41,11 +42,13 @@ class RecordPickerDialog extends React.Component {
             records: [],
             search: '',
             renderRecordPicker: true,
-            selectedRecord: '' //TODO HIER IST NAME UND ID DRIN
+            selectedRecord: '', //TODO HIER IST NAME UND ID DRIN
+            selectedFolder: ''
         }
         this.closeDialog = this.closeDialog.bind(this);
         this.updateSearch = this.updateSearch.bind(this);
         this.handleRecordClick = this.handleRecordClick.bind(this);
+        this.getSelectedFolder = this.getSelectedFolder.bind(this);
     }
 
     componentDidMount() {
@@ -70,6 +73,12 @@ class RecordPickerDialog extends React.Component {
         this.setState({
             selectedRecord: record,
             renderRecordPicker: false
+        });
+    }
+
+    getSelectedFolder(element) {
+        this.setState({
+            selectedFolder: element.name
         });
     }
 
@@ -111,8 +120,11 @@ class RecordPickerDialog extends React.Component {
                         Set Save Location in Record "{this.state.selectedRecord.name}"
                     </DialogTitle>
                     <SizedDialogContent dividers>
-                        <UploadFileExplorer/>
+                        <UploadFileExplorer sendFolder={this.getSelectedFolder}/>
                     </SizedDialogContent>
+                    <DialogContentText>
+                        <b>Current Selection:</b> {this.state.selectedFolder}
+                    </DialogContentText>
                 </Dialog>
             )
         }
