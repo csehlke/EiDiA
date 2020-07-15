@@ -39,7 +39,8 @@ class RecordPickerDialog extends React.Component {
         this.state = {
             records: [],
             search: '',
-            renderRecordPicker: true
+            renderRecordPicker: true,
+            selectedRecord: ''
         }
         this.closeDialog = this.closeDialog.bind(this);
         this.updateSearch = this.updateSearch.bind(this);
@@ -64,9 +65,9 @@ class RecordPickerDialog extends React.Component {
         this.props.onClose();
     }
 
-    handleRecordClick(records) {
-        console.log(records)
+    handleRecordClick(record) {
         this.setState({
+            selectedRecord: record.id,
             renderRecordPicker: false
         });
     }
@@ -91,7 +92,7 @@ class RecordPickerDialog extends React.Component {
 
                         <FlexRow>
                             {filteredRecords.map((record, i) =>
-                                <IconButton onClick={this.handleRecordClick}
+                                <IconButton onClick={() => this.handleRecordClick(record)}
                                             key={i}
                                             size={"small"}
                                             disableRipple>
