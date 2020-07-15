@@ -5,12 +5,12 @@ import styled from "styled-components";
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import {Input} from '@material-ui/core';
+import DialogActions from '@material-ui/core/DialogActions';
+import {Button, Input} from '@material-ui/core';
 import {RecordSymbol} from "../record/RecordSymbol";
 import IconButton from "@material-ui/core/IconButton";
 import RecordService from "../../services/RecordService";
 import UploadFileExplorer from "./UploadFileExplorer";
-import DialogContentText from "@material-ui/core/DialogContentText";
 
 const FlexRow = styled.div`
     display: flex;
@@ -41,14 +41,16 @@ class RecordPickerDialog extends React.Component {
         this.state = {
             records: [],
             search: '',
-            renderRecordPicker: true,
-            selectedRecord: '', //TODO HIER IST NAME UND ID DRIN
-            selectedFolder: 'Root-Folder'
+            renderRecordPicker: true, // show record picker before FileExplorer
+            selectedRecord: '',
+            selectedFolder: 'Root-Folder', //intermediate value
+            finalSelectedFolder: '' //final value
         }
         this.closeDialog = this.closeDialog.bind(this);
         this.updateSearch = this.updateSearch.bind(this);
         this.handleRecordClick = this.handleRecordClick.bind(this);
         this.getSelectedFolder = this.getSelectedFolder.bind(this);
+        this.saveFinalSelectedFolder = this.saveFinalSelectedFolder.bind(this);
     }
 
     componentDidMount() {
@@ -67,6 +69,9 @@ class RecordPickerDialog extends React.Component {
 
     closeDialog() {
         this.props.onClose();
+        this.setState({
+            selectedFolder: 'Root-Folder' //Reset state after close
+        });
     }
 
     handleRecordClick(record) {
@@ -80,6 +85,13 @@ class RecordPickerDialog extends React.Component {
         this.setState({
             selectedFolder: element.name
         });
+    }
+
+    saveFinalSelectedFolder() {
+        this.setState({
+            finalSelectedFolder: this.state.selectedFolder
+        });
+        this.props.onClose()
     }
 
     render() {
@@ -123,9 +135,19 @@ class RecordPickerDialog extends React.Component {
                         <UploadFileExplorer sendFolder={this.getSelectedFolder}
                                             recordId={this.state.selectedRecord.id}/>
                     </SizedDialogContent>
-                    <DialogContentText>
-                        <b>Current Selection:</b> {this.state.selectedFolder}
-                    </DialogContentText>
+                    <DialogActions>
+                        <b>Current Selection: &nbsp;</b> {this.state.selectedFolder}
+                        <Button color={"secondary"}
+                                onClick={this.closeDialog}>
+                            Cancel
+                        </Button>
+                        <Button autoFocus
+                                color="primary"
+                                onClick={this.saveFinalSelectedFolder}
+                        >
+                            Save
+                        </Button>
+                    </DialogActions>
                 </Dialog>
             )
         }

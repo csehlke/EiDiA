@@ -46,7 +46,6 @@ class Element extends React.Component {
         const toRender = (
             <div>
                 {!isDragging &&
-                //TODO: cursor doesnt work yet
                 <Grid container spacing={2}
                       style={{cursor: (this.state.elementData.type === fileTypes.FOLDER) && 'pointer'}} //Set cursor style when folder
                       onClick={this.props.onFolderClicked}>
