@@ -2,7 +2,6 @@
 
 const DocumentModel = require('../models/document');
 const ErrorHandling = require('./errorHandling');
-const {fileTypes} = require('../../../constants');
 
 const tes = require('tesseract.js')
 

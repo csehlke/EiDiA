@@ -9,12 +9,9 @@ import {fileTypes} from "../../../../../constants";
 import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
 
-
 const Name = styled.div`
-    
     padding-left: ${props => props.padding + "%"};
 `;
-
 
 const itemSource = {
     beginDrag() {
@@ -24,7 +21,6 @@ const itemSource = {
         if (!monitor.getDropResult()) return
         let wrapperProps = monitor.getDropResult().component.props;
         component.props.handleDrop(wrapperProps.id);
-
     }
 }
 
@@ -47,7 +43,6 @@ class Element extends React.Component {
             elementData: this.props.elementData
         };
     }
-
 
     render() {
         const {isDragging} = this.props;
@@ -78,10 +73,7 @@ class Element extends React.Component {
                     <Grid item xs={12} sm={2}>
                         <ElementActions actions={this.state.elementData.actions}/>
                     </Grid>
-
-
-                </Grid>
-                }
+                </Grid>}
             </div>
         );
         return this.props.connectDragSource(toRender);

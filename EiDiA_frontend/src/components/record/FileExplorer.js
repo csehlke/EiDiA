@@ -6,10 +6,10 @@ import {databaseEntriesPlaceholder} from "../../assets/Constants";
 import {fileTypes} from "../../../../constants";
 import Grid from "@material-ui/core/Grid";
 
-
 const Center = styled.div`
    text-align:center;
 `;
+
 /**
  * TODO:
  * - Cant drag files to toplevel at the moment
@@ -21,13 +21,20 @@ export default class FileExplorer extends React.Component {
         super(props);
         databaseEntriesPlaceholder.forEach(element => element.activeFolder = false);
         this.state = {
-            elements: databaseEntriesPlaceholder,
+            elements: this.props.elements ? this.props.elements : databaseEntriesPlaceholder,
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps !== this.props) {
+            this.setState({
+                elements: this.props.elements ? this.props.elements : databaseEntriesPlaceholder,
+            })
         }
     }
 
     setNewParent = (child) => (newParentId) => {
         child.parentId = newParentId;
-
         this.setState(this.state);
     }
     activeToggle = (element) => () => {
@@ -39,32 +46,26 @@ export default class FileExplorer extends React.Component {
     renderElement(element, index, level) {
         return ([
                 <Grid key={index} item xs={12}>
-                    <ElementDropTarget
-                        type={element.type}
-                        id={element.id}
-                    >
-
+                    <ElementDropTarget type={element.type}
+                                       id={element.id}
+                                       dragEnabled={this.props.dragEnabled}>
                         <Element
                             level={level}
                             elementData={element}
                             handleDrop={this.setNewParent(element)}
                             activeToggle={this.activeToggle(element)}>
-
-
                         </Element>
                     </ElementDropTarget>
-                </Grid>
-                ,
+                </Grid>,
                 element.activeFolder === true ?
                     this.state.elements.map((child, indexChild) =>
-                        child.parentId === element.id ? this.renderElement(child, indexChild, level + 1) : null
-                    ) : null
+                        child.parentId === element.id ?
+                            this.renderElement(child, indexChild, level + 1) :
+                            null) :
+                    null
             ]
-
-
         );
     }
-
 
     render() {
         return (
@@ -91,7 +92,8 @@ export default class FileExplorer extends React.Component {
                 {this.state.elements.map((element, index) => element.parentId === 0 ?
                     this.renderElement(element, index, 0) : null
                 )}
-                <ElementDropTarget id={0} type={fileTypes.FOLDER}>
+                <ElementDropTarget id={0} type={fileTypes.FOLDER}
+                                   dragEnabled={this.props.dragEnabled}>
                     {/*TODO:
                     - Drop area*/}
                 </ElementDropTarget>
