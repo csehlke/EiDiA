@@ -43,7 +43,7 @@ class RecordPickerDialog extends React.Component {
             search: '',
             renderRecordPicker: true, // show record picker before FileExplorer
             selectedRecord: '',
-            selectedFolder: 'Root-Folder',
+            selectedFolder: {name: 'Root-Folder', id: '000000000000000000000000'},
         }
         this.closeDialog = this.closeDialog.bind(this);
         this.updateSearch = this.updateSearch.bind(this);
@@ -69,7 +69,7 @@ class RecordPickerDialog extends React.Component {
     closeDialog() {
         this.props.onClose();
         this.setState({
-            selectedFolder: 'Root-Folder' //Reset state after close
+            selectedFolder: {name: 'Root-Folder', id: '000000000000000000000000'} //Reset state after close
         });
     }
 
@@ -89,9 +89,6 @@ class RecordPickerDialog extends React.Component {
     saveSelectedData() {
         this.props.sendData(this.state.selectedRecord.id, this.state.selectedFolder.id)
         this.props.onClose()
-        this.setState({
-            selectedFolder: 'Root-Folder' //Reset state after close
-        });
     }
 
     render() {

@@ -198,7 +198,7 @@ class TypePicker extends React.Component {
                         <Button
                             variant="contained"
                             color="primary"
-                            disabled={this.state.isNextButtonDisabled}
+                            disabled={this.state.selectedFolder === '' || this.state.isNextButtonDisabled}
                             onClick={this.handleNextButtonOnClick}>
                             Next
                         </Button>

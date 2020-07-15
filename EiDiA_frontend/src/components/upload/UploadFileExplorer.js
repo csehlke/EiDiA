@@ -81,7 +81,7 @@ export default class UploadFileExplorer extends React.Component {
                 <Grid item xs={12}>
                     <hr/>
                 </Grid>
-                {this.state.elements.map((element, index) => element.parentFolderId === undefined ?
+                {this.state.elements.map((element, index) => element.parentFolderId === '000000000000000000000000' ?
                     this.renderElement(element, index, 0) : null
                 )}
             </Grid>
