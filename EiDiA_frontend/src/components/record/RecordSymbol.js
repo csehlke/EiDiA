@@ -16,7 +16,7 @@ const HeadingNoMargin = styled.p`
 `;
 
 const FolderLogo = styled(FaFolder)`
-     font-size: 3em;
+     font-size: 6em;
      margin: 0 0.25em;
 `;
 
