@@ -8,6 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import {Input} from '@material-ui/core';
 import {RecordSymbol} from "../record/RecordSymbol";
 import IconButton from "@material-ui/core/IconButton";
+import RecordService from "../../services/RecordService";
 
 const FlexRow = styled.div`
     display: flex;
@@ -36,21 +37,7 @@ class RecordPickerDialog extends React.Component {
         super(props);
 
         this.state = {
-            records: ["Volkswagen",
-                "BMW",
-                "Thyssenkrup",
-                "Google",
-                "Facebook",
-                "Microsoft",
-                "ABC Company",
-                "Adidas",
-                "lenovo Limited",
-                "IBM",
-                "TrueThat",
-                "hello",
-                "abc",
-                "def"
-            ],
+            records: [],
             search: '',
             renderRecordPicker: true
         }
@@ -59,8 +46,18 @@ class RecordPickerDialog extends React.Component {
         this.handleRecordClick = this.handleRecordClick.bind(this);
     }
 
+    componentDidMount() {
+        RecordService.getAllRecords().then(result => {
+            this.setState({
+                records: result.records
+            });
+        })
+    }
+
     updateSearch(event) {
-        this.setState({search: event.target.value.substr(0, 20)});
+        this.setState({
+            search: event.target.value
+        });
     }
 
     closeDialog() {
@@ -76,7 +73,7 @@ class RecordPickerDialog extends React.Component {
 
     render() {
         let filteredRecords = this.state.records.filter((record) => {
-            return record.indexOf(this.state.search) !== -1;
+            return record.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1; //make search work without respecting capitalization
         });
         if (this.state.renderRecordPicker) {
             return (
@@ -89,19 +86,16 @@ class RecordPickerDialog extends React.Component {
                             <Input
                                 placeholder="Search Records ..."
                                 value={this.state.search}
-                                onChange={this.updateSearch.bind(this)}/>
+                                onChange={this.updateSearch}/>
                         </SearchBar>
 
                         <FlexRow>
-                            {/*
-                    TODO: make Link depending on the records
-                    */}
-                            {filteredRecords.map((record, i, records) =>
-                                <IconButton onClick={(records) => this.handleRecordClick(records[i])}
-                                            key={records[i]}
+                            {filteredRecords.map((record, i) =>
+                                <IconButton onClick={this.handleRecordClick}
+                                            key={i}
                                             size={"small"}
                                             disableRipple>
-                                    <RecordSymbol name={record}/>
+                                    <RecordSymbol name={record.name}/>
                                 </IconButton>
                             )}
                         </FlexRow>
