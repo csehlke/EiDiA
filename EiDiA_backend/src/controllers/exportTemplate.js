@@ -21,7 +21,7 @@ const listTemplates = (req, res) => {
                 {name: "Template 2", id: "t_2"},
             ];
 
-            res.status(200).json({response: dummyData});
+            res.status(200).json({exportTemplates: dummyData});
         })
         .catch(error => {
             res.status(400).json({
