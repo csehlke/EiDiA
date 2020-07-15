@@ -11,7 +11,12 @@ export default class VariableList extends React.Component {
                 <Typography variant="subtitle2">
                     Variables
                 </Typography>
-                <Box component="span" display="block" p={1} m={1} bgcolor="LightGray">
+                <Box style={{ height: "200px", maxHeight: "200px", overflow: "auto"}}
+                     component="span"
+                     display="block"
+                     p={1}
+                     m={1}
+                     bgcolor="LightGray">
                     {variableKeys.map((key) => <li key={key}>{key}</li>)}
                 </Box>
             </div>

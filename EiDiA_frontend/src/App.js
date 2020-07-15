@@ -12,9 +12,10 @@ import {WelcomeView} from "./views/WelcomeView";
 import Navigation from "./components/Navigation";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
-
 import UserService from "./services/UserService";
 import {UserAdministrationView} from "./views/UserAdministrationView";
+import {ExportView} from "./views/ExportView";
+
 
 export default class App extends React.Component {
 
@@ -26,7 +27,7 @@ export default class App extends React.Component {
             routes: [
                 this.getRoute('/', WelcomeView, true),
                 this.getRoute('/browse', FileCabinetView, true),
-                this.getRoute('/export', DefaultView, true),
+                this.getRoute('/export', ExportView, true),
                 this.getRoute('/help', DefaultView, true),
                 this.getRoute('/permissionRequests', DefaultView, true),
                 this.getRoute('/record', RecordView, true), //TODO<- this should later be deleted

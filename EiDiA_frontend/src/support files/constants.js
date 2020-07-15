@@ -9,7 +9,7 @@ export const Column = styled.div`
     flex: 50%;
 `;
 
-export const BASE_URL = "http://localhost:3000/";
+const BASE_URL = "http://localhost:3000/";
 
 export const pageNames = {
     selectTemplate: "Select Template",
@@ -18,10 +18,10 @@ export const pageNames = {
 }
 
 export const endpoints = {
-    getTemplateList: "exporttemplate/list",
-    getTemplate: "exporttemplate/template/",
-    searchDoc: "exporttemplate/search/",
-    getDocs: "exporttemplate/documents/",
-    saveTemplate: "exporttemplate/save/",
-    exportDocs: "exporttemplate/export/"
+    getTemplateList: BASE_URL + "exporttemplate/list",
+    getTemplate: BASE_URL + "exporttemplate/template/",
+    searchDoc: BASE_URL + "exporttemplate/search/",
+    getDocs: BASE_URL + "exporttemplate/documents/",
+    saveTemplate: BASE_URL + "exporttemplate/save/",
+    exportDocs: BASE_URL + "exporttemplate/export/"
 }

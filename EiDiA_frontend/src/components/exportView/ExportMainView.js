@@ -11,9 +11,10 @@ import TemplateList from './subcomponents/TemplateList';
 import SaveTemplateSection from './subcomponents/SaveTemplateSection';
 import VariableList from './subcomponents/VariableList';
 import SetValueSection from './subcomponents/SetValueSection';
-import {isPath, makeGetRequest, makePostRequest} from "../../support files/utils";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import HttpService from "../../services/HttpService";
+
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -33,6 +34,11 @@ function Dialog(props) {
     )
 }
 
+// Checks if string/variable is URI, e.g. Document1/VARIABLE1
+const isPath = (string) => {
+    return /^(?:\/|[a-z]+:\/\/)/.test(string);
+}
+
 // pass to RightSidePanel, so the right components are rendered according to currentPage
 const subComponents = {
     [pageNames.selectTemplate]: {
@@ -46,7 +52,6 @@ const subComponents = {
         comp3: SaveTemplateSection
     },
     [pageNames.edit]: {
-        comp1: EditorTools,
         comp2: DocSearch,
         comp3: SetValueSection
     }
@@ -112,9 +117,11 @@ export default class ExportMainView extends React.Component {
     }
 
     componentDidMount() {
-        makeGetRequest(endpoints.getTemplateList, (response) => {
-            let initTemplate = response[0]
+        HttpService.get(endpoints.getTemplateList, (resp) => {
+            let initTemplate = resp.response[0]
             this.selectTemplate(initTemplate.name, initTemplate.id);
+        }, (err) => {
+            console.log(err);
         })
     }
 
@@ -157,8 +164,8 @@ export default class ExportMainView extends React.Component {
         let selectedDocsIds = selectedDocs.map((docElem) => docElem.id)
         if (selectedDocs.length !== 0) {
             const param = JSON.stringify(selectedDocsIds);
-            makeGetRequest(endpoints.getDocs + param, (response) => {
-                const documents = response;
+            HttpService.get(endpoints.getDocs + param, (resp) => {
+                const documents = resp.response;
                 if (Object.keys(documents).length !== 0) {
                     let newState = this.state;
                     let templateVariables = this.state.variables;
@@ -191,6 +198,8 @@ export default class ExportMainView extends React.Component {
 
                     this.setState(newState);
                 }
+            }, (err) => {
+                console.log(err);
             })
         }
     }
@@ -217,14 +226,16 @@ export default class ExportMainView extends React.Component {
     // replaces document text with text from template
     // collects all variables of the template
     selectTemplate(name, id) {
-        makeGetRequest(endpoints.getTemplate + id, (response) => {
-            let editorText = response;
+        HttpService.get(endpoints.getTemplate + id, (resp) => {
+            let editorText = resp.response;
             let newState = this.state;
 
             newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
             newState.selectedTemplate = name;
             newState.variables = this.extractVariables(newState.editorState);
             this.setState(newState);
+        }, (err) => {
+            console.log(err);
         })
     }
 
@@ -316,12 +327,14 @@ export default class ExportMainView extends React.Component {
     saveTemplate() {
         // TODO: Let User save template
         const editorText = this.getTextFromEditorState(this.state.editorState);
-        makePostRequest(endpoints.saveTemplate, editorText, (response) => {
+        HttpService.post(endpoints.saveTemplate, editorText, (response) => {
             let res = response;
             console.log(res);
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);
+        }, (err) => {
+            console.log(err);
         })
     }
 
@@ -331,12 +344,12 @@ export default class ExportMainView extends React.Component {
         const linkedDocs = docNames;
         console.log(linkedDocs);
         const params = {text: editorText, docs: linkedDocs}
-        makeGetRequest(endpoints.exportDocs + encodeURIComponent(JSON.stringify(params)), (response) => {
+        HttpService.get(endpoints.exportDocs + encodeURIComponent(JSON.stringify(params)), (resp) => {
             const docDefinition = {content: editorText};
             const pdf = pdfMake.createPdf(docDefinition);
             pdf.download();
 
-            let res = response;
+            let res = resp.response;
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);
@@ -352,10 +365,10 @@ export default class ExportMainView extends React.Component {
             <div>
                 <Row>
                     <Column>
-                        {/*Insert left column next to editor, so editor is centered*/}
+                        {/*Insert left column next to editor, so editor is in the center*/}
                     </Column>
                     <Column>
-                        <div style={{overflow: "auto"}}><DocEditor
+                        <div style={{overflow: "auto", maxHeight: '83vh'}}><DocEditor
                             readOnly={this.props.readOnly}
                             textAlignment={this.state.textAlignment}
                             ref={(docEditor) => {

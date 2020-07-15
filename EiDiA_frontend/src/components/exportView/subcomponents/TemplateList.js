@@ -1,6 +1,7 @@
 import React from 'react';
 import {List, Typography} from '@material-ui/core';
-import {BASE_URL, endpoints} from '../../../support files/constants';
+import {endpoints} from '../../../support files/constants';
+import HttpService from "../../../services/HttpService";
 import TemplateListItem from './TemplateListItem';
 
 export default class TemplateList extends React.Component {
@@ -20,17 +21,13 @@ export default class TemplateList extends React.Component {
 
     fetchTemplates() {
         let newState = this.state;
-        fetch(BASE_URL + endpoints.getTemplateList)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    newState.templateList = result.response;
-                    this.setState(newState);
-                },
-                (error) => {
-                    console.log(error);
-                }
-            )
+        HttpService.get(endpoints.getTemplateList, (resp) => {
+                newState.templateList = resp.response;
+                this.setState(newState);
+            },
+            (err) => {
+                console.log(error);
+            })
     }
 
     handleListItemClick(value, index) {

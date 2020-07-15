@@ -18,10 +18,10 @@ export default class RightSidePanel extends React.Component {
         return (
             <div style={styles.drawer}>
                 <Divider/>
-                <TypeComponent1
+                { typeof TypeComponent1 !== 'undefined' ? <TypeComponent1
                     onAction1={this.props.onAction1_1}
                     onAction2={this.props.onAction1_2}
-                />
+                /> : <div/>}
                 <Divider/>
                 <TypeComponent2
                     editorState={this.props.editorState}
