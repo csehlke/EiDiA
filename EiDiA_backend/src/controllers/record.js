@@ -103,48 +103,6 @@ const listDocumentByRecordId = (req, res) => { // Return attributes based on sel
             });
         });
 };
-/*const listDocumentTypesByRecordId = (req, res) => { // Return attributes based on selected DocumentTypeId
-    DocumentModel.find({'recordId': req.params.recordId})
-        .then(documentList => {
-            let idList = [...new Set(documentList.map(document => {
-                return {
-                    docTypeId:document.documentTypeId
-
-                };
-            }))];
-            DocumentTypeModel.find(idList.map(id=>{return {_id:id.docTypeId}}))
-                .then(documentType=>{
-                        let response= documentType.map(type=>
-                        {
-                            return {
-                                name:type.name,
-                                docTypeId:type._id
-                            }
-                        })
-
-                        response.sort((a, b) => {
-                            return ('' + a.name).localeCompare(b.name);
-                        });
-                        res.status(200).json({docTypes: response});
-                    }
-
-
-                ).catch(error => {
-                res.status(400).json({
-                    error: 'Internal server error',
-                    message: error.message,
-                });
-            });
-
-
-        })
-        .catch(error => {
-            res.status(400).json({
-                error: 'Internal server error',
-                message: error.message,
-            });
-        });
-};*/
 
 module.exports = {
     listRecords,
