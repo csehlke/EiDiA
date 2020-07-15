@@ -279,7 +279,8 @@ class AttributeContainer extends React.Component {
             recordId: this.props.assignedRecord,
             name: this.props.documentName,
             documentTypeId: this.props.selectedDocumentTypeId,
-            base64Image: this.props.base64Image
+            base64Image: this.props.base64Image,
+            fileType: "Image" // EiDiA currently only supports uploading scanned images
         }
         UploadService.addAttributes(requestData).then((response) => {
             console.log(response)

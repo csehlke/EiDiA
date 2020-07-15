@@ -38,6 +38,7 @@ const addDocument = (req, res) => {
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'department'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'attributeData'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'base64Image'));
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'fileType'));
     errors = errors.filter(error => error); // get rid of null entries
 
     if (errors.length > 0) {
@@ -58,6 +59,7 @@ const addDocument = (req, res) => {
         department: req.body.department,
         attributes: req.body.attributeData,
         base64Image: req.body.base64Image,
+        fileType: req.body.fileType
     })
         .then((insertedData) => {
             res.status(200).json({response: "Inserted attribute-data"});
