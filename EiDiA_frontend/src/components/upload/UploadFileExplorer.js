@@ -1,7 +1,8 @@
 import React from 'react';
 import Element from './uploadFiletable/Element'
-import {databaseEntriesPlaceholder, fileTypes} from "../../assets/Constants";
+import {fileTypes} from "../../assets/Constants";
 import Grid from "@material-ui/core/Grid";
+import RecordService from "../../services/RecordService";
 
 /**
  * TODO:
@@ -13,25 +14,33 @@ export default class UploadFileExplorer extends React.Component {
     constructor(props) {
         super(props);
 
-        let onlyFolders = []; // Does not contain elements other than folders
-        databaseEntriesPlaceholder.forEach(function (element) {
-            if (element.type === fileTypes.FOLDER) {
-                element.activeFolder = true  // show all folders opened
-                onlyFolders.push(element)
-            }
-
-        });
         this.state = {
-            elements: onlyFolders
+            elements: []
         }
     }
 
     componentDidMount() {
-        //TODO get all elements based on this.props.recordId
+        RecordService.listDocuments(this.props.recordId).then((data) => {
+            let onlyFolders = []
+
+            Object.values(data)[0].forEach(function (element) {
+                if (element.fileType === fileTypes.FOLDER) {
+                    element.activeFolder = true  // show all folders opened
+                    onlyFolders.push(element)
+                }
+            });
+
+            this.setState({
+                elements: onlyFolders
+            });
+
+        }).catch((e) => {
+            console.error(e);
+        });
     }
 
     setNewParent = (child) => (newParentId) => {
-        child.parentId = newParentId;
+        child.parentFolderId = newParentId;
 
         this.setState(this.state);
     }
@@ -54,7 +63,7 @@ export default class UploadFileExplorer extends React.Component {
                 ,
                 element.activeFolder === true ?
                     this.state.elements.map((child, indexChild) =>
-                        child.parentId === element.id ? this.renderElement(child, indexChild, level + 1) : null
+                        child.parentFolderId === element.id ? this.renderElement(child, indexChild, level + 1) : null
                     ) : null
             ]
 
@@ -72,7 +81,7 @@ export default class UploadFileExplorer extends React.Component {
                 <Grid item xs={12}>
                     <hr/>
                 </Grid>
-                {this.state.elements.map((element, index) => element.parentId === 0 ?
+                {this.state.elements.map((element, index) => element.parentFolderId === undefined ?
                     this.renderElement(element, index, 0) : null
                 )}
             </Grid>

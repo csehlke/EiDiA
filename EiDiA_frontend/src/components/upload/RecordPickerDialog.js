@@ -43,7 +43,7 @@ class RecordPickerDialog extends React.Component {
             search: '',
             renderRecordPicker: true,
             selectedRecord: '', //TODO HIER IST NAME UND ID DRIN
-            selectedFolder: ''
+            selectedFolder: 'Root-Folder'
         }
         this.closeDialog = this.closeDialog.bind(this);
         this.updateSearch = this.updateSearch.bind(this);

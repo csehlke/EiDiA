@@ -83,6 +83,7 @@ const listDocumentByRecordId = (req, res) => { // Return attributes based on sel
         .then(documentList => {
             let response = documentList.map(document => {
                 return {
+                    id: document._id,
                     name: document.name,
                     parentFolderId: document.parentFolderId,
                     fileType: document.fileType, //TODO: implement filetype in database

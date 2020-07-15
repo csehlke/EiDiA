@@ -16,4 +16,14 @@ export default class RecordService {
             });
         });
     }
+
+    static listDocuments(recordId) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/record/document/list/' + recordId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
 }
