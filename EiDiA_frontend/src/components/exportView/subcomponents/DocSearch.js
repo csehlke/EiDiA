@@ -58,7 +58,7 @@ export default class DocSearch extends React.Component {
                                     key={elem["id"]}
                                     id={elem["id"]}
                                     name={elem["name"]}
-                                    onSelect={this.props.onAction2_2}
+                                    onSelect={this.props.onAction2_1}
                                 />)}
                         </List>
                     </Column>

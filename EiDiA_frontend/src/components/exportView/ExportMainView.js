@@ -95,20 +95,23 @@ export default class ExportMainView extends React.Component {
             [pageNames.selectTemplate]: {
                 onAction1_1: this.selectTemplate,
                 onAction1_2: this.toggleBlockType,
-                onAction2_2: this.addSelectedDocumentToList,
+                onAction2_1: this.addSelectedDocumentToList,
                 onAction3_1: this.props.changeView,
-                onAction3_2: this.setSelectedVariable
+                onAction3_2: this.setSelectedVariable,
+                onAction3_3: null
             },
             [pageNames.editTemplate]: {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
+                onAction2_1: null,
                 onAction3_1: this.toggleDialog,
-                onAction3_2: this.setSelectedVariable
+                onAction3_2: this.setSelectedVariable,
+                onAction3_3: null
             },
             [pageNames.edit]: {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
-                onAction2_2: this.addSelectedDocumentToList,
+                onAction2_1: this.addSelectedDocumentToList,
                 onAction3_1: this.toggleDialog,
                 onAction3_2: this.setSelectedVariable,
                 onAction3_3: this.setValueToVariable
@@ -213,7 +216,11 @@ export default class ExportMainView extends React.Component {
 
     addSelectedDocumentToList(docItem) {
         let newState = this.state;
-        if (!newState.selectedDocs.includes(docItem)) {
+        let isInArray = false;
+        newState.selectedDocs.forEach((e) => {
+            if (e.id === docItem.id) isInArray = true
+        });
+        if (!isInArray) {
             newState.selectedDocs.push(docItem);
             this.setState(newState);
         }
@@ -382,12 +389,12 @@ export default class ExportMainView extends React.Component {
                     <Column>
                         <RightSidepanel
                             componentSet={componentSet}
-                            onAction1_1={actionSet.onAction1_1 || null}
-                            onAction1_2={actionSet.onAction1_2 || null}
-                            onAction2_2={actionSet.onAction2_2 || null}
-                            onAction3_1={actionSet.onAction3_1 || null}
-                            onAction3_2={actionSet.onAction3_2 || null}
-                            onAction3_3={actionSet.onAction3_3 || null}
+                            onAction1_1={actionSet.onAction1_1}
+                            onAction1_2={actionSet.onAction1_2}
+                            onAction2_1={actionSet.onAction2_1}
+                            onAction3_1={actionSet.onAction3_1}
+                            onAction3_2={actionSet.onAction3_2}
+                            onAction3_3={actionSet.onAction3_3}
                             editorState={this.state.editorState}
                             variables={this.state.variables}
                             selectedDocs={this.state.selectedDocs}

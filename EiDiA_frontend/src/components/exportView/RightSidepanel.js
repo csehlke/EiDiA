@@ -27,7 +27,7 @@ export default class RightSidePanel extends React.Component {
                     editorState={this.props.editorState}
                     variables={this.props.variables}
                     selectedDocs={this.props.selectedDocs}
-                    onAction2_2={this.props.onAction2_2 || null}
+                    onAction2_1={this.props.onAction2_1}
                 />
                 <Divider/>
                 <TypeComponent3
