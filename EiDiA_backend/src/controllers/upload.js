@@ -32,7 +32,7 @@ const fullTextOCR = (documentId, base64Image) => {
 const addDocument = (req, res) => {
     let errors = [];
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'name'));
-    errors.push(ErrorHandling.checkBodyForAttribute(req, 'rootFolderId'));
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'parentFolderId'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'documentTypeId'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'recordId'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'createdBy'));
@@ -52,7 +52,7 @@ const addDocument = (req, res) => {
 
     DocumentModel.create({
         name: req.body.name,
-        rootFolderId: req.body.rootFolderId,
+        parentFolderId: req.body.parentFolderId,
         documentTypeId: req.body.documentTypeId,
         recordId: req.body.recordId,
         createdBy: req.body.createdBy,

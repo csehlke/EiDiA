@@ -45,7 +45,7 @@ class AttributeContainer extends React.Component {
             department: "",
             comment: "",
             createdBy: "5ef9e3d2c4664e04e4003999", //Placeholder
-            rootFolderId: "5ef9e3d2c4664e04e4003999", //Placeholder
+            parentFolderId: "5ef9e3d2c4664e04e4003999", //Placeholder
             recordId: "5ef9e3d2c4664e04e4003999", //Placeholder
             //TODO Remove Placeholders
         }
@@ -279,7 +279,7 @@ class AttributeContainer extends React.Component {
             department: this.state.department,
             comment: this.state.comment,
             createdBy: this.state.createdBy,
-            rootFolderId: this.state.rootFolderId,
+            parentFolderId: this.state.parentFolderId,
             recordId: this.state.recordId,
             name: this.props.documentName,
             documentTypeId: this.props.selectedDocumentTypeId,
