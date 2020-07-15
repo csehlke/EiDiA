@@ -10,6 +10,9 @@ const RecordController = require('../controllers/record');
 
 router.get('/list', RecordController.listRecords);
 router.post('/add', RecordController.addRecord);
+// router.get('/list/attributes',RecordController.listDocumentsByTypeAndRecord)
+// router.get('/document/list/types/:recordId', middleWares.checkAuthentication, ModelController.listDocumentTypes);
+router.get('/document/list/:recordId', RecordController.listDocumentByRecordId);
 
 /*router.get('/list', middleWares.checkAuthentication, RecordController.listRecords);
 router.post('/add', middleWares.checkAuthentication, RecordController.addRecord);*/

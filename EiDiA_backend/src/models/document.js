@@ -26,7 +26,7 @@ const DocumentSchema = new mongoose.Schema({
         required: true,
         index: true,
     },
-    rootFolderId: {
+    parentFolderId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         index: true,
@@ -59,6 +59,12 @@ const DocumentSchema = new mongoose.Schema({
     department: {
         type: [String],
     },
+    fileType: {
+        type: String,
+        enum: ['Folder', 'PDF', 'Word', 'Image', ''],
+        required: false,
+    },
+
 
     attributes: [
         {

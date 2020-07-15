@@ -1,8 +1,12 @@
 "use strict";
 
 const RecordModel = require('../models/record');
-
+const DocumentModel = require('../models/document')
+const DocumentTypeModel = require('../models/documentType')
+const mongoose = require("mongoose")
 const listRecords = (req, res) => {
+    //TODO: error handling
+
     RecordModel.find()
         .then(records => {
             let response = records.map(record => {
@@ -25,6 +29,7 @@ const listRecords = (req, res) => {
 };
 
 const addRecord = (req, res) => {
+    //TODO: error handling
     if (!Object.prototype.hasOwnProperty.call(req.body, "recordName")) {
         return res.status(400).json({
             error: 'Bad Request',
@@ -54,8 +59,95 @@ const addRecord = (req, res) => {
             }
         });
 };
+const listDocumentsByTypeAndRecord = (req, res) => {
+
+    DocumentModel.find(req.body.mapping.map(mapping => {
+            return {documentTypeId: mapping.docTypeId, recordId: req.body.recordId}
+        }
+    ))
+        .then(documentList => {
+            res.status(200).json({documentList: documentList});
+        })
+        .catch(error => {
+
+            res.status(500).json({
+                error: 'Internal server error',
+                message: error.message,
+            });
+
+        });
+}
+
+const listDocumentByRecordId = (req, res) => { // Return attributes based on selected DocumentTypeId
+    DocumentModel.find({'recordId': mongoose.Types.ObjectId(req.params.recordId)})
+        .then(documentList => {
+            let response = documentList.map(document => {
+                return {
+                    name: document.name,
+                    parentFolderId: document.parentFolderId,
+                    fileType: document.fileType, //TODO: implement filetype in database
+                    createdOnDate: document.createdOnDate,
+                    lastModifiedOnDate: document.lastModifiedOnDate,
+                    comment: document.comment,
+                    documentTypeId: document.documentTypeId,
+                    createdBy: document.createdBy,
+                };
+            });
+            res.status(200).json({documents: response});
+        })
+        .catch(error => {
+            res.status(400).json({
+                error: 'Internal server error',
+                message: error.message,
+            });
+        });
+};
+/*const listDocumentTypesByRecordId = (req, res) => { // Return attributes based on selected DocumentTypeId
+    DocumentModel.find({'recordId': req.params.recordId})
+        .then(documentList => {
+            let idList = [...new Set(documentList.map(document => {
+                return {
+                    docTypeId:document.documentTypeId
+
+                };
+            }))];
+            DocumentTypeModel.find(idList.map(id=>{return {_id:id.docTypeId}}))
+                .then(documentType=>{
+                        let response= documentType.map(type=>
+                        {
+                            return {
+                                name:type.name,
+                                docTypeId:type._id
+                            }
+                        })
+
+                        response.sort((a, b) => {
+                            return ('' + a.name).localeCompare(b.name);
+                        });
+                        res.status(200).json({docTypes: response});
+                    }
+
+
+                ).catch(error => {
+                res.status(400).json({
+                    error: 'Internal server error',
+                    message: error.message,
+                });
+            });
+
+
+        })
+        .catch(error => {
+            res.status(400).json({
+                error: 'Internal server error',
+                message: error.message,
+            });
+        });
+};*/
 
 module.exports = {
     listRecords,
     addRecord,
+    listDocumentsByTypeAndRecord,
+    listDocumentByRecordId,
 };
