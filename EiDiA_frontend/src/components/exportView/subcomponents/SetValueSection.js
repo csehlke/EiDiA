@@ -75,7 +75,7 @@ export default class SetValueSection extends React.Component {
                 <IconButton style={{margin: "5px"}} color="primary"
                             onClick={this.setValueToVariable}><MdAdd/></IconButton>
                 <TableContainer component={Paper}>
-                    <Table aria-label="simple table">
+                    <Table>
                         <TableHead>
                             <TableRow>
                                 <TableCell>Variable</TableCell>
