@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import {Button, Input} from '@material-ui/core';
-import {RecordSymbol} from "../record/RecordSymbol";
+import {RecordSymbol} from "./uploadFiletable/RecordSymbol";
 import IconButton from "@material-ui/core/IconButton";
 import RecordService from "../../services/RecordService";
 import UploadFileExplorer from "./uploadFiletable/UploadFileExplorer";
@@ -69,7 +69,8 @@ class RecordPickerDialog extends React.Component {
     closeDialog() {
         this.props.onClose();
         this.setState({
-            selectedFolder: {name: 'Root-Folder', id: '000000000000000000000000'} //Reset state after close
+            selectedFolder: {name: 'Root-Folder', id: '000000000000000000000000'}, //Reset state after close
+            renderRecordPicker: true
         });
     }
 
@@ -89,6 +90,9 @@ class RecordPickerDialog extends React.Component {
     saveSelectedData() {
         this.props.sendData(this.state.selectedRecord.id, this.state.selectedFolder.id)
         this.props.onClose()
+        this.setState({
+            renderRecordPicker: true //Reset state after close
+        });
     }
 
     render() {
