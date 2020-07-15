@@ -43,9 +43,7 @@ class AttributeContainer extends React.Component {
             isNumberSnackbarOpen: false,
             priority: "",
             department: "",
-            comment: "",
-            createdBy: "5ef9e3d2c4664e04e4003999", //Placeholder
-            //TODO Remove Placeholders
+            comment: ""
         }
         this.attrsToBackend = this.attrsToBackend.bind(this);
         this.saveTextFieldData = this.saveTextFieldData.bind(this);

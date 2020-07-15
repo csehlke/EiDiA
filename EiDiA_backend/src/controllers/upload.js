@@ -1,8 +1,6 @@
 "use strict";
 
 const DocumentModel = require('../models/document');
-const DocumentTypeModel = require('../models/documentType');
-const AttributeModel = require('../models/attributeType');
 const ErrorHandling = require('./errorHandling');
 
 const tes = require('tesseract.js')
@@ -35,7 +33,6 @@ const addDocument = (req, res) => {
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'parentFolderId'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'documentTypeId'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'recordId'));
-    errors.push(ErrorHandling.checkBodyForAttribute(req, 'createdBy'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'comment'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'priority'));
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'department'));
@@ -55,7 +52,7 @@ const addDocument = (req, res) => {
         parentFolderId: req.body.parentFolderId,
         documentTypeId: req.body.documentTypeId,
         recordId: req.body.recordId,
-        createdBy: req.body.createdBy,
+        createdBy: req.userId, //from middleware
         comment: req.body.comment,
         priority: req.body.priority,
         department: req.body.department,
