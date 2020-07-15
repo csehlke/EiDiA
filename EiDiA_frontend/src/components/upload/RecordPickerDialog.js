@@ -10,7 +10,7 @@ import {Button, Input} from '@material-ui/core';
 import {RecordSymbol} from "../record/RecordSymbol";
 import IconButton from "@material-ui/core/IconButton";
 import RecordService from "../../services/RecordService";
-import UploadFileExplorer from "./UploadFileExplorer";
+import UploadFileExplorer from "./uploadFiletable/UploadFileExplorer";
 
 const FlexRow = styled.div`
     display: flex;

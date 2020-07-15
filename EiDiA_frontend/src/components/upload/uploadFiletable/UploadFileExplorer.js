@@ -1,14 +1,9 @@
 import React from 'react';
-import Element from './uploadFiletable/Element'
-import {fileTypes} from "../../assets/Constants";
+import Element from './Element'
+import {fileTypes} from "../../../assets/Constants";
 import Grid from "@material-ui/core/Grid";
-import RecordService from "../../services/RecordService";
+import RecordService from "../../../services/RecordService";
 
-/**
- * TODO:
- * - Cant drag files to toplevel at the moment
- * - Design DnD operations
- */
 export default class UploadFileExplorer extends React.Component {
 
     constructor(props) {
@@ -42,12 +37,10 @@ export default class UploadFileExplorer extends React.Component {
     setNewParent = (child) => (newParentId) => {
         child.parentFolderId = newParentId;
 
-        this.setState(this.state);
     }
     onFolderClicked = (element) => () => {
         this.props.sendFolder(element) // --> Current selected Folder to Dialog
 
-        this.setState(this.state);
     }
 
     renderElement(element, index, level) {
@@ -61,13 +54,10 @@ export default class UploadFileExplorer extends React.Component {
                     </Element>
                 </Grid>
                 ,
-                element.activeFolder === true ?
-                    this.state.elements.map((child, indexChild) =>
-                        child.parentFolderId === element.id ? this.renderElement(child, indexChild, level + 1) : null
-                    ) : null
+                this.state.elements.map((child, indexChild) =>
+                    child.parentFolderId === element.id ? this.renderElement(child, indexChild, level + 1) : null
+                )
             ]
-
-
         );
     }
 
