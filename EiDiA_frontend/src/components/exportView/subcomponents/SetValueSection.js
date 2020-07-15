@@ -29,7 +29,7 @@ function createData(variable, value, source) {
     return {variable, value, source};
 }
 
-function convertData(variables, value = null) {
+function convertData(variables) {
     let out = [];
     for (let k of Object.keys(variables)) {
         let variable = variables[k];
