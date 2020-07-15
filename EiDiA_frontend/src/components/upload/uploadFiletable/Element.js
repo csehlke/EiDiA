@@ -45,7 +45,7 @@ class Element extends React.Component {
                 <Grid container spacing={2}
                       style={{cursor: 'pointer'}}
                       onClick={this.props.onFolderClicked}>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={12}>
                         <Name padding={this.state.padding}>
                             <FaFolderOpen size={'1.5em'}/>
                             &nbsp;&nbsp;{this.state.elementData.name}
