@@ -31,7 +31,7 @@ class BasicSearchForm extends React.Component {
             dateFrom: null,
             dateTo: null,
             fullText: '',
-            username: '',
+            userId: '',
         }
 
         this.recordRef = React.createRef();
@@ -46,6 +46,7 @@ class BasicSearchForm extends React.Component {
         this.handleUserChange = this.handleUserChange.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.isFormEmpty = this.isFormEmpty.bind(this);
     }
 
     handleRecordChange(event, value) {
@@ -81,9 +82,9 @@ class BasicSearchForm extends React.Component {
     }
 
     handleUserChange(event, value) {
-        const username = (value === null) ? '' : value.username;
+        const userId = (value === null) ? '' : value.id;
         this.setState({
-            username: username,
+            userId: userId,
         });
     }
 
@@ -94,7 +95,7 @@ class BasicSearchForm extends React.Component {
             dateFrom: null,
             dateTo: null,
             fullText: '',
-            username: '',
+            userId: '',
         });
         this.recordRef.current.reset();
         this.documentTypeRef.current.reset();
@@ -102,12 +103,38 @@ class BasicSearchForm extends React.Component {
     }
 
     handleSearch() {
-        // TODO send search request
-        console.log("here the basic search is triggered\n" + "recordId: " + this.state.recordId +
-            "\ndocumentTypeId: " + this.state.documentTypeId +
-            "\nbetween: " + this.state.dateFrom + " and " + this.state.dateTo +
-            "\ntext: " + this.state.fullText +
-            "\nusername: " + this.state.username);
+        const searchConstraints = {};
+        if (this.state.recordId !== '') {
+            searchConstraints['recordId'] = this.state.recordId;
+        }
+        if (this.state.documentTypeId !== '') {
+            searchConstraints['documentTypeId'] = this.state.documentTypeId;
+        }
+        if (this.state.dateFrom !== null) {
+            searchConstraints['dateFrom'] = this.state.dateFrom;
+        }
+        if (this.state.dateTo !== null) {
+            searchConstraints['dateTo'] = this.state.dateTo;
+        }
+        if (this.state.fullText !== '') {
+            searchConstraints['fullText'] = this.state.fullText;
+        }
+        if (this.state.userId !== '') {
+            searchConstraints['userId'] = this.state.userId;
+        }
+        this.props.onSearch({
+            type: 'basic',
+            searchConstraints: searchConstraints,
+        });
+    }
+
+    isFormEmpty() {
+        return this.state.recordId === '' &&
+            this.state.documentTypeId === '' &&
+            this.state.dateFrom === null &&
+            this.state.dateTo === null &&
+            this.state.fullText === '' &&
+            this.state.userId === ''
     }
 
     render() {
@@ -175,6 +202,7 @@ class BasicSearchForm extends React.Component {
                                 color="primary"
                                 size={"medium"}
                                 onClick={this.handleSearch}
+                                disabled={this.isFormEmpty()}
                                 style={{width: '50%', margin: '0.5em'}}>
                                 Search
                             </Button>
@@ -192,4 +220,5 @@ BasicSearchForm.propTypes = {
     records: PropTypes.array.isRequired,
     documentTypes: PropTypes.array.isRequired,
     users: PropTypes.array.isRequired,
+    onSearch: PropTypes.func.isRequired,
 }

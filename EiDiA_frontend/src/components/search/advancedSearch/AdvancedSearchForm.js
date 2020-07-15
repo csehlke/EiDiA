@@ -10,6 +10,8 @@ import NumberConstraintPicker from "./constraintPicker/NumberConstraintPicker";
 import DateConstraintPicker from "./constraintPicker/DateConstraintPicker";
 import CompareTypes from "../../../assets/CompareTypes";
 import PropTypes from "prop-types";
+import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const Row = styled.div`
     display: flex;
@@ -30,22 +32,12 @@ export default class AdvancedSearchForm extends React.Component {
         super(props);
 
         this.state = {
-            documentTypes: [
-                {name: 'AA', id: '1'},
-                {name: 'BB', id: '2'}],
-            attributeTypesTmp: [
-                {name: 'attributeText1', type: 'text', id: '1'},
-                {name: 'attributeDate2', type: 'date', id: '2'},
-                {name: 'attributeNumber3', type: 'number', id: '3'},
-                {name: 'attributeText4', type: 'text', id: '4'},
-            ],
             attributeTypes: [],
             documentTypeId: '',
             attribute: null,
             attributeTypeId: '',
             documentTypeConstraints: [
                 // { // Examples
-                //
                 //     name: "AA",
                 //     documentTypeId: "1",
                 //     attributeTypeConstraints: [
@@ -64,7 +56,8 @@ export default class AdvancedSearchForm extends React.Component {
                 //     ],
                 // },
             ],
-            filled: false,
+            isFormFilled: false,
+            isErrorBarOpen: false,
         };
 
         this.documentTypeRef = React.createRef();
@@ -73,37 +66,29 @@ export default class AdvancedSearchForm extends React.Component {
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
         this.handleAttributeTypeChange = this.handleAttributeTypeChange.bind(this);
-        this.handleFilled = this.handleFilled.bind(this);
+        this.handleIsFormFilled = this.handleIsFormFilled.bind(this);
         this.handleAddConstraint = this.handleAddConstraint.bind(this);
         this.handleDeleteConstraint = this.handleDeleteConstraint.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleErrorBarClose = this.handleErrorBarClose.bind(this);
     }
 
     handleDocumentTypeChange(event, value) {
         const id = (value === null) ? '' : value.id;
-        const name = (value === null) ? '' : value.name;
 
-        // TODO set Attributes depending on documentTypeId
-        let attributeTypes = this.props.attributeTypes.map((attribute) => this.createAttributes(attribute, name));
+        // filter for the right AttributeTypes for this DocumentType
+        let attributeTypes = this.props.attributeTypes.filter((attribute) =>
+            attribute.documentTypeId === id);
 
         this.setState({
             documentTypeId: id,
             attribute: null,
             attributeTypes: attributeTypes,
-            filled: false,
+            isFormFilled: false,
         });
         this.attributeTypeRef.current.reset();
         this.constraintPickerRef.current.reset();
-    }
-
-    // Hilfmethode wird ersetzt mit Zuordnung: AttributeTypes to selected DocumentType
-    createAttributes(attribute, name) {
-        return {
-            name: name + ' ' + attribute.name,
-            id: attribute.id,
-            type: attribute.type,
-        };
     }
 
     handleAttributeTypeChange(event, value) {
@@ -111,14 +96,14 @@ export default class AdvancedSearchForm extends React.Component {
         this.setState({
             attribute: value,
             attributeTypeId: id,
-            filled: false,
+            isFormFilled: false,
         });
         this.constraintPickerRef.current.reset();
     }
 
-    handleFilled(value) {
+    handleIsFormFilled(value) {
         this.setState({
-            filled: value,
+            isFormFilled: value,
         });
     }
 
@@ -141,8 +126,10 @@ export default class AdvancedSearchForm extends React.Component {
                 let attributeTypeConstraints = documentTypeConstraint.attributeTypeConstraints.map(attributeTypeConstraint => {
                     if (attributeTypeConstraint.attributeTypeId === newAttributeConstraint.attributeTypeId &&
                         attributeTypeConstraint.constraint.compareTypeId === newAttributeConstraint.constraint.compareTypeId) {
-                        // TODO show error
                         // There exists already a constraint with the same DocumentType, AttributeType and CompareType
+                        this.setState({
+                            isErrorBarOpen: true,
+                        })
                         needsNewAttributeConstraint = false;
                     }
                     return attributeTypeConstraint;
@@ -192,14 +179,14 @@ export default class AdvancedSearchForm extends React.Component {
                     if (attributeTypeConstraint.attributeTypeId === attributeTypeId &&
                         attributeTypeConstraint.constraint.compareTypeId === compareTypeId) {
                         // remove constraint identified by documentTypeId, attributeTypeId and compareTypeId
-
+                        // <nop>
                     } else {
                         return attributeTypeConstraint;
                     }
                 });
                 if (documentTypeConstraint.attributeTypeConstraints.length === 0) {
                     // remove document type from list, if there are no constraints left
-
+                    // <nop>
                 } else {
                     return documentTypeConstraint;
                 }
@@ -225,102 +212,115 @@ export default class AdvancedSearchForm extends React.Component {
     }
 
     handleSearch() {
-        // TODO handle search
-        let text = "here the advanced search is triggered";
-        this.state.documentTypeConstraints.map(documentTypeConstraint => {
-            documentTypeConstraint.attributeTypeConstraints.map(attributeTypeConstraint => {
-                text += "\nDocumentType: " + attributeTypeConstraint.documentTypeId +
-                    "\nAttributeTypeId: " + attributeTypeConstraint.attributeTypeId +
-                    "\n" + attributeTypeConstraint.name;
-            });
+        this.props.onSearch({
+            type: 'advanced',
+            searchConstraints: this.state.documentTypeConstraints,
         });
-        console.log(text);
+    }
+
+    handleErrorBarClose() {
+        this.setState({
+            isErrorBarOpen: false,
+        });
     }
 
     render() {
         return (
-            <Box>
-                <Row>
-                    <Column>
-                        <Row>
-                            <SmartDropDownBox
-                                ref={this.documentTypeRef}
-                                onChange={this.handleDocumentTypeChange}
-                                options={this.props.documentTypes}
-                                label='Document Type'/>
-                        </Row>
-                        <Row>
-                            <SmartDropDownBox
-                                ref={this.attributeTypeRef}
-                                disabled={this.state.documentTypeId === ''}
-                                onChange={this.handleAttributeTypeChange}
-                                options={this.state.attributeTypes}
-                                label='Attribute'/>
-                        </Row>
-                    </Column>
-                    <Column>
-                        <Row>
-                            {this.state.attribute === null ?
-                                <TextConstraintPicker
-                                    ref={this.constraintPickerRef}
-                                    isFilled={this.handleFilled}
-                                    disabled={true}/> :
-                                this.state.attribute.type === 'text' ?
+            <div>
+                <Box>
+                    <Row>
+                        <Column>
+                            <Row>
+                                <SmartDropDownBox
+                                    ref={this.documentTypeRef}
+                                    onChange={this.handleDocumentTypeChange}
+                                    options={this.props.documentTypes}
+                                    label='Document Type'/>
+                            </Row>
+                            <Row>
+                                <SmartDropDownBox
+                                    ref={this.attributeTypeRef}
+                                    disabled={this.state.documentTypeId === ''}
+                                    onChange={this.handleAttributeTypeChange}
+                                    options={this.state.attributeTypes}
+                                    label='Attribute'/>
+                            </Row>
+                        </Column>
+                        <Column>
+                            <Row>
+                                {this.state.attribute === null ?
                                     <TextConstraintPicker
                                         ref={this.constraintPickerRef}
-                                        isFilled={this.handleFilled}/> :
-                                    this.state.attribute.type === 'number' ?
-                                        <NumberConstraintPicker
+                                        isFilled={this.handleIsFormFilled}
+                                        disabled={true}/> :
+                                    this.state.attribute.dataType === 'text' ?
+                                        <TextConstraintPicker
                                             ref={this.constraintPickerRef}
-                                            isFilled={this.handleFilled}/> :
-                                        this.state.attribute.type === 'date' ?
-                                            <DateConstraintPicker
+                                            isFilled={this.handleIsFormFilled}/> :
+                                        this.state.attribute.dataType === 'number' ?
+                                            <NumberConstraintPicker
                                                 ref={this.constraintPickerRef}
-                                                isFilled={this.handleFilled}/> :
-                                            <TextConstraintPicker
-                                                ref={this.constraintPickerRef}
-                                                isFilled={this.handleFilled}
-                                                disabled={true}/>
-                            }
-                        </Row>
-                        <Row>
-                            <Button
-                                variant="contained"
-                                color="default"
-                                size={"medium"}
-                                fullWidth
-                                disabled={!this.state.filled}
-                                onClick={this.handleAddConstraint}
-                                style={{margin: '0.5em'}}>
-                                Add Constraint
-                            </Button>
-                        </Row>
-                        <Row>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                size={"medium"}
-                                onClick={this.handleReset}
-                                style={{width: '50%', margin: '0.5em'}}>
-                                Reset
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                size={"medium"}
-                                onClick={this.handleSearch}
-                                style={{width: '50%', margin: '0.5em'}}>
-                                Search
-                            </Button>
-                        </Row>
-                    </Column>
-                    <Column>
-                        <SearchSummary
-                            documentTypeConstraints={this.state.documentTypeConstraints}
-                            handleDelete={this.handleDeleteConstraint}/>
-                    </Column>
-                </Row>
-            </Box>
+                                                isFilled={this.handleIsFormFilled}/> :
+                                            this.state.attribute.dataType === 'date' ?
+                                                <DateConstraintPicker
+                                                    ref={this.constraintPickerRef}
+                                                    isFilled={this.handleIsFormFilled}/> :
+                                                <TextConstraintPicker
+                                                    ref={this.constraintPickerRef}
+                                                    isFilled={this.handleIsFormFilled}
+                                                    disabled={true}/>
+                                }
+                            </Row>
+                            <Row>
+                                <Button
+                                    variant="contained"
+                                    color="default"
+                                    size={"medium"}
+                                    fullWidth
+                                    disabled={!this.state.isFormFilled}
+                                    onClick={this.handleAddConstraint}
+                                    style={{margin: '0.5em'}}>
+                                    Add Constraint
+                                </Button>
+                            </Row>
+                            <Row>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size={"medium"}
+                                    onClick={this.handleReset}
+                                    style={{width: '50%', margin: '0.5em'}}>
+                                    Reset
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size={"medium"}
+                                    onClick={this.handleSearch}
+                                    disabled={this.state.documentTypeConstraints.length === 0}
+                                    style={{width: '50%', margin: '0.5em'}}>
+                                    Search
+                                </Button>
+                            </Row>
+                        </Column>
+                        <Column>
+                            <SearchSummary
+                                documentTypeConstraints={this.state.documentTypeConstraints}
+                                handleDelete={this.handleDeleteConstraint}/>
+                        </Column>
+                    </Row>
+                </Box>
+
+                <Snackbar
+                    open={this.state.isErrorBarOpen}
+                    autoHideDuration={5000}
+                    onClose={this.handleErrorBarClose}>
+                    <Alert severity="error" onClose={this.handleErrorBarClose}>
+                        There is already a search constraint with contradicting attributes present.<br/>
+                        Please remove this search constraint before adding the current one.
+                    </Alert>
+                </Snackbar>
+            </div>
         );
     }
 }
@@ -328,4 +328,5 @@ export default class AdvancedSearchForm extends React.Component {
 AdvancedSearchForm.propTypes = {
     documentTypes: PropTypes.array.isRequired,
     attributeTypes: PropTypes.array.isRequired,
+    onSearch: PropTypes.func.isRequired,
 }

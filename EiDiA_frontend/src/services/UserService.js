@@ -1,6 +1,7 @@
 "use strict";
+
 import HttpService from './HttpService';
-import {baseURL} from "../../../constants";
+import {baseURL} from '../../../constants.js'
 
 export default class UserService {
     static login(user, password) {
@@ -49,6 +50,16 @@ export default class UserService {
     static deleteUserAdmin(deletedUserId) {
         return new Promise((resolve, reject) => {
             HttpService.remove(baseURL + '/auth/admin/delete/' + deletedUserId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static getAllUsernames() {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/auth/list', function (data) {
                 resolve(data);
             }, function (textStatus) {
                 reject(textStatus);
