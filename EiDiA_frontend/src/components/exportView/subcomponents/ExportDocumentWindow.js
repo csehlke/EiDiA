@@ -47,8 +47,8 @@ export default class ExportDocumentWindow extends React.Component {
                     </Typography>
                     <FormGroup>
                         {usedDocs.map((doc) => <FormControlLabel
-                            control={<Checkbox color="primary" onChange={() => this.selectDocument(doc)}/>}
-                            label={doc}/>)}
+                            control={<Checkbox color="primary" onChange={() => this.selectDocument(doc.name)}/>}
+                            label={doc.name}/>)}
                     </FormGroup>
                 </Column>
                 <Column>

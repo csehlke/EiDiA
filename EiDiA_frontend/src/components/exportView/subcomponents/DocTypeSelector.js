@@ -5,20 +5,30 @@ import {MdAdd} from "react-icons/all";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
-
+import CommonService from "../../../services/CommonService";
 
 export default class DocTypeSelector extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isSnackBarOpen: false,
-            linkedDocTypes: [null]
+            linkedDocTypes: [null],
+            documentTypes: []
         }
         this.addDocType = this.addDocType.bind(this);
         this.setDocType = this.setDocType.bind(this);
         this.handleSnackBarOpen = this.handleSnackBarOpen.bind(this);
         this.handleSnackBarClose = this.handleSnackBarClose.bind(this);
     }
+
+    componentDidMount() {
+        CommonService.getAllDocumentTypes().then((data) => {
+            this.setState({
+                documentTypes: [...data.documentTypes],
+            });
+        })
+    }
+
 
     addDocType() {
         this.setState({linkedDocTypes: this.state.linkedDocTypes.concat(null)})
@@ -44,19 +54,14 @@ export default class DocTypeSelector extends React.Component {
 
     render() {
         // TODO: Use get request for fetching docTypes name,id list
-        const docTypes = [
-            {name: "lalalalal", id: "lalala type"},
-            {name: "lololo", id: "lololo type"},
-        ]
         return (
-            <div style={{margin: '15px', overflow: 'auto', maxHeight: '300px', minHeight: '300px'}}>
+            <div style={{margin: '15px', overflow: 'auto', maxHeight: '250px', minHeight: '250px'}}>
                 {this.state.linkedDocTypes.map((e, index) =>
                     <DocTypeSelectLine
                         variables={this.props.variables}
-                        disabled={index < this.state.linkedDocTypes.length - 1}
                         handleSnackBarOpen={this.handleSnackBarOpen}
                         onSelectDocType={this.setDocType}
-                        docTypes={docTypes}
+                        docTypes={this.state.documentTypes}
                         number={index + 1}
                     />)}
                 <Row>

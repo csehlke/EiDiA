@@ -4,7 +4,7 @@ import SmartDropDownBox from "../../SmartDropDownBox";
 import IconButton from "@material-ui/core/IconButton";
 import {FiCopy} from 'react-icons/fi';
 import {CopyToClipboard} from "react-copy-to-clipboard/lib/Component";
-import 'react-toastify/dist/ReactToastify.css';
+
 
 export default class DocTypeSelectLine extends React.Component {
     constructor(props) {
@@ -28,13 +28,15 @@ export default class DocTypeSelectLine extends React.Component {
     }
 
     docTypeSelected(e, value) {
-        // TODO: fetch attributes of given docType
+        console.log("test")
+        console.log(value);
         const attributes = [
             {name: "lalalalal", type: "lalala type"},
             {name: "lololo", type: "lololo type"},
         ]
         this.setState({docAttributes: attributes, selectedDocType: value});
     }
+
 
     createVariableString(e, value) {
         if (typeof value !== 'undefined') {
@@ -58,8 +60,7 @@ export default class DocTypeSelectLine extends React.Component {
                     />
                 </Column>
                 <Column>
-                    <SmartDropDownBox disabled={this.props.disabled}
-                                      label={"Attribute"}
+                    <SmartDropDownBox label={"Attribute"}
                                       onChange={this.createVariableString}
                                       options={this.state.docAttributes}
                     />
@@ -68,7 +69,7 @@ export default class DocTypeSelectLine extends React.Component {
                     <CopyToClipboard text={this.state.variable}
                                      onCopy={this.props.handleSnackBarOpen}
                     >
-                        <IconButton disabled={this.props.disabled}>
+                        <IconButton>
                             <FiCopy/>
                         </IconButton>
                     </CopyToClipboard>
