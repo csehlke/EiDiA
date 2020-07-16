@@ -1,8 +1,8 @@
 "use strict";
 
 import React from 'react';
-import ExportMainView from '../components/exportView/ExportMainView';
-import ExportMenuBar from '../components/exportView/ExportMenuBar';
+import ExportMainView from '../components/export/ExportMainView';
+import ExportMenuBar from '../components/export/ExportMenuBar';
 import Page from "../components/Page";
 
 import Button from '@material-ui/core/Button';

@@ -35,19 +35,19 @@ const ExportMenuBar = (props) => {
                             className={props.title === pageNames.selectTemplate ? classes.title : classes.titleUnselect}
                             onClick={() => props.changeView(pageNames.selectTemplate)}
                 >
-                    Select Template
+                    {pageNames.selectTemplate}
                 </Typography>
                 <Typography variant="subtitle1" align="center"
                             className={props.title === pageNames.editTemplate ? classes.title : classes.titleUnselect}
                             onClick={() => props.changeView(pageNames.editTemplate)}
                 >
-                    Edit Template
+                    {pageNames.editTemplate}
                 </Typography>
                 <Typography variant="subtitle1" align="center"
                             className={props.title === pageNames.edit ? classes.title : classes.titleUnselect}
                             onClick={() => props.changeView(pageNames.edit)}
                 >
-                    Edit
+                    {pageNames.edit}
                 </Typography>
             </Toolbar>
         </div>

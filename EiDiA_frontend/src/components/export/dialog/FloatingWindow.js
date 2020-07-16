@@ -1,10 +1,10 @@
 import React from 'react';
 import {Dialog, DialogTitle, Typography} from '@material-ui/core';
-import SaveTemplateWindow from './subcomponents/SaveTemplateWindow';
-import ExportDocumentWindow from './subcomponents/ExportDocumentWindow';
-import Preview from "./subcomponents/Preview";
-import {pageNames} from "../../views/ExportView"
-import {Column, Row} from "../StyleElements";
+import SaveTemplateWindow from './SaveTemplateWindow';
+import ExportDocumentWindow from './ExportDocumentWindow';
+import Preview from "./Preview";
+import {pageNames} from "../../../views/ExportView"
+import {Column, Row} from "../../StyleElements";
 
 const styles = {
     column: {

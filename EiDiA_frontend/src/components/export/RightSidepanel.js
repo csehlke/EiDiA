@@ -28,6 +28,7 @@ export default class RightSidePanel extends React.Component {
                     variables={this.props.variables}
                     selectedDocs={this.props.selectedDocs}
                     onAction2_1={this.props.actionSet.onAction2_1}
+                    onAction2_2={this.props.actionSet.onAction2_2}
                 />
                 <Divider/>
                 <TypeComponent3

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input, Typography} from '@material-ui/core';
+import {Button, Typography} from '@material-ui/core';
 import {Column, Row} from '../../StyleElements';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -23,14 +23,19 @@ export default class ExportDocumentWindow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {selectedDocs: []}
-        this.selectDocument = this.selectDocument.bind(this);
+        this.changeCheckBox = this.changeCheckBox.bind(this);
         this.download = this.download.bind(this);
     }
 
-    selectDocument(doc) {
-        let newState = this.state;
-        newState.selectedDocs.push(doc);
-        this.setState(newState);
+    changeCheckBox(event) {
+        let newArr;
+        let documentID = event.target.value;
+        if (event.target.checked) {
+            newArr = this.state.selectedDocs.concat(documentID);
+        } else {
+            newArr = this.state.selectedDocs.filter((docID) => docID !== documentID);
+        }
+        this.setState({selectedDocs: newArr});
     }
 
     download() {
@@ -46,8 +51,9 @@ export default class ExportDocumentWindow extends React.Component {
                     </Typography>
                     <FormGroup>
                         {this.props.usedDocs.map((doc) => <FormControlLabel
-                            control={<Checkbox color="primary" onChange={() => this.selectDocument(doc)}/>}
-                            label={doc}/>)}
+                            control={<Checkbox color="primary" onChange={this.changeCheckBox}/>}
+                            label={doc.name}
+                            value={doc.id}/>)}
                     </FormGroup>
                 </Column>
                 <Column>

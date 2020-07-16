@@ -1,8 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import DocListItem from './DocListItem';
 import {Column, Row} from '../../StyleElements';
@@ -30,7 +28,7 @@ export default class DocSearch extends React.Component {
 
     search(event) {
         if (event.key === 'Enter') {
-            ExportService.searchDocuments(e.target.value).then((data) => {
+            ExportService.searchDocuments(event.target.value).then((data) => {
                 let searchResults = data.documents;
                 this.setState({searchResults: searchResults});
             })
@@ -65,12 +63,14 @@ export default class DocSearch extends React.Component {
                             Selected Documents
                         </Typography>
                         <List dense={true} className="docList" style={styles.scrollable}>
-                            {selectedItems.map((doc) =>
-                                <ListItem key={doc["id"]}>
-                                    <ListItemText
-                                        primary={doc["name"]}
-                                    />
-                                </ListItem>)}
+                            {selectedItems.map((elem) =>
+                                <DocListItem
+                                    key={elem["id"]}
+                                    id={elem["id"]}
+                                    name={elem["name"]}
+                                    onSelect={this.props.onAction2_2}
+                                    removable
+                                />)}
                         </List>
                     </Column>
                 </Row>
