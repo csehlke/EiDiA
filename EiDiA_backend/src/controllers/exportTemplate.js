@@ -10,6 +10,8 @@ let fonts = {
 };
 
 const ExportTemplateModel = require('../models/exportTemplate');
+const DocumentModel = require('../models/document');
+const RecordController = require('./record');
 
 const listTemplates = (req, res) => {
     // TODO: provide templates in database
@@ -41,7 +43,7 @@ const getTemplate = (req, res) => {
 
     const templateId = req.params.templateId;
 
-    res.status(200).json({response: dummyTemplates[templateId]});
+    res.status(200).json({template: dummyTemplates[templateId]});
 };
 
 const saveTemplate = (req, res) => {
@@ -50,7 +52,7 @@ const saveTemplate = (req, res) => {
     res.status(200).json({response: "success!"});
 };
 
-const exportDocument = (req, res) => {
+const exportDocuments = (req, res) => {
     // TODO: provide documents from database
     const params = req.params.documents;
     res.status(200).json({response: "dummy response"});
@@ -58,7 +60,7 @@ const exportDocument = (req, res) => {
 
 const search = (req, res) => {
     // TODO: provide documents in database for search
-    const searchQuery = req.params.documentName;
+    const searchQuery = req.params.searchqu;
 
     let out = []
     for (let i = 0; i < 9; i++) {
@@ -74,9 +76,13 @@ const search = (req, res) => {
     res.status(200).json({documents: out});
 };
 
-const getDocuments = (req, res) => {
+const download = (req, res) => {
+    res.status(200).json({response: "success!"});
+}
+
+const getDocumentAttributes = (req, res) => {
     // TODO: provide documents for variable extraction
-    const docNames = req.params.docNames;
+    const docNames = req.params.documentIDs;
 
     const documentMockData = {
         "doc_1": {
@@ -87,13 +93,54 @@ const getDocuments = (req, res) => {
 
     res.status(200).json({response: documentMockData});
 }
+const searchDocumentsByName = (req, res) => {
+    if (!Object.prototype.hasOwnProperty.call(req.query, "documentName")) {
+        return res.status(400).json({
+            error: 'Bad Request',
+            message: 'The request query must contain the following search param: documentName',
+        });
+    }
 
+    const query = req.query;
+    const dbQuery = {fileType: {$ne: fileTypes.FOLDER}};
+    dbQuery['name'] = {$regex: ".*" + query.documentName + ".*"};
+    DocumentModel.find(dbQuery)
+        .then(documents => {
+            return Promise.all(documents.map(document => {
+                return new Promise((resolve, reject) => {
+                    RecordController.getRecordName(document.recordId)
+                        .then(recordName => {
+                            resolve({
+                                id: document._id,
+                                name: document.name + " (" + recordName + ")",
+                                documentTypeId: document.documentTypeId,
+                            });
+                        })
+                        .catch(err => reject(err));
+                });
+            }));
+        })
+        .then(minimalDocuments => {
+            minimalDocuments.sort((a, b) => {
+                return ('' + a.name).localeCompare(b.name);
+            });
+            res.status(200).json({documents: minimalDocuments});
+        })
+        .catch(error => {
+            return res.status(400).json({
+                error: 'Internal server error',
+                message: error.message,
+            });
+        })
+}
 
 module.exports = {
     listTemplates,
     saveTemplate,
-    exportDocument,
+    exportDocuments,
     getTemplate,
     search,
-    getDocuments
+    searchDocumentsByName,
+    download,
+    getDocumentAttributes
 };

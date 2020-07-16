@@ -13,7 +13,7 @@ import VariableList from './subcomponents/VariableList';
 import SetValueSection from './subcomponents/SetValueSection';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import HttpService from "../../services/HttpService";
+import ExportService from "../../services/ExportService";
 
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -120,11 +120,9 @@ export default class ExportMainView extends React.Component {
     }
 
     componentDidMount() {
-        HttpService.get(endpoints.getTemplateList, (resp) => {
-            let initTemplate = resp.exportTemplates[0]
+        ExportService.getAllTemplates().then((data) => {
+            let initTemplate = data.exportTemplates[0]
             this.selectTemplate(initTemplate.name, initTemplate.id);
-        }, (err) => {
-            console.log(err);
         })
     }
 
@@ -166,9 +164,8 @@ export default class ExportMainView extends React.Component {
         let selectedDocs = this.state.selectedDocs;
         let selectedDocsIds = selectedDocs.map((docElem) => docElem.id)
         if (selectedDocs.length !== 0) {
-            const param = JSON.stringify(selectedDocsIds);
-            HttpService.get(endpoints.getDocs + param, (resp) => {
-                const documents = resp.response;
+            ExportService.getDocumentAttributes(selectedDocsIds).then((data) => {
+                const documents = data.response;
                 if (Object.keys(documents).length !== 0) {
                     let newState = this.state;
                     let templateVariables = this.state.variables;
@@ -233,16 +230,14 @@ export default class ExportMainView extends React.Component {
     // replaces document text with text from template
     // collects all variables of the template
     selectTemplate(name, id) {
-        HttpService.get(endpoints.getTemplate + id, (resp) => {
-            let editorText = resp.response;
+        ExportService.getTemplate(id).then((data) => {
+            let editorText = data.template;
             let newState = this.state;
 
             newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
             newState.selectedTemplate = name;
             newState.variables = this.extractVariables(newState.editorState);
             this.setState(newState);
-        }, (err) => {
-            console.log(err);
         })
     }
 
@@ -334,29 +329,26 @@ export default class ExportMainView extends React.Component {
     saveTemplate() {
         // TODO: Let User save template
         const editorText = this.getTextFromEditorState(this.state.editorState);
-        HttpService.post(endpoints.saveTemplate, editorText, (response) => {
-            let res = response;
+        const templateName = "not done yet";
+        const template = {text: editorText, name: templateName};
+        ExportService.saveTemplate(template).then((data) => {
+            let res = data.response;
             console.log(res);
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);
-        }, (err) => {
-            console.log(err);
         })
     }
 
     downloadDocument(docNames) {
         // TODO: Let User download created and linked documents
         const editorText = this.getTextFromEditorState(this.state.editorState);
-        const linkedDocs = docNames;
-        console.log(linkedDocs);
-        const params = {text: editorText, docs: linkedDocs}
-        HttpService.get(endpoints.exportDocs + encodeURIComponent(JSON.stringify(params)), (resp) => {
+        ExportService.exportDocuments(docNames).then((data) => {
             const docDefinition = {content: editorText};
             const pdf = pdfMake.createPdf(docDefinition);
             pdf.download();
 
-            let res = resp.response;
+            let res = data.response;
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);

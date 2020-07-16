@@ -55,7 +55,22 @@ const addRecord = (req, res) => {
         });
 };
 
+const getRecordName = (id) => {
+    return new Promise((resolve, reject) => {
+        RecordModel.findById(id, {}, {}, (err, record) => {
+            if (err) {
+                reject(err);
+            } else if (record === null) {
+                reject({message: "Record not found"});
+            } else {
+                resolve(record.name);
+            }
+        });
+    });
+}
+
 module.exports = {
     listRecords,
     addRecord,
+    getRecordName,
 };

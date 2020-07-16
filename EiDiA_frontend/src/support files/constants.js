@@ -17,11 +17,3 @@ export const pageNames = {
     edit: "Edit"
 }
 
-export const endpoints = {
-    getTemplateList: BASE_URL + "exporttemplate/list",
-    getTemplate: BASE_URL + "exporttemplate/template/",
-    searchDoc: BASE_URL + "exporttemplate/search/",
-    getDocs: BASE_URL + "exporttemplate/documents/",
-    saveTemplate: BASE_URL + "exporttemplate/save/",
-    exportDocs: BASE_URL + "exporttemplate/export/"
-}

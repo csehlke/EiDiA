@@ -5,8 +5,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import DocListItem from './DocListItem';
-import {Column, endpoints, Row} from '../../../support files/constants';
-import HttpService from "../../../services/HttpService";
+import {Column, Row} from '../../../support files/constants';
+import ExportService from '../../../services/ExportService'
 
 const styles = {
     root: {
@@ -30,11 +30,9 @@ export default class DocSearch extends React.Component {
 
     search(e) {
         if (e.key === 'Enter') {
-            HttpService.get(endpoints.searchDoc + e.target.value, (resp) => {
-                let searchResults = resp.documents;
+            ExportService.searchDocuments(e.target.value).then((data) => {
+                let searchResults = data.documents;
                 this.setState({searchResults: searchResults});
-            }, (err) => {
-                console.log(err);
             })
         }
     }
