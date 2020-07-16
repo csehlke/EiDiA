@@ -3,6 +3,8 @@
 const RecordModel = require('../models/record');
 const DocumentModel = require('../models/document')
 const mongoose = require("mongoose")
+
+
 const listRecords = (req, res) => {
     RecordModel.find()
         .then(records => {
@@ -56,8 +58,9 @@ const addRecord = (req, res) => {
         });
 };
 
-const listDocumentByRecordId = (req, res) => { // Return attributes based on selected DocumentTypeId
-    DocumentModel.find({'recordId': mongoose.Types.ObjectId(req.params.recordId)})
+
+const listFoldersByRecordId = (req, res) => { // Return only folders based on selected DocumentTypeId
+    DocumentModel.find({'recordId': mongoose.Types.ObjectId(req.params.recordId), 'fileType': "Folder"})
         .then(documentList => {
             let response = documentList.map(document => {
                 return {
@@ -85,5 +88,5 @@ const listDocumentByRecordId = (req, res) => { // Return attributes based on sel
 module.exports = {
     listRecords,
     addRecord,
-    listDocumentByRecordId,
+    listFoldersByRecordId
 };

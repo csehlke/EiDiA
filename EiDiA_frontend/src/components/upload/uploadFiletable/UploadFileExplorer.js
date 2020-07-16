@@ -1,6 +1,5 @@
 import React from 'react';
 import Element from './Element'
-import {fileTypes} from "../../../assets/Constants";
 import Grid from "@material-ui/core/Grid";
 import RecordService from "../../../services/RecordService";
 
@@ -15,18 +14,15 @@ export default class UploadFileExplorer extends React.Component {
     }
 
     componentDidMount() {
-        RecordService.listDocuments(this.props.recordId).then((data) => {
-            let onlyFolders = []
+        RecordService.listFolders(this.props.recordId).then((data) => {
+            let folders = []
 
-            Object.values(data)[0].forEach(function (element) {
-                if (element.fileType === fileTypes.FOLDER) {
-                    element.activeFolder = true  // show all folders opened
-                    onlyFolders.push(element)
-                }
+            Object.values(data)[0].forEach(function (element) { //unpack response
+                folders.push(element)
             });
 
             this.setState({
-                elements: onlyFolders
+                elements: folders
             });
 
         }).catch((e) => {
