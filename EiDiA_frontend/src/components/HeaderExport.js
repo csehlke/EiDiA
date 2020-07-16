@@ -4,7 +4,7 @@ import React from 'react';
 import {AppBar, IconButton, makeStyles, Menu, MenuItem, Toolbar, Typography} from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import {Link} from "react-router-dom";
-import {pageNames} from "../support files/constants";
+import {pageNames} from "../views/ExportView"
 
 import logo from "../assets/logo.png"
 

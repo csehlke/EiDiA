@@ -5,7 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import DocListItem from './DocListItem';
-import {Column, Row} from '../../../support files/constants';
+import {Column, Row} from '../../StyleElements';
 import ExportService from '../../../services/ExportService'
 
 const styles = {

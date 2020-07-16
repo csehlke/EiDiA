@@ -1,17 +1,9 @@
 "use strict";
 
-let fonts = {
-    Roboto: {
-        normal: 'fonts/Roboto-Regular.ttf',
-        bold: 'fonts/Roboto-Medium.ttf',
-        italics: 'fonts/Roboto-Italic.ttf',
-        bolditalics: 'fonts/Roboto-MediumItalic.ttf'
-    }
-};
-
 const ExportTemplateModel = require('../models/exportTemplate');
 const DocumentModel = require('../models/document');
 const RecordController = require('./record');
+const {fileTypes} = require('../../../constants');
 
 const listTemplates = (req, res) => {
     // TODO: provide templates in database
@@ -100,7 +92,6 @@ const searchDocumentsByName = (req, res) => {
             message: 'The request query must contain the following search param: documentName',
         });
     }
-
     const query = req.query;
     const dbQuery = {fileType: {$ne: fileTypes.FOLDER}};
     dbQuery['name'] = {$regex: ".*" + query.documentName + ".*"};

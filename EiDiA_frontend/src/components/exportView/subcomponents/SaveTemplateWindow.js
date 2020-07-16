@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Input, Typography} from '@material-ui/core';
-import {Column, Row} from '../../../support files/constants';
+import {Column, Row} from '../../StyleElements';
 
 const styles = {
     button_left: {

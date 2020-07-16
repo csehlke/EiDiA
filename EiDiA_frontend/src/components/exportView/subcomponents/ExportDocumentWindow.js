@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Input, Typography} from '@material-ui/core';
-import {Column, Row} from '../../../support files/constants';
+import {Column, Row} from '../../StyleElements';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';

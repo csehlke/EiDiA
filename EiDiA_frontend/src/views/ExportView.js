@@ -4,7 +4,13 @@ import React from 'react';
 import ExportMainView from '../components/exportView/ExportMainView';
 import Header from '../components/exportView/Header';
 import Page from "../components/Page";
-import {pageNames} from "../support files/constants";
+
+export const pageNames = {
+    selectTemplate: "Select Template",
+    editTemplate: "Edit Template",
+    edit: "Edit"
+}
+
 
 export class ExportView extends React.Component {
 
