@@ -58,6 +58,7 @@ export default class DocTypeSelector extends React.Component {
             <div style={{margin: '15px', overflow: 'auto', maxHeight: '250px', minHeight: '250px'}}>
                 {this.state.linkedDocTypes.map((e, index) =>
                     <DocTypeSelectLine
+                        key={index}
                         variables={this.props.variables}
                         handleSnackBarOpen={this.handleSnackBarOpen}
                         onSelectDocType={this.setDocType}

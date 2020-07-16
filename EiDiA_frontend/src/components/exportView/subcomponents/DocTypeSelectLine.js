@@ -4,7 +4,7 @@ import SmartDropDownBox from "../../SmartDropDownBox";
 import IconButton from "@material-ui/core/IconButton";
 import {FiCopy} from 'react-icons/fi';
 import {CopyToClipboard} from "react-copy-to-clipboard/lib/Component";
-
+import UploadService from "../../../services/UploadService";
 
 export default class DocTypeSelectLine extends React.Component {
     constructor(props) {
@@ -28,13 +28,11 @@ export default class DocTypeSelectLine extends React.Component {
     }
 
     docTypeSelected(e, value) {
-        console.log("test")
         console.log(value);
-        const attributes = [
-            {name: "lalalalal", type: "lalala type"},
-            {name: "lololo", type: "lololo type"},
-        ]
-        this.setState({docAttributes: attributes, selectedDocType: value});
+        UploadService.listAttributes(value.id).then((data) => {
+                this.setState({docAttributes: data.attributeTypes, selectedDocType: value});
+            }
+        )
     }
 
 
