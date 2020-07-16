@@ -55,24 +55,6 @@ const addRecord = (req, res) => {
             }
         });
 };
-const listDocumentsByTypeAndRecord = (req, res) => {
-
-    DocumentModel.find(req.body.mapping.map(mapping => {
-            return {documentTypeId: mapping.docTypeId, recordId: req.body.recordId}
-        }
-    ))
-        .then(documentList => {
-            res.status(200).json({documentList: documentList});
-        })
-        .catch(error => {
-
-            res.status(500).json({
-                error: 'Internal server error',
-                message: error.message,
-            });
-
-        });
-}
 
 const listDocumentByRecordId = (req, res) => { // Return attributes based on selected DocumentTypeId
     DocumentModel.find({'recordId': mongoose.Types.ObjectId(req.params.recordId)})
@@ -103,6 +85,5 @@ const listDocumentByRecordId = (req, res) => { // Return attributes based on sel
 module.exports = {
     listRecords,
     addRecord,
-    listDocumentsByTypeAndRecord,
     listDocumentByRecordId,
 };
