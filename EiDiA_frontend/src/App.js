@@ -37,7 +37,7 @@ export default class App extends React.Component {
                 this.getRoute('/upload', UploadView, true),
                 {
                     path: '/admin', exact: true, render: () => {
-                        if (UserService.isAuthenticated()) { // TODO check if admin user
+                        if (UserService.isAuthenticated() && UserService.isAdmin()) {
                             return (
                                 <UserAdministrationView title={this.state.pageTitle}
                                                         setTitle={(newTitle) => this.handlePageTitleChange(newTitle)}/>
