@@ -9,8 +9,8 @@ const styles = {
         boxShadow: "-10px 0px 6px -10px rgba(0,0,0,0.5)",
         maxWidth: "52vh",
         minWidth: "52vh",
-        minHeight: '83vh',
-        maxHeight: '83vh'
+        minHeight: '80vh',
+        maxHeight: '80vh'
     }
 }
 
@@ -43,6 +43,7 @@ export default class RightSidePanel extends React.Component {
                     variables={this.props.variables}
                     selectedDocs={this.props.selectedDocs}
                     selectedVariable={this.props.selectedVariable}
+                    editorDidChange={this.props.editorDidChange}
                 />
             </div>
         );

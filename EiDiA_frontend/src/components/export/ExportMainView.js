@@ -85,7 +85,6 @@ export default class ExportMainView extends React.Component {
         this.downloadDocument = this.downloadDocument.bind(this);
         this.setValueToVariable = this.setValueToVariable.bind(this);
         this.setInitialView = this.setInitialView.bind(this);
-        this.onClick = this.onClick.bind(this);
         this.removeSelectedDocumentFromList = this.removeSelectedDocumentFromList.bind(this);
 
         // reference to document editor, allows access to focus() method (focus editor)
@@ -129,7 +128,7 @@ export default class ExportMainView extends React.Component {
     }
 
     // initial view: fetch templates and select first template, if any and display its content in editor
-    // e.g. user returns from "Edit Template" View and pruposely did not change changes
+    // e.g. user returns from "Edit Template" View and return back to "Select Template" view
     setInitialView() {
         ExportService.getAllTemplates().then((data) => {
             if (data.exportTemplates.length !== 0) {
@@ -143,7 +142,7 @@ export default class ExportMainView extends React.Component {
         if (this.props.currentPage !== prevProps.currentPage) {
             if (this.props.currentPage === pageNames.edit) {
                 this.mapDocumentsWithVariables();
-            } else if (this.props.currentPage === pageNames.selectTemplate && prevProps.currentPage === pageNames.editTemplate) {
+            } else if (this.props.currentPage === pageNames.selectTemplate) {
                 this.setInitialView();
             }
         }
@@ -288,12 +287,6 @@ export default class ExportMainView extends React.Component {
         this.setState(newState);
     }
 
-    onClick() {
-        if (!this.props.editorStateChanged && this.props.currentPage === pageNames.editTemplate) {
-            this.props.editorDidChange();
-        }
-    }
-
     // Scans editorText for new Variables and returns object of updated variable state
     scanForNewVariables(currVariables, editorState) {
         let newVariables = this.extractVariables(editorState);
@@ -392,7 +385,7 @@ export default class ExportMainView extends React.Component {
                         {/*Insert left column next to editor, so editor is in the center*/}
                     </Column>
                     <Column>
-                        <div style={{overflow: "auto", maxHeight: '83vh'}} onClick={this.onClick}><DocEditor
+                        <div style={{overflow: "auto", maxHeight: '83vh'}}><DocEditor
                             readOnly={this.props.readOnly}
                             textAlignment={this.state.textAlignment}
                             ref={(docEditor) => {
@@ -411,6 +404,7 @@ export default class ExportMainView extends React.Component {
                             variables={this.state.variables}
                             selectedDocs={this.state.selectedDocs}
                             selectedVariable={this.state.selectedVariable}
+                            editorDidChange={this.props.editorDidChange}
                         />
                     </Column>
                 </Row>

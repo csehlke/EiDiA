@@ -51,6 +51,7 @@ export default class SetValueSection extends React.Component {
 
     setValueToVariable() {
         this.props.onAction3(this.state.input);
+        this.props.editorDidChange();
     }
 
 
@@ -74,7 +75,7 @@ export default class SetValueSection extends React.Component {
                            onChange={this.handleChangeTextfield}/>
                 <IconButton style={{margin: "5px"}} color="primary"
                             onClick={this.setValueToVariable}><MdAdd/></IconButton>
-                <TableContainer component={Paper}>
+                <TableContainer component={Paper} style={{maxHeight: "200px", overflow: "auto"}}>
                     <Table>
                         <TableHead>
                             <TableRow>

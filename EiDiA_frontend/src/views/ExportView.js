@@ -31,12 +31,12 @@ export class ExportView extends React.Component {
         }
         this.changeView = this.changeView.bind(this);
         this.toggleAlert = this.toggleAlert.bind(this);
-        this.editorDidChange = this.editorDidChange.bind(this);
+        this.editorStateChanged = this.editorStateChanged.bind(this);
         this.dontSave = this.dontSave.bind(this);
     }
 
-    editorDidChange() {
-        console.log("changed")
+    editorStateChanged() {
+        console.log("change")
         this.setState({editorStateChanged: true})
     }
 
@@ -49,7 +49,7 @@ export class ExportView extends React.Component {
     }
 
     changeView(page) {
-        if (this.state.currentPage === pageNames.editTemplate && this.state.editorStateChanged) {
+        if (this.state.currentPage === pageNames.edit && this.state.editorStateChanged) {
             this.toggleAlert()
         } else {
             this.setState({
@@ -60,10 +60,10 @@ export class ExportView extends React.Component {
     }
 
     dontSave() {
-        console.log(this.state.editorStateChanged);
-        this.setState({editorStateChanged: false});
         this.toggleAlert();
-        this.changeView(pageNames.selectTemplate);
+        this.setState({editorStateChanged: false}, (page) => {
+            this.changeView(pageNames.selectTemplate)
+        });
     }
 
     render() {
@@ -75,22 +75,21 @@ export class ExportView extends React.Component {
                     readOnly={this.state.readOnly}
                     changeView={this.changeView}
                     editorStateChanged={this.state.editorStateChanged}
-                    editorDidChange={this.editorDidChange}
+                    editorDidChange={this.editorStateChanged}
                 />
                 <Dialog
                     open={this.state.showAlert}
                     onClose={this.toggleAlert}
                 >
-                    <DialogTitle>Do you wnat to save the changes you made?</DialogTitle>
+                    <DialogTitle>Do you want to leave this view?</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Your changes will be lost if you don't save them.
+                            Your changes will be lost. You can export this document.
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button color="primary" onClick={this.dontSave}>Don't Save</Button>
-                        <Button color="primary" onClick={this.toggleAlert}>Cancel</Button>
-                        <Button color="primary" autoFocus>Save</Button>
+                        <Button color="primary" onClick={this.dontSave}>Leave & Discard changes</Button>
+                        <Button color="primary" onClick={this.toggleAlert}>Stay</Button>
                     </DialogActions>
                 </Dialog>
             </Page>
