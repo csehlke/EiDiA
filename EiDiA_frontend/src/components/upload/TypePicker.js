@@ -19,7 +19,7 @@ const Container = styled.div
     flex-grow: 1; //For Splitview
     flex-basis: 50%;
     justify-content: center;
-    margin: 8%;
+    margin: 3em;
 `;
 
 //Set DropDown width

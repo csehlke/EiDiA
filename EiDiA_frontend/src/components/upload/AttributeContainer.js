@@ -30,6 +30,11 @@ const Container = styled.div
     flex-direction: column;
 `;
 
+const RightSide = styled.div`
+    width: 50%;
+    margin: 3em;
+`;
+
 
 class AttributeContainer extends React.Component {
 
@@ -319,58 +324,60 @@ class AttributeContainer extends React.Component {
             </Snackbar>
         );
         return ( // Render TextFields dynamically from state
-            <Container>
-                <Grid
-                    container
-                    direction="row"
-                    justify="space-evenly"
-                    alignItems="flex-end">
-                    {this.state.attributes.map(function (item) {
-                        if (item.dataType === 'text') {
-                            return (
-                                <div key={item.id}>
-                                    {self.renderTextFields(item.name, item.id)}
-                                </div>
-                            );
-                        } else if (item.dataType === 'number') {
-                            return (
-                                <div key={item.id}>
-                                    {self.renderNumberFields(item.name, item.id)}
-                                </div>
-                            );
-                        } else if (item.dataType === 'date') {
-                            return (
-                                <div key={item.id}>
-                                    {self.renderDateFields(item.name, item.id)}
-                                </div>
-                            );
-                        }
-                    })}
+            <RightSide>
+                <Container>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-evenly"
+                        alignItems="flex-end">
+                        {this.state.attributes.map(function (item) {
+                            if (item.dataType === 'text') {
+                                return (
+                                    <div key={item.id}>
+                                        {self.renderTextFields(item.name, item.id)}
+                                    </div>
+                                );
+                            } else if (item.dataType === 'number') {
+                                return (
+                                    <div key={item.id}>
+                                        {self.renderNumberFields(item.name, item.id)}
+                                    </div>
+                                );
+                            } else if (item.dataType === 'date') {
+                                return (
+                                    <div key={item.id}>
+                                        {self.renderDateFields(item.name, item.id)}
+                                    </div>
+                                );
+                            }
+                        })}
 
-                    <Grid item xs={12} align="center">
-                        <Box mt={10}/>
+                        <Grid item xs={12} align="center">
+                            <Box mt={10}/>
+                        </Grid>
+
+                        <MetaData callbackAttributeContainer={this.getMetaData}/>
+
+                        <Grid item xs={6} align="center" style={{marginTop: 100}}>
+                            <Button variant="contained"
+                                    color="primary">
+                                Update Document Type
+                            </Button>
+                        </Grid>
+
+                        <Grid item xs={6} align="center" style={{marginTop: 100}}>
+                            <Button variant="contained"
+                                    color="primary"
+                                    onClick={this.attrsToBackend}>
+                                Save
+                            </Button>
+                        </Grid>
                     </Grid>
-
-                    <MetaData callbackAttributeContainer={this.getMetaData}/>
-
-                    <Grid item xs={6} align="center" style={{marginTop: 100}}>
-                        <Button variant="contained"
-                                color="primary">
-                            Update Document Type
-                        </Button>
-                    </Grid>
-
-                    <Grid item xs={6} align="center" style={{marginTop: 100}}>
-                        <Button variant="contained"
-                                color="primary"
-                                onClick={this.attrsToBackend}>
-                            Save
-                        </Button>
-                    </Grid>
-                </Grid>
-                {dateSnackBar}
-                {numberSnackBar}
-            </Container>
+                    {dateSnackBar}
+                    {numberSnackBar}
+                </Container>
+            </RightSide>
         )
     }
 }
