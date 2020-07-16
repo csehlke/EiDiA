@@ -19,6 +19,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 const Row = styled.div`
     display: flex;
+    width: 100%;
 `;
 
 const Column2 = styled.div`
@@ -26,7 +27,7 @@ const Column2 = styled.div`
 `;
 
 const DialogContentFixedSize = styled(DialogContent)`
-    max-width: 40vw;
+    min-width: 45vw;
     min-height: 40vh;
     max-height: 40vh;
 `;
@@ -132,7 +133,7 @@ class NewDocumentTypeDialog extends React.Component {
 
     render() {
         return (
-            <Dialog open={this.props.open} onClose={this.closeDialog}>
+            <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={false}>
                 <DialogTitle>
                     Create New Document Type
                 </DialogTitle>
@@ -175,12 +176,15 @@ class NewDocumentTypeDialog extends React.Component {
                                                 color: "black", //Textcolor for "disabled"-property
                                             }
                                         }}
+                                        fullWidth
                                         style={{margin: '0.5em 0', padding: '0 0 0 5px'}}
                                         size={"small"}/>
                                 </Column2>
                                 <IconButton onClick={() => {
                                     this.removeAttribute(i)
-                                }}><IoMdRemoveCircleOutline/></IconButton>
+                                }}>
+                                    <IoMdRemoveCircleOutline/>
+                                </IconButton>
                             </Row>
                         );
                     })}

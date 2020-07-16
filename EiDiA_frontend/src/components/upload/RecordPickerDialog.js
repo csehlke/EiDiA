@@ -106,7 +106,7 @@ class RecordPickerDialog extends React.Component {
         });
         if (this.state.renderRecordPicker) {
             return (
-                <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={"lg"}>
+                <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={false}>
                     <DialogTitle>
                         Assign To Record
                     </DialogTitle>
@@ -134,7 +134,7 @@ class RecordPickerDialog extends React.Component {
             )
         } else {
             return (
-                <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={"lg"}>
+                <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={false}>
                     <DialogTitle>
                         Set Save Location in Record "{this.state.selectedRecord.name}"
                     </DialogTitle>

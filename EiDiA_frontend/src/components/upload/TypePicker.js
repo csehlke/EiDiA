@@ -155,13 +155,15 @@ class TypePicker extends React.Component {
                 <Grid container
                       direction="row"
                       justify="space-between"
-                      alignItems="center"
-                      style={{minHeight: "58vh"}}>
+                      alignItems="center">
 
                     <Grid item xs={12} align="center">
                         <TextField
                             label="Document Name"
                             variant="outlined"
+                            fullWidth
+                            size={"small"}
+                            style={{margin: '0.5em'}}
                             onChange={this.handleDocumentNameChange}
                         />
                     </Grid>
@@ -176,10 +178,10 @@ class TypePicker extends React.Component {
                     </Grid>
 
                     <Grid item xs={12} align="center">
-                        <Box mt={40}/>
+                        <Box mt={20}/>
                     </Grid>
 
-                    <Grid item xs={2} align="center">
+                    <Grid item xs={6} align="center">
                         <Button
                             variant="contained"
                             color="primary"
@@ -187,7 +189,7 @@ class TypePicker extends React.Component {
                             Create new Document Type
                         </Button>
                     </Grid>
-                    <Grid item xs={2} align="center">
+                    <Grid item xs={4} align="center">
                         <Button
                             variant="contained"
                             color="primary"

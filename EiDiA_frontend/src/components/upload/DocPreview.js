@@ -18,11 +18,11 @@ const Container = styled.div
 
 const ImageContainer = styled.div`
     object-fit: cover;
+    max-height: calc(100vh - 10em);
 `;
 
 const PreviewContainer = styled.div`
     overflow: auto;
-    height: 88vh; //Not 100 because of border
 `;
 
 const LeftSide = styled.div`
@@ -115,7 +115,7 @@ class DocPreview extends React.Component {
             crop.height
         );
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             canvas.toBlob(blob => {
                 if (!blob) {
                     //reject(new Error('Canvas is empty'));
