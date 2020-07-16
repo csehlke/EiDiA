@@ -15,14 +15,8 @@ export default class UploadFileExplorer extends React.Component {
 
     componentDidMount() {
         RecordService.listFolders(this.props.recordId).then((data) => {
-            let folders = []
-
-            Object.values(data)[0].forEach(function (element) { //unpack response
-                folders.push(element)
-            });
-
             this.setState({
-                elements: folders
+                elements: data.documents
             });
 
         }).catch((e) => {
@@ -61,7 +55,7 @@ export default class UploadFileExplorer extends React.Component {
                 <Grid item xs={12}>
                     <hr/>
                 </Grid>
-                {this.state.elements.map((element, index) => element.parentFolderId === '000000000000000000000000' ? //24x 0 comes from backend (valid ObjectId)
+                {this.state.elements.map((element, index) => element.parentFolderId === '0' ?
                     this.renderElement(element, index, 0) : null
                 )}
             </Grid>

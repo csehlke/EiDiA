@@ -61,13 +61,22 @@ const addRecord = (req, res) => {
 
 
 const listFoldersByRecordId = (req, res) => { // Return only folders based on selected DocumentTypeId
+
+    let parentFolderId;
+
     DocumentModel.find({'recordId': mongoose.Types.ObjectId(req.params.recordId), 'fileType': fileTypes.FOLDER})
         .then(documentList => {
             let response = documentList.map(document => {
+
+                if (document.parentFolderId.toString() === '000000000000000000000000') {
+                    parentFolderId = '0' // In frontend, 0 = root Folder
+                } else {
+                    parentFolderId = document.parentFolderId
+                }
                 return {
                     id: document._id,
                     name: document.name,
-                    parentFolderId: document.parentFolderId,
+                    parentFolderId: parentFolderId,
                     fileType: document.fileType,
                     createdOnDate: document.createdOnDate,
                     lastModifiedOnDate: document.lastModifiedOnDate,

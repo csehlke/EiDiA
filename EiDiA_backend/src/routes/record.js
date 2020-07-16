@@ -7,9 +7,8 @@ const middleWares = require('../middlewares');
 const RecordController = require('../controllers/record');
 
 
-//TODO Add authentication middleware
 router.get('/list', middleWares.checkAuthentication, RecordController.listRecords);
 router.post('/add', middleWares.checkAuthentication, RecordController.addRecord);
-router.get('/document/listfolders/:recordId', RecordController.listFoldersByRecordId);
+router.get('/document/listfolders/:recordId', middleWares.checkAuthentication, RecordController.listFoldersByRecordId);
 
 module.exports = router;

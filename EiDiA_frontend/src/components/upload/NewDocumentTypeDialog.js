@@ -28,6 +28,7 @@ const Column2 = styled.div`
 const DialogContentFixedSize = styled(DialogContent)`
     max-width: 40vw;
     min-height: 40vh;
+    max-height: 40vh;
 `;
 
 const Column3 = styled.div`

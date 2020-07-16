@@ -5,9 +5,8 @@ const ErrorHandling = require('./errorHandling');
 
 const tes = require('tesseract.js')
 
-let parentFolderId;
-
 const fullTextOCR = (documentId, base64Image) => {
+
     const worker = tes.createWorker({
         logger: m => console.log(m)
     });
@@ -48,6 +47,8 @@ const addDocument = (req, res) => {
             message: errors.join('\n'),
         });
     }
+
+    let parentFolderId;
 
     if (req.body.parentFolderId === '0') {
         parentFolderId = '000000000000000000000000' //valid ObjectId for MongoDB
