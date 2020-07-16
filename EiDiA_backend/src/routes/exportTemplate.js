@@ -10,5 +10,6 @@ router.get('/list', middleWares.checkAuthentication, ExportTemplateController.li
 router.post('/save', middleWares.checkAuthentication, ExportTemplateController.saveTemplate);
 router.get('/exportDocument', middleWares.checkAuthentication, ExportTemplateController.exportDocument);
 router.get('/download', middleWares.checkAuthentication, ExportTemplateController.download);
+router.get('/documentNames', middleWares.checkAuthentication, ExportTemplateController.searchDocumentsByName);
 
 module.exports = router;
