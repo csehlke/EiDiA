@@ -10,7 +10,7 @@ router.get('/list', middleWares.checkAuthentication, ExportTemplateController.li
 router.get('/template/:templateId', middleWares.checkAuthentication, ExportTemplateController.getTemplate);
 router.post('/save', middleWares.checkAuthentication, ExportTemplateController.saveTemplate);
 router.get('/export/:documents', middleWares.checkAuthentication, ExportTemplateController.exportDocument);
-router.get('/search/:query', middleWares.checkAuthentication, ExportTemplateController.search);
+router.get('/search/:documentName', middleWares.checkAuthentication, ExportTemplateController.search);
 router.get('/documents/:docNames', middleWares.checkAuthentication, ExportTemplateController.getDocuments);
 
 module.exports = router;

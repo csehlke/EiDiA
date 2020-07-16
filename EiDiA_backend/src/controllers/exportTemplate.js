@@ -58,15 +58,20 @@ const exportDocument = (req, res) => {
 
 const search = (req, res) => {
     // TODO: provide documents in database for search
-    const searchQuery = req.params.query;
+    const searchQuery = req.params.documentName;
 
     let out = []
     for (let i = 0; i < 9; i++) {
-        const obj = {name: "Document " + i, id: "doc_" + i};
+        const obj = {id: "doc_" + i, name: "Document " + i, documentTypeId: "typed_" + i};
         out.push(obj);
     }
+    out.push({
+        id: "5efa2869444d2082a89b793a",
+        name: "Document1 (Amazon)",
+        documentTypeId: "5ef99f619815e6b0c4f9292a"
+    })
 
-    res.status(200).json({response: out});
+    res.status(200).json({documents: out});
 };
 
 const getDocuments = (req, res) => {

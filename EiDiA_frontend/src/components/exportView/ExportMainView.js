@@ -121,7 +121,7 @@ export default class ExportMainView extends React.Component {
 
     componentDidMount() {
         HttpService.get(endpoints.getTemplateList, (resp) => {
-            let initTemplate = resp.response[0]
+            let initTemplate = resp.exportTemplates[0]
             this.selectTemplate(initTemplate.name, initTemplate.id);
         }, (err) => {
             console.log(err);

@@ -31,7 +31,7 @@ export default class DocSearch extends React.Component {
     search(e) {
         if (e.key === 'Enter') {
             HttpService.get(endpoints.searchDoc + e.target.value, (resp) => {
-                let searchResults = resp.response;
+                let searchResults = resp.documents;
                 this.setState({searchResults: searchResults});
             }, (err) => {
                 console.log(err);

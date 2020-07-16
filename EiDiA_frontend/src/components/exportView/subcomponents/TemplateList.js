@@ -22,7 +22,7 @@ export default class TemplateList extends React.Component {
     fetchTemplates() {
         let newState = this.state;
         HttpService.get(endpoints.getTemplateList, (resp) => {
-                newState.templateList = resp.response;
+            newState.templateList = resp.exportTemplates;
                 this.setState(newState);
             },
             (err) => {
