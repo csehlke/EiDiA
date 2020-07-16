@@ -30,13 +30,8 @@ export default class UploadFileExplorer extends React.Component {
         });
     }
 
-    setNewParent = (child) => (newParentId) => {
-        child.parentFolderId = newParentId;
-
-    }
     onFolderClicked = (element) => () => {
         this.props.sendFolder(element) // --> Current selected Folder to Dialog
-
     }
 
     renderElement(element, index, level) {
@@ -45,7 +40,6 @@ export default class UploadFileExplorer extends React.Component {
                     <Element
                         level={level}
                         elementData={element}
-                        handleDrop={this.setNewParent(element)}
                         onFolderClicked={this.onFolderClicked(element)}>
                     </Element>
                 </Grid>
