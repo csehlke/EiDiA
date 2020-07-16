@@ -19,10 +19,11 @@ const DropZoneContainer = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 60vh;
+  max-height: calc(100vh - 16em);
+  min-height: calc(100vh - 16em);
   border: 2px dashed #dadada;
   padding: 30px;
-  margin: 8%;
+  margin: 3em;
 `;
 
 class FileDrop extends React.Component {
@@ -96,7 +97,7 @@ class FileDrop extends React.Component {
                             <div {...getRootProps({className: "dropzone"})}>
                                 <input {...getInputProps()} />
                                 <DropZoneContainer>
-                                    <MdDescription style={{fontSize: '200px'}}/>
+                                    <MdDescription style={{fontSize: '20vw'}}/>
                                     <p>
                                         {!isDragActive && "Click here or drag a file to upload!"}
                                         {isDragActive && !isDragReject && "Drop your file here"}
