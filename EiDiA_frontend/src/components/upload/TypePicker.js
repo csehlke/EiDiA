@@ -155,7 +155,8 @@ class TypePicker extends React.Component {
                 <Grid container
                       direction="row"
                       justify="space-between"
-                      alignItems="center">
+                      alignItems="center"
+                      style={{minHeight: "58vh"}}>
 
                     <Grid item xs={12} align="center">
                         <TextField
