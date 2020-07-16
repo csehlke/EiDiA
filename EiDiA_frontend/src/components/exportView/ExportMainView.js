@@ -15,14 +15,11 @@ import SetValueSection from './subcomponents/SetValueSection';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import ExportService from "../../services/ExportService";
-
-
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-function Dialog(props) {
+function CustomDialog(props) {
     return (
-        <React.Fragment>
-            {props.currentPage === pageNames.selectTemplate ? "" : <FloatingWindows
+            props.currentPage === pageNames.selectTemplate ? "" : <FloatingWindows
                 showDialog={props.showDialog}
                 onClose={props.onClose}
                 save={props.save}
@@ -30,8 +27,7 @@ function Dialog(props) {
                 selectedDocs={props.selectedDocs}
                 download={props.download}
                 editorState={props.editorState}
-            />}
-        </React.Fragment>
+            />
     )
 }
 
@@ -71,6 +67,7 @@ export default class ExportMainView extends React.Component {
             variables: {},
             selectedDocs: [], // e.g. ["Document A", "Document B"] --> array of documents selected for mapping values to variables
             selectedVariable: "", // e.g. $Variable1 --> necessary for manually assigning value to selected variable
+            showAlert: false,
         };
 
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
@@ -86,6 +83,8 @@ export default class ExportMainView extends React.Component {
         this.getTextFromEditorState = this.getTextFromEditorState.bind(this);
         this.downloadDocument = this.downloadDocument.bind(this);
         this.setValueToVariable = this.setValueToVariable.bind(this);
+        this.setInitialView = this.setInitialView.bind(this);
+        this.onClick = this.onClick.bind(this);
 
         // reference to document editor, allows access to focus() method (focus editor)
         // necessary for setting inline styles
@@ -121,15 +120,27 @@ export default class ExportMainView extends React.Component {
     }
 
     componentDidMount() {
+        this.setInitialView()
+    }
+
+    // initial view: fetch templates and select first template, if any and display its content in editor
+    // e.g. user returns from "Edit Template" View and pruposely did not change changes
+    setInitialView() {
         ExportService.getAllTemplates().then((data) => {
-            let initTemplate = data.exportTemplates[0]
-            this.selectTemplate(initTemplate.name, initTemplate.id);
+            if (data.exportTemplates.length !== 0) {
+                let initTemplate = data.exportTemplates[0]
+                this.selectTemplate(initTemplate.name, initTemplate.id);
+            }
         })
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.currentPage !== prevProps.currentPage && this.props.currentPage === pageNames.edit) {
-            this.mapDocumentsWithVariables();
+    componentDidUpdate(prevProps) {
+        if (this.props.currentPage !== prevProps.currentPage) {
+            if (this.props.currentPage === pageNames.edit) {
+                this.mapDocumentsWithVariables();
+            } else if (this.props.currentPage === pageNames.selectTemplate && prevProps.currentPage === pageNames.editTemplate) {
+                this.setInitialView();
+            }
         }
     }
 
@@ -205,11 +216,8 @@ export default class ExportMainView extends React.Component {
         }
     }
 
-
     toggleDialog() {
-        let newState = this.state;
-        newState.showDialog = !newState.showDialog;
-        this.setState(newState);
+        this.setState({showDialog: !this.state.showDialog})
     }
 
     addSelectedDocumentToList(docItem) {
@@ -266,8 +274,14 @@ export default class ExportMainView extends React.Component {
         if (this.props.currentPage === pageNames.editTemplate) {
             newState.variables = this.scanForNewVariables(newState.variables, editorState);
         }
-
+        
         this.setState(newState);
+    }
+
+    onClick() {
+        if (!this.props.editorStateChanged && this.props.currentPage === pageNames.editTemplate) {
+            this.props.editorDidChange();
+        }
     }
 
     // Scans editorText for new Variables and returns object of updated variable state
@@ -334,10 +348,10 @@ export default class ExportMainView extends React.Component {
         const template = {text: editorText, name: templateName};
         ExportService.saveTemplate(template).then((data) => {
             let res = data.response;
-            console.log(res);
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);
+            this.props.changeView(pageNames.selectTemplate);
         })
     }
 
@@ -368,7 +382,7 @@ export default class ExportMainView extends React.Component {
                         {/*Insert left column next to editor, so editor is in the center*/}
                     </Column>
                     <Column>
-                        <div style={{overflow: "auto", maxHeight: '83vh'}}><DocEditor
+                        <div style={{overflow: "auto", maxHeight: '83vh'}} onClick={this.onClick}><DocEditor
                             readOnly={this.props.readOnly}
                             textAlignment={this.state.textAlignment}
                             ref={(docEditor) => {
@@ -382,12 +396,7 @@ export default class ExportMainView extends React.Component {
                     <Column>
                         <RightSidepanel
                             componentSet={componentSet}
-                            onAction1_1={actionSet.onAction1_1}
-                            onAction1_2={actionSet.onAction1_2}
-                            onAction2_1={actionSet.onAction2_1}
-                            onAction3_1={actionSet.onAction3_1}
-                            onAction3_2={actionSet.onAction3_2}
-                            onAction3_3={actionSet.onAction3_3}
+                            actionSet={actionSet}
                             editorState={this.state.editorState}
                             variables={this.state.variables}
                             selectedDocs={this.state.selectedDocs}
@@ -395,7 +404,7 @@ export default class ExportMainView extends React.Component {
                         />
                     </Column>
                 </Row>
-                <Dialog
+                <CustomDialog
                     showDialog={this.state.showDialog}
                     onClose={this.toggleDialog}
                     save={this.saveTemplate}

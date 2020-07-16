@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
     }
 ));
 
-const MenuAppBar = (props) => {
+const ExportMenuBar = (props) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -54,4 +54,4 @@ const MenuAppBar = (props) => {
     );
 }
 
-export default MenuAppBar;
+export default ExportMenuBar;

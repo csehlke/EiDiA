@@ -28,8 +28,8 @@ export default class DocSearch extends React.Component {
         this.search = this.search.bind(this);
     }
 
-    search(e) {
-        if (e.key === 'Enter') {
+    search(event) {
+        if (event.key === 'Enter') {
             ExportService.searchDocuments(e.target.value).then((data) => {
                 let searchResults = data.documents;
                 this.setState({searchResults: searchResults});

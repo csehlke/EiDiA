@@ -96,15 +96,13 @@ export default class SetValueSection extends React.Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <div>
-                    <Button
-                        style={styles.button}
-                        variant="contained"
-                        color="primary"
-                        disableElevation
-                        onClick={this.props.onAction1}
-                    >Export</Button>
-                </div>
+                <Button
+                    style={styles.button}
+                    variant="contained"
+                    color="primary"
+                    disableElevation
+                    onClick={this.props.onAction1}
+                >Export</Button>
             </div>
         )
     }

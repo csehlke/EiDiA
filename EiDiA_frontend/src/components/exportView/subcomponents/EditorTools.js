@@ -33,23 +33,22 @@ export default class EditorTools extends React.Component {
         this.setAlignment = this.setAlignment.bind(this);
     }
 
-    setInlineStyle(e, inlineStyle) {
-        e.preventDefault();
+    setInlineStyle(event, inlineStyle) {
+        event.preventDefault();
         this.props.onAction1(inlineStyle);
         let newState = this.state;
         newState[inlineStyle] = !newState[inlineStyle];
         this.setState(newState);
     }
 
-    setAlignment(e, alignmentStyle) {
-        e.preventDefault()
+    setAlignment(event, alignmentStyle) {
+        event.preventDefault()
         this.props.onAction2(alignmentStyle);
         let newState = this.state;
-        const newFlag = !newState.alignments[alignmentStyle]
         for (let key in newState.alignments) {
             newState.alignments[key] = false
         }
-        newState.alignments[alignmentStyle] = newFlag;
+        newState.alignments[alignmentStyle] = true;
         this.setState(newState)
     }
 
@@ -58,49 +57,49 @@ export default class EditorTools extends React.Component {
             <div style={styles.div}>
                 <IconButton
                     style={this.state.bold ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setInlineStyle(e, "bold")}
+                    onMouseDown={(  event) => this.setInlineStyle(event, "bold")}
                 >
                     <AiOutlineBold/>
                 </IconButton>
                 <IconButton
                     style={this.state.italic ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setInlineStyle(e, "italic")}
+                    onMouseDown={(event) => this.setInlineStyle(event, "italic")}
                 >
                     <AiOutlineItalic/>
                 </IconButton>
                 <IconButton
                     style={this.state.underlined ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setInlineStyle(e, "underline")}
+                    onMouseDown={(event,) => this.setInlineStyle(event, "underline")}
                 >
                     <AiOutlineUnderline/>
                 </IconButton>
                 <IconButton
                     style={this.state.strikethrough ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setInlineStyle(e, "strikethrough")}
+                    onMouseDown={(event) => this.setInlineStyle(event, "strikethrough")}
                 >
                     <AiOutlineStrikethrough/>
                 </IconButton>
                 <IconButton
                     style={this.state.alignments.left ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setAlignment(e, "left")}
+                    onMouseDown={(event) => this.setAlignment(event, "left")}
                 >
                     <GrTextAlignLeft/>
                 </IconButton>
                 <IconButton
                     style={this.state.alignments.center ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setAlignment(e, "center")}
+                    onMouseDown={(event) => this.setAlignment(event, "center")}
                 >
                     <GrTextAlignCenter/>
                 </IconButton>
                 <IconButton
                     style={this.state.alignments.right ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setAlignment(e, "right")}
+                    onMouseDown={(event) => this.setAlignment(event, "right")}
                 >
                     <GrTextAlignRight/>
                 </IconButton>
                 <IconButton
                     style={this.state.alignments.justify ? styles.iconClicked : null}
-                    onMouseDown={(e) => this.setAlignment(e, "justify")}
+                    onMouseDown={(event) => this.setAlignment(event, "justify")}
                 >
                     <GrTextAlignFull/>
                 </IconButton>

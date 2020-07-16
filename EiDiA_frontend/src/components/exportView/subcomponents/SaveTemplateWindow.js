@@ -16,7 +16,7 @@ const styles = {
     }
 }
 
-export default class SaveTemplateSection extends React.Component {
+export default class SaveTemplateWindow extends React.Component {
     render() {
         return (
             <Column>
@@ -28,6 +28,7 @@ export default class SaveTemplateSection extends React.Component {
                 <Row>
                     <Input placeholder="Template Name"/>
                 </Row>
+                Saving template not implemented yet
                 <Row>
                     <Button
                         style={styles.button_left}

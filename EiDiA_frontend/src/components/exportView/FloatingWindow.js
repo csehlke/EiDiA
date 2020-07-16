@@ -56,7 +56,7 @@ export default class FloatingWindow extends React.Component {
                     <DialogContent
                         onClose={this.props.onClose}
                         save={this.props.save}
-                        selectedDocs={this.props.selectedDocs}
+                        usedDocs={this.props.selectedDocs}
                         download={this.props.download}
                         editorState={this.props.editorState}
                     />

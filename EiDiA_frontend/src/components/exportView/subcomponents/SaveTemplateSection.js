@@ -8,17 +8,15 @@ const buttonStyle = {
 export default class SaveTemplateSection extends React.Component {
     render() {
         return (
-            <div>
-                <Button
-                    style={buttonStyle}
-                    variant="contained"
-                    color="primary"
-                    disableElevation
-                    onClick={this.props.onAction1}
-                >
-                    Save Template
-                </Button>
-            </div>
+            <Button
+                style={buttonStyle}
+                variant="contained"
+                color="primary"
+                disableElevation
+                onClick={this.props.onAction1}
+            >
+                Save Template
+            </Button>
         )
     }
 }

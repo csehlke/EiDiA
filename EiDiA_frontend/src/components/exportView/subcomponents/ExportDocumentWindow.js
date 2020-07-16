@@ -38,7 +38,6 @@ export default class ExportDocumentWindow extends React.Component {
     }
 
     render() {
-        let usedDocs = this.props.selectedDocs;
         return (
             <div>
                 <Column>
@@ -46,20 +45,12 @@ export default class ExportDocumentWindow extends React.Component {
                         Used Documents
                     </Typography>
                     <FormGroup>
-                        {usedDocs.map((doc) => <FormControlLabel
+                        {this.props.usedDocs.map((doc) => <FormControlLabel
                             control={<Checkbox color="primary" onChange={() => this.selectDocument(doc)}/>}
                             label={doc}/>)}
                     </FormGroup>
                 </Column>
                 <Column>
-                    <Row>
-                        <Typography variant="subtitle2">
-                            Template Name
-                        </Typography>
-                    </Row>
-                    <Row>
-                        <Input placeholder="Template Name"/>
-                    </Row>
                     <Row>
                         <Button
                             style={styles.button_left}
