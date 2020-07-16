@@ -54,7 +54,7 @@ class Element extends React.Component {
                 </Grid>
             </div>
         );
-        return this.props.connectDragSource(toRender);
+        return toRender;
     }
 }
 
