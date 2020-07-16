@@ -1,6 +1,7 @@
 "use strict";
 
 const mongoose = require('mongoose');
+const {fileTypes} = require("../../../constants");
 
 // Define the schema
 
@@ -61,7 +62,7 @@ const DocumentSchema = new mongoose.Schema({
     },
     fileType: {
         type: String,
-        enum: ['Folder', 'PDF', 'Word', 'Image', ''],
+        enum: fileTypes,
         required: false,
     },
 

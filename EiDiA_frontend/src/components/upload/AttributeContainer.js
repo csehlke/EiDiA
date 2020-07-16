@@ -18,6 +18,7 @@ import {RiCropLine} from "react-icons/all";
 import Alert from "@material-ui/lab/Alert";
 
 import UploadService from '../../services/UploadService';
+import {fileTypes} from "../../assets/Constants";
 
 
 const Container = styled.div
@@ -280,7 +281,7 @@ class AttributeContainer extends React.Component {
             name: this.props.documentName,
             documentTypeId: this.props.selectedDocumentTypeId,
             base64Image: this.props.base64Image,
-            fileType: "Image" // EiDiA currently only supports uploading scanned images
+            fileType: fileTypes.IMAGE // EiDiA currently only supports uploading scanned images
         }
         UploadService.addAttributes(requestData).then((response) => {
             console.log(response)
