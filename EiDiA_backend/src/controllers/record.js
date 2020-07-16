@@ -1,5 +1,6 @@
 "use strict";
 
+const {fileTypes} = require("../../../constants");
 const RecordModel = require('../models/record');
 const DocumentModel = require('../models/document')
 const mongoose = require("mongoose")
@@ -60,7 +61,7 @@ const addRecord = (req, res) => {
 
 
 const listFoldersByRecordId = (req, res) => { // Return only folders based on selected DocumentTypeId
-    DocumentModel.find({'recordId': mongoose.Types.ObjectId(req.params.recordId), 'fileType': "Folder"})
+    DocumentModel.find({'recordId': mongoose.Types.ObjectId(req.params.recordId), 'fileType': fileTypes.FOLDER})
         .then(documentList => {
             let response = documentList.map(document => {
                 return {

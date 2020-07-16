@@ -1,20 +1,14 @@
+const {fileTypes} = require('../../../constants');
+
 export const recordMenuOptions = {
     DASHBOARD: 1,
     FILEEXPLORER: 2,
 };
+
 export const DragTypes = {
     ELEMENT: 'element',
     WIDGET: 'widget'
 }
-
-export const fileTypes = {
-    FOLDER: 'Folder',
-    PDF: 'PDF',
-    WORD: 'Word',
-    NONE: 'None',
-    IMAGE: 'Image'
-};
-
 
 export const WidgetTypes = {
     LOG: 'Log',

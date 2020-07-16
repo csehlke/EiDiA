@@ -18,7 +18,7 @@ import {RiCropLine} from "react-icons/all";
 import Alert from "@material-ui/lab/Alert";
 
 import UploadService from '../../services/UploadService';
-import {fileTypes} from "../../assets/Constants";
+import {fileTypes} from "../../../../constants";
 
 
 const Container = styled.div

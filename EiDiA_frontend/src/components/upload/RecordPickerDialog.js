@@ -26,10 +26,15 @@ const SearchBar = styled.div`
 `;
 
 const SizedDialogContent = styled(DialogContent)`
-    min-width: 30vw;
-    max-width: 30vw;
-    min-height: 40vh;
-    max-height: 40vh;
+    min-width: 60vw;
+    max-width: 60vw;
+    min-height: 60vh;
+    max-height: 60vh;
+`;
+
+const SizedDialogContentRecord = styled(SizedDialogContent)`
+    min-height: calc(60vh + 3.75em); // Höhe der Button im 2. Dialog ausgleichen
+    max-height: calc(60vh + 3.75em);
 `;
 
 
@@ -101,13 +106,14 @@ class RecordPickerDialog extends React.Component {
         });
         if (this.state.renderRecordPicker) {
             return (
-                <Dialog open={this.props.open} onClose={this.closeDialog}>
+                <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={"lg"}>
                     <DialogTitle>
                         Assign To Record
                     </DialogTitle>
-                    <SizedDialogContent dividers>
+                    <SizedDialogContentRecord dividers>
                         <SearchBar>
                             <Input
+                                fullWidth
                                 placeholder="Search Records ..."
                                 value={this.state.search}
                                 onChange={this.updateSearch}/>
@@ -123,12 +129,12 @@ class RecordPickerDialog extends React.Component {
                                 </IconButton>
                             )}
                         </FlexRow>
-                    </SizedDialogContent>
+                    </SizedDialogContentRecord>
                 </Dialog>
             )
         } else {
             return (
-                <Dialog open={this.props.open} onClose={this.closeDialog}>
+                <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={"lg"}>
                     <DialogTitle>
                         Set Save Location in Record "{this.state.selectedRecord.name}"
                     </DialogTitle>
