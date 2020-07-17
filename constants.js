@@ -6,7 +6,17 @@ const mongoDBUrl = 'mongodb+srv://seba-dev:' + pass + '@eidia-0-wtpll.mongodb.ne
 // for local testing
 // const mongoDBUrl = 'mongodb://localhost:27017/EiDiA-db';
 
+// File browser
+const fileTypes = {
+    FOLDER: 'Folder',
+    PDF: 'PDF',
+    WORD: 'Word',
+    IMAGE: 'Image',
+    NONE: 'None'
+}
+
 module.exports = {
     baseURL,
     mongoDBUrl,
+    fileTypes
 };

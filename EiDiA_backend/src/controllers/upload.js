@@ -1,6 +1,5 @@
 "use strict";
 
-
 const DocumentModel = require('../models/document');
 const DocumentTypeModel = require('../models/documentType');
 const AttributeModel = require('../models/attributeType');

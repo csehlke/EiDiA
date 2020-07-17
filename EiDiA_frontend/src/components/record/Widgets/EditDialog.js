@@ -121,7 +121,7 @@ export class EditDialog extends React.Component {
                                       label={"Graph Type"}
                                       onChange={(event, value) => this.changeGraphType(value.type)}
                                       options={GraphTypeOptions}
-                    />
+                                      clearable={false}/>
                 </Grid>,
                 <Grid key={"descriptionGraphAttributes"} item xs={12}>
                     <DialogContentText>Select Attributes to
@@ -169,7 +169,7 @@ export class EditDialog extends React.Component {
                                   preselectedValue={colorOptions.find(opt => opt.color === mapping.color)}
                                   onChange={(event, value) => this.changeAttributeMapping(index, "color", value.color)}
                                   options={colorOptions}
-                />
+                                  clearable={false}/>
             </Grid>);
     }
 
@@ -197,7 +197,7 @@ export class EditDialog extends React.Component {
                                   label={"Attribute"}
                                   onChange={(event, value) => this.changeAttributeMapping(index, "attrId", value.attrId)}
                                   options={this.getAttributesForDocType(mapping.docTypeId)}
-                />
+                                  clearable={false}/>
             </Grid>
         );
     }
@@ -210,7 +210,7 @@ export class EditDialog extends React.Component {
                                   label={"Document Type"}
                                   onChange={(event, value) => this.changeAttributeMapping(index, "docTypeId", value.docTypeId)}
                                   options={this.getRecordDocTypes()}
-                />
+                                  clearable={false}/>
             </Grid>
         );
     }
@@ -323,7 +323,8 @@ export class EditDialog extends React.Component {
                                               preselectedValue={typeOptions.find(type => type.type === this.state.selectedType)}
                                               label={"Widget Type"}
                                               onChange={(event, value) => this.changeType(value.type)}
-                                              options={typeOptions}/>
+                                              options={typeOptions}
+                                              clearable={false}/>
                         </Grid>
                         {this.dialogPicker()}
                     </Grid>

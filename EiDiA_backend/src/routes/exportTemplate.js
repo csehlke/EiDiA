@@ -9,8 +9,10 @@ const ExportTemplateController = require('../controllers/exportTemplate');
 router.get('/list', middleWares.checkAuthentication, ExportTemplateController.listTemplates);
 router.get('/template/:templateId', middleWares.checkAuthentication, ExportTemplateController.getTemplate);
 router.post('/save', middleWares.checkAuthentication, ExportTemplateController.saveTemplate);
-router.get('/export/:documents', middleWares.checkAuthentication, ExportTemplateController.exportDocument);
-router.get('/search/:query', middleWares.checkAuthentication, ExportTemplateController.search);
-router.get('/documents/:docNames', middleWares.checkAuthentication, ExportTemplateController.getDocuments);
+router.get('/search', middleWares.checkAuthentication, ExportTemplateController.search);
+router.get('/exportDocuments', middleWares.checkAuthentication, ExportTemplateController.exportDocuments);
+router.get('/download', middleWares.checkAuthentication, ExportTemplateController.download);
+router.get('/documentNames', middleWares.checkAuthentication, ExportTemplateController.searchDocumentsByName);
+router.get('/documents', middleWares.checkAuthentication, ExportTemplateController.getDocumentAttributes);
 
 module.exports = router;

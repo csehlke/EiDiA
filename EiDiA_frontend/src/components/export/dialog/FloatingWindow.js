@@ -1,10 +1,10 @@
 import React from 'react';
 import {Dialog, DialogTitle, Typography} from '@material-ui/core';
-import SaveTemplateWindow from './subcomponents/SaveTemplateWindow';
-import ExportDocumentWindow from './subcomponents/ExportDocumentWindow';
-import Preview from "./subcomponents/Preview";
-import {Column, pageNames, Row} from "../../support files/constants";
-
+import SaveTemplateWindow from './SaveTemplateWindow';
+import ExportDocumentWindow from './ExportDocumentWindow';
+import Preview from "./Preview";
+import {pageNames} from "../../../views/ExportView"
+import {Column, Row} from "../../StyleElements";
 
 const styles = {
     column: {
@@ -56,7 +56,7 @@ export default class FloatingWindow extends React.Component {
                     <DialogContent
                         onClose={this.props.onClose}
                         save={this.props.save}
-                        selectedDocs={this.props.selectedDocs}
+                        usedDocs={this.props.selectedDocs}
                         download={this.props.download}
                         editorState={this.props.editorState}
                     />

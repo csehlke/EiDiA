@@ -29,7 +29,7 @@ function createData(variable, value, source) {
     return {variable, value, source};
 }
 
-function convertData(variables, value = null) {
+function convertData(variables) {
     let out = [];
     for (let k of Object.keys(variables)) {
         let variable = variables[k];
@@ -51,6 +51,7 @@ export default class SetValueSection extends React.Component {
 
     setValueToVariable() {
         this.props.onAction3(this.state.input);
+        this.props.editorDidChange();
     }
 
 
@@ -64,7 +65,7 @@ export default class SetValueSection extends React.Component {
         const rows = convertData(variableState);
         return (
             <div>
-                <FormControl style={{margin: "5px"}}>
+                <FormControl style={{margin: "5px", width: '100%', padding: '0 10px 0 0'}}>
                     <Select variant="outlined" onChange={this.props.onAction2}>
                         {variableKeys.map((key) => <MenuItem key={key} value={key}>{key}</MenuItem>)}
                     </Select>
@@ -74,8 +75,8 @@ export default class SetValueSection extends React.Component {
                            onChange={this.handleChangeTextfield}/>
                 <IconButton style={{margin: "5px"}} color="primary"
                             onClick={this.setValueToVariable}><MdAdd/></IconButton>
-                <TableContainer component={Paper}>
-                    <Table aria-label="simple table">
+                <TableContainer component={Paper} style={{maxHeight: "200px", overflow: "auto"}}>
+                    <Table>
                         <TableHead>
                             <TableRow>
                                 <TableCell>Variable</TableCell>
@@ -96,15 +97,13 @@ export default class SetValueSection extends React.Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <div>
-                    <Button
-                        style={styles.button}
-                        variant="contained"
-                        color="primary"
-                        disableElevation
-                        onClick={this.props.onAction1}
-                    >Export</Button>
-                </div>
+                <Button
+                    style={styles.button}
+                    variant="contained"
+                    color="primary"
+                    disableElevation
+                    onClick={this.props.onAction1}
+                >Export</Button>
             </div>
         )
     }

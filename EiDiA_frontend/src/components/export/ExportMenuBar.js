@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {makeStyles, Toolbar, Typography} from "@material-ui/core";
-import {pageNames} from "../../support files/constants";
+import {pageNames} from "../../views/ExportView";
 
 const useStyles = makeStyles(() => ({
         root: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
     }
 ));
 
-const MenuAppBar = (props) => {
+const ExportMenuBar = (props) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -35,23 +35,23 @@ const MenuAppBar = (props) => {
                             className={props.title === pageNames.selectTemplate ? classes.title : classes.titleUnselect}
                             onClick={() => props.changeView(pageNames.selectTemplate)}
                 >
-                    Select Template
+                    {pageNames.selectTemplate}
                 </Typography>
                 <Typography variant="subtitle1" align="center"
                             className={props.title === pageNames.editTemplate ? classes.title : classes.titleUnselect}
                             onClick={() => props.changeView(pageNames.editTemplate)}
                 >
-                    Edit Template
+                    {pageNames.editTemplate}
                 </Typography>
                 <Typography variant="subtitle1" align="center"
                             className={props.title === pageNames.edit ? classes.title : classes.titleUnselect}
                             onClick={() => props.changeView(pageNames.edit)}
                 >
-                    Edit
+                    {pageNames.edit}
                 </Typography>
             </Toolbar>
         </div>
     );
 }
 
-export default MenuAppBar;
+export default ExportMenuBar;

@@ -97,6 +97,13 @@ width:30vw;
 
   
 `*/
+
+
+export const Row = styled.div`
+    display: flex;
+`;
+
+
 export const Column = styled.div`
 width:48%;
 margin: 0 2%;

@@ -13,6 +13,9 @@ const listDocumentTypes = (req, res) => {
                     name: documentType.name,
                 };
             });
+            response.sort((a, b) => {
+                return ('' + a.name).localeCompare(b.name);
+            });
             res.status(200).json({documentTypes: response});
         })
         .catch(error => {
@@ -34,6 +37,9 @@ const listAttributeTypes = (req, res) => {
                     documentTypeId: attributeType.documentTypeId,
                 };
             });
+            response.sort((a, b) => {
+                return ('' + a.name).localeCompare(b.name);
+            });
             res.status(200).json({attributeTypes: response});
         })
         .catch(error => {
@@ -53,6 +59,9 @@ const listAttributeTypesByDocumentId = (req, res) => { // Return attributes base
                     name: attributeType.name,
                     dataType: attributeType.dataType,
                 };
+            });
+            response.sort((a, b) => {
+                return ('' + a.name).localeCompare(b.name);
             });
             res.status(200).json({attributeTypes: response});
         })

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Input, Typography} from '@material-ui/core';
-import {Column, Row} from '../../../support files/constants';
+import {Column, Row} from '../../StyleElements';
 
 const styles = {
     button_left: {
@@ -16,24 +16,7 @@ const styles = {
     }
 }
 
-export default class SaveTemplateSection extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            templateName: ""
-        }
-        this.updateName = this.updateName.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    updateName(e) {
-        this.setState({templateName: e.target.value})
-    }
-
-    handleClick() {
-        this.props.save(this.state.templateName);
-    }
-
+export default class SaveTemplateWindow extends React.Component {
     render() {
         return (
             <Column>
@@ -43,8 +26,9 @@ export default class SaveTemplateSection extends React.Component {
                     </Typography>
                 </Row>
                 <Row>
-                    <Input placeholder="Template Name" onChange={this.updateName}/>
+                    <Input placeholder="Template Name"/>
                 </Row>
+                Saving template not implemented yet
                 <Row>
                     <Button
                         style={styles.button_left}
@@ -60,7 +44,7 @@ export default class SaveTemplateSection extends React.Component {
                         variant="contained"
                         color="primary"
                         disableElevation
-                        onClick={this.handleClick}
+                        onClick={this.props.save}
                     >
                         Save Template
                     </Button>

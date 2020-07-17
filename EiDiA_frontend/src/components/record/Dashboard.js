@@ -8,6 +8,7 @@ import {GraphsWidget} from "./Widgets/GraphsWidget";
 import {IndicatorWidget} from "./Widgets/IndicatorWidget";
 import {FiEdit} from 'react-icons/fi'
 import Fab from "@material-ui/core/Fab";
+import {MdClose} from "react-icons/all";
 
 export class Dashboard extends React.Component {
     constructor(props) {
@@ -127,7 +128,9 @@ export class Dashboard extends React.Component {
                 </DashboardWrapper>
                 <Fab style={styleFabButton} color="secondary" aria-label="edit"
                      onClick={this.handleEditDashboardButton}>
-                    <FiEdit size={32}/>
+                    {this.state.dashboardEditingActive ?
+                        <MdClose size={32}/> :
+                        <FiEdit size={32}/>}
                 </Fab>
 
             </div>

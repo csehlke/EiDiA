@@ -1,7 +1,6 @@
 import React from 'react';
 import {List, Typography} from '@material-ui/core';
-import {endpoints} from '../../../support files/constants';
-import HttpService from "../../../services/HttpService";
+import ExportService from '../../../services/ExportService';
 import TemplateListItem from './TemplateListItem';
 
 export default class TemplateList extends React.Component {
@@ -12,23 +11,16 @@ export default class TemplateList extends React.Component {
             selectedIndex: 0 // index of marked/selected template
         }
         this.handleListItemClick = this.handleListItemClick.bind(this);
-        this.fetchTemplates = this.fetchTemplates.bind(this);
     }
 
     componentDidMount() {
-        this.fetchTemplates()
+        let newState = this.state;
+        ExportService.getAllTemplates().then((data) => {
+            newState.templateList = data.exportTemplates;
+            this.setState(newState);
+        })
     }
 
-    fetchTemplates() {
-        let newState = this.state;
-        HttpService.get(endpoints.getTemplateList, (resp) => {
-                newState.templateList = resp.response;
-                this.setState(newState);
-            },
-            (err) => {
-                console.log(err);
-            })
-    }
 
     handleListItemClick(value, index) {
         let newState = this.state;

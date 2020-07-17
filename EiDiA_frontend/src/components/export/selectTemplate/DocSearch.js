@@ -1,12 +1,10 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import DocListItem from './DocListItem';
-import {Column, endpoints, Row} from '../../../support files/constants';
-import HttpService from "../../../services/HttpService";
+import {Column, Row} from '../../StyleElements';
+import ExportService from '../../../services/ExportService'
 
 const styles = {
     root: {
@@ -28,13 +26,11 @@ export default class DocSearch extends React.Component {
         this.search = this.search.bind(this);
     }
 
-    search(e) {
-        if (e.key === 'Enter') {
-            HttpService.get(endpoints.searchDoc + e.target.value, (resp) => {
-                let searchResults = resp.response;
+    search(event) {
+        if (event.key === 'Enter') {
+            ExportService.searchDocuments(event.target.value).then((data) => {
+                let searchResults = data.documents;
                 this.setState({searchResults: searchResults});
-            }, (err) => {
-                console.log(err);
             })
         }
     }
@@ -67,12 +63,14 @@ export default class DocSearch extends React.Component {
                             Selected Documents
                         </Typography>
                         <List dense={true} className="docList" style={styles.scrollable}>
-                            {selectedItems.map((doc) =>
-                                <ListItem key={doc["id"]}>
-                                    <ListItemText
-                                        primary={doc["name"]}
-                                    />
-                                </ListItem>)}
+                            {selectedItems.map((elem) =>
+                                <DocListItem
+                                    key={elem["id"]}
+                                    id={elem["id"]}
+                                    name={elem["name"]}
+                                    onSelect={this.props.onAction2_2}
+                                    removable
+                                />)}
                         </List>
                     </Column>
                 </Row>
