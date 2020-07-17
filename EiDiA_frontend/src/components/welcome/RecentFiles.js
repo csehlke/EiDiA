@@ -4,7 +4,7 @@ import React from 'react';
 import styled from "styled-components";
 import {RecordSymbol} from "../record/RecordSymbol";
 import RecordService from "../../services/RecordService";
-import IconButton from "@material-ui/core/IconButton";
+import {Link} from "../Link";
 
 const FlexRow = styled.div`
     display: flex;
@@ -26,17 +26,10 @@ export default class RecentFiles extends React.Component {
 
     componentDidMount() {
         RecordService.getRecentRecords().then(result => {
-            console.log(result)
             this.setState({
                 recentRecords: result.records
             });
         })
-    }
-
-    handleRecordClick(record) {
-        this.setState({
-            selectedRecord: record
-        });
     }
 
 
@@ -45,13 +38,12 @@ export default class RecentFiles extends React.Component {
             <div>
                 Recently worked on:
                 <FlexRow>
-                    {this.state.recentRecords.map((record, i) =>
-                        <IconButton onClick={() => this.handleRecordClick(record)}
-                                    key={i}
-                                    size={"small"}
-                                    disableRipple>
+                    {this.state.recentRecords.map((record) =>
+                        <Link
+                            key={record.recordId}
+                            to={"/record/" + record.recordId}>
                             <RecordSymbol name={record.recordName}/>
-                        </IconButton>
+                        </Link>
                     )}
                 </FlexRow>
             </div>
