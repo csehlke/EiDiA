@@ -1,7 +1,7 @@
 "use strict";
 const WidgetModel = require('../models/widget');
 const mongoose = require('mongoose');
-
+const LogModel = require('../models/log')
 
 const getDashboard = (req, res) => {
     res.status(200).json({response: "dummy response"});
@@ -52,6 +52,14 @@ const addWidget = (req, res) => {
         // console.log(body)
         res.status(200).json(
             "all alright");
+        //TODO maybe using rawResult, differentiate between add and update
+        LogModel.create({
+            userId: req.userId,
+            recordId: body.recordId,
+            log: "changed Widget \"" + body.title + "\""
+        }).then("Created Log").catch((e) => {
+            console.log("Didnt Create Log" + e)
+        })
     })
         .catch(error => {
 

@@ -23,10 +23,13 @@ export class LogWidget extends React.Component {
     }
 
     logEntry(log) {
+        let reg = /[.].*/
+
+
         return (
             <p>
-                <PreferredBreakSpan><TealName>{log.name}</TealName>&nbsp;{log.action}</PreferredBreakSpan>
-                <PreferredBreakSpan>({log.date})</PreferredBreakSpan>
+                <PreferredBreakSpan><TealName>{log.user}</TealName>&nbsp;{log.action}</PreferredBreakSpan>
+                <PreferredBreakSpan>({log.date.replace('T', " ").replace(reg, "")})</PreferredBreakSpan>
             </p>
         )
     }
@@ -35,7 +38,7 @@ export class LogWidget extends React.Component {
     render() {
         return (
             <ul>
-                {this.state.sortedLogs.slice(0, this.state.logCount).map((log, index) => <li
+                {this.props.logs.slice(0, this.state.logCount).map((log, index) => <li
                     key={index}>{this.logEntry(log)} </li>)}
 
             </ul>

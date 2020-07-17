@@ -1,7 +1,7 @@
 import React from 'react';
 import Widget from "./Widgets/Widget";
 import WidgetDropTarget from "./Widgets/WidgetDropTarget";
-import {LogEntries, WidgetTypes} from "../../assets/Constants";
+import {WidgetTypes} from "../../assets/Constants";
 import {DashboardWrapper, WidgetWrapper} from "../StyleElements";
 import {LogWidget} from "./Widgets/LogWidget";
 import {GraphsWidget} from "./Widgets/GraphsWidget";
@@ -19,7 +19,8 @@ export class Dashboard extends React.Component {
             dashboardEditingActive: false,
             docTypes: [],
             attributeTypes: [],
-            attributeValues: []
+            attributeValues: [],
+            logs: []
         }
         this.fillUpFreeSlots();
 
@@ -30,6 +31,7 @@ export class Dashboard extends React.Component {
         this.getDocTypes()
         this.getAttributeTypes()
         this.getAttributeValues()
+        this.getLogs()
     }
 
     renderConcreteWidget(widget) {
@@ -82,7 +84,7 @@ export class Dashboard extends React.Component {
     }
 
     getLogData = () => {
-        return LogEntries.filter(entries => entries.recordId === this.props.recordId)
+        return this.state.logs
     }
     handleEditDashboardButton = () => {
         this.setState({dashboardEditingActive: !this.state.dashboardEditingActive})
@@ -110,6 +112,11 @@ export class Dashboard extends React.Component {
             this.setState({attributeValues: response.flat()})
         }).catch(e => console.error(e))
 
+    }
+    getLogs = () => {
+        RecordService.getLogs(this.props.recordId).then(response => {
+            this.setState({logs: response})
+        }).catch(e => console.error(e))
     }
 
     sendWidgetToBackend(widget) {

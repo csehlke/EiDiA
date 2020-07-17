@@ -3,6 +3,7 @@
 const {fileTypes} = require("../../../constants");
 const RecordModel = require('../models/record');
 const DocumentModel = require('../models/document')
+const LogModel = require('../models/log')
 const DocumentTypeModel = require('../models/documentType')
 const AttributeTypeModel = require('../models/attributeType')
 const mongoose = require("mongoose")
@@ -48,6 +49,13 @@ const addRecord = (req, res) => {
     RecordModel.create(record)
         .then(record => {
             res.status(200).json({record: record});
+            LogModel.create({
+                userId: req.userId,
+                recordId: record._id,
+                log: "created Record \"" + record.name + "\""
+            }).then("Created Log").catch((e) => {
+                console.log("Didnt Create Log" + e)
+            })
         })
         .catch(error => {
             if (error.code === 11000) {
@@ -80,7 +88,6 @@ const listLatestDocumentsByRecordId = (req, res) => {
                 document.documentTypeId = document._id;
                 delete document._id
             })
-            console.log(documents)
             AttributeTypeModel.aggregate([{$match: {}}])
             res.status(200).json({documents: documents});
 
@@ -137,8 +144,6 @@ const getAttributeValuesForRecord = (req, res) => {
     DocumentModel.aggregate([{$match: {recordId: mongoose.Types.ObjectId(req.params.recordId)}},
             {$unwind: "$attributes"},
 
-            // {$group: {_id:'$attributes.attributeId', 'date':{$max:"$createdOnDate",$first:"$"},'date2':{$first:"$createdOnDate"},'value':{$first:"$attributes.value"},'docTypeId':{$first:'documentTypeId'},
-            //     'doc'}},
             {
                 "$project": {
 
@@ -149,50 +154,11 @@ const getAttributeValuesForRecord = (req, res) => {
 
                 }
             },
-            // {$lookup: {from: 'attributetypes', localField: 'attributes.attributeId', foreignField: '_id', as: 'test'}},
-            // {
-            //      $mergeObjects: [ { $arrayElemAt: [ "$test", 0 ] }, "$$ROOT" ]
-            // },
-            // {$unwind:"$test"},
-            // {
-            //     "$project": {
-            //         // "docTypeId": "$test.documentTypeId",
-            //         "date": "$createdOnDate",
-            //         "attributes": "$attributes",
-            //         "test": "$test",
-            //         // "attributeId":"$test._id",
-            //         // "value":"$test.value",
-            //         // "name":"$test.name"
-            //     }
-            // },
-            // {$unwind:"$test"},
 
         ],
         function (err, documents) {
             //TODO: check for error
-            /*documents = documents.map(doc => {
-                return (
 
-                    doc.attributes.map(attr => {
-
-                        return (
-                            {
-                                "date": doc.date,
-                                "docTypeId": doc.docTypeId,
-                                ...attr,
-                                ...doc.test.find(testAttr => testAttr._id.toString() === attr.attributeId.toString())
-                            }
-                        )
-                    })
-                )
-                // doc.test.find(k=>{
-                //     console.log(k._id)
-                // })
-            })*/
-            // documents.forEach(doc=>doc['attributeId']=doc._id)
-            // console.log(Object.values(documents).flat())
-            // documents.flat()
-            // console.log(documents);
             res.status(200).json(documents);
 
         });
@@ -263,20 +229,6 @@ const listFoldersByRecordId = (req, res) => { // Return only folders based on se
             });
         });
 };
-
-/*const getRecordName = (id) => {
-    return new Promise((resolve, reject) => {
-        RecordModel.findById(id, {}, {}, (err, record) => {
-            if (err) {
-                reject(err);
-            } else if (record === null) {
-                reject({message: "Record not found"});
-            } else {
-                resolve(record.name);
-            }
-        });
-    });
-}*/
 
 
 module.exports = {
