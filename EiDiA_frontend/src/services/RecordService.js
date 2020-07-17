@@ -37,26 +37,11 @@ export default class RecordService {
         });
     }
 
-    //TODO:
-    static getAttributesforWidget(widgetAttributeMapping) {
-        return new Promise((resolve, reject) => {
-            HttpService.get(baseURL + '/dashboard/widget/list/' + recordId, function (data) {
-                resolve(data);
-            }, function (textStatus) {
-                reject(textStatus);
-            });
-        });
+    static addRecord(name) {
+        //TODO: Add Record
+
     }
 
-    static listDocumentTypes(recordId) {
-        return new Promise((resolve, reject) => {
-            HttpService.get(baseURL + '/model/document/list/' + recordId, function (data) {
-                resolve(data);
-            }, function (textStatus) {
-                reject(textStatus);
-            });
-        });
-    }
 
     static getDocuments(recordId) {
         return new Promise((resolve, reject) => {
