@@ -16,6 +16,9 @@ export class Dashboard extends React.Component {
         this.state = {
             widgets: [],
             dashboardEditingActive: false,
+            docTypes: [],
+            attributeTypes: [],
+            attributeValues: []
         }
         this.fillUpFreeSlots();
 
@@ -23,9 +26,13 @@ export class Dashboard extends React.Component {
 
     componentDidMount() {
         this.getWidgetsFromBackend()
+        this.getDocTypes()
+        this.getAttributeTypes()
+        this.getAttributeValues()
     }
 
     renderConcreteWidget(widget) {
+
         switch (widget.widgetType) {
             case WidgetTypes.LOG:
                 return (<LogWidget logs={this.getLogData()}/>)
@@ -34,9 +41,11 @@ export class Dashboard extends React.Component {
                     <GraphsWidget graphType={widget.graphType}
                                   dashboardEditingActive={this.state.dashboardEditingActive}
                                   attributeMapping={widget.attributeMapping}
+                                  attributeValues={this.state.attributeValues}
                     />)
             case WidgetTypes.INDICATOR:
-                return (<IndicatorWidget attributeMapping={widget.attributeMapping}
+                return (<IndicatorWidget attributeValues={this.state.attributeValues}
+                                         attributeMapping={widget.attributeMapping}
                 />)
             default:
                 return (<p>No WidgetType selected</p>)
@@ -82,24 +91,34 @@ export class Dashboard extends React.Component {
 
         RecordService.getWidgets(this.props.recordId).then(response => {
             this.setState({widgets: response});
-            this.fillUpFreeSlots()
+            this.fillUpFreeSlots();
+        }).catch(e => console.error("No Widgets found:" + e))
+    }
+
+    getDocTypes = () => {
+        RecordService.getDocTypes(this.props.recordId).then(response => this.setState({docTypes: response.documents})).catch(e => console.error(e))
+    }
+    getAttributeTypes = () => {
+        RecordService.getAttributeTypes(this.props.recordId).then(response => {
+            this.setState({attributeTypes: response})
         }).catch(e => console.error(e))
+
+    }
+    getAttributeValues = () => {
+        RecordService.getAttributeValues(this.props.recordId).then(response => {
+            this.setState({attributeValues: response.flat()})
+        }).catch(e => console.error(e))
+
     }
 
     sendWidgetToBackend(widget) {
-        const requestData = {
-            recordId: this.props.recordId,
-            positionInfo: widget.positionInfo,
-            title: widget.title,
-            widgetType: widget.widgetType,
+        const requestData = {recordId: this.props.recordId, ...widget}
 
-            attributeMapping: widget.attributeMapping
-        }
         if (widget.graphType) requestData['graphType'] = widget.graphType
-        console.log(requestData)
 
         RecordService.addWidget(requestData).then(response => console.log(response)).catch(e => console.error(e))
     }
+
 
     handleUpdateWidgetButton = (widget) => (title, widgetType, attributeMapping, graphType) => {
         widget.title = title;
@@ -143,6 +162,9 @@ export class Dashboard extends React.Component {
                                     handleUpdateWidgetButton={this.handleUpdateWidgetButton(widget)}
                                     dashboardEditingActive={this.state.dashboardEditingActive}
                                     widget={widget}
+                                    docTypes={this.state.docTypes}
+                                    attributeTypes={this.state.attributeTypes}
+                                    attributeValues={this.state.attributeValues}
                                     switchWidget={this.switchWidget}
                                 >
                                     {this.renderConcreteWidget(widget)}

@@ -8,6 +8,7 @@ import {WrapperRecordMenue, WrapperRecordView} from "../components/StyleElements
 import {Tab, Tabs} from "@material-ui/core";
 import {recordMenuOptions} from "../assets/Constants";
 import {withRouter} from "react-router-dom";
+import RecordService from "../services/RecordService";
 
 class RecordView extends React.Component {
 
@@ -21,14 +22,17 @@ class RecordView extends React.Component {
         super(props);
         this.state = {
             currentPage: recordMenuOptions.DASHBOARD,
-            recordId: this.props.match.params.id
+            recordId: this.props.match.params.id,
+            documents: [],
         }
     }
 
     componentDidMount() {
-        //TODO: set a variable title
+        this.getDocuments()
         this.props.setTitle("Record View");
+
     }
+
 
     changePage(option) {
         this.state.currentPage = option;
@@ -39,6 +43,34 @@ class RecordView extends React.Component {
         this.setState({currentPage: value})
     }
 
+    getDocuments() {
+        RecordService.getDocuments(this.state.recordId)
+            .then(response => {
+                this.setState({documents: response})
+            })
+            .catch(e => console.error(e))
+    }
+
+    getAttributes = () => {
+
+    }
+    getDocTypes = () => {
+
+    }
+    groupBy = (xs, key) => {
+        return xs.reduce(function (rv, x) {
+            (rv[x[key]] = rv[x[key]] || []).push(x);
+            return rv;
+        }, {});
+    };
+
+    /*getAttributesList=()=>{
+        //Filter nach neuesten Dokumenten per Typ
+        let sortedDocs
+        //Hohle Attribut Namen
+        let attributes = this.state.documents.
+
+    }*/
     render() {
 
         let toShow;

@@ -26,6 +26,7 @@ const listDocumentTypes = (req, res) => {
         });
 };
 
+
 const listAttributeTypes = (req, res) => {
     AttributeTypeModel.find()
         .then(attributeTypes => {

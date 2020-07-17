@@ -16,7 +16,7 @@ router.put('/widget/drag', middleWares.checkAuthentication, DashboardController.
 router.get('/', DashboardController.getDashboard);
 
 router.get('/widget/list/:recordId', DashboardController.listWidgetTypes);
-router.post('/widget/add', DashboardController.addWidget);
+router.post('/widget/add/', DashboardController.addWidget);
 router.put('/widget/drag', DashboardController.moveWidget);
 
 module.exports = router;

@@ -7,6 +7,7 @@ export default class UploadService {
     constructor() {
     }
 
+    //TODO rename this to listAttributeTypes
     static listAttributes(documentTypeID) {
         return new Promise((resolve, reject) => {
             HttpService.get(baseURL + '/model/attribute/list/' + documentTypeID, function (data) {

@@ -84,7 +84,10 @@ class Element extends React.Component {
                 }
             </div>
         );
+
         return this.props.connectDragSource(toRender);
+
+
     }
 }
 

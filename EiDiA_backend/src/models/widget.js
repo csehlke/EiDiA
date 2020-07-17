@@ -39,11 +39,11 @@ const WidgetSchema = new mongoose.Schema({
     attributeMapping: [
         {
             docTypeId: {
-                type: Number,
+                type: mongoose.Types.ObjectId,
                 required: true,
             },
             attributeId: {
-                type: Number,
+                type: mongoose.Types.ObjectId,
                 required: true,
             },
             displayName: {

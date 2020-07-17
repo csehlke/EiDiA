@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 
-import {Attributes, DatabaseDocTypes, GraphType, WidgetTypes} from "../../../assets/Constants";
+import {DatabaseDocTypes, GraphType, WidgetTypes} from "../../../assets/Constants";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
 import SmartDropDownBox from "../../SmartDropDownBox";
@@ -58,7 +58,7 @@ export class EditDialog extends React.Component {
         /**
          * TODO: database connection
          */
-        return Attributes;
+        return this.props.attributeValues;
     }
 
 
@@ -67,7 +67,7 @@ export class EditDialog extends React.Component {
          * TODO make sure that each attribute object as a name attribute
          * of same id return only the one with the newest date
          */
-        return (this.getAttributes().filter(attr => attr.docTypeId === docTypeId))
+        return this.props.attributeTypes.filter(attributeType => attributeType.docTypeId === docTypeId);
     }
 
 
@@ -192,9 +192,9 @@ export class EditDialog extends React.Component {
         return (
             <Grid key={index + "attributeId"} item xs={12} sm={sm}>
                 <SmartDropDownBox margin={"0"}
-                                  preselectedValue={this.getAttributes().find(opt => opt.attrId === mapping.attrId)}
+                                  preselectedValue={this.getAttributesForDocType(mapping.docTypeId).find(opt => opt.attributeId === mapping.attributeId)}
                                   label={"Attribute"}
-                                  onChange={(event, value) => this.changeAttributeMapping(index, "attrId", value.attrId)}
+                                  onChange={(event, value) => this.changeAttributeMapping(index, "attributeId", value.attributeId)}
                                   options={this.getAttributesForDocType(mapping.docTypeId)}
                 />
             </Grid>
@@ -205,10 +205,10 @@ export class EditDialog extends React.Component {
         return (
             <Grid key={index + "a"} item xs={12} sm={sm}>
                 <SmartDropDownBox margin={"0"}
-                                  preselectedValue={this.getRecordDocTypes().find(opt => opt.docTypeId === mapping.docTypeId)}
+                                  preselectedValue={this.props.docTypes.find(opt => opt.docTypeId === mapping.docTypeId)}
                                   label={"Document Type"}
                                   onChange={(event, value) => this.changeAttributeMapping(index, "docTypeId", value.docTypeId)}
-                                  options={this.getRecordDocTypes()}
+                                  options={this.props.docTypes}
                 />
             </Grid>
         );
@@ -317,6 +317,8 @@ export class EditDialog extends React.Component {
                                 onChange={(event) => this.changeTitle(event.target.value)}
                             />
                         </Grid>
+
+
                         <Grid key={"widgetSelect"} item xs={12}>
                             <SmartDropDownBox margin={"0"}
                                               preselectedValue={typeOptions.find(opt => opt.widgetType === this.state.selectedType)}

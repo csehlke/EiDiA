@@ -37,35 +37,32 @@ const addWidget = (req, res) => {
         });
     }
     const widget = {};
+
     widget['title'] = req.body.title;
     widget['recordId'] = mongoose.Types.ObjectId(req.body.recordId);
     widget['positionInfo'] = req.body.positionInfo;
-    // widget['yPosition'] = req.body.yPosition;
     widget['widgetType'] = req.body.widgetType;
     widget['graphType'] = req.body.graphType;
     widget['attributeMapping'] = req.body.attributeMapping;
 
-
-    WidgetModel.create(widget)
-        .then(body => {
-            res.status(200).json({
-                widget: {
-                    recordId: body.recordId,
-                    title: body.title,
-                    widgetType: body.widgetType,
-                    graphType: body.graphType,
-                    attributeMapping: req.body.attributeMapping
-                }
-            });
-        })
+    const filter = {positionInfo: req.body.positionInfo, recordId: req.body.recordId}
+    const options = {upsert: true, new: true, setDefaultsOnInsert: true};
+    //TODO
+    WidgetModel.findOneAndUpdate(filter, widget, options).then(body => {
+        // console.log(body)
+        res.status(200).json(
+            "all alright");
+    })
         .catch(error => {
 
             res.status(500).json({
-                error: 'Internal server error',
+                error: 'Internal server erroerr' + error.message,
                 message: error.message,
             });
 
         });
+
+
 };
 
 const moveWidget = (req, res) => {

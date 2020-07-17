@@ -48,7 +48,9 @@ class Widget extends React.Component {
             widget: this.props.widget,
             widgetEditingActive: false,
             dashboardEditingActive: this.props.dashboardEditingActive,
-            editingActive: false
+            editingActive: false,
+            attributeValues: this.props.attributeValues,
+            attributeTypes: this.props.attributeTypes
         }
 
     }
@@ -57,7 +59,10 @@ class Widget extends React.Component {
         if (prevProps !== this.props) {
             this.setState({
                 widget: this.props.widget,
-                dashboardEditingActive: this.props.dashboardEditingActive
+                dashboardEditingActive: this.props.dashboardEditingActive,
+                attributeValues: this.props.attributeValues,
+                attributeTypes: this.props.attributeTypes
+
 
             })
         }
@@ -88,6 +93,9 @@ class Widget extends React.Component {
                         {this.props.children}
                     </FoggyDiv>
                     <EditDialog
+                        docTypes={this.props.docTypes}
+                        attributeTypes={this.state.attributeTypes}
+                        attributeValues={this.state.attributeValues}
                         handleUpdateWidgetButton={this.props.handleUpdateWidgetButton}
                         widgetTitle={this.state.widget.title}
                         widgetType={this.state.widget.widgetType}
