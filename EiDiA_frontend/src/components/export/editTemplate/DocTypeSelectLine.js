@@ -14,6 +14,9 @@ export default class DocTypeSelectLine extends React.Component {
             variable: "$/document" + this.props.number + "/",
             selectedDocType: "",
             disableDropDown: false,
+            disableCopy: true,
+            disableAttributes: true,
+            attributeFieldValue: null
         }
         this.docTypeSelected = this.docTypeSelected.bind(this);
         this.createVariableString = this.createVariableString.bind(this);
@@ -28,45 +31,52 @@ export default class DocTypeSelectLine extends React.Component {
     }
 
     docTypeSelected(event, value) {
-        UploadService.listAttributes(value.id).then((data) => {
-                this.setState({docAttributes: data.attributeTypes, selectedDocType: value});
-            }
-        )
+        this.setState({attributeFieldValue: null});
+        if (value) {
+            UploadService.listAttributes(value.id).then((data) => {
+                    this.setState({docAttributes: data.attributeTypes, selectedDocType: value, disableAttributes: false});
+                }
+            )
+        } else {
+            this.setState({disableAttributes: true});
+        }
     }
 
-
     createVariableString(event, value) {
-        if (typeof value !== 'undefined') {
-            let variable = this.state.variable + value.name;
-            this.setState({variable: variable});
+        if (value) {
+            let variable = this.state.variable + value.name.split(' ').join(''); // remove whitespaces from attribute name
+            this.setState({variable: variable, disableCopy: false});
+        } else {
+            this.setState({disableCopy: true});
         }
     }
 
     render() {
-        const docTypes = this.props.docTypes;
         return (
             <Row style={{color: this.props.disabled ? "gray" : "black"}}>
                 <Column>
                     Document{this.props.number}
                 </Column>
                 <Column>
-                    <SmartDropDownBox disabled={this.state.disableDropDown || this.props.disabled}
+                    <SmartDropDownBox disabled={this.state.disableDropDown}
                                       label={"Type"}
                                       onChange={this.docTypeSelected}
-                                      options={docTypes}
+                                      options={this.props.docTypes}
                     />
                 </Column>
                 <Column>
                     <SmartDropDownBox label={"Attribute"}
                                       onChange={this.createVariableString}
                                       options={this.state.docAttributes}
+                                      disabled={this.state.disableAttributes}
+                                      preselectedValue={this.state.attributeFieldValue}
                     />
                 </Column>
                 <Column>
                     <CopyToClipboard text={this.state.variable}
                                      onCopy={this.props.handleSnackBarOpen}
                     >
-                        <IconButton>
+                        <IconButton disabled={this.state.disableCopy}>
                             <FiCopy/>
                         </IconButton>
                     </CopyToClipboard>
