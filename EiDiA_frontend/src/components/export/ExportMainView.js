@@ -10,14 +10,13 @@ import DocSearch from './selectTemplate/DocSearch';
 import ExportSection from './selectTemplate/ExportSection';
 import TemplateList from './selectTemplate/TemplateList';
 import SaveTemplateSection from './editTemplate/SaveTemplateSection';
-import VariableList from './editTemplate/VariableList';
 import SetValueSection from './edit/SetValueSection';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import ExportService from "../../services/ExportService";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
-import DocTypeSelector from "./subcomponents/DocTypeSelector";
+import DocTypeSelector from "./editTemplate/DocTypeSelector";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 

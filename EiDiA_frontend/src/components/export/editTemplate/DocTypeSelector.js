@@ -1,6 +1,6 @@
 import React from 'react';
 import DocTypeSelectLine from "./DocTypeSelectLine";
-import {Row} from "../../../support files/constants";
+import {Row} from "../../StyleElements";
 import {MdAdd} from "react-icons/all";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
