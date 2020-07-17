@@ -15,6 +15,8 @@ import SetValueSection from './edit/SetValueSection';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import ExportService from "../../services/ExportService";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -22,9 +24,9 @@ function CustomDialog(props) {
     return (
         props.currentPage === pageNames.selectTemplate ? "" : <FloatingWindows
             showDialog={props.showDialog}
-                onClose={props.onClose}
-                save={props.save}
-                currentPage={props.currentPage}
+            onClose={props.onClose}
+            save={props.save}
+            currentPage={props.currentPage}
                 selectedDocs={props.selectedDocs}
                 download={props.download}
                 editorState={props.editorState}
@@ -69,6 +71,7 @@ export default class ExportMainView extends React.Component {
             selectedDocs: [], // e.g. ["Document A", "Document B"] --> array of documents selected for mapping values to variables
             selectedVariable: "", // e.g. $Variable1 --> necessary for manually assigning value to selected variable
             showAlert: false,
+            isSnackBarOpen: false
         };
 
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
@@ -87,6 +90,8 @@ export default class ExportMainView extends React.Component {
         this.setInitialView = this.setInitialView.bind(this);
         this.removeSelectedDocumentFromList = this.removeSelectedDocumentFromList.bind(this);
         this.createNewTemplate = this.createNewTemplate.bind(this);
+        this.handleSnackBarOpen = this.handleSnackBarOpen.bind(this);
+        this.handleSnackBarClose = this.handleSnackBarClose.bind(this);
 
         // reference to document editor, allows access to focus() method (focus editor)
         // necessary for setting inline styles
@@ -195,32 +200,47 @@ export default class ExportMainView extends React.Component {
                     let templateVariables = this.state.variables;
 
                     // gather data of selected documents
-                    let documentData = selectedDocsIds.map((docName) => {
-                        if (docName in documents) return documents[docName];
-                    });
-                    let editorText = this.getTextFromEditorState(newState.editorState);
-
-                    for (let k of Object.keys(templateVariables)) {
-                        if (isPath(k.slice(1))) { // find variables that depend on documents
-                            // Get index for correct document, e.g. $/Document1/Variable1 --> index = 1 -1 = 0
-                            let variableTokens = k.split("/");
-                            let docVariable = variableTokens[variableTokens.length - 1];
-                            let indexString = variableTokens[variableTokens.length - 2];
-                            let documentIndex = parseInt(indexString[indexString.length - 1]) - 1;
-
-                            let indices = templateVariables[k].index;
-                            let docValue = documentData[documentIndex][docVariable];
-
-                            // update current value and value source of that variable for state
-                            templateVariables[k].value = docValue;
-                            templateVariables[k].source = "\/" + selectedDocs[documentIndex].name + "\/" + docVariable;
-                            editorText = this.setValuesToText(indices, docValue, newState.editorState)
+                    let documentData = selectedDocsIds.reduce((dataArr, docID) => {
+                        if (docID in documents) {
+                            dataArr.push(documents[docID]);
                         }
+                        return dataArr;
+                    }, []);
+
+                    let editorText = this.getTextFromEditorState(newState.editorState);
+                    let attributesNotFound = false;
+
+                    if (documentData.length !== 0) {
+                        // Iterate through document data and map attributes with variables
+                        for (let k of Object.keys(templateVariables)) {
+                            if (isPath(k.slice(1))) { // find variables that depend on documents
+                                let variableTokens = k.split("/");
+                                let docVariable = variableTokens[variableTokens.length - 1];                // Get to be mapped variabled from editorText
+                                let indexString = variableTokens[variableTokens.length - 2];
+                                let documentIndex = parseInt(indexString[indexString.length - 1]) - 1;      // Get index for correct document, e.g. $/Document1/Variable1 --> index = 1 -1 = 0
+
+                                let indices = templateVariables[k].index;
+                                if (docVariable in documentData[documentIndex]) {
+                                    let docValue = documentData[documentIndex][docVariable];
+
+                                    // update current value and value source of that variable for state
+                                    templateVariables[k].value = docValue;
+                                    templateVariables[k].source = "\/" + selectedDocs[documentIndex].name + "\/" + docVariable;
+                                    editorText = this.setValuesToText(indices, docValue, newState.editorState)
+                                } else {
+                                    attributesNotFound = true
+                                }
+                            }
+                        }
+                    } else {
+                        attributesNotFound = true;
                     }
+
                     newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
                     newState.variables = templateVariables;
 
                     this.setState(newState);
+                    if (attributesNotFound) this.handleSnackBarOpen();
                 }
             }, (err) => {
                 console.log(err);
@@ -381,6 +401,14 @@ export default class ExportMainView extends React.Component {
         })
     }
 
+    handleSnackBarOpen() {
+        this.setState({isSnackBarOpen: true});
+    }
+
+    handleSnackBarClose() {
+        this.setState({isSnackBarOpen: false});
+    }
+
     render() {
         const currentPage = this.props.currentPage
         const editorState = this.state.editorState;
@@ -425,6 +453,13 @@ export default class ExportMainView extends React.Component {
                     download={this.downloadDocument}
                     editorState={this.state.editorState}
                 />
+                <Snackbar
+                    open={this.state.isSnackBarOpen}
+                    autoHideDuration={5000}>
+                    <Alert severity="warning" onClose={this.handleSnackBarClose}>
+                        Some Attributes in selected Documents not found. Affected variables remain unchanged.
+                    </Alert>
+                </Snackbar>
             </div>
         );
     }
