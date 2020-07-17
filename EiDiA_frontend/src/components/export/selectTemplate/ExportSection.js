@@ -24,6 +24,15 @@ export default class ExportSection extends React.Component {
                     variant="contained"
                     color="primary"
                     disableElevation
+                    onClick={this.props.onAction3}
+                >
+                    New Template
+                </Button>
+                <Button
+                    style={buttonStyle}
+                    variant="contained"
+                    color="primary"
+                    disableElevation
                     onClick={() => this.props.onAction1(pageNames.edit)}
                 >
                     Next

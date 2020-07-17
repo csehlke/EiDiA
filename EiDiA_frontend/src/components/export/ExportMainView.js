@@ -86,6 +86,7 @@ export default class ExportMainView extends React.Component {
         this.setValueToVariable = this.setValueToVariable.bind(this);
         this.setInitialView = this.setInitialView.bind(this);
         this.removeSelectedDocumentFromList = this.removeSelectedDocumentFromList.bind(this);
+        this.createNewTemplate = this.createNewTemplate.bind(this);
 
         // reference to document editor, allows access to focus() method (focus editor)
         // necessary for setting inline styles
@@ -100,7 +101,7 @@ export default class ExportMainView extends React.Component {
                 onAction2_2: this.removeSelectedDocumentFromList,
                 onAction3_1: this.props.changeView,
                 onAction3_2: this.setSelectedVariable,
-                onAction3_3: null
+                onAction3_3: this.createNewTemplate,
             },
             [pageNames.editTemplate]: {
                 onAction1_1: this.toggleInlineStyle,
@@ -115,7 +116,7 @@ export default class ExportMainView extends React.Component {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
                 onAction2_1: this.addSelectedDocumentToList,
-                onAction2_2: null,
+                onAction2_2: this.removeSelectedDocumentFromList,
                 onAction3_1: this.toggleDialog,
                 onAction3_2: this.setSelectedVariable,
                 onAction3_3: this.setValueToVariable
@@ -125,6 +126,18 @@ export default class ExportMainView extends React.Component {
 
     componentDidMount() {
         this.setInitialView()
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.currentPage !== prevProps.currentPage) {
+            if (this.props.currentPage === pageNames.edit) {
+                this.mapDocumentsWithVariables();
+            } else if (this.props.currentPage === pageNames.selectTemplate && this.state.selectedTemplate === null) {
+                this.setInitialView();
+            } else if (prevProps.currentPage === pageNames.edit && this.state.selectedTemplate !== null) {
+                this.selectTemplate(this.state.selectedTemplate.name, this.state.selectedTemplate.id);
+            }
+        }
     }
 
     // initial view: fetch templates and select first template, if any and display its content in editor
@@ -138,14 +151,9 @@ export default class ExportMainView extends React.Component {
         })
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.currentPage !== prevProps.currentPage) {
-            if (this.props.currentPage === pageNames.edit) {
-                this.mapDocumentsWithVariables();
-            } else if (this.props.currentPage === pageNames.selectTemplate) {
-                this.setInitialView();
-            }
-        }
+    createNewTemplate() {
+        this.setState({editorState: EditorState.createEmpty(), selectedTemplate: null});
+        this.props.changeView(pageNames.editTemplate);
     }
 
     // Set Value to variable manually (not from document)
@@ -253,7 +261,7 @@ export default class ExportMainView extends React.Component {
             let newState = this.state;
 
             newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
-            newState.selectedTemplate = name;
+            newState.selectedTemplate = {name: name, id: id};
             newState.variables = this.extractVariables(newState.editorState);
             this.setState(newState);
         })

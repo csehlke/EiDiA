@@ -49,6 +49,7 @@ export class ExportView extends React.Component {
     }
 
     changeView(page) {
+        this.setState({nextPage: page});
         if (this.state.currentPage === pageNames.edit && this.state.editorStateChanged) {
             this.toggleAlert()
         } else {
@@ -61,8 +62,8 @@ export class ExportView extends React.Component {
 
     dontSave() {
         this.toggleAlert();
-        this.setState({editorStateChanged: false}, (page) => {
-            this.changeView(pageNames.selectTemplate)
+        this.setState({editorStateChanged: false}, () => {
+            this.changeView(this.state.nextPage);
         });
     }
 
