@@ -35,7 +35,7 @@ export default class DocTypeSelectLine extends React.Component {
     }
 
 
-    createVariableString(e, value) {
+    createVariableString(event, value) {
         if (typeof value !== 'undefined') {
             let variable = this.state.variable + value.name;
             this.setState({variable: variable});
