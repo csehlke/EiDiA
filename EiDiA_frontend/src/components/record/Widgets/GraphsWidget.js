@@ -98,39 +98,34 @@ export class GraphsWidget extends React.Component {
     getData(attributeMapping) {
 
         let data = []
-
-
-        let tmp = this.state.attributeValues
-
-
         attributeMapping.map(mapping => data.push(
-            tmp.filter(attr => attr.attributeId === mapping.attributeId)
+            this.state.attributeValues.filter(attr => attr.attributeId === mapping.attributeId)
                 .map(foundAttribute => {
-                    foundAttribute[mapping.displayName] = foundAttribute.value;
-                    return foundAttribute
+                    let newObject = {
+                        tmp: foundAttribute.value,
+                        ...foundAttribute
+                    }
+                    newObject[mapping.displayName] = foundAttribute.value;
+                    return newObject
                 })
             )
         )
 
-        //Taken from https://stackoverflow.com/questions/46849286/merge-two-array-of-objects-based-on-a-key
-        //TODO: first check if exist to prevent crash
-        const mergeByDate = (a1, a2) =>
-            a1.map(
-                itm => {
-                    return {...itm, ...a2.find((item) => (item.date === itm.date))}
-                }
-            );
-        console.log(data)
-        /*data=data.reduce((acc,current)=>{
-            return mergeByDate(acc,current)
-        })*/
-        console.log(data)
-        /*
-         *TODO: Do this for multiple attributes not only two
-         * - check wether datapoints where left out
-         * - make it stable: right now, if only one attribute mapping currently it crashes, if >2 the extra attributes are ignored
-         */
-        // data = mergeByDate(data[0], data[1]);
+        data = data.reduce((acc, current) => {
+            return acc.map(itm => {
+                return {...itm, ...current.find((item) => (item.date === itm.date))}
+            })
+
+        })
+        try {
+            data.forEach(
+                attr => {
+                    attr.date = attr.date.split('T')[0]
+                })
+        } catch (e) {
+            console.error("There is probably an issue while cutting of Date From Time in GraphsWidget. See detailed error below")
+            console.error(e)
+        }
 
         return (data.flat())
     }

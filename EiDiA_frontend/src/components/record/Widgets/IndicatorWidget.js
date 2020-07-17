@@ -43,13 +43,11 @@ export class IndicatorWidget extends React.Component {
 
     getData(attributeMapping) {
         let data = [];
-        let tmp = this.state.attributeValues;
-        if (tmp.length > 0) {
+        if (this.state.attributeValues.length > 0) {
             attributeMapping.map(mapping => data.push(
-                tmp
+                this.state.attributeValues
                     .filter(attr => attr.attributeId === mapping.attributeId)
-
-                    .map(function (foundAttribute) {
+                    .map((foundAttribute) => {
                             return {
                                 displayName: mapping.displayName,
                                 value: foundAttribute.value,
