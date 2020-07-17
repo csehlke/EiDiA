@@ -110,13 +110,14 @@ export class EditDialog extends React.Component {
             {name: GraphType.Line, graphType: GraphType.Line},
             {name: GraphType.Bar, graphType: GraphType.Bar},
         ]
+        const preValueGraphType = GraphTypeOptions.find(opt => opt.graphType === this.state.selectedGraph);
         return ([
                 <Grid key={"descriptionGraphSelection"} item xs={12}>
                     <DialogContentText>Select The Graph Type to Show:</DialogContentText>
                 </Grid>,
                 <Grid key={"selectGraphType"} item xs={12}>
                     <SmartDropDownBox margin={"0"}
-                                      preselectedValue={GraphTypeOptions.find(opt => opt.graphType === this.state.selectedGraph)}
+                                      preselectedValue={preValueGraphType ? preValueGraphType : GraphType.Line}
                                       label={"Graph Type"}
                                       onChange={(event, value) => this.changeGraphType(value.graphType)}
                                       options={GraphTypeOptions}
@@ -126,6 +127,7 @@ export class EditDialog extends React.Component {
                     <DialogContentText>Select Attributes to
                         Display:</DialogContentText>
                 </Grid>,
+                //TODO validate, that only one DocType is selected
                 this.state.selectedAttributeMapping.map((mapping, index) =>
                     [
                         this.getDocTypeSelector(index, mapping, 3),
@@ -189,10 +191,12 @@ export class EditDialog extends React.Component {
     }
 
     getAttributeSelector = (index, mapping, sm) => {
+        // console.log(this.getAttributesForDocType(mapping.docTypeId).find(opt => opt.attributeId === mapping.attributeId))
+        const preselectedValue = this.getAttributesForDocType(mapping.docTypeId).find(opt => opt.attributeId === mapping.attributeId)
         return (
             <Grid key={index + "attributeId"} item xs={12} sm={sm}>
                 <SmartDropDownBox margin={"0"}
-                                  preselectedValue={this.getAttributesForDocType(mapping.docTypeId).find(opt => opt.attributeId === mapping.attributeId)}
+                                  preselectedValue={preselectedValue}
                                   label={"Attribute"}
                                   onChange={(event, value) => this.changeAttributeMapping(index, "attributeId", value.attributeId)}
                                   options={this.getAttributesForDocType(mapping.docTypeId)}
@@ -248,9 +252,13 @@ export class EditDialog extends React.Component {
 
     changeAttributeMapping = (index, attr, value) => {
         //this line has to come before adding changing the actual attribute of attributeMapping
-        if (attr === "docTypeId" && this.state.selectedAttributeMapping[index][attr] !== value) this.state.selectedAttributeMapping[index]["attributeId"] = "";
+        if (attr === "docTypeId" && this.state.selectedAttributeMapping[index][attr] !== value) {
+            console.log("hello")
+            this.state.selectedAttributeMapping[index]["attributeId"] = "";
+        }
         this.state.selectedAttributeMapping[index][attr] = value;
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping});
+        console.log(this.state.selectedAttributeMapping[index])
     }
 
     changeGraphType = (value) => {

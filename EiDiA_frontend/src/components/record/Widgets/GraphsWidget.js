@@ -42,7 +42,6 @@ export class GraphsWidget extends React.Component {
     }
 
     createLineChart(attributeMapping, data) {
-        console.log(data)
 
         return (
             <LineChart
@@ -67,7 +66,6 @@ export class GraphsWidget extends React.Component {
     }
 
     createBarChart(attributeMapping, data) {
-        console.log(data)
         return (
             <BarChart data={data}>
                 <CartesianGrid strokeDasharray="3 3"/>

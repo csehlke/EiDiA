@@ -31,7 +31,7 @@ class SmartDropDownBox extends React.Component {
             this.setState({
                 options: this.props.options,
                 label: this.props.label,
-                preselectedValue: this.props.preselectedValue
+                value: this.props.preselectedValue ? this.props.preselectedValue : null,
 
             })
         }
@@ -81,12 +81,14 @@ class SmartDropDownBox extends React.Component {
                 getOptionLabel={(option) => option.name}
                 //TODO: better solution for style
                 style={this.props.style ? this.props.style : {margin: this.state.margin}}
+
+                getOptionSelected={(option, value) => option.id === value.id && option.name === value.name}
                 renderInput={(params) => (
                     <TextField {...params}
                                label={this.state.label}
                                variant="outlined" placeholder="Type to filter"
                     />)}
-                getOptionSelected={(option, value) => option.id === value.id && option.name === value.name}
+
             />
         );
     }
