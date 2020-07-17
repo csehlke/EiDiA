@@ -17,6 +17,8 @@ router.get('/docTypes/list/:recordId', RecordController.getDocTypesForRecord);
 router.get('/attributeTypes/list/:recordId', RecordController.getAttributeTypesForRecord);
 router.get('/attributeValues/list/:recordId', RecordController.getAttributeValuesForRecord);
 
+router.get('/document/listfolders/:recordId',  RecordController.listFoldersByRecordId);
+
 
 router.get('/document/list/latest/:recordId', RecordController.listLatestDocumentsByRecordId);
 /*router.get('/list', middleWares.checkAuthentication, RecordController.listRecords);

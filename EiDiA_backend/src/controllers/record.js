@@ -1,10 +1,13 @@
 "use strict";
 
+const {fileTypes} = require("../../../constants");
 const RecordModel = require('../models/record');
 const DocumentModel = require('../models/document')
 const DocumentTypeModel = require('../models/documentType')
 const AttributeTypeModel = require('../models/attributeType')
 const mongoose = require("mongoose")
+
+
 const listRecords = (req, res) => {
     //TODO: error handling
 
@@ -284,9 +287,61 @@ const listDocumentByRecordId = (req, res) => { // Return attributes based on sel
         });
 };*/
 
+const listFoldersByRecordId = (req, res) => { // Return only folders based on selected DocumentTypeId
+
+    let parentFolderId;
+
+    DocumentModel.find({'recordId': mongoose.Types.ObjectId(req.params.recordId), 'fileType': fileTypes.FOLDER})
+        .then(documentList => {
+            let response = documentList.map(document => {
+
+                if (document.parentFolderId.toString() === '000000000000000000000000') {
+                    parentFolderId = '0' // In frontend, 0 = root Folder
+                } else {
+                    parentFolderId = document.parentFolderId
+                }
+                return {
+                    id: document._id,
+                    name: document.name,
+                    parentFolderId: parentFolderId,
+                    fileType: document.fileType,
+                    createdOnDate: document.createdOnDate,
+                    lastModifiedOnDate: document.lastModifiedOnDate,
+                    comment: document.comment,
+                    documentTypeId: document.documentTypeId,
+                    createdBy: document.createdBy,
+                };
+            });
+            res.status(200).json({documents: response});
+        })
+        .catch(error => {
+            res.status(400).json({
+                error: 'Internal server error',
+                message: error.message,
+            });
+        });
+};
+
+const getRecordName = (id) => {
+    return new Promise((resolve, reject) => {
+        RecordModel.findById(id, {}, {}, (err, record) => {
+            if (err) {
+                reject(err);
+            } else if (record === null) {
+                reject({message: "Record not found"});
+            } else {
+                resolve(record.name);
+            }
+        });
+    });
+}
+
+
 module.exports = {
     listRecords,
     addRecord,
+    listFoldersByRecordId,
+    getRecordName,
     listDocumentsByTypeAndRecord,
     listDocumentByRecordId,
     listLatestDocumentsByRecordId,

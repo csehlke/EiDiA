@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const AttributeTypeModel = require('../models/attributeType');
 const DocumentTypeModel = require('../models/documentType')
+const {fileTypes} = require('../../../constants');
 
 // Define the schema
 
@@ -64,7 +65,7 @@ const DocumentSchema = new mongoose.Schema({
     },
     fileType: {
         type: String,
-        enum: ['Folder', 'PDF', 'Word', 'Image', ''],
+        enum: Object.values(fileTypes),
         required: false,
     },
 

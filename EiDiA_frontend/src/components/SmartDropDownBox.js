@@ -67,6 +67,7 @@ class SmartDropDownBox extends React.Component {
                 selectOnFocus
                 autoComplete
                 autoHighlight
+                disableClearable={this.props.clearable === undefined ? false : !this.props.clearable}
                 blurOnSelect
                 fullWidth
                 size={"small"}
@@ -84,8 +85,8 @@ class SmartDropDownBox extends React.Component {
                     <TextField {...params}
                                label={this.state.label}
                                variant="outlined" placeholder="Type to filter"
-                getOptionSelected={(option, value) => option.id === value.id && option.name === value.name}/>
-                )}
+                    />)}
+                getOptionSelected={(option, value) => option.id === value.id && option.name === value.name}
             />
         );
     }
@@ -101,4 +102,5 @@ SmartDropDownBox.propTypes = {
     style: PropTypes.object,
     preselectedValue: PropTypes.object,
     margin: PropTypes.string,
+    clearable: PropTypes.bool,
 }

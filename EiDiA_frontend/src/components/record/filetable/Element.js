@@ -4,7 +4,8 @@ import React from 'react';
 import styled from "styled-components";
 import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
-import {DragTypes, fileTypes} from "../../../assets/Constants"
+import {DragTypes} from "../../../assets/Constants";
+import {fileTypes} from "../../../../../constants";
 import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
 
@@ -13,7 +14,6 @@ const Name = styled.div`
     
     padding-left: ${props => props.padding + "%"};
 `;
-
 
 
 const itemSource = {

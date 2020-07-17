@@ -1,20 +1,14 @@
+const {fileTypes} = require('../../../constants');
+
 export const recordMenuOptions = {
     DASHBOARD: 1,
     FILEEXPLORER: 2,
 };
+
 export const DragTypes = {
     ELEMENT: 'element',
     WIDGET: 'widget'
 }
-
-export const fileTypes = {
-    FOLDER: 'Folder',
-    PDF: 'PDF',
-    WORD: 'Word',
-    NONE: 'None',
-    IMAGE: 'Image'
-};
-
 
 export const WidgetTypes = {
     LOG: 'Log',
@@ -342,7 +336,7 @@ export const databaseEntriesPlaceholder = [
         id: 3,
         activeFolder: false,
         type: fileTypes.FOLDER,
-        name: "Sample Folder",
+        name: "Sample Tom Folder",
         dateCreation: '',
         dateModification: '',
         comment: 'TJust some Folder',
