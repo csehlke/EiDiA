@@ -7,7 +7,7 @@ import {pageNames} from '../../support files/constants';
 import {Column, Row} from '../StyleElements';
 import EditorTools from './editTemplate/EditorTools';
 import DocSearch from './selectTemplate/DocSearch';
-import ExportSection from './selectTemplate/ExportSection';
+import ExportSection from './selectTemplate/ButtonArea';
 import TemplateList from './selectTemplate/TemplateList';
 import SaveTemplateSection from './editTemplate/SaveTemplateSection';
 import VariableList from './editTemplate/VariableList';
