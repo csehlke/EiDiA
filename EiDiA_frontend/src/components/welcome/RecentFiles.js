@@ -34,19 +34,23 @@ export default class RecentFiles extends React.Component {
 
 
     render() {
-        return (
-            <div>
-                Recently worked on:
-                <FlexRow>
-                    {this.state.recentRecords.map((record) =>
-                        <Link
-                            key={record.recordId}
-                            to={"/record/" + record.recordId}>
-                            <RecordSymbol name={record.recordName}/>
-                        </Link>
-                    )}
-                </FlexRow>
-            </div>
-        );
+        if (this.state.recentRecords.length > 0) { //only show recent files if they exist
+            return (
+                <div>
+                    Recently worked on:
+                    <FlexRow>
+                        {this.state.recentRecords.map((record) =>
+                            <Link
+                                key={record.recordId}
+                                to={"/record/" + record.recordId}>
+                                <RecordSymbol name={record.recordName}/>
+                            </Link>
+                        )}
+                    </FlexRow>
+                </div>
+            );
+        } else {
+            return ""
+        }
     }
 }

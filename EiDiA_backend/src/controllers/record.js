@@ -108,7 +108,11 @@ const getRecordName = (id) => {
 }
 
 const listRecentRecords = (req, res) => {
-    DocumentModel.find({'createdBy': req.userId}) //TODO Exclude folders, include recent dates
+    DocumentModel.find({
+        'createdBy': req.userId, 'fileType': fileTypes.IMAGE, 'lastModifiedOnDate': {
+            $gte: new Date(new Date() - 7 * 60 * 60 * 24 * 1000) //only look for documents that were modified in the last week
+        }
+    })
         .then(documentList => {
             return Promise.all(documentList.map(document => {
                 return new Promise((resolve, reject) => {
