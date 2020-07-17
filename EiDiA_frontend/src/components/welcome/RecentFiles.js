@@ -2,8 +2,9 @@
 
 import React from 'react';
 import styled from "styled-components";
-import {Link} from "../Link";
 import {RecordSymbol} from "../record/RecordSymbol";
+import RecordService from "../../services/RecordService";
+import IconButton from "@material-ui/core/IconButton";
 
 const FlexRow = styled.div`
     display: flex;
@@ -18,38 +19,39 @@ export default class RecentFiles extends React.Component {
         super(props);
 
         this.state = {
-            recentRecords: [
-                {
-                    name: "BMW",
-                    id: 1,
-                },
-                {
-                    name: "Audi",
-                    id: 2,
-                },
-                {
-                    name: "Audi",
-                    id: 3,
-                },
-                {
-                    name: "Audi",
-                    id: 4,
-                },
-            ],
+            recentRecords: [],
+            selectedRecord: ''
         }
     }
+
+    componentDidMount() {
+        RecordService.getRecentRecords().then(result => {
+            console.log(result)
+            this.setState({
+                recentRecords: result.records
+            });
+        })
+    }
+
+    handleRecordClick(record) {
+        this.setState({
+            selectedRecord: record
+        });
+    }
+
 
     render() {
         return (
             <div>
                 Recently worked on:
                 <FlexRow>
-                    {this.state.recentRecords.map(record =>
-                        <Link
-                            key={record.id}
-                            to={"/record/" + record.id}>
+                    {this.state.recentRecords.map((record, i) =>
+                        <IconButton onClick={() => this.handleRecordClick(record)}
+                                    key={i}
+                                    size={"small"}
+                                    disableRipple>
                             <RecordSymbol name={record.name}/>
-                        </Link>
+                        </IconButton>
                     )}
                 </FlexRow>
             </div>

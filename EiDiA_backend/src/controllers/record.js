@@ -5,7 +5,6 @@ const RecordModel = require('../models/record');
 const DocumentModel = require('../models/document')
 const mongoose = require("mongoose")
 
-
 const listRecords = (req, res) => {
     RecordModel.find()
         .then(records => {
@@ -108,10 +107,39 @@ const getRecordName = (id) => {
     });
 }
 
+const listRecentRecords = (req, res) => {
+    DocumentModel.find({'createdBy': req.userId}) //TODO Exclude folders, include recent dates
+        .then(documentList => {
+            let response = documentList.map(document => {
+                let recordName = RecordModel.findById(document.recordId).exec()
+                    .then(record => {
+                        if (record === null) {
+                            console.log("Record not found");
+                        } else {
+                            return record.name
+                        }
+                    });
+                return {
+                    recordId: document.recordId,
+                    recordName: recordName
+                };
+            });
+            console.log(response)
+            res.status(200).json({records: response});
+        })
+        .catch(error => {
+            res.status(400).json({
+                error: 'Internal server error',
+                message: error.message,
+            });
+        });
+};
+
 
 module.exports = {
     listRecords,
     addRecord,
     listFoldersByRecordId,
     getRecordName,
+    listRecentRecords
 };

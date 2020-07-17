@@ -17,6 +17,16 @@ export default class RecordService {
         });
     }
 
+    static getRecentRecords() {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/record/recentlist', function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
 
     static listFolders(recordId) {
         return new Promise((resolve, reject) => {
