@@ -19,7 +19,7 @@ import Alert from "@material-ui/lab/Alert";
 
 import UploadService from '../../services/UploadService';
 import {fileTypes} from "../../../../constants";
-
+import {Link} from "react-router-dom";
 
 const Container = styled.div
     // Outer Container
@@ -369,7 +369,8 @@ class AttributeContainer extends React.Component {
                         <Grid item xs={6} align="center" style={{marginTop: 100}}>
                             <Button variant="contained"
                                     color="primary"
-                                    onClick={this.attrsToBackend}>
+                                    onClick={this.attrsToBackend}
+                                    component={Link} to={'/'}>
                                 Save
                             </Button>
                         </Grid>
