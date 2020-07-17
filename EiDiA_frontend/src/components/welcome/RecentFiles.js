@@ -50,7 +50,7 @@ export default class RecentFiles extends React.Component {
                                     key={i}
                                     size={"small"}
                                     disableRipple>
-                            <RecordSymbol name={record.name}/>
+                            <RecordSymbol name={record.recordName}/>
                         </IconButton>
                     )}
                 </FlexRow>

@@ -110,22 +110,25 @@ const getRecordName = (id) => {
 const listRecentRecords = (req, res) => {
     DocumentModel.find({'createdBy': req.userId}) //TODO Exclude folders, include recent dates
         .then(documentList => {
-            let response = documentList.map(document => {
-                let recordName = RecordModel.findById(document.recordId).exec()
-                    .then(record => {
-                        if (record === null) {
-                            console.log("Record not found");
-                        } else {
-                            return record.name
-                        }
-                    });
-                return {
-                    recordId: document.recordId,
-                    recordName: recordName
-                };
-            });
-            console.log(response)
-            res.status(200).json({records: response});
+            return Promise.all(documentList.map(document => {
+                return new Promise((resolve, reject) => {
+                    RecordModel.findById(document.recordId).exec()
+                        .then(record => {
+                            if (record === null) {
+                                console.log("Record not found");
+                            } else {
+                                resolve({
+                                    recordId: document.recordId,
+                                    recordName: record.name
+                                })
+                            }
+                        }).catch(err => reject(err));
+                });
+
+            }));
+        })
+        .then(recentRecords => { //When recent Records were found, send them to frontend
+            res.status(200).json({records: recentRecords});
         })
         .catch(error => {
             res.status(400).json({
