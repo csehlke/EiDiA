@@ -16,15 +16,12 @@ const HeadingNoMargin = styled.p`
 `;
 
 const FolderLogo = styled(FaFolder)`
-     font-size: 6em;
+     font-size: 3em;
      margin: 0 0.25em;
 `;
 
 export class RecordSymbol extends React.Component {
-    /*
-     *TODO:
-     * - add Logo to Record?
-     */
+
     constructor(props) {
         super(props);
 
