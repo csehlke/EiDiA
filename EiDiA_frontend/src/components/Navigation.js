@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
-        background: "#005E7C",
+        background: "linear-gradient(90deg, rgba(0,148,198,1) 0%, rgba(0,94,124,1) 50%, rgba(0,148,198,1) 100%)",
     },
     drawer: {
         width: drawerWidth,
