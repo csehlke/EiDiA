@@ -29,15 +29,32 @@ export default class FileExplorer extends React.Component {
         this.state.elements.forEach(element => element['activeFolder'] = false);
     }
 
+    //TODO during drag and drop check if element was pushed into child element
+    /*testIfNewParentIsActuallyAChild(newId,parent){
+        let childDetected=false
+        let child=this.state.elements.find(elem=>elem.parentFolderId===parent.id)
+        for(int )
+            if(child.id===newId) return true;
+            return this.testIfNewParentIsActuallyAChild(newId,child)
+        }
+        child.map(childchild=>{
+            if(childchild.id==newId) {
+                childDetected = true
+                return;
+            }
+            childDetected= this.testIfNewParentIsActuallyAChild(newId,childchild)
+        })
+    }*/
     setNewParent = (child) => (newParentId) => {
+        // if(this.testIfNewParentIsActuallyAChild(newParentId,child))return;
         let reqBody = {
             id: child.id,
             parentFolderId: newParentId
         }
         RecordService.updateParentFolderId(reqBody).then(resp => {
-                console.log(resp)
-                child.parentFolderId = resp;
-                this.setState(this.state);
+            console.log(resp)
+            child.parentFolderId = resp;
+            this.setState(this.state);
 
             }
         ).catch((e) => {
