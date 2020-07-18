@@ -39,16 +39,19 @@ export class FileCabinetView extends React.Component {
             search: '',
             isAddRecordDialogActive: false,
         }
-        RecordService.getAllRecords().then(result => {
-            this.setState({records: result.records});
-            console.log(this.state.records)
-        });
+
 
         this.addRecord = this.addRecord.bind(this);
     }
 
     componentDidMount() {
         this.props.setTitle("File Cabinet");
+        RecordService.getAllRecords().then(result => {
+            this.setState({records: result.records});
+        }).catch((e) => {
+            //TODO snackbar
+            console.error((e))
+        })
     }
 
     updateSearch = (event) => {
