@@ -16,28 +16,21 @@ import ExportService from "../../services/ExportService";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import DocTypeSelector from "./editTemplate/DocTypeSelector";
+import {pageNames} from "../../views/ExportView";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-const pageNames = {
-    selectTemplate: "Select Template",
-    editTemplate: "Edit Template",
-    edit: "Edit"
-}
-
-
 function CustomDialog(props) {
     return (
-        props.currentPage === pageNames.selectTemplate ? "" : <FloatingWindows
-            showDialog={props.showDialog}
-            onClose={props.onClose}
-            save={props.save}
-            currentPage={props.currentPage}
-            selectedDocs={props.selectedDocs}
-            download={props.download}
-            editorState={props.editorState}
-        />
-    )
+        props.currentPage === pageNames.selectTemplate ? "" :
+            <FloatingWindows showDialog={props.showDialog}
+                             onClose={props.onClose}
+                             save={props.save}
+                             currentPage={props.currentPage}
+                             selectedDocs={props.selectedDocs}
+                             download={props.download}
+                             editorState={props.editorState}/>
+    );
 }
 
 // pass to RightSidePanel, so the right components are rendered according to currentPage
@@ -137,11 +130,30 @@ export default class ExportMainView extends React.Component {
         }
     }
 
+
+    // passed to RightSidePanel, so the right components are rendered according to currentPage
+    subComponentSet = {
+        [pageNames.selectTemplate]: {
+            comp1: TemplateList,
+            comp2: DocSearch,
+            comp3: ExportSection
+        },
+        [pageNames.editTemplate]: {
+            comp1: EditorTools,
+            comp2: VariableList,
+            comp3: SaveTemplateSection
+        },
+        [pageNames.edit]: {
+            comp2: DocSearch,
+            comp3: SetValueSection
+        }
+    }
+
     componentDidMount() {
         this.setInitialView()
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.currentPage !== prevProps.currentPage) {
             if (this.props.currentPage === pageNames.edit) {
                 this.mapDocumentsWithVariables();
@@ -427,7 +439,7 @@ export default class ExportMainView extends React.Component {
         const currentPage = this.props.currentPage
         const editorState = this.state.editorState;
         const actionSet = this.actionSet[currentPage];
-        const componentSet = subComponentSet[currentPage];
+        const componentSet = this.subComponentSet[currentPage];
         return (
             <div>
                 <Row>
