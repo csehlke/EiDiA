@@ -31,7 +31,7 @@ class SmartDropDownBox extends React.Component {
             this.setState({
                 options: this.props.options,
                 label: this.props.label,
-                value: this.props.preselectedValue ? this.props.preselectedValue : null,
+                value: this.props.preselectedValue ? this.props.preselectedValue : this.state.value,
 
             })
         }
@@ -102,7 +102,6 @@ SmartDropDownBox.propTypes = {
     onChange: PropTypes.func.isRequired,
     options: PropTypes.array.isRequired,
     style: PropTypes.object,
-    preselectedValue: PropTypes.object,
     margin: PropTypes.string,
     clearable: PropTypes.bool,
 }
