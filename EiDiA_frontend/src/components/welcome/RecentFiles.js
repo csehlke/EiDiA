@@ -5,6 +5,7 @@ import styled from "styled-components";
 import {RecordSymbol} from "../record/RecordSymbol";
 import LogService from "../../services/LogService";
 import {Link} from "../Link";
+import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
 
 const FlexRow = styled.div`
     display: flex;
@@ -20,6 +21,7 @@ export default class RecentFiles extends React.Component {
 
         this.state = {
             recentRecords: [],
+            isServerError: false,
         }
     }
 
@@ -29,8 +31,17 @@ export default class RecentFiles extends React.Component {
                 recentRecords: result
             })
         }).catch(error => {
+            this.setState({
+                isServerError: true,
+            });
             console.log(error);
         });
+    }
+
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+        })
     }
 
 
@@ -48,6 +59,8 @@ export default class RecentFiles extends React.Component {
                             </Link>
                         )}
                     </FlexRow>
+                    <ServerSideErrorSnackBar isError={this.state.isServerError}
+                                             onClose={this.handleServerErrorBarClose}/>
                 </div>
             );
         } else {
