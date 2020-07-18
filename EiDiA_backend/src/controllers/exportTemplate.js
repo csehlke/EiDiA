@@ -6,6 +6,7 @@ const RecordController = require('./record');
 const {fileTypes} = require('../../../constants');
 const mongoose = require('mongoose');
 
+// Send all templates
 const listTemplates = (req, res) => {
     ExportTemplateModel.find().select('name')
         .then(templates => {
@@ -18,6 +19,7 @@ const listTemplates = (req, res) => {
     });
 };
 
+// send template data of given template_id
 const getTemplate = (req, res) => {
     const templateId = req.params.templateId;
 
@@ -31,6 +33,7 @@ const getTemplate = (req, res) => {
     });
 };
 
+// update or insert template in database
 const saveTemplate = (req, res) => {
     const template = req.body;
     if (template._id) {
@@ -62,6 +65,7 @@ const saveTemplate = (req, res) => {
     }
 };
 
+// send linked Documents for pdf download
 const exportDocuments = (req, res) => {
     const mongooseIDs = req.query.documentIDs.map((id) => mongoose.Types.ObjectId(id));
     const dbQuery = {_id: {$in: mongooseIDs}};
@@ -76,20 +80,24 @@ const exportDocuments = (req, res) => {
     });
 };
 
+// Send document attributes for value mapping
 const getDocumentAttributes = (req, res) => {
     // TODO: provide documents for variable extraction
-    const docNames = req.params.documentIDs;
-    console.log()
-    const documentMockData = {
-        "doc_1": {
-            "VARIABLE1": "BMW",
-            "VARIABLE2": "500.000€"
-        }
-    };
+    const mongooseIDs = req.query.documentIDs.map((id) => mongoose.Types.ObjectId(id));
+    const dbQuery = {_id: {$in: mongooseIDs}};
+    DocumentModel.find(dbQuery).select('attributes -_id').then((documents) => {
+        console.log(documents[0]);
+        res.status(200).json({attributes: documents});
+    }).catch(error => {
+        res.status(400).json({
+            error: 'Internal server error',
+            message: error.message,
+        });
+    });
 
-    res.status(200).json({response: documentMockData});
 }
 
+// send search results
 const searchDocumentsByName = (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.query, "documentName")) {
         return res.status(400).json({
