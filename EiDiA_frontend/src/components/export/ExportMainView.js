@@ -309,7 +309,7 @@ export default class ExportMainView extends React.Component {
                 newState.variables = this.extractVariables(newState.editorState);
                 this.setState(newState);
             }
-        }, (err) => {
+        }, () => {
             this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template);
         })
     }
@@ -400,7 +400,6 @@ export default class ExportMainView extends React.Component {
     }
 
     saveTemplate(templateName) {
-        // TODO: Let User save template
         // will overwrite template name; if no template found in database -> create new entry
         const template = {
             _id: this.state.selectedTemplate ? this.state.selectedTemplate._id : null,
@@ -409,23 +408,27 @@ export default class ExportMainView extends React.Component {
             name: templateName
         }
         ExportService.saveTemplate(template).then((data) => {
-            let res = data.response;
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);
             this.props.changeView(pageNames.selectTemplate);
+        }, () => {
+            this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template);
         })
     }
 
     downloadDocument(docIDs) {
-        // TODO: Let User download created and linked documents
         const editorText = this.getTextFromEditorState(this.state.editorState);
         ExportService.downloadDocuments(docIDs).then((data) => {
+            let pdfText = data.pdfText;
+            pdfText.forEach(pdfContent => {
+                const pdf = pdfMake.createPdf({content: pdfContent});
+                pdf.download();
+            })
             const docDefinition = {content: editorText};
             const pdf = pdfMake.createPdf(docDefinition);
-            //pdf.download();
+            pdf.download();
 
-            let res = data.response;
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);
