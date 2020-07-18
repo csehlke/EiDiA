@@ -57,7 +57,7 @@ export default class HttpService {
                 if (this.checkIfUnauthorized(resp)) {
                     window.localStorage.removeItem('jwtToken') //clear token if unauthorized
                     window.location = "/#login";
-                    return;
+
                 } else {
                     return resp.json();
                 }
@@ -84,7 +84,6 @@ export default class HttpService {
             header.append('Authorization', `JWT ${token}`);
         }
         header.append('Content-Type', 'application/json');
-
         fetch(url, {
             method: 'POST',
             headers: header,
@@ -94,7 +93,7 @@ export default class HttpService {
                 if (this.checkIfUnauthorized(resp)) {
                     window.localStorage.removeItem('jwtToken') //clear token if unauthorized
                     window.location = "/#login";
-                    return;
+
                 } else {
                     return resp.json();
                 }
@@ -129,7 +128,7 @@ export default class HttpService {
                 if (this.checkIfUnauthorized(resp)) {
                     window.localStorage.removeItem('jwtToken') //clear token if unauthorized
                     window.location = "/#login";
-                    return;
+
                 } else {
                     return resp.json();
                 }

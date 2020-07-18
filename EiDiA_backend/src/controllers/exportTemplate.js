@@ -6,16 +6,9 @@ const RecordController = require('./record');
 const {fileTypes} = require('../../../constants');
 
 const listTemplates = (req, res) => {
-    // TODO: provide templates in database
-    ExportTemplateModel.find()
-        .then(() => {
-            const dummyData = [
-                {name: "Template 0", id: "t_0"},
-                {name: "Template 1", id: "t_1"},
-                {name: "Template 2", id: "t_2"},
-            ];
-
-            res.status(200).json({exportTemplates: dummyData});
+    ExportTemplateModel.find().select('name')
+        .then(templates => {
+            res.status(200).json({exportTemplates: templates});
         })
         .catch(error => {
             res.status(400).json({
@@ -26,46 +19,38 @@ const listTemplates = (req, res) => {
 };
 
 const getTemplate = (req, res) => {
-    // TODO: provide templates in database
-    const dummyTemplates = {
-        t_0: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam 25%. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. ',
-        t_1: '$\/Document1\/VARIABLE1 On the date of $DATE ,\n $\/Document1\/VARIABLE1 has made a revenue of $VARIABLE2',
-        t_2: 'Eins Zwei Drei Vier \n mit zeilenbruch'
-    }
-
     const templateId = req.params.templateId;
 
-    res.status(200).json({template: dummyTemplates[templateId]});
+    ExportTemplateModel.findById(templateId).then(template => {
+        res.status(200).json({template: template});
+    })
 };
 
 const saveTemplate = (req, res) => {
-    // TODO: save templates in database
-    const template = req.body.content;
-    res.status(200).json({response: "success!"});
+    const template = req.body;
+    if (template._id) {
+        ExportTemplateModel.findByIdAndUpdate(template._id, {
+            documentContent: template.documentContent,
+            documentTypes: template.documentTypes,
+            name: template.name
+        }).then((data) => {
+            res.status(200).json({response: "success!"});
+        })
+    } else {
+        ExportTemplateModel.create({
+            documentContent: template.documentContent,
+            documentTypes: template.documentTypes,
+            name: template.name
+        }).then((data) => {
+            res.status(200).json({response: "success!"});
+        })
+    }
 };
 
 const exportDocuments = (req, res) => {
     // TODO: provide documents from database
     const params = req.params.documents;
     res.status(200).json({response: "dummy response"});
-};
-
-const search = (req, res) => {
-    // TODO: provide documents in database for search
-    const searchQuery = req.params.searchqu;
-
-    let out = []
-    for (let i = 0; i < 9; i++) {
-        const obj = {id: "doc_" + i, name: "Document " + i, documentTypeId: "typed_" + i};
-        out.push(obj);
-    }
-    out.push({
-        id: "5efa2869444d2082a89b793a",
-        name: "Document1 (Amazon)",
-        documentTypeId: "5ef99f619815e6b0c4f9292a"
-    })
-
-    res.status(200).json({documents: out});
 };
 
 const download = (req, res) => {
@@ -130,7 +115,6 @@ module.exports = {
     saveTemplate,
     exportDocuments,
     getTemplate,
-    search,
     searchDocumentsByName,
     download,
     getDocumentAttributes

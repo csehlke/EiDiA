@@ -4,6 +4,8 @@ import HttpService from './HttpService';
 import {baseURL} from '../../../constants.js'
 
 export default class CommonService {
+
+
     static getAllTemplates() {
         return new Promise((resolve, reject) => {
             HttpService.get(baseURL + "/exporttemplate/list", function (data) {

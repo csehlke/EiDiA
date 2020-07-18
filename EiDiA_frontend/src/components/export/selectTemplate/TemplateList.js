@@ -24,7 +24,7 @@ export default class TemplateList extends React.Component {
 
     handleListItemClick(value, index) {
         let newState = this.state;
-        let template_id = this.state.templateList[index].id;
+        let template_id = this.state.templateList[index]._id;
         newState.selectedIndex = index;
         this.setState(newState);
         this.props.onAction1(value, template_id);

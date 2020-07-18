@@ -57,6 +57,18 @@ const subComponents = {
     }
 }
 
+const alertConstants = {
+    alertType: {
+        error: "error",
+        warning: "warning"
+    },
+    messages: {
+        template: "An error occurred with the selected template.",
+        docSearch: "An error occurred with your document search.",
+        document: "An error occurred with one of your selected documents"
+    }
+}
+
 export default class ExportMainView extends React.Component {
     constructor(props) {
         super(props);
@@ -72,7 +84,9 @@ export default class ExportMainView extends React.Component {
             selectedVariable: "", // e.g. $Variable1 --> necessary for manually assigning value to selected variable
             linkedDocTypes: [],
             showAlert: false,
-            isSnackBarOpen: false
+            isWarningMessageOpen: false,
+            isErrorMessageOpen: false,
+            errorMessage: ""
         };
 
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
@@ -142,7 +156,7 @@ export default class ExportMainView extends React.Component {
             } else if (this.props.currentPage === pageNames.selectTemplate && this.state.selectedTemplate === null) {
                 this.setInitialView();
             } else if (prevProps.currentPage === pageNames.edit && this.state.selectedTemplate !== null) {
-                this.selectTemplate(this.state.selectedTemplate.name, this.state.selectedTemplate.id);
+                this.selectTemplate(this.state.selectedTemplate.name, this.state.selectedTemplate._id);
             }
         }
     }
@@ -152,8 +166,8 @@ export default class ExportMainView extends React.Component {
     setInitialView() {
         ExportService.getAllTemplates().then((data) => {
             if (data.exportTemplates.length !== 0) {
-                let initTemplate = data.exportTemplates[0]
-                this.selectTemplate(initTemplate.name, initTemplate.id);
+                let initTemplate = data.exportTemplates[0];
+                this.selectTemplate(initTemplate.name, initTemplate._id);
             }
         })
     }
@@ -283,13 +297,20 @@ export default class ExportMainView extends React.Component {
     // collects all variables of the template
     selectTemplate(name, id) {
         ExportService.getTemplate(id).then((data) => {
-            let editorText = data.template;
-            let newState = this.state;
+            let template = data.template;
+            let editorText = template.documentContent;
+            if (typeof editorText === 'undefined' || typeof editorText === 'undefined') {
+                this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template)
+            } else {
+                let newState = this.state;
 
-            newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
-            newState.selectedTemplate = {name: name, id: id};
-            newState.variables = this.extractVariables(newState.editorState);
-            this.setState(newState);
+                newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
+                newState.selectedTemplate = {name: name, _id: id};
+                newState.variables = this.extractVariables(newState.editorState);
+                this.setState(newState);
+            }
+        }, (err) => {
+            this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template);
         })
     }
 
@@ -380,9 +401,11 @@ export default class ExportMainView extends React.Component {
 
     saveTemplate(templateName) {
         // TODO: Let User save template
+        // will overwrite template name; if no template found in database -> create new entry
         const template = {
-            editorText: this.getTextFromEditorState(this.state.editorState),
-            linkedDocTypeIds: this.state.linkedDocTypes,
+            _id: this.state.selectedTemplate ? this.state.selectedTemplate._id : null,
+            documentContent: this.getTextFromEditorState(this.state.editorState),
+            documentTypes: this.state.linkedDocTypes,
             name: templateName
         }
         ExportService.saveTemplate(template).then((data) => {
@@ -409,12 +432,20 @@ export default class ExportMainView extends React.Component {
         })
     }
 
-    handleSnackBarOpen() {
-        this.setState({isSnackBarOpen: true});
+    handleSnackBarOpen(alertType, message) {
+        if (alertType === alertConstants.alertType.warning) {
+            this.setState({isWarningMessageOpen: true});
+        } else if (alertType === alertConstants.alertType.error) {
+            this.setState({isErrorMessageOpen: true, errorMessage: message});
+        }
     }
 
-    handleSnackBarClose() {
-        this.setState({isSnackBarOpen: false});
+    handleSnackBarClose(alertType) {
+        if (alertType === alertConstants.alertType.warning) {
+            this.setState({isWarningMessageOpen: false});
+        } else if (alertType === alertConstants.alertType.error) {
+            this.setState({isErrorMessageOpen: false});
+        }
     }
 
     render() {
@@ -462,10 +493,19 @@ export default class ExportMainView extends React.Component {
                     editorState={this.state.editorState}
                 />
                 <Snackbar
-                    open={this.state.isSnackBarOpen}
+                    open={this.state.isWarningMessageOpen}
                     autoHideDuration={5000}>
-                    <Alert severity="warning" onClose={this.handleSnackBarClose}>
+                    <Alert severity={alertConstants.alertType.warning}
+                           onClose={() => this.handleSnackBarClose(alertConstants.alertType.warning)}>
                         Some Attributes in selected Documents not found. Affected variables remain unchanged.
+                    </Alert>
+                </Snackbar>
+                <Snackbar
+                    open={this.state.isErrorMessageOpen}
+                    autoHideDuration={5000}>
+                    <Alert severity={alertConstants.alertType.error}
+                           onClose={() => this.handleSnackBarClose(alertConstants.alertType.error)}>
+                        {this.state.errorMessage}
                     </Alert>
                 </Snackbar>
             </div>
