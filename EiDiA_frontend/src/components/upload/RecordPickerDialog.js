@@ -11,6 +11,7 @@ import {RecordSymbol} from "./uploadFiletable/RecordSymbol";
 import IconButton from "@material-ui/core/IconButton";
 import RecordService from "../../services/RecordService";
 import UploadFileExplorer from "./uploadFiletable/UploadFileExplorer";
+import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
 
 const FlexRow = styled.div`
     display: flex;
@@ -49,12 +50,14 @@ class RecordPickerDialog extends React.Component {
             renderRecordPicker: true, // show record picker before FileExplorer
             selectedRecord: '',
             selectedFolder: {name: 'Root-Folder', id: '0'},
+            isServerError: false,
         }
         this.closeDialog = this.closeDialog.bind(this);
         this.updateSearch = this.updateSearch.bind(this);
         this.handleRecordClick = this.handleRecordClick.bind(this);
         this.getSelectedFolder = this.getSelectedFolder.bind(this);
         this.saveSelectedData = this.saveSelectedData.bind(this);
+        this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -62,7 +65,12 @@ class RecordPickerDialog extends React.Component {
             this.setState({
                 records: result.records
             });
-        })
+        }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
+            console.error(e);
+        });
     }
 
     updateSearch(event) {
@@ -100,62 +108,76 @@ class RecordPickerDialog extends React.Component {
         });
     }
 
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+        })
+    }
+
     render() {
         let filteredRecords = this.state.records.filter((record) => {
             return record.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1; //make search work without respecting capitalization
         });
         if (this.state.renderRecordPicker) {
             return (
-                <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={false}>
-                    <DialogTitle>
-                        Assign To Record
-                    </DialogTitle>
-                    <SizedDialogContentRecord dividers>
-                        <SearchBar>
-                            <Input
-                                fullWidth
-                                placeholder="Search Records ..."
-                                value={this.state.search}
-                                onChange={this.updateSearch}/>
-                        </SearchBar>
+                <div>
+                    <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={false}>
+                        <DialogTitle>
+                            Assign To Record
+                        </DialogTitle>
+                        <SizedDialogContentRecord dividers>
+                            <SearchBar>
+                                <Input
+                                    fullWidth
+                                    placeholder="Search Records ..."
+                                    value={this.state.search}
+                                    onChange={this.updateSearch}/>
+                            </SearchBar>
 
-                        <FlexRow>
-                            {filteredRecords.map((record, i) =>
-                                <IconButton onClick={() => this.handleRecordClick(record)}
-                                            key={i}
-                                            size={"small"}
-                                            disableRipple>
-                                    <RecordSymbol name={record.name}/>
-                                </IconButton>
-                            )}
-                        </FlexRow>
-                    </SizedDialogContentRecord>
-                </Dialog>
+                            <FlexRow>
+                                {filteredRecords.map((record, i) =>
+                                    <IconButton onClick={() => this.handleRecordClick(record)}
+                                                key={i}
+                                                size={"small"}
+                                                disableRipple>
+                                        <RecordSymbol name={record.name}/>
+                                    </IconButton>
+                                )}
+                            </FlexRow>
+                        </SizedDialogContentRecord>
+                    </Dialog>
+                    <ServerSideErrorSnackBar isError={this.state.isServerError}
+                                             onClose={this.handleServerErrorBarClose}/>
+                </div>
             )
         } else {
             return (
-                <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={false}>
-                    <DialogTitle>
-                        Set Save Location in Record "{this.state.selectedRecord.name}"
-                    </DialogTitle>
-                    <SizedDialogContent dividers>
-                        <UploadFileExplorer sendFolder={this.getSelectedFolder}
-                                            recordId={this.state.selectedRecord.id}/>
-                    </SizedDialogContent>
-                    <DialogActions>
-                        <b>Current Selection: &nbsp;</b> {this.state.selectedFolder.name}
-                        <Button color={"secondary"}
-                                onClick={this.closeDialog}>
-                            Cancel
-                        </Button>
-                        <Button autoFocus
-                                color="primary"
-                                onClick={this.saveSelectedData}
-                        >
-                            Save
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <div>
+                    <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={false}>
+                        <DialogTitle>
+                            Set Save Location in Record "{this.state.selectedRecord.name}"
+                        </DialogTitle>
+                        <SizedDialogContent dividers>
+                            <UploadFileExplorer sendFolder={this.getSelectedFolder}
+                                                recordId={this.state.selectedRecord.id}/>
+                        </SizedDialogContent>
+                        <DialogActions>
+                            <b>Current Selection: &nbsp;</b> {this.state.selectedFolder.name}
+                            <Button color={"secondary"}
+                                    onClick={this.closeDialog}>
+                                Cancel
+                            </Button>
+                            <Button autoFocus
+                                    color="primary"
+                                    onClick={this.saveSelectedData}
+                            >
+                                Save
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                    <ServerSideErrorSnackBar isError={this.state.isServerError}
+                                             onClose={this.handleServerErrorBarClose}/>
+                </div>
             )
         }
     }
