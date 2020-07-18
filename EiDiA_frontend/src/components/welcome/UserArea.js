@@ -86,7 +86,7 @@ export default class UserArea extends React.Component {
             <div>
                 <Picture>
                     {this.state.picture === null ?
-                        <DefaultUserPicture/> :
+                        <DefaultUserPicture color='#0094C6'/> :
                         <Image src={this.state.picture} alt={"Profile Picture"}/>}
                 </Picture>
                 <NameRow>
