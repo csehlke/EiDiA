@@ -6,6 +6,9 @@ import {RecordSymbol} from "../components/record/RecordSymbol";
 import styled from "styled-components";
 import {Input} from '@material-ui/core';
 import {Link} from "../components/Link";
+import Fab from "@material-ui/core/Fab";
+import {IoMdAddCircleOutline} from "react-icons/all";
+import AddElementDialog from "../components/record/AddElementDialog";
 import RecordService from "../services/RecordService";
 
 const FlexRow = styled.div`
@@ -34,12 +37,14 @@ export class FileCabinetView extends React.Component {
             //TODO: show spinning cirlce maybe as long its empty?
             records: [],
             search: '',
+            isAddRecordDialogActive: false,
         }
         RecordService.getAllRecords().then(result => {
             this.setState({records: result.records});
             console.log(this.state.records)
-        })
+        });
 
+        this.addRecord = this.addRecord.bind(this);
     }
 
     componentDidMount() {
@@ -50,7 +55,34 @@ export class FileCabinetView extends React.Component {
         this.setState({search: event.target.value});
     }
 
+    toggleAddRecordDialog = () => {
+        this.setState({
+            isAddRecordDialogActive: !this.state.isAddRecordDialogActive,
+        });
+    }
+
+    addRecord(recordName) {
+        RecordService.addNewRecord(recordName)
+            .then(record => {
+                this.setState({
+                    records: [record, ...this.state.records],
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
     render() {
+        //taken from here https://stackoverflow.com/questions/35828991/make-material-ui-reactjs-floatingactionbutton-float
+        //to let fab button float right
+        const styleFabButton = {
+            top: 'auto',
+            bottom: '2em',
+            right: '2em',
+            left: 'auto',
+            position: 'fixed',
+        };
 
         let filteredRecords = this.state.records.filter((record) => {
             //TODO: maybe transform all records to lowercase
@@ -77,6 +109,14 @@ export class FileCabinetView extends React.Component {
                         </Link>
                     )}
                 </FlexRow>
+                <Fab style={styleFabButton} color="primary" aria-label="add"
+                     onClick={this.toggleAddRecordDialog}>
+                    <IoMdAddCircleOutline size={32}/>
+                </Fab>
+                <AddElementDialog elementType={"Record"}
+                                  open={this.state.isAddRecordDialogActive}
+                                  onClose={this.toggleAddRecordDialog}
+                                  onSave={this.addRecord}/>
             </Page>
         );
     }
