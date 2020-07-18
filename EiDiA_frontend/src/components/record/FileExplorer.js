@@ -49,11 +49,11 @@ export default class FileExplorer extends React.Component {
                     <ElementDropTarget type={element.type}
                                        id={element.id}
                                        dragEnabled={this.props.dragEnabled}>
-                        <Element
-                            level={level}
-                            elementData={element}
-                            handleDrop={this.setNewParent(element)}
-                            activeToggle={this.activeToggle(element)}>
+                        <Element level={level}
+                                 elementData={element}
+                                 handleDrop={this.setNewParent(element)}
+                                 activeToggle={this.activeToggle(element)}
+                                 dragEnabled={this.props.dragEnabled}>
                         </Element>
                     </ElementDropTarget>
                 </Grid>,

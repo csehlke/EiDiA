@@ -76,7 +76,11 @@ class Element extends React.Component {
                 </Grid>}
             </div>
         );
-        return this.props.connectDragSource(toRender);
+        if (!this.props.dragEnabled) {
+            return toRender;
+        } else {
+            return this.props.connectDragSource(toRender);
+        }
     }
 }
 
