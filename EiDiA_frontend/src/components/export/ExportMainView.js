@@ -4,7 +4,7 @@ import RightSidepanel from "./RightSidepanel";
 import {ContentState, convertToRaw, EditorState, RichUtils} from 'draft-js';
 import FloatingWindows from './dialog/FloatingWindow';
 import {pageNames} from '../../support files/constants';
-import {Column, Row} from '../StyleElements';
+import {ExportViewColumn, Row} from '../StyleElements';
 import EditorTools from './editTemplate/EditorTools';
 import DocSearch from './selectTemplate/DocSearch';
 import ExportSection from './selectTemplate/ExportSection';
@@ -425,10 +425,10 @@ export default class ExportMainView extends React.Component {
         return (
             <div>
                 <Row>
-                    <Column>
+                    <ExportViewColumn>
                         {/*Insert left column next to editor, so editor is in the center*/}
-                    </Column>
-                    <Column>
+                    </ExportViewColumn>
+                    <ExportViewColumn>
                         <div style={{overflow: "auto", maxHeight: '83vh'}}><DocEditor
                             readOnly={this.props.readOnly}
                             textAlignment={this.state.textAlignment}
@@ -439,8 +439,8 @@ export default class ExportMainView extends React.Component {
                             onChange={this.onChange}
                         />
                         </div>
-                    </Column>
-                    <Column>
+                    </ExportViewColumn>
+                    <ExportViewColumn>
                         <RightSidepanel
                             componentSet={componentSet}
                             actionSet={actionSet}
@@ -450,7 +450,7 @@ export default class ExportMainView extends React.Component {
                             selectedVariable={this.state.selectedVariable}
                             editorDidChange={this.props.editorDidChange}
                         />
-                    </Column>
+                    </ExportViewColumn>
                 </Row>
                 <CustomDialog
                     showDialog={this.state.showDialog}

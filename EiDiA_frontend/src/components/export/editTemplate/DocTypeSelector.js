@@ -55,7 +55,7 @@ export default class DocTypeSelector extends React.Component {
     render() {
         // TODO: Use get request for fetching docTypes name,id list
         return (
-            <div style={{margin: '15px', overflow: 'auto', maxHeight: '250px', minHeight: '250px'}}>
+            <div style={{overflow: 'auto', maxHeight: '250px', minHeight: '250px'}}>
                 {this.state.linkedDocTypes.map((e, index) =>
                     <DocTypeSelectLine
                         key={index}

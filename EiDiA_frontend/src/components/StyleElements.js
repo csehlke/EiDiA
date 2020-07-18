@@ -103,6 +103,9 @@ export const Row = styled.div`
     display: flex;
 `;
 
+export const ExportViewColumn = styled.div`
+    flex: 50%;
+`;
 
 export const Column = styled.div`
 width:48%;
