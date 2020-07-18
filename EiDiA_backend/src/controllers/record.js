@@ -107,47 +107,10 @@ const getRecordName = (id) => {
     });
 }
 
-const listRecentRecords = (req, res) => {
-    DocumentModel.distinct('recordId', {
-        'createdBy': req.userId,
-        'fileType': {$ne: fileTypes.FOLDER},
-        'lastModifiedOnDate': {
-            $gte: new Date(new Date() - 7 * 60 * 60 * 24 * 1000) //only look for documents that were modified in the last week
-        }
-    }, function (error, documentList) {
-        return Promise.all(documentList.map(recId => {
-            return new Promise((resolve, reject) => {
-                RecordModel.findById(recId).exec()
-                    .then(record => {
-                        if (record === null) {
-                            console.log("Record not found");
-                        } else {
-                            resolve({
-                                recordId: recId,
-                                recordName: record.name
-                            })
-                        }
-                    }).catch(err => reject(err));
-            });
-
-        })).then(recentRecords => { //When recent Records were found, send them to frontend
-            let trimmedRecords = recentRecords.slice(0, 5) //only show first five results
-            res.status(200).json({records: trimmedRecords});
-        })
-            .catch(error => {
-                res.status(400).json({
-                    error: 'Internal server error',
-                    message: error.message,
-                });
-            });
-    })
-};
-
 
 module.exports = {
     listRecords,
     addRecord,
     listFoldersByRecordId,
     getRecordName,
-    listRecentRecords
 };
