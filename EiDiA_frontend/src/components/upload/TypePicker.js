@@ -10,6 +10,7 @@ import CommonService from '../../services/CommonService';
 import TextField from "@material-ui/core/TextField";
 import NewDocumentTypeDialog from "./NewDocumentTypeDialog";
 import RecordPickerDialog from "./RecordPickerDialog";
+import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
 
 const Container = styled.div
     // Outer Container
@@ -41,7 +42,8 @@ class TypePicker extends React.Component {
             docDialogOpened: false,
             recDialogOpened: false,
             selectedRecord: '',
-            selectedFolder: ''
+            selectedFolder: '',
+            isServerError: false,
         }
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
@@ -53,6 +55,7 @@ class TypePicker extends React.Component {
         this.openRecDialog = this.openRecDialog.bind(this);
         this.closeRecDialog = this.closeRecDialog.bind(this);
         this.getDataFromRecDialog = this.getDataFromRecDialog.bind(this);
+        this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -61,6 +64,9 @@ class TypePicker extends React.Component {
                 documentTypes: [...data.documentTypes],
             });
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e);
         });
     }
@@ -129,7 +135,7 @@ class TypePicker extends React.Component {
     getDataFromRecDialog(selectedRecord, selectedFolder) {
         this.setState({
             selectedRecord: selectedRecord,
-            selectedFolder: selectedFolder
+            selectedFolder: selectedFolder,
         });
     }
 
@@ -145,8 +151,17 @@ class TypePicker extends React.Component {
                 });
             })
             .catch((e) => {
+                this.setState({
+                    isServerError: true,
+                });
                 console.error(e);
             });
+    }
+
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+        })
     }
 
     render() {
@@ -217,6 +232,8 @@ class TypePicker extends React.Component {
                     open={this.state.recDialogOpened}
                     onClose={this.closeRecDialog}
                     sendData={this.getDataFromRecDialog}/>
+
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
             </Container>
         )
     }

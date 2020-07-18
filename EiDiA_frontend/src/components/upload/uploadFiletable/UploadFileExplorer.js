@@ -2,6 +2,7 @@ import React from 'react';
 import Element from './Element'
 import Grid from "@material-ui/core/Grid";
 import RecordService from "../../../services/RecordService";
+import {ServerSideErrorSnackBar} from "../../ServerSideErrorSnackBar";
 
 export default class UploadFileExplorer extends React.Component {
 
@@ -9,8 +10,11 @@ export default class UploadFileExplorer extends React.Component {
         super(props);
 
         this.state = {
-            elements: []
+            elements: [],
+            isServerError: false,
         }
+
+        this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -20,6 +24,9 @@ export default class UploadFileExplorer extends React.Component {
             });
 
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e);
         });
     }
@@ -45,20 +52,28 @@ export default class UploadFileExplorer extends React.Component {
         );
     }
 
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+        })
+    }
 
     render() {
         return (
-            <Grid style={{flexGrow: 1}} container spacing={0}>
-                <Grid item xs={12} sm={12}>
-                    Name
+            <div>
+                <Grid style={{flexGrow: 1}} container spacing={0}>
+                    <Grid item xs={12} sm={12}>
+                        Name
+                    </Grid>
+                    <Grid item xs={12}>
+                        <hr/>
+                    </Grid>
+                    {this.state.elements.map((element, index) => element.parentFolderId === '0' ?
+                        this.renderElement(element, index, 0) : null
+                    )}
                 </Grid>
-                <Grid item xs={12}>
-                    <hr/>
-                </Grid>
-                {this.state.elements.map((element, index) => element.parentFolderId === '0' ?
-                    this.renderElement(element, index, 0) : null
-                )}
-            </Grid>
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
+            </div>
         );
     }
 }
