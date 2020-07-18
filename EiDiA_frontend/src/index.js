@@ -18,7 +18,17 @@ const theme = createMuiTheme({
             main: "#ff0000",
         },
     },
+    overrides: { //everything stated here will be used globally
+        MuiCssBaseline: {
+            '@global': {
+                '*': {
+                    'scrollbar-width': 'thin',
+                },
+            }
+        }
+    }
 });
+
 
 WebFontLoader.load({
     google: {
