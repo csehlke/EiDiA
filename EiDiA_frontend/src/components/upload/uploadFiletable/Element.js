@@ -40,21 +40,19 @@ class Element extends React.Component {
 
 
     render() {
-        const toRender = (
-            <div>
-                <Grid container spacing={2}
-                      style={{cursor: 'pointer'}}
-                      onClick={this.props.onFolderClicked}>
-                    <Grid item xs={12} sm={12}>
-                        <Name padding={this.state.padding}>
-                            <FaFolderOpen size={'1.5em'}/>
-                            &nbsp;&nbsp;{this.state.elementData.name}
-                        </Name>
-                    </Grid>
+        return <div>
+            <Grid container spacing={2}
+                  style={{cursor: 'pointer'}}
+                  onClick={this.props.onFolderClicked}>
+                <Grid item xs={12} sm={12}>
+                    <Name padding={this.state.padding}>
+                        <FaFolderOpen color="#005E7C" size={'1.5em'}/>
+                        &nbsp;&nbsp;{this.state.elementData.name}
+                    </Name>
                 </Grid>
-            </div>
-        );
-        return toRender;
+            </Grid>
+        </div>
+
     }
 }
 

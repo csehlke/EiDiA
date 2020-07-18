@@ -31,7 +31,7 @@ export class RecordSymbol extends React.Component {
     render() {
         return (
             <Quarter>
-                <FolderLogo/>
+                <FolderLogo color="#005E7C"/>
                 <HeadingNoMargin>{this.props.name}</HeadingNoMargin>
             </Quarter>
         );

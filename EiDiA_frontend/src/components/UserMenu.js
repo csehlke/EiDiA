@@ -31,7 +31,7 @@ const UserMenu = () => {
         <div>
             <IconButton onClick={handleMenu}
                         color="default">
-                <MdAccountCircle/>
+                <MdAccountCircle color="#FFFFFF"/>
             </IconButton>
             <Menu id="menu-appbar"
                   anchorEl={anchorEl}
