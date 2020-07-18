@@ -104,6 +104,7 @@ export class Dashboard extends React.Component {
             right: '2em',
             left: 'auto',
             position: 'fixed',
+            color: 'primary'
         };
         return (
             <div>
