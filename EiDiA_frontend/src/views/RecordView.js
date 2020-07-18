@@ -74,8 +74,10 @@ class RecordView extends React.Component {
             case recordMenuOptions.FILEEXPLORER:
                 toShow = <FileExplorer
                     updateData={this.updateData}
-                    data={this.state.documents}
-                    recordId={this.state.recordId}/>;
+                    elements={this.state.documents}
+                    recordId={this.state.recordId}
+                    dragEnabled={true}
+                />;
                 break;
             default:
                 toShow = <Dashboard recordId={this.state.recordId}/>;

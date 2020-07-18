@@ -33,7 +33,8 @@ const getLogs = (req, res) => {
 
 };
 const getRecentRecords = (req, res) => {
-    LogModel.aggregate([{$match: {userId: mongoose.Types.ObjectId(req.params.userId)}},
+    LogModel.aggregate([
+            {$match: {userId: mongoose.Types.ObjectId(req.params.userId)}},
             {$sort: {date: -1}},
             {$group: {_id: '$recordId',}},
             {$lookup: {from: 'records', localField: '_id', foreignField: '_id', as: 'records'}},

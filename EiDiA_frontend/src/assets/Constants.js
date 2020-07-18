@@ -1,5 +1,5 @@
 
-const {fileActions, fileTypes} = require('../../../constants');
+const {fileActions, fileTypes, styleFabButton} = require('../../../constants');
 
 export const recordMenuOptions = {
     DASHBOARD: 1,

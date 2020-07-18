@@ -78,15 +78,18 @@ class Element extends React.Component {
                       style={{cursor: (this.state.elementData.type === fileTypes.FOLDER) && 'pointer'}}
                 >
                     <Grid item xs={12} sm={4} onClick={(e) => {
-                        this.state.nameEdit ? null : this.props.activeToggle()
+                        this.state.nameEdit ? {} : this.props.activeToggle()
                     }}>
                         <Name padding={this.state.padding}>
                             <ElementSymbol fileType={this.state.elementData.fileType}
-                                           activeFolder={this.state.elementData.activeFolder}/>
+                                           activeFolder={this.state.elementData.activeFolder}
+                            />
                             &nbsp;&nbsp;{this.state.nameEdit ?
-                            <TextField value={this.state.nameInput} onChange={(e) => {
-                                this.setState({nameInput: e.target.value})
-                            }}/> :
+                            <TextField value={this.state.nameInput}
+                                       onChange={(e) => {
+                                           this.setState({nameInput: e.target.value})
+                                       }}
+                            /> :
                             this.state.elementData.name
                         }
                         </Name>
@@ -110,10 +113,10 @@ class Element extends React.Component {
                 </Grid>}
             </div>
         );
-        if (!this.props.dragEnabled||this.state.nameEdit) {
-            return toRender;
-        } else {
+        if (this.props.dragEnabled && !this.state.nameEdit) {
             return this.props.connectDragSource(toRender);
+        } else {
+            return toRender;
         }
     }
 }

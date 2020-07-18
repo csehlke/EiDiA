@@ -289,9 +289,17 @@ const updateDocumentName = (req, res) => {
 
 }
 const updateDocumentParentFolderId = (req, res) => {
-    DocumentModel.findByIdAndUpdate({_id: req.body.id}, {parentFolderId: req.body.parentFolderId}, {new: true})
+    let parentFolderId;
+    if (req.body.parentFolderId === '0') {
+        parentFolderId = '000000000000000000000000' //valid ObjectId for MongoDB
+    } else {
+        parentFolderId = req.body.parentFolderId
+    }
+    DocumentModel.findByIdAndUpdate({_id: req.body.id}, {parentFolderId: parentFolderId}, {new: true})
         .then(document => {
-                res.status(200).json(document.parentFolderId);
+                let copy = document.parentFolderId
+                copy = copy.toString() === "000000000000000000000000" ? 0 : copy
+                res.status(200).json(copy);
                 //TODO add log
 
             }
