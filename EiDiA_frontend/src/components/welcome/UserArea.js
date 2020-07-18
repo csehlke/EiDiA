@@ -96,12 +96,12 @@ export default class UserArea extends React.Component {
                     {[this.state.workPosition, this.state.workLocation].filter(value => value).join(", ")}
                 </WorkRow>
                 <LinkRow>
-                    <Link to={'/settings'}>
+                    <Link to={'/settings'} style={{color: "#0094C6"}}>
                         Profile Settings
                     </Link>
                 </LinkRow>
                 <LinkRow>
-                    <Link to={'/permissionRequests'}>
+                    <Link to={'/permissionRequests'} style={{color: "#0094C6"}}>
                         Open Permission Requests
                     </Link>
                 </LinkRow>
