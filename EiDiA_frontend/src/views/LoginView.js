@@ -42,7 +42,7 @@ export class LoginView extends React.Component {
 
     login(user) {
         UserService.login(user.username, user.password)
-            .then((data) => {
+            .then(() => {
                 this.setState({
                     redirect: '/',
                 })
