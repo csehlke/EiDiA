@@ -5,8 +5,6 @@ import ElementDropTarget from "./filetable/ElementDropTarget";
 import {databaseEntriesPlaceholder} from "../../assets/Constants";
 import {fileTypes, styleFabButton} from "../../../../constants";
 import Grid from "@material-ui/core/Grid";
-import {IoMdAddCircleOutline} from "react-icons/all";
-import IconButton from "@material-ui/core/IconButton";
 import RecordService from "../../services/RecordService";
 import Fab from "@material-ui/core/Fab";
 import {MdCreateNewFolder} from "react-icons/md/index";
@@ -141,6 +139,7 @@ export default class FileExplorer extends React.Component {
                             editName={this.editName(element)}
                             handleDeleteElement={this.handleDeleteElement(element)}
                             activeToggle={this.activeToggle(element)}
+                            handleAddFolder={this.handleAddFolder(element.id)}
                             dragEnabled={this.props.dragEnabled}
                         >
 
@@ -149,18 +148,12 @@ export default class FileExplorer extends React.Component {
                     </ElementDropTarget>
                 </Grid>,
                 element.activeFolder === true ?
-                    [
-                        this.state.elements.map((child, indexChild) =>
-                            child.parentFolderId === element.id ?
-                                this.renderElement(child, indexChild, level + 1)
-                                : null
-                        ),
-                        <Grid container key={index + "Folder"} sm={4} item xs={12} justify="center">
-                            <IconButton onClick={this.handleAddFolder(element.id)} aria-label="Add">
-                                <IoMdAddCircleOutline style={{textAlign: "center"}}/>
-                            </IconButton>
-                        </Grid>, <Grid item key={index + "block"} sm={8} xs={12}/>
-                    ] : null,
+
+                    this.state.elements.map((child, indexChild) =>
+                        child.parentFolderId === element.id ?
+                            this.renderElement(child, indexChild, level + 1)
+                            : null
+                    ) : null,
 
             ]
         );

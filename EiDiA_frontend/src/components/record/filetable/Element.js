@@ -95,10 +95,10 @@ class Element extends React.Component {
                         </Name>
                     </Grid>
                     <Grid item xs={12} sm={1}>
-                        {this.state.elementData.dateCreation}
+                        {this.state.elementData.createdOnDate.replace(/[T].*/, "")}
                     </Grid>
                     <Grid item xs={12} sm={1}>
-                        {this.state.elementData.dateModification}
+                        {this.state.elementData.lastModifiedOnDate.replace(/[T].*/, "")}
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         {this.state.elementData.comment}
@@ -108,6 +108,7 @@ class Element extends React.Component {
                             fileType={this.state.elementData.fileType}
                             handleEditName={this.handleEditName}
                             handleDeleteElement={this.props.handleDeleteElement}
+                            handleAddFolder={this.props.handleAddFolder}
                             editName={this.props.editName}/>
                     </Grid>
                 </Grid>}
