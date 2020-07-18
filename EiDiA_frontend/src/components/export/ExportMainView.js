@@ -420,10 +420,10 @@ export default class ExportMainView extends React.Component {
     downloadDocument(docIDs) {
         // TODO: Let User download created and linked documents
         const editorText = this.getTextFromEditorState(this.state.editorState);
-        ExportService.exportDocuments(docIDs).then((data) => {
+        ExportService.downloadDocuments(docIDs).then((data) => {
             const docDefinition = {content: editorText};
             const pdf = pdfMake.createPdf(docDefinition);
-            pdf.download();
+            //pdf.download();
 
             let res = data.response;
             let newState = this.state;

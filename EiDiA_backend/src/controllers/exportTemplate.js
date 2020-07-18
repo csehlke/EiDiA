@@ -4,6 +4,17 @@ const ExportTemplateModel = require('../models/exportTemplate');
 const DocumentModel = require('../models/document');
 const RecordController = require('./record');
 const {fileTypes} = require('../../../constants');
+const PdfPrinter = require('pdfmake');
+const printer = new PdfPrinter(fonts);
+// font files for PDFMake
+const fonts = {
+    Roboto: {
+        normal: 'fonts/Roboto-Regular.ttf',
+        bold: 'fonts/Roboto-Medium.ttf',
+        italics: 'fonts/Roboto-Italic.ttf',
+        bolditalics: 'fonts/Roboto-MediumItalic.ttf'
+    }
+};
 
 const listTemplates = (req, res) => {
     ExportTemplateModel.find().select('name')
@@ -49,11 +60,24 @@ const saveTemplate = (req, res) => {
 
 const exportDocuments = (req, res) => {
     // TODO: provide documents from database
-    const params = req.params.documents;
-    res.status(200).json({response: "dummy response"});
+    const documentIDs = req.query.documentIDs;
+    const dbQuery = {_id: {$in: documentIDs}}
+    DocumentModel.find(dbQuery).then((documents) => {
+        let pdfDocs = documents.map((doc) => {
+            const docDefinition = {content: document};
+            const pdfDoc = printer.createPdfKitDocument(docDefinition);
+            return pdfDoc;
+        });
+        res.writHead(200, {
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': 'attachment; filename=some_file.pdf',
+            'Content-Length': data.length
+        });
+        res.end(pdfDocs);
+    })
 };
 
-const download = (req, res) => {
+const downloadDocuments = (req, res) => {
     res.status(200).json({response: "success!"});
 }
 
@@ -116,6 +140,6 @@ module.exports = {
     exportDocuments,
     getTemplate,
     searchDocumentsByName,
-    download,
+    download: downloadDocuments,
     getDocumentAttributes
 };
