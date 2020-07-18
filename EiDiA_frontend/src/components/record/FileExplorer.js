@@ -102,7 +102,7 @@ export default class FileExplorer extends React.Component {
             }
         )
     }
-    deleteElement = (element) => (e) => {
+    handleDeleteElement = (element) => (e) => {
         //TODO if parent Element deleted, also delete all child elements
         //TODO make pop up if u really want to delete
         RecordService.deleteDocument(element.id).then(result => {
@@ -129,7 +129,7 @@ export default class FileExplorer extends React.Component {
                             elementData={element}
                             handleDrop={this.setNewParent(element)}
                             editName={this.editName(element)}
-                            deleteElement={this.deleteElement(element)}
+                            handleDeleteElement={this.handleDeleteElement(element)}
                             activeToggle={this.activeToggle(element)}>
 
 

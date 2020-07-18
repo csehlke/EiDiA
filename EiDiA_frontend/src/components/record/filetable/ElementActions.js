@@ -37,7 +37,7 @@ export class ElementActions extends React.Component {
 
 
         toReturn[1] = (
-            <IconButton onClick={this.props.deleteElement}>
+            <IconButton onClick={this.props.handleDeleteElement}>
                 <AiFillDelete size={IconSize}/>
             </IconButton>);
 
