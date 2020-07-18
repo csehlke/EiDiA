@@ -6,7 +6,7 @@ const buttonStyle = {
     margin: "15px"
 }
 
-export default class ExportSection extends React.Component {
+export default class ButtonArea extends React.Component {
     render() {
         return (
             <div>

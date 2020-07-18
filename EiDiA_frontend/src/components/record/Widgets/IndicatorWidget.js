@@ -47,6 +47,7 @@ export class IndicatorWidget extends React.Component {
         )
         return data.flat();
     }
+
     render() {
 
         let data = this.getData(this.state.attributeMapping);

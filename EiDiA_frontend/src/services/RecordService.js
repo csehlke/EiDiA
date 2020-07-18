@@ -16,4 +16,16 @@ export default class RecordService {
             });
         });
     }
+
+
+    static listFolders(recordId) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/record/document/listfolders/' + recordId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
 }

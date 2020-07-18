@@ -36,7 +36,6 @@ export class ExportView extends React.Component {
     }
 
     editorStateChanged() {
-        console.log("change")
         this.setState({editorStateChanged: true})
     }
 
@@ -72,6 +71,7 @@ export class ExportView extends React.Component {
             <Page>
                 <ExportMenuBar title={this.state.currentPage} changeView={this.changeView}/>
                 <ExportMainView
+                    pageNames={pageNames}
                     currentPage={this.state.currentPage}
                     readOnly={this.state.readOnly}
                     changeView={this.changeView}

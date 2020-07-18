@@ -1,5 +1,3 @@
-"use strict";
-
 import React from 'react';
 import {makeStyles, Toolbar, Typography} from "@material-ui/core";
 import {pageNames} from "../../views/ExportView";

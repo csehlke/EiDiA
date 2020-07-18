@@ -9,6 +9,7 @@ import Box from "@material-ui/core/Box";
 import CommonService from '../../services/CommonService';
 import TextField from "@material-ui/core/TextField";
 import NewDocumentTypeDialog from "./NewDocumentTypeDialog";
+import RecordPickerDialog from "./RecordPickerDialog";
 
 const Container = styled.div
     // Outer Container
@@ -18,7 +19,7 @@ const Container = styled.div
     flex-grow: 1; //For Splitview
     flex-basis: 50%;
     justify-content: center;
-    margin: 8%;
+    margin: 3em;
 `;
 
 //Set DropDown width
@@ -38,15 +39,20 @@ class TypePicker extends React.Component {
             hasAutoCompleteValue: false, // true, if autoComplete has value
             documentName: '',
             docDialogOpened: false,
+            recDialogOpened: false,
+            selectedRecord: '',
+            selectedFolder: ''
         }
 
         this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
         this.handleNextButtonOnClick = this.handleNextButtonOnClick.bind(this);
-        this.assignRecord = this.assignRecord.bind(this);
         this.handleDocumentNameChange = this.handleDocumentNameChange.bind(this);
         this.openDocDialog = this.openDocDialog.bind(this);
         this.closeDocDialog = this.closeDocDialog.bind(this);
         this.newDocTypeToBackend = this.newDocTypeToBackend.bind(this);
+        this.openRecDialog = this.openRecDialog.bind(this);
+        this.closeRecDialog = this.closeRecDialog.bind(this);
+        this.getDataFromRecDialog = this.getDataFromRecDialog.bind(this);
     }
 
     componentDidMount() {
@@ -86,12 +92,9 @@ class TypePicker extends React.Component {
     }
 
     handleNextButtonOnClick() {
-        this.props.callbackUploadView(this.state.selectedDocumentTypeId, this.state.documentName);
+        this.props.callbackUploadView(this.state.selectedDocumentTypeId, this.state.documentName, this.state.selectedRecord, this.state.selectedFolder);
     }
 
-    assignRecord() {
-        console.log("Open FilePicker here (to assign to record)");
-    }
 
     handleDocumentNameChange(event) {
         this.setState({
@@ -110,6 +113,26 @@ class TypePicker extends React.Component {
             docDialogOpened: false
         });
     }
+
+    openRecDialog() {
+        this.setState({
+            recDialogOpened: true
+        });
+    }
+
+    closeRecDialog() {
+        this.setState({
+            recDialogOpened: false
+        });
+    }
+
+    getDataFromRecDialog(selectedRecord, selectedFolder) {
+        this.setState({
+            selectedRecord: selectedRecord,
+            selectedFolder: selectedFolder
+        });
+    }
+
 
     newDocTypeToBackend(requestData) {
         CommonService.addNewDocumentType(requestData)
@@ -138,6 +161,9 @@ class TypePicker extends React.Component {
                         <TextField
                             label="Document Name"
                             variant="outlined"
+                            fullWidth
+                            size={"small"}
+                            style={{margin: '0.5em'}}
                             onChange={this.handleDocumentNameChange}
                         />
                     </Grid>
@@ -152,10 +178,10 @@ class TypePicker extends React.Component {
                     </Grid>
 
                     <Grid item xs={12} align="center">
-                        <Box mt={40}/>
+                        <Box mt={20}/>
                     </Grid>
 
-                    <Grid item xs={2} align="center">
+                    <Grid item xs={6} align="center">
                         <Button
                             variant="contained"
                             color="primary"
@@ -163,11 +189,11 @@ class TypePicker extends React.Component {
                             Create new Document Type
                         </Button>
                     </Grid>
-                    <Grid item xs={2} align="center">
+                    <Grid item xs={4} align="center">
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={this.assignRecord}>
+                            onClick={this.openRecDialog}>
                             Assign to Record
                         </Button>
                     </Grid>
@@ -175,7 +201,7 @@ class TypePicker extends React.Component {
                         <Button
                             variant="contained"
                             color="primary"
-                            disabled={this.state.isNextButtonDisabled}
+                            disabled={this.state.selectedFolder === '' || this.state.isNextButtonDisabled}
                             onClick={this.handleNextButtonOnClick}>
                             Next
                         </Button>
@@ -186,6 +212,11 @@ class TypePicker extends React.Component {
                     open={this.state.docDialogOpened}
                     onClose={this.closeDocDialog}
                     createNewDocumentType={(newDocumentType) => this.newDocTypeToBackend(newDocumentType)}/>
+
+                <RecordPickerDialog
+                    open={this.state.recDialogOpened}
+                    onClose={this.closeRecDialog}
+                    sendData={this.getDataFromRecDialog}/>
             </Container>
         )
     }

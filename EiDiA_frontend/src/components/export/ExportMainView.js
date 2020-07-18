@@ -3,11 +3,10 @@ import DocEditor from "./DocEditor";
 import RightSidepanel from "./RightSidepanel";
 import {ContentState, convertToRaw, EditorState, RichUtils} from 'draft-js';
 import FloatingWindows from './dialog/FloatingWindow';
-import {pageNames} from '../../support files/constants';
 import {ExportViewColumn, Row} from '../StyleElements';
 import EditorTools from './editTemplate/EditorTools';
 import DocSearch from './selectTemplate/DocSearch';
-import ExportSection from './selectTemplate/ExportSection';
+import ExportSection from './selectTemplate/ButtonArea';
 import TemplateList from './selectTemplate/TemplateList';
 import SaveTemplateSection from './editTemplate/SaveTemplateSection';
 import SetValueSection from './edit/SetValueSection';
@@ -20,6 +19,13 @@ import DocTypeSelector from "./editTemplate/DocTypeSelector";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+const pageNames = {
+    selectTemplate: "Select Template",
+    editTemplate: "Edit Template",
+    edit: "Edit"
+}
+
+
 function CustomDialog(props) {
     return (
         props.currentPage === pageNames.selectTemplate ? "" : <FloatingWindows
@@ -27,20 +33,15 @@ function CustomDialog(props) {
             onClose={props.onClose}
             save={props.save}
             currentPage={props.currentPage}
-                selectedDocs={props.selectedDocs}
-                download={props.download}
-                editorState={props.editorState}
-            />
+            selectedDocs={props.selectedDocs}
+            download={props.download}
+            editorState={props.editorState}
+        />
     )
 }
 
-// Checks if string/variable is URI, e.g. Document1/VARIABLE1
-const isPath = (string) => {
-    return /^(?:\/|[a-z]+:\/\/)/.test(string);
-}
-
 // pass to RightSidePanel, so the right components are rendered according to currentPage
-const subComponents = {
+const subComponentSet = {
     [pageNames.selectTemplate]: {
         comp1: TemplateList,
         comp2: DocSearch,
@@ -55,6 +56,11 @@ const subComponents = {
         comp2: DocSearch,
         comp3: SetValueSection
     }
+}
+
+// Checks if string/variable is URI, e.g. Document1/VARIABLE1
+const isPath = (string) => {
+    return /^(?:\/|[a-z]+:\/\/)/.test(string);
 }
 
 export default class ExportMainView extends React.Component {
@@ -421,7 +427,7 @@ export default class ExportMainView extends React.Component {
         const currentPage = this.props.currentPage
         const editorState = this.state.editorState;
         const actionSet = this.actionSet[currentPage];
-        const componentSet = subComponents[currentPage];
+        const componentSet = subComponentSet[currentPage];
         return (
             <div>
                 <Row>
