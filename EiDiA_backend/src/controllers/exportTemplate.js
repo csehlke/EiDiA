@@ -10,13 +10,12 @@ const listTemplates = (req, res) => {
     ExportTemplateModel.find().select('name')
         .then(templates => {
             res.status(200).json({exportTemplates: templates});
-        })
-        .catch(error => {
-            res.status(400).json({
-                error: 'Internal server error',
-                message: error.message,
-            });
+        }).catch(error => {
+        res.status(400).json({
+            error: 'Internal server error',
+            message: error.message,
         });
+    });
 };
 
 const getTemplate = (req, res) => {
@@ -24,7 +23,12 @@ const getTemplate = (req, res) => {
 
     ExportTemplateModel.findById(templateId).then(template => {
         res.status(200).json({template: template});
-    })
+    }).catch(error => {
+        res.status(400).json({
+            error: 'Internal server error',
+            message: error.message,
+        });
+    });
 };
 
 const saveTemplate = (req, res) => {
@@ -36,7 +40,12 @@ const saveTemplate = (req, res) => {
             name: template.name
         }).then(() => {
             res.status(200).json({response: "success!"});
-        })
+        }).catch(error => {
+            res.status(400).json({
+                error: 'Internal server error',
+                message: error.message,
+            });
+        });
     } else {
         ExportTemplateModel.create({
             documentContent: template.documentContent,
@@ -44,25 +53,33 @@ const saveTemplate = (req, res) => {
             name: template.name
         }).then(() => {
             res.status(200).json({response: "success!"});
-        })
+        }).catch(error => {
+            res.status(400).json({
+                error: 'Internal server error',
+                message: error.message,
+            });
+        });
     }
 };
 
 const exportDocuments = (req, res) => {
-    const documentIDs = req.query.documentIDs;
-    const mongooseIDs = documentIDs.map((id) => mongoose.Types.ObjectId(id));
+    const mongooseIDs = req.query.documentIDs.map((id) => mongoose.Types.ObjectId(id));
     const dbQuery = {_id: {$in: mongooseIDs}};
 
-    DocumentModel.find(dbQuery).then((documents) => {
-        const docText = documents.map(doc => doc.completeOcrText);
-        res.status(200).json({pdfText: docText})
-    })
+    DocumentModel.find(dbQuery).select('completeOcrText -_id').then((documents) => {
+        res.status(200).json({pdfText: documents});
+    }).catch(error => {
+        res.status(400).json({
+            error: 'Internal server error',
+            message: error.message,
+        });
+    });
 };
 
 const getDocumentAttributes = (req, res) => {
     // TODO: provide documents for variable extraction
     const docNames = req.params.documentIDs;
-
+    console.log()
     const documentMockData = {
         "doc_1": {
             "VARIABLE1": "BMW",
@@ -98,19 +115,17 @@ const searchDocumentsByName = (req, res) => {
                         .catch(err => reject(err));
                 });
             }));
-        })
-        .then(minimalDocuments => {
-            minimalDocuments.sort((a, b) => {
-                return ('' + a.name).localeCompare(b.name);
-            });
-            res.status(200).json({documents: minimalDocuments});
-        })
-        .catch(error => {
-            return res.status(400).json({
-                error: 'Internal server error',
-                message: error.message,
-            });
-        })
+        }).then(minimalDocuments => {
+        minimalDocuments.sort((a, b) => {
+            return ('' + a.name).localeCompare(b.name);
+        });
+        res.status(200).json({documents: minimalDocuments});
+    }).catch(error => {
+        return res.status(400).json({
+            error: 'Internal server error',
+            message: error.message,
+        });
+    })
 }
 
 module.exports = {

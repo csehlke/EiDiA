@@ -420,9 +420,9 @@ export default class ExportMainView extends React.Component {
     downloadDocument(docIDs) {
         const editorText = this.getTextFromEditorState(this.state.editorState);
         ExportService.downloadDocuments(docIDs).then((data) => {
-            let pdfText = data.pdfText;
-            pdfText.forEach(pdfContent => {
-                const pdf = pdfMake.createPdf({content: pdfContent});
+            let pdfData = data.pdfText;
+            pdfData.forEach(pdfContent => {
+                const pdf = pdfMake.createPdf({content: pdfContent.completeOcrText});
                 pdf.download();
             })
             const docDefinition = {content: editorText};
