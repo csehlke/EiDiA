@@ -108,38 +108,36 @@ const getRecordName = (id) => {
 }
 
 const listRecentRecords = (req, res) => {
-    DocumentModel.find({
+    DocumentModel.distinct('recordId', {
         'createdBy': req.userId, 'fileType': fileTypes.IMAGE, 'lastModifiedOnDate': {
             $gte: new Date(new Date() - 7 * 60 * 60 * 24 * 1000) //only look for documents that were modified in the last week
         }
-    })
-        .then(documentList => {
-            return Promise.all(documentList.map(document => {
-                return new Promise((resolve, reject) => {
-                    RecordModel.findById(document.recordId).exec()
-                        .then(record => {
-                            if (record === null) {
-                                console.log("Record not found");
-                            } else {
-                                resolve({
-                                    recordId: document.recordId,
-                                    recordName: record.name
-                                })
-                            }
-                        }).catch(err => reject(err));
-                });
+    }, function (error, documentList) {
+        return Promise.all(documentList.map(recId => {
+            return new Promise((resolve, reject) => {
+                RecordModel.findById(recId).exec()
+                    .then(record => {
+                        if (record === null) {
+                            console.log("Record not found");
+                        } else {
+                            resolve({
+                                recordId: recId,
+                                recordName: record.name
+                            })
+                        }
+                    }).catch(err => reject(err));
+            });
 
-            }));
-        })
-        .then(recentRecords => { //When recent Records were found, send them to frontend
+        })).then(recentRecords => { //When recent Records were found, send them to frontend
             res.status(200).json({records: recentRecords});
         })
-        .catch(error => {
-            res.status(400).json({
-                error: 'Internal server error',
-                message: error.message,
+            .catch(error => {
+                res.status(400).json({
+                    error: 'Internal server error',
+                    message: error.message,
+                });
             });
-        });
+    })
 };
 
 
