@@ -425,7 +425,7 @@ export default class ExportMainView extends React.Component {
         return (
             <div>
                 <Row>
-                    <div style={{width: "35%"}}>
+                    <div style={{width: "30%"}}>
                         {/*Insert left column next to editor, so editor is in the center*/}
                     </div>
                     <ExportViewColumn>
