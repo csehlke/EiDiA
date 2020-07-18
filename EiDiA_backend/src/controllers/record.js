@@ -258,21 +258,52 @@ const addFolder = (req, res) => {
         base64Image: "empty",
         fileType: fileTypes.FOLDER
     }).then((folder) => {
-        console.log("yes")
         let copy = {...folder._doc, id: folder._doc._id}
-        console.log(parseInt(folder._doc.parentFolderId))
         copy.parentFolderId = copy.parentFolderId.toString() === "000000000000000000000000" ? 0 : copy.parentFolderId
-        console.log(copy)
         res.status(200).json(copy);
+        //TODO add log
+
     })
         .catch(error => {
-            console.log("no")
-            console.log(error.message)
+
             res.status(400).json({
                 error: error.message,
                 message: error.message,
             });
         });
+}
+const updateDocumentName = (req, res) => {
+    DocumentModel.findByIdAndUpdate({_id: req.body.id}, {name: req.body.name}, {new: true})
+        .then(document => {
+                res.status(200).json(document.name);
+                //TODO add log
+            }
+        )
+        .catch((error) =>
+            res.status(400).json({
+                error: error.message,
+                message: error.message,
+            })
+        )
+
+
+}
+const updateDocumentParentFolderId = (req, res) => {
+    DocumentModel.findByIdAndUpdate({_id: req.body.id}, {parentFolderId: req.body.parentFolderId}, {new: true})
+        .then(document => {
+                res.status(200).json(document.parentFolderId);
+                //TODO add log
+
+            }
+        )
+        .catch((error) =>
+            res.status(400).json({
+                error: error.message,
+                message: error.message,
+            })
+        )
+
+
 }
 
 
@@ -280,12 +311,12 @@ module.exports = {
     listRecords,
     addRecord,
     listFoldersByRecordId,
-    // getRecordName,
-    // listDocumentsByTypeAndRecord,
     listDocumentByRecordId,
     listLatestDocumentsByRecordId,
     getDocTypesForRecord,
     getAttributeTypesForRecord,
     getAttributeValuesForRecord,
-    addFolder
+    addFolder,
+    updateDocumentName,
+    updateDocumentParentFolderId
 };

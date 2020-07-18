@@ -43,8 +43,6 @@ export default class RecordService {
     }
 
     static addFolder(folder) {
-        console.log("hello")
-        console.log(baseURL + "/folder/add")
         return new Promise((resolve, reject) => {
             HttpService.post(baseURL + '/record/folder/add', folder, function (data) {
                 resolve(data);
@@ -109,6 +107,26 @@ export default class RecordService {
     static getLogs(recordId) {
         return new Promise((resolve, reject) => {
             HttpService.get(baseURL + '/log/list/' + recordId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static updateName(requestBody) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(baseURL + '/record/document/update/name', requestBody, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static updateParentFolderId(requestBody) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(baseURL + '/record/document/update/parentFolderId', requestBody, function (data) {
                 resolve(data);
             }, function (textStatus) {
                 reject(textStatus);

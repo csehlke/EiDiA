@@ -27,14 +27,25 @@ export default class FileExplorer extends React.Component {
             elements: this.props.data,
         }
         this.state.elements.forEach(element => element['activeFolder'] = false);
-        // console.log(this.state.elements)
     }
 
     setNewParent = (child) => (newParentId) => {
-        child.parentId = newParentId;
-        //TODO Backend Call
-        console.log(child.parentId)
-        this.setState(this.state);
+        let reqBody = {
+            id: child.id,
+            parentFolderId: newParentId
+        }
+        RecordService.updateParentFolderId(reqBody).then(resp => {
+                console.log(resp)
+                child.parentFolderId = resp;
+                this.setState(this.state);
+
+            }
+        ).catch((e) => {
+                console.log(e)
+                //TODO snackbar
+            }
+        )
+
     }
     activeToggle = (element) => () => {
         element.activeFolder = !element.activeFolder;

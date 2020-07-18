@@ -12,11 +12,14 @@ router.get('/list', RecordController.listRecords);
 router.post('/add', RecordController.addRecord);
 router.post('/folder/add', RecordController.addFolder)
 router.get('/document/list/:recordId', RecordController.listDocumentByRecordId);
+router.post('/document/update/name', RecordController.updateDocumentName);
+router.post('/document/update/parentFolderId', RecordController.updateDocumentParentFolderId);
+
 router.get('/docTypes/list/:recordId', RecordController.getDocTypesForRecord);
 router.get('/attributeTypes/list/:recordId', RecordController.getAttributeTypesForRecord);
 router.get('/attributeValues/list/:recordId', RecordController.getAttributeValuesForRecord);
 
-router.get('/document/listfolders/:recordId',  RecordController.listFoldersByRecordId);
+router.get('/document/listfolders/:recordId', RecordController.listFoldersByRecordId);
 
 
 // router.get('/document/list/latest/:recordId', RecordController.listLatestDocumentsByRecordId);
