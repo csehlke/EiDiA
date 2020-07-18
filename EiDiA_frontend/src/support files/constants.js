@@ -3,4 +3,3 @@ export const pageNames = {
     editTemplate: "Edit Template",
     edit: "Edit"
 }
-
