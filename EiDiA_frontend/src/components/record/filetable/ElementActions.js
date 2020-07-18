@@ -4,14 +4,11 @@ import {fileTypes} from "../../../../../constants";
 import {MdCloudDownload, MdCreateNewFolder, MdDelete, MdEdit} from "react-icons/md/index";
 import IconButton from "@material-ui/core/IconButton";
 
-/*const IconButton = styled.button`
-    width: 2.5em;  
-    height: auto;
-    margin: 0 0.5em;
-    border: none;
-    background: transparent;
-    cursor: pointer; 
-`;*/
+
+const StyledIconButton = styled(IconButton)`
+    font-size: 1em;
+    padding: 3px;
+`;
 
 /**
  * TODO:
