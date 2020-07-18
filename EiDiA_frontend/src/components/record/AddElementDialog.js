@@ -32,6 +32,13 @@ export default class AddElementDialog extends React.Component {
         });
         this.props.onClose();
     }
+    
+    create() {
+        if (event.key === 'Enter' && this.state.title !== '') {
+            this.onClose();
+            this.props.onSave(this.state.title);
+        }
+    }
 
     render() {
 
