@@ -23,15 +23,19 @@ import UserService from "../../services/UserService";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
+import {IconContext} from "react-icons";
 
 
 const tableIcons = {
-    Add: React.forwardRef((props, ref) => <span ref={ref}> <IoMdAddCircle {...props} /> </span>),
+    Add: React.forwardRef((props, ref) => <span ref={ref}> <IconContext.Provider
+        value={{className: 'react-icons'}}><IoMdAddCircle {...props} /></IconContext.Provider> </span>),
     Check: React.forwardRef((props, ref) => <span ref={ref}> <MdCheck {...props} /> </span>),
     Clear: React.forwardRef((props, ref) => <span ref={ref}> <MdClear {...props} /> </span>),
-    Delete: React.forwardRef((props, ref) => <span ref={ref}> <RiDeleteBinLine {...props} /> </span>),
+    Delete: React.forwardRef((props, ref) => <span ref={ref}> <IconContext.Provider
+        value={{className: 'react-icons'}}><RiDeleteBinLine {...props} /> </IconContext.Provider></span>),
     DetailPanel: React.forwardRef((props, ref) => <span ref={ref}> <MdChevronRight {...props} /> </span>),
-    Edit: React.forwardRef((props, ref) => <span ref={ref}> <MdEdit {...props} /> </span>),
+    Edit: React.forwardRef((props, ref) => <span ref={ref}> <IconContext.Provider
+        value={{className: 'react-icons'}}><MdEdit {...props} /></IconContext.Provider> </span>),
     Export: React.forwardRef((props, ref) => <span ref={ref}> <RiSave3Line {...props} /> </span>),
     Filter: React.forwardRef((props, ref) => <span ref={ref}> <MdFilterList {...props} /> </span>),
     FirstPage: React.forwardRef((props, ref) => <span ref={ref}> <MdFirstPage {...props} /> </span>),
