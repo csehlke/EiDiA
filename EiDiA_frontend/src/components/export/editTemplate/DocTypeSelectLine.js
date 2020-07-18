@@ -15,8 +15,7 @@ export default class DocTypeSelectLine extends React.Component {
         this.state = {
             docAttributes: [],
             variable: "$/document" + this.props.number + "/",
-            selectedDocType: "",
-            disableDropDown: false,
+            disableDocType: false,
             disableCopy: true,
             disableAttributes: true,
             attributeFieldValue: null,
@@ -28,9 +27,11 @@ export default class DocTypeSelectLine extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (JSON.stringify(this.props.variables) !== JSON.stringify(prevProps.variables)) {
-            let variables = this.props.variables
-            this.setState({disableDropDown: this.state.variable in variables})
-            this.props.onSelectDocType(this.state.selectedDocType);
+            let variables = this.props.variables;
+            this.setState({disableDocType: this.state.variable in variables});
+            if (this.props.isLastItem) {
+                this.props.addDocType(this.state.selectedDocType);
+            }
         }
     }
 
@@ -38,7 +39,11 @@ export default class DocTypeSelectLine extends React.Component {
         this.setState({attributeFieldValue: null});
         if (value) {
             UploadService.listAttributes(value.id).then((data) => {
-                    this.setState({docAttributes: data.attributeTypes, selectedDocType: value, disableAttributes: false});
+                this.setState({
+                    docAttributes: data.attributeTypes,
+                    selectedDocType: value.id,
+                    disableAttributes: false
+                });
                 }
             )
         } else {
@@ -56,7 +61,7 @@ export default class DocTypeSelectLine extends React.Component {
     }
 
     remove() {
-        this.props.remove(this.props.index);
+        this.props.remove(this.props.number - 1);
     }
 
     render() {
@@ -70,7 +75,7 @@ export default class DocTypeSelectLine extends React.Component {
                     <Button size="small" color="secondary" onClick={this.remove}>Remove</Button>}
                 </Row>
                 <Row>
-                    <SmartDropDownBox disabled={this.state.disableDropDown}
+                    <SmartDropDownBox disabled={this.state.disableDocType}
                                       label={"Type"}
                                       onChange={this.docTypeSelected}
                                       options={this.props.docTypes}
