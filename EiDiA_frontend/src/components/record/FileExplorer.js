@@ -9,10 +9,10 @@ import {IoMdAddCircleOutline} from "react-icons/all";
 import IconButton from "@material-ui/core/IconButton";
 import RecordService from "../../services/RecordService";
 
-
 const Center = styled.div`
    text-align:center;
 `;
+
 /**
  * TODO:
  * - Cant drag files to toplevel at the moment
@@ -24,9 +24,17 @@ export default class FileExplorer extends React.Component {
         super(props);
         databaseEntriesPlaceholder.forEach(element => element.activeFolder = false);
         this.state = {
-            elements: this.props.data,
+            elements: this.props.elements ? this.props.elements : databaseEntriesPlaceholder,//this.props.data
         }
-        this.state.elements.forEach(element => element['activeFolder'] = false);
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps !== this.props) {
+            this.setState({
+                elements: this.props.elements ? this.props.elements : databaseEntriesPlaceholder,
+            })
+        }
+        // this.state.elements.forEach(element => element['activeFolder'] = false);
     }
 
     //TODO during drag and drop check if element was pushed into child element
@@ -46,15 +54,17 @@ export default class FileExplorer extends React.Component {
         })
     }*/
     setNewParent = (child) => (newParentId) => {
+        child.parentId = newParentId;
+        this.setState(this.state);
         // if(this.testIfNewParentIsActuallyAChild(newParentId,child))return;
         let reqBody = {
             id: child.id,
             parentFolderId: newParentId
         }
         RecordService.updateParentFolderId(reqBody).then(resp => {
-            console.log(resp)
-            child.parentFolderId = resp;
-            this.setState(this.state);
+                console.log(resp)
+                child.parentFolderId = resp;
+                this.setState(this.state);
 
             }
         ).catch((e) => {
@@ -122,7 +132,9 @@ export default class FileExplorer extends React.Component {
                     <ElementDropTarget
                         type={element.fileType}
                         id={element.id}
-                    >
+                        dragEnabled={this.props.dragEnabled}>
+
+                        >
 
                         <Element
                             level={level}
@@ -131,31 +143,29 @@ export default class FileExplorer extends React.Component {
                             editName={this.editName(element)}
                             handleDeleteElement={this.handleDeleteElement(element)}
                             activeToggle={this.activeToggle(element)}>
+                            dragEnabled={this.props.dragEnabled}>
 
 
                         </Element>
                     </ElementDropTarget>
-                </Grid>
-                ,
+                </Grid>,
                 element.activeFolder === true ?
                     [this.state.elements.map((child, indexChild) =>
-                        child.parentFolderId === element.id ? this.renderElement(child, indexChild, level + 1) : null
+                        child.parentFolderId === element.id ?
+                            this.renderElement(child, indexChild, level + 1) : null
                     ),
                         <Grid container key={index + "Folder"} sm={4} item xs={12} justify="center">
                             <IconButton onClick={this.handleAddFolder(element.id)} aria-label="Add">
                                 <IoMdAddCircleOutline style={{textAlign: "center"}}/>
                             </IconButton>
-                        </Grid>, <Grid item key={index + "block"} sm={8} xs={12}/>] : null,
+                        </Grid>, <Grid item key={index + "block"} sm={8} xs={12}/>
+                    ] : null,
 
             ]
-
-
         );
     }
 
-
     render() {
-        console.log(this.state.elements)
         return (
             <Grid style={{flexGrow: 1}} container spacing={0}>
                 <Grid item xs={12} sm={4}>
@@ -185,7 +195,8 @@ export default class FileExplorer extends React.Component {
                         <IoMdAddCircleOutline style={{textAlign: "center"}}/>
                     </IconButton>
                 </Grid>
-                <ElementDropTarget id={0} type={fileTypes.FOLDER}>
+                <ElementDropTarget id={0} type={fileTypes.FOLDER}
+                                   dragEnabled={this.props.dragEnabled}>
                     {/*TODO:
                     - Drop area*/}
                 </ElementDropTarget>

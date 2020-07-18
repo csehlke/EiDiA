@@ -6,7 +6,6 @@ const ErrorHandling = require('./errorHandling');
 const tes = require('tesseract.js')
 
 const fullTextOCR = (documentId, base64Image) => {
-
     const worker = tes.createWorker({
         logger: m => console.log(m)
     });

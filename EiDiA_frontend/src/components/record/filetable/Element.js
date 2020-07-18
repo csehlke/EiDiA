@@ -10,12 +10,9 @@ import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
-
 const Name = styled.div`
-    
     padding-left: ${props => props.padding + "%"};
 `;
-
 
 const itemSource = {
     beginDrag() {
@@ -23,10 +20,8 @@ const itemSource = {
     },
     endDrag(props, monitor, component) {
         if (!monitor.getDropResult()) return
-        console.log("hello")
         let wrapperProps = monitor.getDropResult().component.props;
         component.props.handleDrop(wrapperProps.id);
-
     }
 }
 
@@ -72,7 +67,6 @@ class Element extends React.Component {
         }
     }
 
-
     render() {
         const {isDragging} = this.props;
 
@@ -113,17 +107,14 @@ class Element extends React.Component {
                             handleDeleteElement={this.props.handleDeleteElement}
                             editName={this.props.editName}/>
                     </Grid>
-
-
-                </Grid>
-                }
+                </Grid>}
             </div>
         );
-
-        if (this.state.nameEdit) return toRender;
-        return this.props.connectDragSource(toRender);
-
-
+        if (!this.props.dragEnabled||this.state.nameEdit) {
+            return toRender;
+        } else {
+            return this.props.connectDragSource(toRender);
+        }
     }
 }
 

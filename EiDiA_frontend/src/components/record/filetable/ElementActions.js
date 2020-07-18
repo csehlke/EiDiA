@@ -4,6 +4,7 @@ import {FaCloudDownloadAlt} from 'react-icons/fa'
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
 import {fileTypes} from "../../../../../constants";
+import {fileActions} from '../../../../../constants';
 
 
 const IconButton = styled.button`
@@ -46,9 +47,15 @@ export class ElementActions extends React.Component {
                 <FaCloudDownloadAlt size={IconSize}/>
             </IconButton>);
         }
+      /*  if (actions.includes(fileActions.DOWNLOAD)) {
+            toReturn[1] = (<FaCloudDownloadAlt size={IconSize}/>);
+        }
+        if (actions.includes(fileActions.DELETE)) {
+            toReturn[2] = (<AiFillDelete size={IconSize}/>);
+        }*/
+
         return toReturn;
     }
-
 
     render() {
         return (

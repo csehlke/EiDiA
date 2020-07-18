@@ -6,6 +6,8 @@ import styled from "styled-components";
 import SearchResults from "../components/search/SearchResults";
 import SearchForm from "../components/search/SearchForm";
 import SearchService from "../services/SearchService";
+import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const Result = styled.div`
     width: 100%;
@@ -23,9 +25,11 @@ export class SearchView extends React.Component {
 
         this.state = {
             table: [],
+            showEmptyResultInfo: false,
         }
 
         this.onSearch = this.onSearch.bind(this);
+        this.handleInfoBarClose = this.handleInfoBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -38,6 +42,7 @@ export class SearchView extends React.Component {
                 SearchService.getBasicSearchResult(search.searchConstraints).then((data) => {
                     this.setState({
                         table: [...data.table],
+                        showEmptyResultInfo: data.table.length === 0,
                     });
                 }).catch((e) => {
                     console.error(e);
@@ -47,6 +52,7 @@ export class SearchView extends React.Component {
                 SearchService.getAdvancedSearchResult(search.searchConstraints).then((data) => {
                     this.setState({
                         table: [...data.table],
+                        showEmptyResultInfo: data.table.length === 0,
                     });
                 }).catch((e) => {
                     console.error(e);
@@ -54,6 +60,12 @@ export class SearchView extends React.Component {
                 break;
             default:
         }
+    }
+
+    handleInfoBarClose() {
+        this.setState({
+            showEmptyResultInfo: false,
+        })
     }
 
     render() {
@@ -65,6 +77,13 @@ export class SearchView extends React.Component {
                 <Result>
                     <SearchResults table={this.state.table}/>
                 </Result>
+                <Snackbar open={this.state.showEmptyResultInfo}
+                          autoHideDuration={5000}
+                          onClose={this.handleInfoBarClose}>
+                    <Alert severity="info" onClose={this.handleInfoBarClose}>
+                        0 documents fulfilling those search criteria were found.
+                    </Alert>
+                </Snackbar>
             </Page>
         );
     }

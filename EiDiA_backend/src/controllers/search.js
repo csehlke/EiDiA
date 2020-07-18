@@ -1,8 +1,13 @@
 "use strict";
 
+const {format} = require('date-fns');
 const mongoose = require('mongoose');
 const DocumentModel = require('../models/document');
+const FileTypes = require('../../../constants').fileTypes;
+const FileActions = require('../../../constants').fileActions;
+const RecordModel = require('../models/record');
 const DateFns = require('date-fns');
+const {fileTypes} = require("../../../constants");
 
 
 const basicSearch = (req, res) => {
@@ -20,7 +25,7 @@ const basicSearch = (req, res) => {
 
     // Create DB Query
     const query = req.query;
-    const dbQuery = {};
+    const dbQuery = {fileType: {$ne: fileTypes.FOLDER}};
     if (query.recordId) {
         dbQuery['recordId'] = query.recordId;
     }
@@ -44,8 +49,11 @@ const basicSearch = (req, res) => {
 
     // Query DB
     DocumentModel.find(dbQuery)
-        .then(documents => {
-            res.status(200).json({response: documents}); // TODO bring in correct format
+        .then(fileArray => {
+            return getSearchTable(fileArray, req.userId)
+        })
+        .then(table => {
+            res.status(200).json({table: table});
         })
         .catch(error => {
             return res.status(400).json({
@@ -220,9 +228,12 @@ const advancedSearch = (req, res) => {
     });
 
     // Query DB
-    DocumentModel.find({$or: dbQuery})
-        .then(documents => {
-            res.status(200).json({response: documents}); // TODO bring in correct format
+    DocumentModel.find({$or: dbQuery, fileType: {$ne: fileTypes.FOLDER}})
+        .then(fileArray => {
+            return getSearchTable(fileArray, req.userId)
+        })
+        .then(table => {
+            res.status(200).json({table: table});
         })
         .catch(error => {
             return res.status(400).json({
@@ -231,6 +242,67 @@ const advancedSearch = (req, res) => {
             });
         });
 };
+
+function getSearchTable(fileArray, userId) {
+    let recordIds = [];
+    fileArray.forEach(file => {
+        if (!recordIds.includes('' + file.recordId)) {
+            recordIds.push('' + file.recordId);
+        }
+    });
+
+    return new Promise((resolve, reject) => {
+        Promise.all(recordIds.map(recordId => getRecordFolderElements(recordId)))
+            .then(folders => {
+                fileArray.map(document => {
+                    let fileActions = [FileActions.EDIT, FileActions.DOWNLOAD];
+                    if ('' + document.createdBy === userId) {
+                        fileActions.push(FileActions.DELETE);
+                    }
+                    folders.push({
+                        parentId: document.recordId,
+                        id: document._id,
+                        activeFolder: false,
+                        type: document.fileType,
+                        name: document.name,
+                        dateCreation: format(document.createdOnDate, 'dd/MM/yyyy'),
+                        dateModification: format(document.lastModifiedOnDate, 'dd/MM/yyyy'),
+                        comment: document.comment,
+                        actions: fileActions,
+                    });
+                });
+                return resolve(folders);
+            })
+            .catch(error => reject(error));
+    });
+}
+
+function getRecordFolderElements(recordId) {
+    return new Promise((resolve, reject) => {
+        RecordModel.findById(recordId, {}, {}, (err, record) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            if (record === undefined || record === null) {
+                resolve();
+                return;
+            }
+            let folderElement = {
+                parentId: 0,
+                id: recordId,
+                activeFolder: true,
+                type: FileTypes.FOLDER,
+                name: record.name,
+                dateCreation: '',
+                dateModification: '',
+                comment: '',
+                actions: [],
+            };
+            resolve(folderElement);
+        });
+    });
+}
 
 module.exports = {
     basicSearch,

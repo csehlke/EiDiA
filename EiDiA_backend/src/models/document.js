@@ -66,9 +66,8 @@ const DocumentSchema = new mongoose.Schema({
     fileType: {
         type: String,
         enum: Object.values(fileTypes),
-        required: false,
+        required: true,
     },
-
     attributes: [
         {
             attributeId: {

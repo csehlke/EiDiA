@@ -26,7 +26,7 @@ export default class SearchService {
         if (searchValues.fullText) {
             url.searchParams.set('fullText', searchValues.fullText);
         }
-        if (searchValues.username) {
+        if (searchValues.userId) {
             url.searchParams.set('userId', searchValues.userId);
         }
 
