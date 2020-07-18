@@ -1,10 +1,12 @@
 import React from 'react';
-import {Column, Row} from '../../StyleElements';
+import {Row} from '../../StyleElements';
 import SmartDropDownBox from "../../SmartDropDownBox";
 import IconButton from "@material-ui/core/IconButton";
 import {FiCopy} from 'react-icons/fi';
 import {CopyToClipboard} from "react-copy-to-clipboard/lib/Component";
 import UploadService from "../../../services/UploadService";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
 export default class DocTypeSelectLine extends React.Component {
     constructor(props) {
@@ -53,26 +55,22 @@ export default class DocTypeSelectLine extends React.Component {
 
     render() {
         return (
-            <Row style={{color: this.props.disabled ? "gray" : "black"}}>
-                <Column>
+            <div style={{color: this.props.disabled ? "gray" : "black"}}>
+                <Typography style={{margin: "10px"}} variant="subtitle2">
                     Document{this.props.number}
-                </Column>
-                <Column>
+                </Typography>
+                <Row>
                     <SmartDropDownBox disabled={this.state.disableDropDown}
                                       label={"Type"}
                                       onChange={this.docTypeSelected}
                                       options={this.props.docTypes}
                     />
-                </Column>
-                <Column>
                     <SmartDropDownBox label={"Attribute"}
                                       onChange={this.createVariableString}
                                       options={this.state.docAttributes}
                                       disabled={this.state.disableAttributes}
                                       preselectedValue={this.state.attributeFieldValue}
                     />
-                </Column>
-                <Column>
                     <CopyToClipboard text={this.state.variable}
                                      onCopy={this.props.handleSnackBarOpen}
                     >
@@ -80,8 +78,9 @@ export default class DocTypeSelectLine extends React.Component {
                             <FiCopy/>
                         </IconButton>
                     </CopyToClipboard>
-                </Column>
-            </Row>
+                </Row>
+                <Divider variant="middle" light/>
+            </div>
         )
     }
 }

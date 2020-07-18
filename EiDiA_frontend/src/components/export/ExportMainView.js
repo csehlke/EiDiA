@@ -425,9 +425,9 @@ export default class ExportMainView extends React.Component {
         return (
             <div>
                 <Row>
-                    <ExportViewColumn>
+                    <div style={{width: "35%"}}>
                         {/*Insert left column next to editor, so editor is in the center*/}
-                    </ExportViewColumn>
+                    </div>
                     <ExportViewColumn>
                         <div style={{overflow: "auto", maxHeight: '83vh'}}><DocEditor
                             readOnly={this.props.readOnly}
