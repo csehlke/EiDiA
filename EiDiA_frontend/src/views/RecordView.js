@@ -52,15 +52,9 @@ class RecordView extends React.Component {
     }
 
     updateData = () => {
-        console.log("hello")
         this.getDocuments();
     }
-    getAttributes = () => {
 
-    }
-    getDocTypes = () => {
-
-    }
     groupBy = (xs, key) => {
         return xs.reduce(function (rv, x) {
             (rv[x[key]] = rv[x[key]] || []).push(x);
@@ -87,7 +81,6 @@ class RecordView extends React.Component {
                 toShow = <Dashboard recordId={this.state.recordId}/>;
                 break;
         }
-        console.log(this.state.documents)
         return (
             <Page title={"Record"}>
                 <WrapperRecordMenue>
