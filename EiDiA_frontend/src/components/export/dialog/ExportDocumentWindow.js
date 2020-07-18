@@ -4,8 +4,13 @@ import {Column, Row} from '../../StyleElements';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import withStyles from "@material-ui/core/styles/withStyles";
 
-const styles = {
+
+const styles = theme => ({
+    error: {
+        color: theme.palette.error.main // see index.js
+    },
     button_left: {
         margin: "15px",
         align: "left",
@@ -17,9 +22,9 @@ const styles = {
         bottom: 0,
         right: 0,
     }
-}
+});
 
-export default class ExportDocumentWindow extends React.Component {
+class ExportDocumentWindow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {selectedDocs: []}
@@ -43,6 +48,7 @@ export default class ExportDocumentWindow extends React.Component {
     }
 
     render() {
+        const {classes} = this.props;
         return (
             <div>
                 <Column>
@@ -61,7 +67,7 @@ export default class ExportDocumentWindow extends React.Component {
                         <Button
                             style={styles.button_left}
                             variant="contained"
-                            color="primary"
+                            className={classes.error}
                             disableElevation
                             onClick={this.props.onClose}
                         >
@@ -82,3 +88,5 @@ export default class ExportDocumentWindow extends React.Component {
         )
     }
 }
+
+export default withStyles(styles, {withTheme: true})(ExportDocumentWindow);

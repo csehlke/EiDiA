@@ -1,8 +1,13 @@
 import React from 'react';
 import {Button, Input, Typography} from '@material-ui/core';
 import {Column, Row} from '../../StyleElements';
+import withStyles from "@material-ui/core/styles/withStyles";
 
-const styles = {
+
+const styles = theme => ({
+    error: {
+        color: theme.palette.error.main // see index.js
+    },
     button_left: {
         margin: "15px",
         align: "left",
@@ -14,10 +19,11 @@ const styles = {
         bottom: 0,
         right: 0,
     }
-}
+});
 
-export default class SaveTemplateWindow extends React.Component {
+class SaveTemplateWindow extends React.Component {
     render() {
+        const {classes} = this.props;
         return (
             <Column>
                 <Row>
@@ -36,6 +42,7 @@ export default class SaveTemplateWindow extends React.Component {
                         color="primary"
                         disableElevation
                         onClick={this.props.onClose}
+                        className={classes.error}
                     >
                         Cancel
                     </Button>
@@ -53,3 +60,5 @@ export default class SaveTemplateWindow extends React.Component {
         )
     }
 }
+
+export default withStyles(styles, {withTheme: true})(SaveTemplateWindow);
