@@ -33,24 +33,6 @@ function CustomDialog(props) {
     );
 }
 
-// pass to RightSidePanel, so the right components are rendered according to currentPage
-const subComponentSet = {
-    [pageNames.selectTemplate]: {
-        comp1: TemplateList,
-        comp2: DocSearch,
-        comp3: ExportSection
-    },
-    [pageNames.editTemplate]: {
-        comp1: EditorTools,
-        comp2: DocTypeSelector,
-        comp3: SaveTemplateSection
-    },
-    [pageNames.edit]: {
-        comp2: DocSearch,
-        comp3: SetValueSection
-    }
-}
-
 // Checks if string/variable is URI, e.g. Document1/VARIABLE1
 const isPath = (string) => {
     return /^(?:\/|[a-z]+:\/\/)/.test(string);
@@ -140,7 +122,7 @@ export default class ExportMainView extends React.Component {
         },
         [pageNames.editTemplate]: {
             comp1: EditorTools,
-            comp2: VariableList,
+            comp2: DocTypeSelector,
             comp3: SaveTemplateSection
         },
         [pageNames.edit]: {
