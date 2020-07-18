@@ -57,6 +57,7 @@ export default class AddElementDialog extends React.Component {
                                value={this.state.title}
                                variant={"outlined"}
                                autoFocus
+                               onKeyPress={this.create}
                                onChange={(event) => this.changeTitle(event.target.value)}/>
                 </DialogContent>
                 <DialogActions>
