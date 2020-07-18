@@ -17,7 +17,7 @@ export default class UploadService {
             });
         });
     }
-
+    //TODO rename addDocument
     static addAttributes(attributeData) {
         return new Promise((resolve, reject) => {
             HttpService.post(baseURL + '/upload/add', attributeData, function (data) {

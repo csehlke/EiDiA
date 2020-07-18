@@ -3,6 +3,7 @@ import {AiFillDelete, AiFillEdit} from 'react-icons/ai'
 import {FaCloudDownloadAlt} from 'react-icons/fa'
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
+import {fileTypes} from "../../../../../constants";
 
 
 const IconButton = styled.button`
@@ -27,26 +28,24 @@ export class ElementActions extends React.Component {
         super(props);
     }
 
-    actionSelection(actions) {
+    actionSelection() {
         let toReturn = ["", "", ""];
-        if (actions.includes('EDIT')) {
-            //TODO: different icon here maybe?
-            toReturn[0] = <AiFillEdit size={IconSize}/>;
-        }
-        if (actions.includes('DOWNLOAD')) {
+
+        toReturn[0] = <AiFillEdit size={IconSize}/>;
+
+
+        toReturn[1] = (<AiFillDelete size={IconSize}/>);
+
+        if (this.props.fileType !== fileTypes.FOLDER) {
             toReturn[2] = (<FaCloudDownloadAlt size={IconSize}/>);
         }
-        if (actions.includes('DELETE')) {
-            toReturn[1] = (<AiFillDelete size={IconSize}/>);
-        }
-
         return toReturn;
     }
 
     render() {
         return (
             <Grid container spacing={1}>
-                {this.actionSelection(this.props.actions).map((button, index) =>
+                {this.actionSelection().map((button, index) =>
                     <Grid key={index} item xs={12} sm={4}>
                         <IconButton
                         >

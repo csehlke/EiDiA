@@ -22,6 +22,7 @@ const itemSource = {
     },
     endDrag(props, monitor, component) {
         if (!monitor.getDropResult()) return
+        console.log("hello")
         let wrapperProps = monitor.getDropResult().component.props;
         component.props.handleDrop(wrapperProps.id);
 
@@ -61,7 +62,7 @@ class Element extends React.Component {
                       onClick={this.props.activeToggle}>
                     <Grid item xs={12} sm={4}>
                         <Name padding={this.state.padding}>
-                            <ElementSymbol type={this.state.elementData.type}
+                            <ElementSymbol fileType={this.state.elementData.fileType}
                                            activeFolder={this.state.elementData.activeFolder}/>
                             &nbsp;&nbsp;{this.state.elementData.name}
                         </Name>
@@ -76,7 +77,7 @@ class Element extends React.Component {
                         {this.state.elementData.comment}
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                        <ElementActions actions={this.state.elementData.actions}/>
+                        <ElementActions fileType={this.state.elementData.fileType}/>
                     </Grid>
 
 

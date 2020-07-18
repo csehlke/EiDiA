@@ -18,7 +18,7 @@ export class ElementSymbol extends React.Component {
     render() {
         //TODO: size should ideally be scaled together with text
         let size = '1.5em';
-        switch (this.props.type) {
+        switch (this.props.fileType) {
             case fileTypes.PDF:
                 return <FaFilePdf size={size}/>;
             case fileTypes.WORD:

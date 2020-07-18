@@ -10,6 +10,7 @@ const RecordController = require('../controllers/record');
 
 router.get('/list', RecordController.listRecords);
 router.post('/add', RecordController.addRecord);
+router.post('/folder/add', RecordController.addFolder)
 router.get('/document/list/:recordId', RecordController.listDocumentByRecordId);
 router.get('/docTypes/list/:recordId', RecordController.getDocTypesForRecord);
 router.get('/attributeTypes/list/:recordId', RecordController.getAttributeTypesForRecord);

@@ -14,7 +14,8 @@ export class IndicatorWidget extends React.Component {
         super(props);
         this.state = {
             attributeMapping: props.attributeMapping,
-            attributeValues: this.props.attributeValues
+            attributeValues: this.props.attributeValues,
+
 
         }
 

@@ -51,6 +51,10 @@ class RecordView extends React.Component {
             .catch(e => console.error(e))
     }
 
+    updateData = () => {
+        console.log("hello")
+        this.getDocuments();
+    }
     getAttributes = () => {
 
     }
@@ -64,13 +68,7 @@ class RecordView extends React.Component {
         }, {});
     };
 
-    /*getAttributesList=()=>{
-        //Filter nach neuesten Dokumenten per Typ
-        let sortedDocs
-        //Hohle Attribut Namen
-        let attributes = this.state.documents.
 
-    }*/
     render() {
 
         let toShow;
@@ -80,13 +78,16 @@ class RecordView extends React.Component {
                 toShow = <Dashboard recordId={this.state.recordId}/>;
                 break;
             case recordMenuOptions.FILEEXPLORER:
-                toShow = <FileExplorer recordId={this.state.recordId}/>;
+                toShow = <FileExplorer
+                    updateData={this.updateData}
+                    data={this.state.documents}
+                    recordId={this.state.recordId}/>;
                 break;
             default:
                 toShow = <Dashboard recordId={this.state.recordId}/>;
                 break;
         }
-
+        console.log(this.state.documents)
         return (
             <Page title={"Record"}>
                 <WrapperRecordMenue>
@@ -97,7 +98,8 @@ class RecordView extends React.Component {
                         onChange={this.handleChange.bind(this)}
                     >
                         <Tab label="Dashboard" value={recordMenuOptions.DASHBOARD}/>
-                        <Tab label="File Explorer" value={recordMenuOptions.FILEEXPLORER}/>
+                        <Tab label="File Explorer"
+                             value={recordMenuOptions.FILEEXPLORER}/>
                     </Tabs>
                 </WrapperRecordMenue>
                 <WrapperRecordView>

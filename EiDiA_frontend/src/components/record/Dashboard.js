@@ -26,6 +26,10 @@ export class Dashboard extends React.Component {
 
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+    }
+
     componentDidMount() {
         this.getWidgetsFromBackend()
         this.getDocTypes()

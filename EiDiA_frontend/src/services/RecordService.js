@@ -42,6 +42,18 @@ export default class RecordService {
 
     }
 
+    static addFolder(folder) {
+        console.log("hello")
+        console.log(baseURL + "/folder/add")
+        return new Promise((resolve, reject) => {
+            HttpService.post(baseURL + '/record/folder/add', folder, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
 
     static getDocuments(recordId) {
         return new Promise((resolve, reject) => {

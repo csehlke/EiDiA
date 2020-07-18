@@ -174,7 +174,7 @@ const listDocumentByRecordId = (req, res) => { // Return attributes based on sel
                 return {
                     id: document._id,
                     name: document.name,
-                    parentFolderId: document.parentFolderId,
+                    parentFolderId: document.parentFolderId.toString() === "000000000000000000000000" ? 0 : document.parentFolderId,
                     fileType: document.fileType, //TODO: implement filetype in database
                     createdOnDate: document.createdOnDate,
                     lastModifiedOnDate: document.lastModifiedOnDate,
@@ -183,7 +183,7 @@ const listDocumentByRecordId = (req, res) => { // Return attributes based on sel
                     createdBy: document.createdBy,
                 };
             });
-            res.status(200).json({documents: response});
+            res.status(200).json(response);
         })
         .catch(error => {
             res.status(400).json({
@@ -229,6 +229,51 @@ const listFoldersByRecordId = (req, res) => { // Return only folders based on se
             });
         });
 };
+const addFolder = (req, res) => {
+    /* let folder ={};
+     folder['name']=req.body.name;
+     folder['recordId']=req.body.recordId;
+     folder['parentFolderId']=req.body.parentFolderId;
+     folder['documentTypeId']=req.body.
+     DocumentModel.create(folder).then(doc=>{}).catch()*/
+    console.log("hello I am at addFolder")
+    let parentFolderId;
+    if (req.body.parentFolderId === '0') {
+        parentFolderId = '000000000000000000000000' //valid ObjectId for MongoDB
+    } else {
+        parentFolderId = req.body.parentFolderId
+    }
+
+    DocumentModel.create({
+        name: req.body.name,
+        parentFolderId: parentFolderId,
+        //TODO add a folder Id here
+        documentTypeId: "000000000000000000000000",
+        recordId: req.body.recordId,
+        createdBy: "000000000000000000000000",//TODO activate with middleware req.userId, //from middleware
+        comment: " ",
+        priority: " ",
+        department: " ",
+        attributes: [],
+        base64Image: "empty",
+        fileType: fileTypes.FOLDER
+    }).then((folder) => {
+        console.log("yes")
+        let copy = {...folder._doc, id: folder._doc._id}
+        console.log(parseInt(folder._doc.parentFolderId))
+        copy.parentFolderId = copy.parentFolderId.toString() === "000000000000000000000000" ? 0 : copy.parentFolderId
+        console.log(copy)
+        res.status(200).json(copy);
+    })
+        .catch(error => {
+            console.log("no")
+            console.log(error.message)
+            res.status(400).json({
+                error: error.message,
+                message: error.message,
+            });
+        });
+}
 
 
 module.exports = {
@@ -241,5 +286,6 @@ module.exports = {
     listLatestDocumentsByRecordId,
     getDocTypesForRecord,
     getAttributeTypesForRecord,
-    getAttributeValuesForRecord
+    getAttributeValuesForRecord,
+    addFolder
 };

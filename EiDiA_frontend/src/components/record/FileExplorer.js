@@ -5,6 +5,9 @@ import ElementDropTarget from "./filetable/ElementDropTarget";
 import {databaseEntriesPlaceholder} from "../../assets/Constants";
 import {fileTypes} from "../../../../constants";
 import Grid from "@material-ui/core/Grid";
+import {IoMdAddCircleOutline} from "react-icons/all";
+import IconButton from "@material-ui/core/IconButton";
+import RecordService from "../../services/RecordService";
 
 
 const Center = styled.div`
@@ -21,13 +24,16 @@ export default class FileExplorer extends React.Component {
         super(props);
         databaseEntriesPlaceholder.forEach(element => element.activeFolder = false);
         this.state = {
-            elements: databaseEntriesPlaceholder,
+            elements: this.props.data,
         }
+        this.state.elements.forEach(element => element['activeFolder'] = false);
+        // console.log(this.state.elements)
     }
 
     setNewParent = (child) => (newParentId) => {
         child.parentId = newParentId;
-
+        //TODO Backend Call
+        console.log(child.parentId)
         this.setState(this.state);
     }
     activeToggle = (element) => () => {
@@ -35,12 +41,29 @@ export default class FileExplorer extends React.Component {
 
         this.setState(this.state);
     }
+    handleAddFolder = (parentFolderId) => (e) => {
+        let requestData = {
+            name: "New Folder",
+            parentFolderId: ("" + parentFolderId),
+            recordId: this.props.recordId,
+        }
+        RecordService.addFolder(requestData)
+            .then(
+                resp => {
+                    this.state.elements.push(resp);
+                    this.setState({elements: this.state.elements})
+                }
+            )
+            .catch(
+                //TODO open snackbar error
+                (e) => console.log(e))
+    }
 
     renderElement(element, index, level) {
         return ([
                 <Grid key={index} item xs={12}>
                     <ElementDropTarget
-                        type={element.type}
+                        type={element.fileType}
                         id={element.id}
                     >
 
@@ -56,9 +79,15 @@ export default class FileExplorer extends React.Component {
                 </Grid>
                 ,
                 element.activeFolder === true ?
-                    this.state.elements.map((child, indexChild) =>
-                        child.parentId === element.id ? this.renderElement(child, indexChild, level + 1) : null
-                    ) : null
+                    [this.state.elements.map((child, indexChild) =>
+                        child.parentFolderId === element.id ? this.renderElement(child, indexChild, level + 1) : null
+                    ),
+                        <Grid container key={index + "Folder"} sm={4} item xs={12} justify="center">
+                            <IconButton onClick={this.handleAddFolder(element.id)} aria-label="Add">
+                                <IoMdAddCircleOutline style={{textAlign: "center"}}/>
+                            </IconButton>
+                        </Grid>, <Grid item key={index + "block"} sm={8} xs={12}/>] : null,
+
             ]
 
 
@@ -67,6 +96,7 @@ export default class FileExplorer extends React.Component {
 
 
     render() {
+        console.log(this.state.elements)
         return (
             <Grid style={{flexGrow: 1}} container spacing={0}>
                 <Grid item xs={12} sm={4}>
@@ -88,9 +118,14 @@ export default class FileExplorer extends React.Component {
                 <Grid item xs={12}>
                     <hr/>
                 </Grid>
-                {this.state.elements.map((element, index) => element.parentId === 0 ?
+                {this.state.elements.map((element, index) => element.parentFolderId === 0 ?
                     this.renderElement(element, index, 0) : null
                 )}
+                <Grid container item xs={12} justify="center">
+                    <IconButton onClick={this.handleAddFolder(0)} aria-label="Add">
+                        <IoMdAddCircleOutline style={{textAlign: "center"}}/>
+                    </IconButton>
+                </Grid>
                 <ElementDropTarget id={0} type={fileTypes.FOLDER}>
                     {/*TODO:
                     - Drop area*/}
