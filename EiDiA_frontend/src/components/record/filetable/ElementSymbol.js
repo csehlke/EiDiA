@@ -1,7 +1,8 @@
 import React from 'react';
-import {FaFileImage, FaFilePdf, FaFileWord, FaFolder, FaFolderOpen} from 'react-icons/fa'
+import {FaFileWord} from 'react-icons/fa'
 import {AiFillFileUnknown} from 'react-icons/ai'
-import {fileTypes} from "../../../../../constants";
+import {elementIconSize, fileTypes} from "../../../../../constants";
+import {MdFolder, MdFolderOpen, MdImage, MdPictureAsPdf} from "react-icons/md/index";
 
 export class ElementSymbol extends React.Component {
     constructor(props) {
@@ -9,32 +10,25 @@ export class ElementSymbol extends React.Component {
 
     }
 
-    /*
-     *TODO:
-     * - Add more symbols like folder, excel etc.
-     */
-
-
     render() {
         //TODO: size should ideally be scaled together with text
-        let size = '1.5em';
         switch (this.props.fileType) {
             case fileTypes.PDF:
-                return <FaFilePdf size={size}/>;
+                return <MdPictureAsPdf size={elementIconSize}/>;
             case fileTypes.WORD:
-                return <FaFileWord size={size}/>;
+                return <FaFileWord size={elementIconSize}/>;
             case fileTypes.FOLDER:
                 if (this.props.activeFolder) {
-                    return <FaFolderOpen size={size}/>;
+                    return <MdFolderOpen size={elementIconSize}/>;
                 } else {
-                    return <FaFolder size={size}/>;
+                    return <MdFolder size={elementIconSize}/>;
                 }
             case fileTypes.NONE:
                 return <div/>;
             case fileTypes.IMAGE:
-                return <FaFileImage size={size}/>;
+                return <MdImage size={elementIconSize}/>;
             default:
-                return <AiFillFileUnknown size={size}/>;
+                return <AiFillFileUnknown size={elementIconSize}/>;
         }
     }
 }

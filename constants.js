@@ -27,11 +27,14 @@ const styleFabButton = {
     left: 'auto',
     position: 'fixed',
 };
+const elementIconSize = '1.5rem';
+
 
 module.exports = {
     baseURL,
     mongoDBUrl,
     fileTypes,
     fileActions,
-    styleFabButton
+    styleFabButton,
+    elementIconSize,
 };

@@ -12,6 +12,9 @@ import TextField from "@material-ui/core/TextField";
 
 const Name = styled.div`
     padding-left: ${props => props.padding + "%"};
+    
+    display:flex;
+    align-items:center;
 `;
 
 const itemSource = {
@@ -74,13 +77,15 @@ class Element extends React.Component {
             <div>
                 {!isDragging &&
                 //TODO: cursor doesnt work yet
-                <Grid container spacing={2}
+                <Grid container item spacing={2}
+
                       style={{cursor: (this.state.elementData.type === fileTypes.FOLDER) && 'pointer'}}
                 >
-                    <Grid item xs={12} sm={4} onClick={(e) => {
+                    <Grid item xs={12} xl={4} sm={4} onClick={(e) => {
                         this.state.nameEdit ? {} : this.props.activeToggle()
                     }}>
                         <Name padding={this.state.padding}>
+                            {/*<span style={{verticalAlign:"middle",display:"inline-block"}}>*/}
                             <ElementSymbol fileType={this.state.elementData.fileType}
                                            activeFolder={this.state.elementData.activeFolder}
                             />
@@ -91,19 +96,20 @@ class Element extends React.Component {
                                        }}
                             /> :
                             this.state.elementData.name
+                            /*</span>*/
                         }
                         </Name>
                     </Grid>
-                    <Grid item xs={12} sm={1}>
+                    <Grid item xs={12} xl={1} sm={2}>
                         {this.state.elementData.createdOnDate.replace(/[T].*/, "")}
                     </Grid>
-                    <Grid item xs={12} sm={1}>
+                    <Grid item xs={12} xl={1} sm={2}>
                         {this.state.elementData.lastModifiedOnDate.replace(/[T].*/, "")}
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} xl={4} sm={3}>
                         {this.state.elementData.comment}
                     </Grid>
-                    <Grid item xs={12} sm={2}>
+                    <Grid item xs={12} xl={2} sm={1}>
                         <ElementActions
                             fileType={this.state.elementData.fileType}
                             handleEditName={this.handleEditName}
