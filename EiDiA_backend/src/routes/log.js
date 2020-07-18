@@ -7,7 +7,7 @@ const middleWares = require('../middlewares');
 const LogController = require('../controllers/log');
 
 
-router.get('/recentRecords/list/:userId', middleWares.checkAuthentication, LogController.getRecentRecords)
+router.get('/recentRecords/list', middleWares.checkAuthentication, LogController.getRecentRecords)
 
 
 module.exports = router;

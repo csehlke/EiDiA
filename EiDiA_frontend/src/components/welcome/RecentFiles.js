@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from "styled-components";
 import {RecordSymbol} from "../record/RecordSymbol";
-import RecordService from "../../services/RecordService";
+import LogService from "../../services/LogService";
 import {Link} from "../Link";
 
 const FlexRow = styled.div`
@@ -24,13 +24,13 @@ export default class RecentFiles extends React.Component {
     }
 
     componentDidMount() {
-        RecordService.getRecentRecords().then(result => {
+        LogService.getRecentRecords().then(result => {
             this.setState({
-                recentRecords: result.records
-            }).catch(error => {
-                console.log(error);
-            });
-        })
+                recentRecords: result
+            })
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
 
@@ -44,7 +44,7 @@ export default class RecentFiles extends React.Component {
                             <Link
                                 key={record.recordId}
                                 to={"/record/" + record.recordId}>
-                                <RecordSymbol name={record.recordName}/>
+                                <RecordSymbol name={record.name}/>
                             </Link>
                         )}
                     </FlexRow>
