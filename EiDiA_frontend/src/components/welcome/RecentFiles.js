@@ -42,7 +42,7 @@ export default class RecentFiles extends React.Component {
     render() {
         return (
             <div>
-                Recently worked on:
+                <h1>Recently worked on:</h1>
                 <FlexRow>
                     {this.state.recentRecords.map(record =>
                         <Link
