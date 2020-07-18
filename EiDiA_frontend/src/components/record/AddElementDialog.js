@@ -20,6 +20,7 @@ export default class AddElementDialog extends React.Component {
         }
 
         this.onClose = this.onClose.bind(this);
+        this.create= this.create.bind(this);
     }
 
     changeTitle = (value) => {
