@@ -27,6 +27,19 @@ const theme = createMuiTheme({
                 '*': {
                     'scrollbar-width': 'thin',
                 },
+                '*::-webkit-scrollbar': {
+                    'width': '7px',
+                },
+                '*::-webkit-scrollbar-track': {
+                    'background-color': '#F5F5F5',
+                },
+                '*::-webkit-scrollbar-thumb': {
+                    'background-color': '#cbcbcb',
+                    '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,.3)',
+                    'border-radius': '10px',
+                    'border': '3px'
+                }
+
             }
         }
     }
