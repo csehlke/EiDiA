@@ -31,13 +31,20 @@ export class ElementActions extends React.Component {
     actionSelection() {
         let toReturn = ["", "", ""];
 
-        toReturn[0] = <AiFillEdit size={IconSize}/>;
+        toReturn[0] = (<IconButton onClick={this.props.handleEditName}>
+            <AiFillEdit size={IconSize}/>
+        </IconButton>);
 
 
-        toReturn[1] = (<AiFillDelete size={IconSize}/>);
+        toReturn[1] = (
+            <IconButton onClick={this.props.deleteElement}>
+                <AiFillDelete size={IconSize}/>
+            </IconButton>);
 
         if (this.props.fileType !== fileTypes.FOLDER) {
-            toReturn[2] = (<FaCloudDownloadAlt size={IconSize}/>);
+            toReturn[2] = (<IconButton /*onClick={this.props.handleEditName}*/>
+                <FaCloudDownloadAlt size={IconSize}/>
+            </IconButton>);
         }
         return toReturn;
     }
@@ -48,9 +55,7 @@ export class ElementActions extends React.Component {
             <Grid container spacing={1}>
                 {this.actionSelection().map((button, index) =>
                     <Grid key={index} item xs={12} sm={4}>
-                        <IconButton onClick={this.props.handleEditName}>
-                            {button}
-                        </IconButton>
+                        {button}
                     </Grid>
                 )}
             </Grid>

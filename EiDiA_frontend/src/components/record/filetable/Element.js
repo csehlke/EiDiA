@@ -110,6 +110,7 @@ class Element extends React.Component {
                         <ElementActions
                             fileType={this.state.elementData.fileType}
                             handleEditName={this.handleEditName}
+                            deleteElement={this.props.deleteElement}
                             editName={this.props.editName}/>
                     </Grid>
 

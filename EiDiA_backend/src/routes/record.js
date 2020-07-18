@@ -14,6 +14,7 @@ router.post('/folder/add', RecordController.addFolder)
 router.get('/document/list/:recordId', RecordController.listDocumentByRecordId);
 router.post('/document/update/name', RecordController.updateDocumentName);
 router.post('/document/update/parentFolderId', RecordController.updateDocumentParentFolderId);
+router.delete('/document/delete/:documentId', RecordController.deleteDocument);
 
 router.get('/docTypes/list/:recordId', RecordController.getDocTypesForRecord);
 router.get('/attributeTypes/list/:recordId', RecordController.getAttributeTypesForRecord);

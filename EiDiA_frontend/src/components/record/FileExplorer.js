@@ -92,7 +92,6 @@ export default class FileExplorer extends React.Component {
             name: name
         }
         RecordService.updateName(reqBody).then(resp => {
-                console.log("Update succ")
                 element.name = resp;
                 this.setState(this.state);
 
@@ -102,6 +101,19 @@ export default class FileExplorer extends React.Component {
                 //TODO snackbar
             }
         )
+    }
+    deleteElement = (element) => (e) => {
+        //TODO if parent Element deleted, also delete all child elements
+        //TODO make pop up if u really want to delete
+        RecordService.deleteDocument(element.id).then(result => {
+                console.log("Ok:" + result.ok)
+                if (result.ok) this.state.elements.splice(this.state.elements.findIndex(elem => elem.id === element.id), 1);
+                this.setState(this.state)
+            }
+        ).catch((e) => {
+            //TODO snabkbar
+            console.log(e)
+        })
     }
 
     renderElement(element, index, level) {
@@ -117,6 +129,7 @@ export default class FileExplorer extends React.Component {
                             elementData={element}
                             handleDrop={this.setNewParent(element)}
                             editName={this.editName(element)}
+                            deleteElement={this.deleteElement(element)}
                             activeToggle={this.activeToggle(element)}>
 
 

@@ -305,6 +305,22 @@ const updateDocumentParentFolderId = (req, res) => {
 
 
 }
+const deleteDocument = (req, res) => {
+    console.log(req.params.documentId)
+    DocumentModel.deleteOne({_id: req.params.documentId}).then(result => {
+            console.log("Succesfful Delete")
+            res.status(200).json(result);
+        }
+    )
+        .catch((error) => {
+            console.log(error.message)
+            res.status(400).json({
+
+                error: error.message,
+                message: error.message,
+            })
+        })
+}
 
 
 module.exports = {
@@ -318,5 +334,6 @@ module.exports = {
     getAttributeValuesForRecord,
     addFolder,
     updateDocumentName,
-    updateDocumentParentFolderId
+    updateDocumentParentFolderId,
+    deleteDocument
 };

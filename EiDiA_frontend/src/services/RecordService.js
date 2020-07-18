@@ -134,4 +134,15 @@ export default class RecordService {
         });
     }
 
+    static deleteDocument(documentId) {
+        console.log(documentId)
+        return new Promise((resolve, reject) => {
+            HttpService.remove(baseURL + '/record/document/delete/' + documentId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
 }
