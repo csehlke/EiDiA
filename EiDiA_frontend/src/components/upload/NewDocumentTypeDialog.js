@@ -15,7 +15,14 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import PropTypes from "prop-types";
 import {IoMdRemoveCircleOutline} from "react-icons/all";
 import IconButton from '@material-ui/core/IconButton';
+import withStyles from "@material-ui/core/styles/withStyles";
 
+
+const styles = theme => ({
+    error: {
+        color: theme.palette.error.main // see index.js
+    }
+});
 
 const Row = styled.div`
     display: flex;
@@ -132,6 +139,7 @@ class NewDocumentTypeDialog extends React.Component {
     }
 
     render() {
+        const {classes} = this.props;
         return (
             <Dialog open={this.props.open} onClose={this.closeDialog} maxWidth={false}>
                 <DialogTitle>
@@ -227,7 +235,7 @@ class NewDocumentTypeDialog extends React.Component {
                     </Row>
                 </DialogActionsFixedSize>
                 <DialogActions>
-                    <Button color={"secondary"}
+                    <Button className={classes.error}
                             onClick={this.closeDialog}>
                         Cancel
                     </Button>
@@ -243,7 +251,7 @@ class NewDocumentTypeDialog extends React.Component {
     }
 }
 
-export default NewDocumentTypeDialog;
+export default withStyles(styles, {withTheme: true})(NewDocumentTypeDialog);
 
 NewDocumentTypeDialog.propTypes = {
     createNewDocumentType: PropTypes.func.isRequired,

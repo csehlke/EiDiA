@@ -15,8 +15,11 @@ const theme = createMuiTheme({
             main: "#0094C6",
         },
         secondary: {
-            main: "#ff0000",
+            main: "#005E7C",
         },
+        error: {
+            main: "#ff0000"
+        }
     },
     overrides: { //everything stated here will be used globally
         MuiCssBaseline: {
