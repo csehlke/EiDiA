@@ -69,6 +69,23 @@ export default class FileExplorer extends React.Component {
                 //TODO open snackbar error
                 (e) => console.log(e))
     }
+    editName = (element) => (name) => {
+        let reqBody = {
+            id: element.id,
+            name: name
+        }
+        RecordService.updateName(reqBody).then(resp => {
+                console.log("Update succ")
+                element.name = resp;
+                this.setState(this.state);
+
+            }
+        ).catch((e) => {
+                console.log(e)
+                //TODO snackbar
+            }
+        )
+    }
 
     renderElement(element, index, level) {
         return ([
@@ -82,6 +99,7 @@ export default class FileExplorer extends React.Component {
                             level={level}
                             elementData={element}
                             handleDrop={this.setNewParent(element)}
+                            editName={this.editName(element)}
                             activeToggle={this.activeToggle(element)}>
 
 

@@ -42,13 +42,13 @@ export class ElementActions extends React.Component {
         return toReturn;
     }
 
+
     render() {
         return (
             <Grid container spacing={1}>
                 {this.actionSelection().map((button, index) =>
                     <Grid key={index} item xs={12} sm={4}>
-                        <IconButton
-                        >
+                        <IconButton onClick={this.props.handleEditName}>
                             {button}
                         </IconButton>
                     </Grid>
