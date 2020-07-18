@@ -38,8 +38,10 @@ const theme = createMuiTheme({
                     '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,.3)',
                     'border-radius': '10px',
                     'border': '3px'
+                },
+                '.react-icons': { //style react icons with IconProvider here
+                    'color': "#005E7C"
                 }
-
             }
         }
     }

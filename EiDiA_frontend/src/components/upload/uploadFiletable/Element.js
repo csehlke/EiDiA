@@ -6,6 +6,7 @@ import {DragTypes} from "../../../assets/Constants"
 import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
 import {FaFolderOpen} from "react-icons/fa";
+import {IconContext} from "react-icons";
 
 
 const Name = styled.div`
@@ -46,7 +47,9 @@ class Element extends React.Component {
                   onClick={this.props.onFolderClicked}>
                 <Grid item xs={12} sm={12}>
                     <Name padding={this.state.padding}>
-                        <FaFolderOpen color="#005E7C" size={'1.5em'}/>
+                        <IconContext.Provider value={{className: 'react-icons'}}>
+                            <FaFolderOpen size={'1.5em'}/>
+                        </IconContext.Provider>
                         &nbsp;&nbsp;{this.state.elementData.name}
                     </Name>
                 </Grid>
