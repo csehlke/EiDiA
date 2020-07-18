@@ -370,7 +370,7 @@ class AttributeContainer extends React.Component {
                             <Button variant="contained"
                                     color="primary"
                                     onClick={this.attrsToBackend}
-                                    component={Link} to={'/'}>
+                                    component={Link} to={'/record/' + this.props.assignedRecord}>
                                 Save
                             </Button>
                         </Grid>
