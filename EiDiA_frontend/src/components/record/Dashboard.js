@@ -10,6 +10,7 @@ import {FiEdit} from 'react-icons/fi'
 import Fab from "@material-ui/core/Fab";
 import RecordService from "../../services/RecordService";
 import {MdClose} from "react-icons/all";
+import {styleFabButton} from "../../../../constants";
 
 export class Dashboard extends React.Component {
     constructor(props) {
@@ -154,13 +155,7 @@ export class Dashboard extends React.Component {
     render() {
         //taken from here https://stackoverflow.com/questions/35828991/make-material-ui-reactjs-floatingactionbutton-float
         //to let fab button float right
-        const styleFabButton = {
-            top: 'auto',
-            bottom: '2em',
-            right: '2em',
-            left: 'auto',
-            position: 'fixed',
-        };
+
         return (
             <div>
 
