@@ -20,7 +20,6 @@ export default class RecentFiles extends React.Component {
 
         this.state = {
             recentRecords: [],
-            selectedRecord: ''
         }
     }
 
@@ -28,6 +27,8 @@ export default class RecentFiles extends React.Component {
         RecordService.getRecentRecords().then(result => {
             this.setState({
                 recentRecords: result.records
+            }).catch(error => {
+                console.log(error);
             });
         })
     }

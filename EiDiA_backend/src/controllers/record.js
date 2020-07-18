@@ -109,7 +109,9 @@ const getRecordName = (id) => {
 
 const listRecentRecords = (req, res) => {
     DocumentModel.distinct('recordId', {
-        'createdBy': req.userId, 'fileType': {$ne: fileTypes.FOLDER}, 'lastModifiedOnDate': {
+        'createdBy': req.userId,
+        'fileType': {$ne: fileTypes.FOLDER},
+        'lastModifiedOnDate': {
             $gte: new Date(new Date() - 7 * 60 * 60 * 24 * 1000) //only look for documents that were modified in the last week
         }
     }, function (error, documentList) {
