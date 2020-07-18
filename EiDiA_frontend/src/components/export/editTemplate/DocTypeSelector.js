@@ -13,25 +13,27 @@ export default class DocTypeSelector extends React.Component {
         this.state = {
             isSnackBarOpen: false,
             linkedDocTypes: [null],
-            documentTypes: []
+            documentTypes: [] // e.g. [{id: "1234", name: "doc type"}]
         }
         this.addDocType = this.addDocType.bind(this);
         this.setDocType = this.setDocType.bind(this);
         this.handleSnackBarOpen = this.handleSnackBarOpen.bind(this);
         this.handleSnackBarClose = this.handleSnackBarClose.bind(this);
+        this.removeLinkedDocType = this.removeLinkedDocType.bind(this);
     }
 
     componentDidMount() {
         CommonService.getAllDocumentTypes().then((data) => {
             this.setState({
                 documentTypes: [...data.documentTypes],
-            });
+            }).catch((err) => console.log(err));
         })
     }
 
 
     addDocType() {
         this.setState({linkedDocTypes: this.state.linkedDocTypes.concat(null)})
+        console.log(this.state.linkedDocTypes);
     }
 
     setDocType(docType) {
@@ -51,19 +53,28 @@ export default class DocTypeSelector extends React.Component {
         this.setState({isSnackBarOpen: false});
     }
 
+    // NOT FINISHED YET
+    removeLinkedDocType(index) {
+        let linkedDocTypes = this.state.linkedDocTypes;
+        linkedDocTypes.splice(index, 1);
+        this.setState({linkedDocTypes: linkedDocTypes});
+    }
 
     render() {
         // TODO: Use get request for fetching docTypes name,id list
         return (
-            <div style={{overflow: 'auto', maxHeight: '250px', minHeight: '250px'}}>
+            <div style={{overflow: 'auto', maxHeight: '35vh', minHeight: '35vh'}}>
                 {this.state.linkedDocTypes.map((e, index) =>
                     <DocTypeSelectLine
+                        showButton={index < this.state.linkedDocTypes.length - 1}
                         key={index}
+                        index={index}
                         variables={this.props.variables}
                         handleSnackBarOpen={this.handleSnackBarOpen}
                         onSelectDocType={this.setDocType}
                         docTypes={this.state.documentTypes}
                         number={index + 1}
+                        remove={this.removeLinkedDocType}
                     />)}
                 <Row>
                     <Button startIcon={<MdAdd/>} color="primary" onClick={this.addDocType}>

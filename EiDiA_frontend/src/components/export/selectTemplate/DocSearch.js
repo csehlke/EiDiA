@@ -54,7 +54,7 @@ export default class DocSearch extends React.Component {
                 <Row>
                     <TextField style={{margin: "5px"}} label="Search Document" variant="outlined"
                                onKeyPress={this.search}/>
-                    <Button style={{margin: "5px"}} variant="contained" color="primary"
+                    <Button style={{margin: "5px"}} size="small" variant="contained" color="primary"
                             onClick={this.clickSearch}>Search</Button>
                 </Row>
                 <Row>

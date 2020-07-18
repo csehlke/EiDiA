@@ -7,6 +7,7 @@ import {CopyToClipboard} from "react-copy-to-clipboard/lib/Component";
 import UploadService from "../../../services/UploadService";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import Button from "@material-ui/core/Button";
 
 export default class DocTypeSelectLine extends React.Component {
     constructor(props) {
@@ -18,10 +19,11 @@ export default class DocTypeSelectLine extends React.Component {
             disableDropDown: false,
             disableCopy: true,
             disableAttributes: true,
-            attributeFieldValue: null
+            attributeFieldValue: null,
         }
         this.docTypeSelected = this.docTypeSelected.bind(this);
         this.createVariableString = this.createVariableString.bind(this);
+        this.remove = this.remove.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -53,12 +55,20 @@ export default class DocTypeSelectLine extends React.Component {
         }
     }
 
+    remove() {
+        this.props.remove(this.props.index);
+    }
+
     render() {
         return (
             <div style={{color: this.props.disabled ? "gray" : "black"}}>
-                <Typography style={{margin: "10px"}} variant="subtitle2">
-                    Document{this.props.number}
-                </Typography>
+                <Row>
+                    <Typography style={{margin: "10px"}} variant="subtitle2">
+                        Document{this.props.number}
+                    </Typography>
+                    {this.props.showButton &&
+                    <Button size="small" color="secondary" onClick={this.remove}>Remove</Button>}
+                </Row>
                 <Row>
                     <SmartDropDownBox disabled={this.state.disableDropDown}
                                       label={"Type"}
