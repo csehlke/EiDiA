@@ -6,6 +6,7 @@ import {FaUser} from "react-icons/all";
 import {Link} from "../Link";
 
 import UserService from "../../services/UserService";
+import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
 
 const Row = styled.div`
     display: flex;
@@ -51,7 +52,10 @@ export default class UserArea extends React.Component {
             lastName: '',
             workPosition: '',
             workLocation: '',
+            isServerError: false,
         }
+
+        this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -64,8 +68,17 @@ export default class UserArea extends React.Component {
                 picture: data.picture ? data.picture : null,
             });
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e);
         });
+    }
+
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+        })
     }
 
     render() {
@@ -92,6 +105,7 @@ export default class UserArea extends React.Component {
                         Open Permission Requests
                     </Link>
                 </LinkRow>
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
             </div>
         );
     }

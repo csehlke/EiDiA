@@ -1,3 +1,5 @@
+"use strict";
+
 import React from 'react';
 import MaterialTable from 'material-table';
 import {
@@ -18,6 +20,9 @@ import {
     RiSave3Line
 } from "react-icons/all";
 import UserService from "../../services/UserService";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
 
 
 const tableIcons = {
@@ -64,7 +69,11 @@ export default class UserTable extends React.Component {
         this.state = {
             data: [],
             isLoading: true,
+            isServerError: false,
+            isSuccess: false,
         }
+        this.handleSuccessBarClose = this.handleSuccessBarClose.bind(this);
+        this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -74,82 +83,125 @@ export default class UserTable extends React.Component {
                 isLoading: false,
             });
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e);
         });
+    }
+
+    handleSuccessBarClose() {
+        this.setState({
+            isSuccess: false,
+        })
+    }
+
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+        })
     }
 
     render() {
         // https://material-table.com/#/docs/all-props
         return (
-            <MaterialTable title="Users"
-                           columns={columns}
-                           data={this.state.data}
-                           icons={tableIcons}
-                           isLoading={this.state.isLoading}
-                           editable={{
-                               isDeletable: rowData => rowData.userRole !== "admin",
-                               onRowAdd: (newData) =>
-                                   new Promise((resolve, reject) => {
-                                       const user = {
-                                           username: newData.username,
-                                           firstName: newData.firstName,
-                                           lastName: newData.lastName,
-                                           password: newData.password,
-                                           workPosition: newData.workPosition,
-                                           workLocation: newData.workLocation,
-                                           userRole: newData.userRole,
-                                       }
-                                       UserService.addUserAdmin(user)
-                                           .then(newUser => {
-                                               resolve();
-                                               this.setState((prevState) => {
-                                                   const data = [...prevState.data];
-                                                   data.push(newUser);
-                                                   return {...prevState, data};
-                                               });
-                                           })
-                                           .catch(() => reject());
-                                   }),
-                               onRowUpdate: (newData, oldData) =>
-                                   new Promise((resolve, reject) => {
-                                       const user = {
-                                           id: oldData.id,
-                                           username: oldData.username,
-                                           firstName: newData.firstName,
-                                           lastName: newData.lastName,
-                                           password: newData.password === '⬤⬤⬤⬤⬤' ? null : newData.password,
-                                           workPosition: newData.workPosition,
-                                           workLocation: newData.workLocation,
-                                           userRole: newData.userRole,
-                                       }
-                                       UserService.updateUserAdmin(user)
-                                           .then(newUser => {
-                                               if (oldData) {
+            <div>
+                <MaterialTable title="Users"
+                               columns={columns}
+                               data={this.state.data}
+                               icons={tableIcons}
+                               isLoading={this.state.isLoading}
+                               editable={{
+                                   isDeletable: rowData => rowData.userRole !== "admin",
+                                   onRowAdd: (newData) =>
+                                       new Promise((resolve, reject) => {
+                                           const user = {
+                                               username: newData.username,
+                                               firstName: newData.firstName,
+                                               lastName: newData.lastName,
+                                               password: newData.password,
+                                               workPosition: newData.workPosition,
+                                               workLocation: newData.workLocation,
+                                               userRole: newData.userRole,
+                                           }
+                                           UserService.addUserAdmin(user)
+                                               .then(newUser => {
+                                                   resolve();
                                                    this.setState((prevState) => {
                                                        const data = [...prevState.data];
-                                                       data[data.indexOf(oldData)] = newUser;
+                                                       data.push(newUser);
+                                                       prevState.isSuccess = true;
                                                        return {...prevState, data};
                                                    });
-                                               }
-                                               resolve();
-                                           })
-                                           .catch(() => reject());
-                                   }),
-                               onRowDelete: (oldData) =>
-                                   new Promise((resolve, reject) => {
-                                       UserService.deleteUserAdmin(oldData.id)
-                                           .then(() => {
-                                               this.setState((prevState) => {
-                                                   const data = [...prevState.data];
-                                                   data.splice(data.indexOf(oldData), 1);
-                                                   return {...prevState, data};
+                                               })
+                                               .catch(() => {
+                                                   reject();
+                                                   this.setState({
+                                                       isServerError: true,
+                                                   });
                                                });
-                                               resolve();
-                                           })
-                                           .catch(() => reject());
-                                   }),
-                           }}
-            />
+                                       }),
+                                   onRowUpdate: (newData, oldData) =>
+                                       new Promise((resolve, reject) => {
+                                           const user = {
+                                               id: oldData.id,
+                                               username: oldData.username,
+                                               firstName: newData.firstName,
+                                               lastName: newData.lastName,
+                                               password: newData.password === '⬤⬤⬤⬤⬤' ? null : newData.password,
+                                               workPosition: newData.workPosition,
+                                               workLocation: newData.workLocation,
+                                               userRole: newData.userRole,
+                                           }
+                                           UserService.updateUserAdmin(user)
+                                               .then(newUser => {
+                                                   if (oldData) {
+                                                       this.setState((prevState) => {
+                                                           const data = [...prevState.data];
+                                                           data[data.indexOf(oldData)] = newUser;
+                                                           prevState.isSuccess = true;
+                                                           return {...prevState, data};
+                                                       });
+                                                   }
+                                                   resolve();
+                                               })
+                                               .catch(() => {
+                                                   reject();
+                                                   this.setState({
+                                                       isServerError: true,
+                                                   });
+                                               });
+                                       }),
+                                   onRowDelete: (oldData) =>
+                                       new Promise((resolve, reject) => {
+                                           UserService.deleteUserAdmin(oldData.id)
+                                               .then(() => {
+                                                   this.setState((prevState) => {
+                                                       const data = [...prevState.data];
+                                                       data.splice(data.indexOf(oldData), 1);
+                                                       prevState.isSuccess = true;
+                                                       return {...prevState, data};
+                                                   });
+                                                   resolve();
+                                               })
+                                               .catch(() => {
+                                                   reject();
+                                                   this.setState({
+                                                       isServerError: true,
+                                                   });
+                                               });
+                                       }),
+                               }}
+                />
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
+                <Snackbar open={this.state.isSuccess}
+                          autoHideDuration={5000}
+                          onClose={this.handleSuccessBarClose}>
+                    <Alert severity="success" onClose={this.handleSuccessBarClose}>
+                        Successfully changed user
+                    </Alert>
+                </Snackbar>
+            </div>
         );
     }
 }

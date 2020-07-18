@@ -19,6 +19,7 @@ import Alert from "@material-ui/lab/Alert";
 
 import UploadService from '../../services/UploadService';
 import {fileTypes} from "../../../../constants";
+import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
 import {Link} from "react-router-dom";
 
 const Container = styled.div
@@ -49,7 +50,8 @@ class AttributeContainer extends React.Component {
             isNumberSnackbarOpen: false,
             priority: "",
             department: "",
-            comment: ""
+            comment: "",
+            isServerError: false,
         }
         this.attrsToBackend = this.attrsToBackend.bind(this);
         this.saveTextFieldData = this.saveTextFieldData.bind(this);
@@ -60,6 +62,7 @@ class AttributeContainer extends React.Component {
         this.getMetaData = this.getMetaData.bind(this);
         this.handleDateSnackbarClose = this.handleDateSnackbarClose.bind(this);
         this.handleNumberSnackbarClose = this.handleNumberSnackbarClose.bind(this);
+        this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -70,6 +73,9 @@ class AttributeContainer extends React.Component {
                 attributes: [...data.attributeTypes]
             });
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e.message)
         });
     }
@@ -274,6 +280,12 @@ class AttributeContainer extends React.Component {
         });
     }
 
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+        })
+    }
+
     attrsToBackend() { //Send current state to backend
         let requestData = {
             attributeData: this.state.attributeData,
@@ -291,6 +303,9 @@ class AttributeContainer extends React.Component {
         UploadService.addAttributes(requestData).then((response) => {
             console.log(response)
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e);
         });
     }
@@ -377,6 +392,8 @@ class AttributeContainer extends React.Component {
                     </Grid>
                     {dateSnackBar}
                     {numberSnackBar}
+                    <ServerSideErrorSnackBar isError={this.state.isServerError}
+                                             onClose={this.handleServerErrorBarClose}/>
                 </Container>
             </RightSide>
         )
