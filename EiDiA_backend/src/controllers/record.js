@@ -109,7 +109,7 @@ const getRecordName = (id) => {
 
 const listRecentRecords = (req, res) => {
     DocumentModel.distinct('recordId', {
-        'createdBy': req.userId, 'fileType': fileTypes.IMAGE, 'lastModifiedOnDate': {
+        'createdBy': req.userId, 'fileType': {$ne: fileTypes.FOLDER}, 'lastModifiedOnDate': {
             $gte: new Date(new Date() - 7 * 60 * 60 * 24 * 1000) //only look for documents that were modified in the last week
         }
     }, function (error, documentList) {
@@ -129,7 +129,8 @@ const listRecentRecords = (req, res) => {
             });
 
         })).then(recentRecords => { //When recent Records were found, send them to frontend
-            res.status(200).json({records: recentRecords});
+            let trimmedRecords = recentRecords.slice(0, 5) //only show first five results
+            res.status(200).json({records: trimmedRecords});
         })
             .catch(error => {
                 res.status(400).json({
