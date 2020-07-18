@@ -4,6 +4,7 @@ const ExportTemplateModel = require('../models/exportTemplate');
 const DocumentModel = require('../models/document');
 const RecordController = require('./record');
 const {fileTypes} = require('../../../constants');
+const mongoose = require('mongoose');
 
 const listTemplates = (req, res) => {
     ExportTemplateModel.find().select('name')
@@ -48,18 +49,15 @@ const saveTemplate = (req, res) => {
 };
 
 const exportDocuments = (req, res) => {
-    // TODO: provide documents from database
     const documentIDs = req.query.documentIDs;
-    const dbQuery = {_id: {$in: documentIDs}}
+    const mongooseIDs = documentIDs.map((id) => mongoose.Types.ObjectId(id));
+    const dbQuery = {_id: {$in: mongooseIDs}};
+
     DocumentModel.find(dbQuery).then((documents) => {
         const docText = documents.map(doc => doc.completeOcrText);
         res.status(200).json({pdfText: docText})
     })
 };
-
-const downloadDocuments = (req, res) => {
-    res.status(200).json({response: "success!"});
-}
 
 const getDocumentAttributes = (req, res) => {
     // TODO: provide documents for variable extraction
@@ -74,6 +72,7 @@ const getDocumentAttributes = (req, res) => {
 
     res.status(200).json({response: documentMockData});
 }
+
 const searchDocumentsByName = (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.query, "documentName")) {
         return res.status(400).json({
@@ -120,6 +119,5 @@ module.exports = {
     exportDocuments,
     getTemplate,
     searchDocumentsByName,
-    download: downloadDocuments,
     getDocumentAttributes
 };

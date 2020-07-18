@@ -50,7 +50,7 @@ export default class CommonService {
 
     static downloadDocuments(documentIDs) {
         let url = new URL("/exporttemplate/exportDocuments", baseURL);
-        url.searchParams.set('documentIDs', documentIDs)
+        documentIDs.forEach((id) => url.searchParams.append('documentIDs', id));
         return new Promise((resolve, reject) => {
             HttpService.get(url, function (data) {
                 resolve(data);

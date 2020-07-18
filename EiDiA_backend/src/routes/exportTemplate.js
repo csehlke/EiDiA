@@ -10,7 +10,6 @@ router.get('/list', middleWares.checkAuthentication, ExportTemplateController.li
 router.get('/template/:templateId', middleWares.checkAuthentication, ExportTemplateController.getTemplate);
 router.post('/save', middleWares.checkAuthentication, ExportTemplateController.saveTemplate);
 router.get('/exportDocuments', middleWares.checkAuthentication, ExportTemplateController.exportDocuments);
-router.get('/download', middleWares.checkAuthentication, ExportTemplateController.download);
 router.get('/documentNames', middleWares.checkAuthentication, ExportTemplateController.searchDocumentsByName);
 router.get('/documents', middleWares.checkAuthentication, ExportTemplateController.getDocumentAttributes);
 
