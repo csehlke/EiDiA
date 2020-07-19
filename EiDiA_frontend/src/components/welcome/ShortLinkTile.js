@@ -3,6 +3,7 @@
 import React from 'react';
 import styled from "styled-components";
 import {Link} from "../Link";
+import {IconContext} from "react-icons";
 
 const Quarter = styled(Link)`
     height: auto;
@@ -29,7 +30,9 @@ export default class ShortLinkTile extends React.Component {
 
         return (
             <Quarter to={this.props.link}>
-                <FolderLogo/>
+                <IconContext.Provider value={{className: 'react-icons'}}>
+                    <FolderLogo/>
+                </IconContext.Provider>
                 <HeadingNoMargin>{this.props.name}</HeadingNoMargin>
             </Quarter>
         );

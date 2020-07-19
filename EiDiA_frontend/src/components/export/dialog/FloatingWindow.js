@@ -43,7 +43,7 @@ export default class FloatingWindow extends React.Component {
         return (
             <Dialog onClose={this.props.onClose}
                     fullWidth={true}
-                    maxWidth={'lg'}
+                    maxWidth={'md'}
                     open={this.props.showDialog}>
                 <DialogTitle id="simple-dialog-title">{dialogTitle}</DialogTitle>
                 <Row style={{margin: "10px"}}>
