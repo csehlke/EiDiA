@@ -53,8 +53,6 @@ class Sidebar extends React.Component {
         } else if (path.startsWith('/export')) {
             activePath = this.sidebarEntries.CREATE_DOCUMENT;
         }
-        console.log(path)
-        console.log(activePath)
 
         return (
             <List>
