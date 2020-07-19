@@ -37,7 +37,6 @@ class FileDrop extends React.Component {
             snackbarOpen: true //Snackbar ready to be rendered
         };
 
-        this.assignRecord = this.assignRecord.bind(this);
         this.failedUpload = this.failedUpload.bind(this);
         this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
         this.onDropAccepted = this.onDropAccepted.bind(this);
@@ -46,10 +45,6 @@ class FileDrop extends React.Component {
     onDropAccepted(files) {
         this.setState(files);
         this.props.callbackUploadView(files);
-    }
-
-    assignRecord() {
-        console.log("Open FilePicker here");
     }
 
     failedUpload() {
