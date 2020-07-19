@@ -2,13 +2,10 @@ import React from 'react';
 import {Centering, FoggyDiv, H2WithOutMargin} from "../../StyleElements";
 import {FiEdit2} from "react-icons/fi";
 import Fab from "@material-ui/core/Fab";
-import {DragTypes} from "../../../assets/Constants";
 import {EditDialog} from "./EditDialog";
 import {DragSource} from "react-dnd";
-/**
- * TODO:
- *
- */
+import {DragTypes} from "../../../../../constants";
+
 
 /*
  *Reason for no use of inheritance as specified in Data model, instead composition is used
@@ -99,7 +96,7 @@ class Widget extends React.Component {
                         handleUpdateWidgetButton={this.props.handleUpdateWidgetButton}
                         widgetTitle={this.state.widget.title}
                         widgetType={this.state.widget.widgetType}
-                        graphType={this.state.widget.graphType} // TODO: handle undefined
+                        graphType={this.state.widget.graphType}
                         onClose={this.toggleEditDialog}
                         open={this.state.widgetEditingActive}
                         attributeMapping={this.state.widget.attributeMapping}/>

@@ -1,13 +1,6 @@
 import React from 'react';
 import {FlexRow, IndicatorElement, TealRight} from "../../StyleElements";
 
-/**
- * TODO:
- * Add Limit for Titles
- * Add Limit for Attributes
- * - get only newest attribute
- */
-
 
 export class IndicatorWidget extends React.Component {
     constructor(props) {
@@ -44,25 +37,31 @@ export class IndicatorWidget extends React.Component {
 
     getData(attributeMapping) {
         let data = [];
-        if (this.state.attributeValues.length > 0) {
-            attributeMapping.map(mapping => data.push(
-                this.state.attributeValues
-                    .filter(attr => attr.attributeId === mapping.attributeId)
-                    .map((foundAttribute) => {
-                            return {
-                                displayName: mapping.displayName,
-                                value: foundAttribute.value,
-                                date: foundAttribute.date
+        try {
+            if (this.state.attributeValues.length > 0) {
+                attributeMapping.map(mapping => data.push(
+                    this.state.attributeValues
+                        .filter(attr => attr.attributeId === mapping.attributeId)
+                        .map((foundAttribute) => {
+                                return {
+                                    displayName: mapping.displayName,
+                                    value: foundAttribute.value,
+                                    date: foundAttribute.date
+                                }
                             }
-                        }
+                        )
+                        .reduce(function (prev, current) {
+                            return (prev.date > current.date) ? prev : current
+                        })
                     )
-                    .reduce(function (prev, current) {
-                        return (prev.date > current.date) ? prev : current
-                    })
                 )
-            )
+            }
+            return data.flat();
+        } catch (e) {
+            console.error(e)
+            return data;
         }
-        return data.flat();
+
     }
 
     render() {

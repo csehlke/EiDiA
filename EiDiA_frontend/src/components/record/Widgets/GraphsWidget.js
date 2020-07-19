@@ -12,12 +12,7 @@ import {
     XAxis,
     YAxis
 } from 'recharts';
-import {GraphType} from "../../../assets/Constants";
-
-/**
- * TODO:
- *
- */
+import {GraphType} from "../../../../../constants";
 
 
 export class GraphsWidget extends React.Component {

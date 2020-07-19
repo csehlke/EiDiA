@@ -13,4 +13,5 @@ router.get('/exportDocuments', middleWares.checkAuthentication, ExportTemplateCo
 router.get('/documentNames', middleWares.checkAuthentication, ExportTemplateController.searchDocumentsByName);
 router.get('/documents', middleWares.checkAuthentication, ExportTemplateController.getDocumentAttributes);
 
+
 module.exports = router;

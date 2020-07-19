@@ -14,7 +14,6 @@ const upload = require('./routes/upload');
 const exportTemplate = require('./routes/exportTemplate');
 const search = require('./routes/search');
 const log = require('./routes/log')
-
 const api = express();
 
 

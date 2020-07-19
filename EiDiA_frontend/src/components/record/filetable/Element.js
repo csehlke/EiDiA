@@ -4,14 +4,18 @@ import React from 'react';
 import styled from "styled-components";
 import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
-import {DragTypes} from "../../../assets/Constants";
-import {fileTypes} from "../../../../../constants";
+
+import {DragTypes, fileTypes} from "../../../../../constants";
 import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import UserService from "../../../services/UserService";
 
 const Name = styled.div`
     padding-left: ${props => props.padding + "%"};
+    
+    display:flex;
+    align-items:center;
 `;
 
 const itemSource = {
@@ -73,11 +77,10 @@ class Element extends React.Component {
         const toRender = (
             <div>
                 {!isDragging &&
-                //TODO: cursor doesnt work yet
-                <Grid container spacing={2}
-                      style={{cursor: (this.state.elementData.type === fileTypes.FOLDER) && 'pointer'}}
+                <Grid container item spacing={2}
+                      style={{cursor: (this.state.elementData.fileType === fileTypes.FOLDER) && 'pointer'}}
                 >
-                    <Grid item xs={12} sm={4} onClick={(e) => {
+                    <Grid item xs={12} xl={4} sm={4} onClick={(e) => {
                         this.state.nameEdit ? {} : this.props.activeToggle()
                     }}>
                         <Name padding={this.state.padding}>
@@ -94,22 +97,26 @@ class Element extends React.Component {
                         }
                         </Name>
                     </Grid>
-                    <Grid item xs={12} sm={1}>
-                        {this.state.elementData.createdOnDate.replace(/[T].*/, "")}
+                    <Grid item xs={12} xl={1} sm={2}>
+                        {this.state.elementData.createdOnDate}
                     </Grid>
-                    <Grid item xs={12} sm={1}>
-                        {this.state.elementData.lastModifiedOnDate.replace(/[T].*/, "")}
+                    <Grid item xs={12} xl={1} sm={2}>
+                        {this.state.elementData.lastModifiedOnDate}
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} xl={4} sm={3}>
                         {this.state.elementData.comment}
                     </Grid>
-                    <Grid item xs={12} sm={2}>
+                    <Grid item xs={12} xl={2} sm={1}>
                         <ElementActions
                             fileType={this.state.elementData.fileType}
                             handleEditName={this.handleEditName}
                             handleDeleteElement={this.props.handleDeleteElement}
                             handleAddFolder={this.props.handleAddFolder}
-                            editName={this.props.editName}/>
+                            editName={this.props.editName}
+                            withinSearchResults={!this.props.dragEnabled}
+                            isNotAuthorized={!(this.state.elementData.createdBy === UserService.getCurrentUser().id || UserService.isAdmin())}
+                        />
+
                     </Grid>
                 </Grid>}
             </div>
@@ -122,13 +129,5 @@ class Element extends React.Component {
     }
 }
 
-/*
-*TODO:
-* - a cleaner Code would be to remove Elementtable and making Element Target & Source at the same time, however, this
-* needs state handling. If choosen to do both in one, one has to write something like this
-* const drop = DropTarget(DragTypes.ELEMENT, {}, collectDrop);
-* const drag = DragSource(DragTypes.ELEMENT, itemSource, collectDrag);
-* export default drop(drag(Element));
-*/
 const drag = DragSource(DragTypes.ELEMENT, itemSource, collectDrag);
 export default drag(Element);

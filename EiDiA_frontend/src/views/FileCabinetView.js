@@ -23,15 +23,10 @@ const SearchBar = styled.div`
 
 export class FileCabinetView extends React.Component {
 
-    /*
-     *TODO:
-     * - add Pages if too many records
-     * - add Add Button
-     */
+
     constructor(props) {
         super(props);
         this.state = {
-            //TODO: show spinning cirlce maybe as long its empty?
             records: [],
             search: '',
         }

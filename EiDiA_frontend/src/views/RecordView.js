@@ -6,30 +6,32 @@ import FileExplorer from "../components/record/FileExplorer";
 import {Dashboard} from "../components/record/Dashboard";
 import {WrapperRecordMenue, WrapperRecordView} from "../components/StyleElements";
 import {Tab, Tabs} from "@material-ui/core";
-import {recordMenuOptions} from "../assets/Constants";
 import {withRouter} from "react-router-dom";
 import RecordService from "../services/RecordService";
+import {recordMenuOptions} from "../../../constants";
 
 class RecordView extends React.Component {
 
-    /*
-     *TODO:
-     * - add getRecordFromDatabase functionality
-     * - add Pages if too many records
-     * - add Add Button
-     */
+
     constructor(props) {
         super(props);
         this.state = {
             currentPage: recordMenuOptions.DASHBOARD,
             recordId: this.props.match.params.id,
             documents: [],
+
         }
     }
 
     componentDidMount() {
         this.getDocuments()
-        this.props.setTitle("Record View");
+        RecordService.getRecordName(this.state.recordId).then(response => this.props.setTitle(response.name)).catch(error => {
+            console.log(error);
+            this.props.setTitle("Record")
+            //TODO snackbar
+
+        })
+
 
     }
 
@@ -49,6 +51,8 @@ class RecordView extends React.Component {
                 this.setState({documents: response})
             })
             .catch(e => console.error(e))
+        //TODO snackbar
+
     }
 
     updateData = () => {
@@ -64,7 +68,7 @@ class RecordView extends React.Component {
 
 
     render() {
-
+        console.log(this.state.documents)
         let toShow;
 
         switch (this.state.currentPage) {

@@ -1,30 +1,19 @@
 import React from 'react';
 import Element from './filetable/Element'
-import styled from "styled-components";
 import ElementDropTarget from "./filetable/ElementDropTarget";
-import {databaseEntriesPlaceholder} from "../../assets/Constants";
 import {fileTypes, styleFabButton} from "../../../../constants";
 import Grid from "@material-ui/core/Grid";
 import RecordService from "../../services/RecordService";
 import Fab from "@material-ui/core/Fab";
 import {MdCreateNewFolder} from "react-icons/md/index";
 
-const Center = styled.div`
-   text-align:center;
-`;
 
-/**
- * TODO:
- * - Cant drag files to toplevel at the moment
- * - Design DnD operations
- */
 export default class FileExplorer extends React.Component {
 
     constructor(props) {
         super(props);
-        databaseEntriesPlaceholder.forEach(element => element.activeFolder = false);
         this.state = {
-            elements: this.props.elements ? this.props.elements : databaseEntriesPlaceholder,//this.props.data
+            elements: this.props.elements
         }
     }
 
@@ -34,28 +23,10 @@ export default class FileExplorer extends React.Component {
                 elements: this.props.elements,
             })
         }
-        // this.state.elements.forEach(element => element['activeFolder'] = false);
     }
 
-    //TODO during drag and drop check if element was pushed into child element
-    /*testIfNewParentIsActuallyAChild(newId,parent){
-        let childDetected=false
-        let child=this.state.elements.find(elem=>elem.parentFolderId===parent.id)
-        for(int )
-            if(child.id===newId) return true;
-            return this.testIfNewParentIsActuallyAChild(newId,child)
-        }
-        child.map(childchild=>{
-            if(childchild.id==newId) {
-                childDetected = true
-                return;
-            }
-            childDetected= this.testIfNewParentIsActuallyAChild(newId,childchild)
-        })
-    }*/
-    setNewParent = (child) => (newParentId) => {
 
-        // if(this.testIfNewParentIsActuallyAChild(newParentId,child))return;
+    setNewParent = (child) => (newParentId) => {
         let reqBody = {
             id: child.id,
             parentFolderId: newParentId + ""
@@ -164,29 +135,29 @@ export default class FileExplorer extends React.Component {
         return (
             <div>
                 <Grid style={{flexGrow: 1}} container spacing={0}>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xl={4} sm={4}>
                         Name
                     </Grid>
-                    <Grid item xs={12} sm={1}>
+                    <Grid item xl={1} sm={2}>
                         Created
                     </Grid>
-                    <Grid item xs={12} sm={1}>
+                    <Grid item xl={1} sm={2}>
                         Last Modified
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xl={4} sm={3}>
                         Comment
                     </Grid>
-                    <Grid item xs={12} sm={2}>
-                        <Center>Actions</Center>
+                    <Grid item xl={2} sm={1}>
+                        <span style={{textAlign: "center"}}>Actions</span>
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid item xl={12}>
                         <hr/>
                     </Grid>
                     {this.state.elements.map((element, index) => element.parentFolderId === 0 ?
                         this.renderElement(element, index, 0) : null
                     )}
-                    <Grid container item xs={12} justify="center">
+                    <Grid container item xl={12} justify="center">
 
                         <ElementDropTarget id={0} type={fileTypes.FOLDER}>
                             <div style={{width: "80vw", height: "10vh", display: "block"}}/>
