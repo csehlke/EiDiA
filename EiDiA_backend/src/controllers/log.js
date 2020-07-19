@@ -18,7 +18,6 @@ const getRecentRecords = (req, res) => {
             }
         ],
         function (err, logs) {
-            console.log(logs)
             if (err)
                 res.status(400).json({
                     error: 'Internal server error',
@@ -26,7 +25,7 @@ const getRecentRecords = (req, res) => {
 
                 });
             else {
-                res.status(200).json(logs.slice(0, 5));
+                res.status(200).json(logs.slice(0, 4));
 
             }
 
