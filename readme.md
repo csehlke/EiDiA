@@ -4,7 +4,7 @@
   
 
 <div align="center">
-  <img src="https://github.com/csehlke/EiDiA/blob/master/EiDiA_frontend/src/assets/logo.png">
+  <img width="60%" src="https://github.com/csehlke/EiDiA/blob/master/EiDiA_frontend/src/assets/logo.png">
 </div>
 
 EiDiA is a platform for file digitalization and collaboration in law and tax firms to solve the issue of inefficiency and intransparency of analog files by providing a central data storage.
