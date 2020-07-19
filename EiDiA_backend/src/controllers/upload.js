@@ -1,5 +1,6 @@
 "use strict";
 
+const DateFns = require('date-fns');
 const DocumentModel = require('../models/document');
 const ErrorHandling = require('./errorHandling');
 
@@ -56,6 +57,26 @@ const addDocument = (req, res) => {
         parentFolderId = req.body.parentFolderId
     }
 
+    let attributeData = req.body.attributeData.map(attribute => {
+        switch (attribute.type) {
+            case 'date':
+                return {
+                    attributeId: attribute.attributeId,
+                    value: DateFns.parseISO(attribute.value),
+                }
+            case 'number':
+                return {
+                    attributeId: attribute.attributeId,
+                    value: Number.parseInt(attribute.value, 10),
+                }
+            default:
+                return {
+                    attributeId: attribute.attributeId,
+                    value: attribute.value,
+                }
+        }
+    })
+
     DocumentModel.create({
         name: req.body.name,
         parentFolderId: parentFolderId,
@@ -65,7 +86,7 @@ const addDocument = (req, res) => {
         comment: req.body.comment,
         priority: req.body.priority,
         department: req.body.department,
-        attributes: req.body.attributeData,
+        attributes: attributeData,
         base64Image: req.body.base64Image,
         fileType: req.body.fileType
     })
