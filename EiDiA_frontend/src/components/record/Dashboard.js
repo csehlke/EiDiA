@@ -99,6 +99,7 @@ export class Dashboard extends React.Component {
             this.fillUpFreeSlots();
 
         }).catch(e => console.error("No Widgets found:" + e))
+        // todo snackbar
     }
 
     getDocTypes = () => {
