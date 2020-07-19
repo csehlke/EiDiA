@@ -1,7 +1,6 @@
 import React from 'react';
 import Widget from "./Widgets/Widget";
 import WidgetDropTarget from "./Widgets/WidgetDropTarget";
-import {WidgetTypes} from "../../assets/Constants";
 import {DashboardWrapper, WidgetWrapper} from "../StyleElements";
 import {LogWidget} from "./Widgets/LogWidget";
 import {GraphsWidget} from "./Widgets/GraphsWidget";
@@ -10,7 +9,7 @@ import {FiEdit} from 'react-icons/fi'
 import Fab from "@material-ui/core/Fab";
 import RecordService from "../../services/RecordService";
 import {MdClose} from "react-icons/all";
-import {styleFabButton} from "../../../../constants";
+import {styleFabButton, WidgetTypes} from "../../../../constants";
 
 export class Dashboard extends React.Component {
     constructor(props) {

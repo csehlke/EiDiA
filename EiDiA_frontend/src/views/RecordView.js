@@ -6,9 +6,9 @@ import FileExplorer from "../components/record/FileExplorer";
 import {Dashboard} from "../components/record/Dashboard";
 import {WrapperRecordMenue, WrapperRecordView} from "../components/StyleElements";
 import {Tab, Tabs} from "@material-ui/core";
-import {recordMenuOptions} from "../assets/Constants";
 import {withRouter} from "react-router-dom";
 import RecordService from "../services/RecordService";
+import {recordMenuOptions} from "../../../constants";
 
 class RecordView extends React.Component {
 

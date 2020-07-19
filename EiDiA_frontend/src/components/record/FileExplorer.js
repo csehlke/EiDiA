@@ -1,26 +1,19 @@
 import React from 'react';
 import Element from './filetable/Element'
-import styled from "styled-components";
 import ElementDropTarget from "./filetable/ElementDropTarget";
-import {databaseEntriesPlaceholder} from "../../assets/Constants";
 import {fileTypes, styleFabButton} from "../../../../constants";
 import Grid from "@material-ui/core/Grid";
 import RecordService from "../../services/RecordService";
 import Fab from "@material-ui/core/Fab";
 import {MdCreateNewFolder} from "react-icons/md/index";
 
-const Center = styled.div`
-   text-align:center;
-`;
-
 
 export default class FileExplorer extends React.Component {
 
     constructor(props) {
         super(props);
-        databaseEntriesPlaceholder.forEach(element => element.activeFolder = false);
         this.state = {
-            elements: this.props.elements ? this.props.elements : databaseEntriesPlaceholder,//this.props.data
+            elements: this.props.elements
         }
     }
 
@@ -155,7 +148,7 @@ export default class FileExplorer extends React.Component {
                         Comment
                     </Grid>
                     <Grid item xl={2} sm={1}>
-                        <Center>Actions</Center>
+                        <span style={{textAlign: "center"}}>Actions</span>
                     </Grid>
 
                     <Grid item xl={12}>

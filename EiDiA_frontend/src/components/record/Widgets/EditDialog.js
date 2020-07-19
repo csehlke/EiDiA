@@ -4,7 +4,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 
-import {GraphType, WidgetTypes} from "../../../assets/Constants";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
 import SmartDropDownBox from "../../SmartDropDownBox";
@@ -12,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
+import {GraphType, WidgetTypes} from "../../../../../constants";
 import {IoMdAddCircleOutline, IoMdRemoveCircleOutline} from "react-icons/all";
 
 
@@ -162,7 +162,6 @@ export class EditDialog extends React.Component {
     }
 
     getAttributeSelector = (index, mapping, sm) => {
-        // console.log(this.getAttributesForDocType(mapping.docTypeId).find(opt => opt.attributeId === mapping.attributeId))
         const preselectedValue = this.getAttributesForDocType(mapping.docTypeId).find(opt => opt.attributeId === mapping.attributeId)
         return (
             <Grid key={index + "attributeId"} item xs={12} sm={sm}>
@@ -224,12 +223,10 @@ export class EditDialog extends React.Component {
     changeAttributeMapping = (index, attr, value) => {
         //this line has to come before adding changing the actual attribute of attributeMapping
         if (attr === "docTypeId" && this.state.selectedAttributeMapping[index][attr] !== value) {
-            console.log("hello")
             this.state.selectedAttributeMapping[index]["attributeId"] = "";
         }
         this.state.selectedAttributeMapping[index][attr] = value;
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping});
-        console.log(this.state.selectedAttributeMapping[index])
     }
 
     changeGraphType = (value) => {

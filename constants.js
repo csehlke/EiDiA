@@ -30,6 +30,27 @@ const styleFabButton = {
 const elementIconSize = '1.5rem';
 const logCount = 5;
 
+const recordMenuOptions = {
+    DASHBOARD: 1,
+    FILEEXPLORER: 2,
+};
+
+const DragTypes = {
+    ELEMENT: 'element',
+    WIDGET: 'widget'
+}
+
+const WidgetTypes = {
+    LOG: 'Log',
+    GRAPH: 'Graph',
+    INDICATOR: 'Indicator'
+}
+
+const GraphType = {
+    Line: 'Line Chart',
+    Bar: 'Bar Chart',
+}
+
 module.exports = {
     baseURL,
     mongoDBUrl,
@@ -37,5 +58,11 @@ module.exports = {
     fileActions,
     styleFabButton,
     elementIconSize,
-    logCount
+    logCount,
+    DragTypes,
+    recordMenuOptions,
+    WidgetTypes,
+    GraphType,
+
+
 };
