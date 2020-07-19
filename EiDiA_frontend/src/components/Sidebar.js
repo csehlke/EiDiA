@@ -67,7 +67,8 @@ class Sidebar extends React.Component {
                     </ListItem>
                 </Link>
                 <Link to={'/browse'}>
-                    <ListItem button key={this.sidebarEntries.BROWSE}>
+                    <ListItem button key={this.sidebarEntries.BROWSE}
+                              selected={activePath === this.sidebarEntries.BROWSE}>
                         <StyledListIcon
                             className={activePath === this.sidebarEntries.BROWSE ? classes.selected : classes.unselected}>
                             <FiHardDrive/>
@@ -76,7 +77,8 @@ class Sidebar extends React.Component {
                     </ListItem>
                 </Link>
                 <Link to={'/search'}>
-                    <ListItem button key={this.sidebarEntries.SEARCH}>
+                    <ListItem button key={this.sidebarEntries.SEARCH}
+                              selected={activePath === this.sidebarEntries.SEARCH}>
                         <StyledListIcon
                             className={activePath === this.sidebarEntries.SEARCH ? classes.selected : classes.unselected}>
                             <AiOutlineSearch/>
@@ -85,7 +87,8 @@ class Sidebar extends React.Component {
                     </ListItem>
                 </Link>
                 <Link to={'/upload'}>
-                    <ListItem button key={this.sidebarEntries.UPLOAD_DOCUMENT}>
+                    <ListItem button key={this.sidebarEntries.UPLOAD_DOCUMENT}
+                              selected={activePath === this.sidebarEntries.UPLOAD_DOCUMENT}>
                         <StyledListIcon
                             className={activePath === this.sidebarEntries.UPLOAD_DOCUMENT ? classes.selected : classes.unselected}>
                             <FaCloudUploadAlt/>
@@ -94,7 +97,8 @@ class Sidebar extends React.Component {
                     </ListItem>
                 </Link>
                 <Link to={'/export'}>
-                    <ListItem button key={this.sidebarEntries.CREATE_DOCUMENT}>
+                    <ListItem button key={this.sidebarEntries.CREATE_DOCUMENT}
+                              selected={activePath === this.sidebarEntries.CREATE_DOCUMENT}>
                         <StyledListIcon
                             className={activePath === this.sidebarEntries.CREATE_DOCUMENT ? classes.selected : classes.unselected}>
                             <NewFileIcon/>
