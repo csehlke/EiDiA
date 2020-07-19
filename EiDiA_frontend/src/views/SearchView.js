@@ -71,16 +71,18 @@ export class SearchView extends React.Component {
         }
     }
 
+
     handleInfoBarClose() {
         this.setState({
             showEmptyResultInfo: false,
-        })
+        });
     }
 
     handleServerErrorBarClose() {
         this.setState({
             isServerError: false,
-        })
+
+        });
     }
 
     render() {

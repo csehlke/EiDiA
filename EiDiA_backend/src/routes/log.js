@@ -8,6 +8,7 @@ const LogController = require('../controllers/log');
 
 
 router.get('/list/:recordId', middleWares.checkAuthentication, LogController.getLogs);
-router.get('/recentRecords/list/:userId', middleWares.checkAuthentication, LogController.getRecentRecords)
+router.get('/recentRecords/list', middleWares.checkAuthentication, LogController.getRecentRecords)
+
 
 module.exports = router;

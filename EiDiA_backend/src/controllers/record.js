@@ -8,7 +8,6 @@ const mongoose = require("mongoose")
 const ErrorHandling = require("./errorHandling");
 const {format} = require('date-fns');
 
-
 const listRecords = (req, res) => {
     RecordModel.find()
         .then(records => {
