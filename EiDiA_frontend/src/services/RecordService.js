@@ -17,6 +17,17 @@ export default class RecordService {
         });
     }
 
+    static getRecordName(recordId) {
+
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/record/name/' + recordId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
     static getWidgets(recordId) {
         return new Promise((resolve, reject) => {
             HttpService.get(baseURL + '/dashboard/widget/list/' + recordId, function (data) {

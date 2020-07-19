@@ -8,6 +8,7 @@ const RecordController = require('../controllers/record');
 
 
 router.get('/list', middleWares.checkAuthentication, RecordController.listRecords);
+router.get('/name/:recordId', middleWares.checkAuthentication, RecordController.getRecordName)
 router.post('/add', middleWares.checkAuthentication, RecordController.addRecord);
 router.post('/folder/add', middleWares.checkAuthentication, RecordController.addFolder)
 router.get('/document/list/:recordId', middleWares.checkAuthentication, RecordController.listDocumentByRecordId);

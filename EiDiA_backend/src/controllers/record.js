@@ -29,7 +29,22 @@ const listRecords = (req, res) => {
             });
         });
 };
+const getRecordName = (req, res) => {
+    RecordModel.aggregate([
+            {$match: {_id: mongoose.Types.ObjectId(req.params.recordId)}},
 
+        ],
+        function (err, record) {
+            if (err) {
+                res.status(500).json({
+                    error: "Internal Server error",
+                    message: err.message
+                })
+            }
+            res.status(200).json({name: record[0].name});
+
+        });
+}
 const addRecord = (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.body, "recordName")) {
         return res.status(400).json({
@@ -273,6 +288,8 @@ const addFolder = (req, res) => {
     }).then((folder) => {
         let copy = {...folder._doc, id: folder._doc._id}
         copy.parentFolderId = copy.parentFolderId.toString() === "000000000000000000000000" ? 0 : copy.parentFolderId
+        copy.createdOnDate = format(new Date(copy.createdOnDate), 'dd/MM/yyyy')
+        copy.lastModifiedOnDate = format(new Date(copy.lastModifiedOnDate), 'dd/MM/yyyy')
         res.status(200).json(copy);
         LogModel.create({
             userId: req.userId,
@@ -425,5 +442,6 @@ module.exports = {
     addFolder,
     updateDocumentName,
     updateDocumentParentFolderId,
-    deleteDocument
+    deleteDocument,
+    getRecordName
 };
