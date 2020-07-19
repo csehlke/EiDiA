@@ -2,6 +2,7 @@ import React from 'react';
 import {List, Typography} from '@material-ui/core';
 import ExportService from '../../../services/ExportService';
 import TemplateListItem from './TemplateListItem';
+import {v4 as uuidv4} from 'uuid';
 
 export default class TemplateList extends React.Component {
     constructor(props) {
@@ -41,7 +42,7 @@ export default class TemplateList extends React.Component {
                 <List dense={true}>
                     {items.map((elem, index) =>
                         <TemplateListItem
-                            key={elem.id}
+                            key={elem.id + uuidv4()}
                             text={elem.name}
                             id={elem.id}
                             index={index}

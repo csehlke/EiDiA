@@ -88,8 +88,9 @@ export default class DocTypeSelector extends React.Component {
     }
 
 
-    removeDocTypeWithUUID(index) {
+    removeDocTypeWithUUID(docNumber) {
         let docTypesWithUUID = this.state.docTypesWithUUID;
+        const index = findWithAttr(docTypesWithUUID, "docNumber", docNumber);
         docTypesWithUUID.splice(index, 1);
         this.setState({docTypesWithUUID: docTypesWithUUID});
         this.props.onAction2_2(index);

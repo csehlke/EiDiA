@@ -68,7 +68,7 @@ export default class DocTypeSelectLine extends React.Component {
     }
 
     remove() {
-        this.props.remove(this.props.number - 1);
+        this.props.remove(this.props.number);
     }
 
     render() {
