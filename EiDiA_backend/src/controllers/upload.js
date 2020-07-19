@@ -1,7 +1,6 @@
 "use strict";
 
-import * as DateFns from "date-fns";
-
+const DateFns = require('date-fns');
 const DocumentModel = require('../models/document');
 const ErrorHandling = require('./errorHandling');
 
