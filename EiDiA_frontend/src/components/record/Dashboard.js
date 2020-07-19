@@ -146,7 +146,6 @@ export class Dashboard extends React.Component {
         widget.attributeMapping = attributeMapping;
         if (widgetType === WidgetTypes.GRAPH) widget.graphType = graphType;
         this.setState({widgets: this.state.widgets})
-        console.log(widget)
         this.sendWidgetToBackend(widget);
     }
 

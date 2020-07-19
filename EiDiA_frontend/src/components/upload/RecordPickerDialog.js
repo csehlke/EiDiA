@@ -12,6 +12,13 @@ import IconButton from "@material-ui/core/IconButton";
 import RecordService from "../../services/RecordService";
 import UploadFileExplorer from "./uploadFiletable/UploadFileExplorer";
 import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+const styles = theme => ({
+    error: {
+        color: theme.palette.error.main // see index.js
+    }
+});
 
 const FlexRow = styled.div`
     display: flex;
@@ -115,6 +122,7 @@ class RecordPickerDialog extends React.Component {
     }
 
     render() {
+        const {classes} = this.props;
         let filteredRecords = this.state.records.filter((record) => {
             return record.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1; //make search work without respecting capitalization
         });
@@ -163,7 +171,7 @@ class RecordPickerDialog extends React.Component {
                         </SizedDialogContent>
                         <DialogActions>
                             <b>Current Selection: &nbsp;</b> {this.state.selectedFolder.name}
-                            <Button color={"secondary"}
+                            <Button className={classes.error}
                                     onClick={this.closeDialog}>
                                 Cancel
                             </Button>
@@ -183,4 +191,4 @@ class RecordPickerDialog extends React.Component {
     }
 }
 
-export default RecordPickerDialog;
+export default withStyles(styles, {withTheme: true})(RecordPickerDialog);

@@ -1,33 +1,18 @@
 import React from 'react';
 import {Button, Input, Typography} from '@material-ui/core';
 import {Column, Row} from '../../StyleElements';
+import withStyles from "@material-ui/core/styles/withStyles";
 
-const styles = {
-    button_left: {
-        margin: "15px",
-        align: "left",
-        bottom: 0,
-    },
-    button_right: {
-        margin: "15px",
-        align: "right",
-        bottom: 0,
-        right: 0,
+
+const styles = theme => ({
+    error: {
+        color: theme.palette.error.main // see index.js
     }
-}
+});
 
-export default class SaveTemplateWindow extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {templateName: ""};
-        this.setTemplateName = this.setTemplateName.bind(this);
-    }
-
-    setTemplateName(event) {
-        this.setState({templateName: event.target.value});
-    }
-
+class SaveTemplateWindow extends React.Component {
     render() {
+        const {classes} = this.props;
         return (
             <Column>
                 <Row>
@@ -36,30 +21,35 @@ export default class SaveTemplateWindow extends React.Component {
                     </Typography>
                 </Row>
                 <Row>
-                    <Input placeholder="Template Name" onChange={this.setTemplateName}/>
+                    <Input placeholder="Template Name"/>
                 </Row>
                 Saving template not implemented yet
                 <Row>
-                    <Button
-                        style={styles.button_left}
-                        variant="contained"
-                        color="primary"
-                        disableElevation
-                        onClick={this.props.onClose}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        style={styles.button_right}
-                        variant="contained"
-                        color="primary"
-                        disableElevation
-                        onClick={() => this.props.save(this.state.templateName)}
-                    >
-                        Save Template
-                    </Button>
+                    <div style={{margin: "15px"}}>
+                        <Button
+                            variant="contained"
+                            disableElevation
+                            onClick={this.props.onClose}
+                            className={classes.error}
+                        >
+                            Cancel
+                        </Button>
+                    </div>
+                    <div style={{margin: "15px"}}>
+                        <Button
+                            style={styles.button_right}
+                            variant="contained"
+                            color="primary"
+                            disableElevation
+                            onClick={this.props.save}
+                        >
+                            Save Template
+                        </Button>
+                    </div>
                 </Row>
             </Column>
         )
     }
 }
+
+export default withStyles(styles, {withTheme: true})(SaveTemplateWindow);

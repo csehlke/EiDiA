@@ -135,7 +135,7 @@ class DocPreview extends React.Component {
         if (!this.props.cropDisabled) {
             return <LinearProgress variant="determinate"
                                    value={this.props.ocrProgress * 100}
-                                   color={(this.props.ocrProgress !== 1 && this.props.ocrProgress !== 0) ? "secondary" : "primary"}/>
+                                   color={(this.props.ocrProgress !== 1 && this.props.ocrProgress !== 0) ? "primary" : "secondary"}/>
         }
     }
 

@@ -143,7 +143,6 @@ export default class RecordService {
     }
 
     static deleteDocument(documentId) {
-        console.log(documentId)
         return new Promise((resolve, reject) => {
             HttpService.remove(baseURL + '/record/document/delete/' + documentId, function (data) {
                 resolve(data);
@@ -153,4 +152,13 @@ export default class RecordService {
         });
     }
 
+    static addNewRecord(recordName) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(baseURL + '/record/add', {recordName: recordName}, function (data) {
+                resolve(data.record);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
 }

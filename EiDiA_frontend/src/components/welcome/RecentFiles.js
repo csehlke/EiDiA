@@ -49,7 +49,7 @@ export default class RecentFiles extends React.Component {
         if (this.state.recentRecords.length > 0) { //only show recent files if they exist
             return (
                 <div>
-                    Recently worked on:
+                    <h1>Recently worked on:</h1>
                     <FlexRow>
                         {this.state.recentRecords.map((record) =>
                             <Link

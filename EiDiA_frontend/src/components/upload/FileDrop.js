@@ -5,7 +5,8 @@ import styled from "styled-components";
 import Alert from "@material-ui/lab/Alert";
 import Dropzone from "react-dropzone";
 import Snackbar from "@material-ui/core/Snackbar";
-import {MdDescription} from "react-icons/all";
+import {MdCloudUpload} from "react-icons/all";
+import {IconContext} from "react-icons";
 
 const Container = styled.div`
   // Outer Container
@@ -36,7 +37,6 @@ class FileDrop extends React.Component {
             snackbarOpen: true //Snackbar ready to be rendered
         };
 
-        this.assignRecord = this.assignRecord.bind(this);
         this.failedUpload = this.failedUpload.bind(this);
         this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
         this.onDropAccepted = this.onDropAccepted.bind(this);
@@ -45,10 +45,6 @@ class FileDrop extends React.Component {
     onDropAccepted(files) {
         this.setState(files);
         this.props.callbackUploadView(files);
-    }
-
-    assignRecord() {
-        console.log("Open FilePicker here");
     }
 
     failedUpload() {
@@ -97,7 +93,9 @@ class FileDrop extends React.Component {
                             <div {...getRootProps({className: "dropzone"})}>
                                 <input {...getInputProps()} />
                                 <DropZoneContainer>
-                                    <MdDescription style={{fontSize: '20vw'}}/>
+                                    <IconContext.Provider value={{className: 'react-icons'}}>
+                                        <MdCloudUpload style={{fontSize: '20vw'}}/>
+                                    </IconContext.Provider>
                                     <p>
                                         {!isDragActive && "Click here or drag a file to upload!"}
                                         {isDragActive && !isDragReject && "Drop your file here"}

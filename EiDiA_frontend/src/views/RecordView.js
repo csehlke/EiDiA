@@ -75,7 +75,6 @@ class RecordView extends React.Component {
     }
 
     render() {
-        console.log(this.state.documents)
         let toShow;
 
         switch (this.state.currentPage) {
