@@ -68,7 +68,7 @@ module.exports = {
         }),
         new ExtractTextPlugin("styles/app.css"),
         new FaviconsWebpackPlugin({
-            logo: 'EiDiA_frontend/src/assets/favicon.png',
+            logo: __dirname + '/src/assets/favicon.png',
             inject: true
         })
     ]
