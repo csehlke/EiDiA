@@ -59,7 +59,8 @@ export default class DocTypeSelectLine extends React.Component {
 
     createVariableString(event, value) {
         if (value) {
-            let variable = this.state.variable + value.name.split(' ').join(''); // remove whitespaces from attribute name
+            const uriBase = "$/document" + this.props.number + "/";
+            let variable = uriBase + value.name.split(' ').join(''); // remove whitespaces from attribute name
             this.setState({variable: variable, disableCopy: false});
         } else {
             this.setState({disableCopy: true});
