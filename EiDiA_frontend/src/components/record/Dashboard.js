@@ -10,6 +10,7 @@ import Fab from "@material-ui/core/Fab";
 import RecordService from "../../services/RecordService";
 import {MdClose} from "react-icons/all";
 import {styleFabButton, WidgetTypes} from "../../../../constants";
+import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
 
 export class Dashboard extends React.Component {
     constructor(props) {
@@ -20,7 +21,8 @@ export class Dashboard extends React.Component {
             docTypes: [],
             attributeTypes: [],
             attributeValues: [],
-            logs: []
+            logs: [],
+            isServerError: false,
         }
         this.fillUpFreeSlots();
 
@@ -98,33 +100,29 @@ export class Dashboard extends React.Component {
             this.setState({widgets: response});
             this.fillUpFreeSlots();
 
-        }).catch(e => console.error("No Widgets found:" + e))
-        // todo snackbar
+        }).catch((e) => this.setState({isServerError: true}))
     }
 
     getDocTypes = () => {
-        RecordService.getDocTypes(this.props.recordId).then(response => this.setState({docTypes: response.documents})).catch(e => console.error(e))
+        RecordService.getDocTypes(this.props.recordId).then(response => this.setState({docTypes: response.documents})).catch((e) => this.setState({isServerError: true}))
     }
     getAttributeTypes = () => {
         RecordService.getAttributeTypes(this.props.recordId).then(response => {
             this.setState({attributeTypes: response})
-        }).catch(e => console.error(e))
-        //TODO snackbar
+        }).catch((e) => this.setState({isServerError: true}))
 
     }
     getAttributeValues = () => {
         RecordService.getAttributeValues(this.props.recordId).then(response => {
             this.setState({attributeValues: response.flat()})
-        }).catch(e => console.error(e))
-        //TODO snackbar
+        }).catch((e) => this.setState({isServerError: true}))
 
 
     }
     getLogs = () => {
         RecordService.getLogs(this.props.recordId).then(response => {
             this.setState({logs: response})
-        }).catch(e => console.error(e))
-        //TODO snackbar
+        }).catch((e) => this.setState({isServerError: true}))
 
     }
 
@@ -134,8 +132,7 @@ export class Dashboard extends React.Component {
         RecordService.addWidget(requestData).then(response => {
             widget = response;
             this.setState(this.state)
-        }).catch(e => console.error(e))
-        //TODO snackbar
+        }).catch((e) => this.setState({isServerError: true}))
 
     }
 
@@ -159,6 +156,13 @@ export class Dashboard extends React.Component {
         this.sendWidgetToBackend(a)
         this.sendWidgetToBackend(b)
         this.setState({widgets: this.state.widgets})
+    }
+
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+
+        });
     }
 
     render() {
@@ -192,6 +196,7 @@ export class Dashboard extends React.Component {
                         <MdClose size={32}/> :
                         <FiEdit size={32}/>}
                 </Fab>
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
 
             </div>
 

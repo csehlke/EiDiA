@@ -7,6 +7,7 @@ import styled from "styled-components";
 import {Input} from '@material-ui/core';
 import {Link} from "../components/Link";
 import RecordService from "../services/RecordService";
+import {ServerSideErrorSnackBar} from "../components/ServerSideErrorSnackBar";
 
 const FlexRow = styled.div`
     display: flex;
@@ -29,6 +30,7 @@ export class FileCabinetView extends React.Component {
         this.state = {
             records: [],
             search: '',
+            isServerError: false,
         }
 
 
@@ -38,20 +40,23 @@ export class FileCabinetView extends React.Component {
         this.props.setTitle("File Cabinet");
         RecordService.getAllRecords().then(result => {
             this.setState({records: result.records});
-        }).catch((e) => {
-            //TODO snackbar
-            console.error((e))
-        })
+        }).catch((e) => this.setState({isServerError: true}))
     }
 
     updateSearch = (event) => {
         this.setState({search: event.target.value});
     }
 
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+
+        });
+    }
+
     render() {
 
         let filteredRecords = this.state.records.filter((record) => {
-            //TODO: maybe transform all records to lowercase
             return record.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
         });
 
@@ -75,6 +80,7 @@ export class FileCabinetView extends React.Component {
                         </Link>
                     )}
                 </FlexRow>
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
             </Page>
         );
     }

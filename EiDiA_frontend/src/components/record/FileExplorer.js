@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import RecordService from "../../services/RecordService";
 import Fab from "@material-ui/core/Fab";
 import {MdCreateNewFolder} from "react-icons/md/index";
+import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
 
 
 export default class FileExplorer extends React.Component {
@@ -13,7 +14,8 @@ export default class FileExplorer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            elements: this.props.elements
+            elements: this.props.elements,
+            isServerError: false
         }
     }
 
@@ -37,11 +39,7 @@ export default class FileExplorer extends React.Component {
                 this.setState(this.state);
 
             }
-        ).catch((e) => {
-                console.log(e)
-                //TODO snackbar
-            }
-        )
+        ).catch((e) => this.setState({isServerError: true}))
 
     }
     activeToggle = (element) => () => {
@@ -61,10 +59,7 @@ export default class FileExplorer extends React.Component {
                     this.state.elements.push(resp);
                     this.setState({elements: this.state.elements})
                 }
-            )
-            .catch(
-                //TODO open snackbar error
-                (e) => console.log(e))
+            ).catch((e) => this.setState({isServerError: true}))
     }
     editName = (element) => (name) => {
         let reqBody = {
@@ -76,11 +71,7 @@ export default class FileExplorer extends React.Component {
                 this.setState(this.state);
 
             }
-        ).catch((e) => {
-                console.log(e)
-                //TODO snackbar
-            }
-        )
+        ).catch((e) => this.setState({isServerError: true}))
     }
     handleDeleteElement = (element) => (e) => {
         //TODO if parent Element deleted, also delete all child elements
@@ -90,10 +81,7 @@ export default class FileExplorer extends React.Component {
                 if (result.ok) this.state.elements.splice(this.state.elements.findIndex(elem => elem.id === element.id), 1);
                 this.setState(this.state)
             }
-        ).catch((e) => {
-            //TODO snabkbar
-            console.log(e)
-        })
+        ).catch((e) => this.setState({isServerError: true}))
     }
 
     renderElement(element, index, level) {
@@ -128,6 +116,13 @@ export default class FileExplorer extends React.Component {
 
             ]
         );
+    }
+
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+
+        });
     }
 
     render() {
@@ -170,6 +165,8 @@ export default class FileExplorer extends React.Component {
                         <MdCreateNewFolder size={32}/>
                     </Fab>
                     : null}
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
+
             </div>
 
         );

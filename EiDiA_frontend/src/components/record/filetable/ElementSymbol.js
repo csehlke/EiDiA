@@ -11,7 +11,6 @@ export class ElementSymbol extends React.Component {
     }
 
     render() {
-        //TODO: size should ideally be scaled together with text
         switch (this.props.fileType) {
             case fileTypes.PDF:
                 return <MdPictureAsPdf size={elementIconSize}/>;

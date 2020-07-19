@@ -9,6 +9,7 @@ import {Tab, Tabs} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import RecordService from "../services/RecordService";
 import {recordMenuOptions} from "../../../constants";
+import {ServerSideErrorSnackBar} from "../components/ServerSideErrorSnackBar";
 
 class RecordView extends React.Component {
 
@@ -19,18 +20,19 @@ class RecordView extends React.Component {
             currentPage: recordMenuOptions.DASHBOARD,
             recordId: this.props.match.params.id,
             documents: [],
+            isServerError: false,
 
         }
     }
 
     componentDidMount() {
         this.getDocuments()
-        RecordService.getRecordName(this.state.recordId).then(response => this.props.setTitle(response.name)).catch(error => {
-            console.log(error);
-            this.props.setTitle("Record")
-            //TODO snackbar
-
-        })
+        RecordService.getRecordName(this.state.recordId)
+            .then(response => this.props.setTitle(response.name))
+            .catch((e) => {
+                this.props.setTitle("Record")
+                this.setState({isServerError: true})
+            })
 
 
     }
@@ -50,8 +52,7 @@ class RecordView extends React.Component {
             .then(response => {
                 this.setState({documents: response})
             })
-            .catch(e => console.error(e))
-        //TODO snackbar
+            .catch((e) => this.setState({isServerError: true}))
 
     }
 
@@ -66,6 +67,12 @@ class RecordView extends React.Component {
         }, {});
     };
 
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+
+        });
+    }
 
     render() {
         console.log(this.state.documents)
@@ -104,6 +111,8 @@ class RecordView extends React.Component {
                 <WrapperRecordView>
                     {toShow}
                 </WrapperRecordView>
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
+
             </Page>
         );
     }
