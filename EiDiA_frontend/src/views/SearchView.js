@@ -8,6 +8,7 @@ import SearchForm from "../components/search/SearchForm";
 import SearchService from "../services/SearchService";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
+import {ServerSideErrorSnackBar} from "../components/ServerSideErrorSnackBar";
 
 const Result = styled.div`
     width: 100%;
@@ -25,11 +26,13 @@ export class SearchView extends React.Component {
 
         this.state = {
             table: [],
+            isServerError: false,
             showEmptyResultInfo: false,
         }
 
         this.onSearch = this.onSearch.bind(this);
         this.handleInfoBarClose = this.handleInfoBarClose.bind(this);
+        this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -45,6 +48,9 @@ export class SearchView extends React.Component {
                         showEmptyResultInfo: data.table.length === 0,
                     });
                 }).catch((e) => {
+                    this.setState({
+                        isServerError: true,
+                    });
                     console.error(e);
                 });
                 break;
@@ -55,6 +61,9 @@ export class SearchView extends React.Component {
                         showEmptyResultInfo: data.table.length === 0,
                     });
                 }).catch((e) => {
+                    this.setState({
+                        isServerError: true,
+                    });
                     console.error(e);
                 });
                 break;
@@ -62,10 +71,18 @@ export class SearchView extends React.Component {
         }
     }
 
+
     handleInfoBarClose() {
         this.setState({
             showEmptyResultInfo: false,
-        })
+        });
+    }
+
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+
+        });
     }
 
     render() {
@@ -84,6 +101,7 @@ export class SearchView extends React.Component {
                         0 documents fulfilling those search criteria were found.
                     </Alert>
                 </Snackbar>
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
             </Page>
         );
     }

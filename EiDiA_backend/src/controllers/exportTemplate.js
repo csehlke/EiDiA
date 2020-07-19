@@ -3,17 +3,20 @@
 const ExportTemplateModel = require('../models/exportTemplate');
 const DocumentModel = require('../models/document');
 const RecordController = require('./record');
+const mongoose = require('mongoose')
+const {fileTypes} = require('../../../constants');
 
 const listTemplates = (req, res) => {
+    // TODO: provide templates in database
     ExportTemplateModel.find()
-        .then(exportTemplates => {
-            let response = exportTemplates.map(exportTemplate => {
-                return {
-                    id: exportTemplate._id,
-                    name: exportTemplate.name,
-                };
-            });
-            res.status(200).json({exportTemplates: response});
+        .then(() => {
+            const dummyData = [
+                {name: "Template 0", id: "t_0"},
+                {name: "Template 1", id: "t_1"},
+                {name: "Template 2", id: "t_2"},
+            ];
+
+            res.status(200).json({exportTemplates: dummyData});
         })
         .catch(error => {
             res.status(400).json({
@@ -23,18 +26,98 @@ const listTemplates = (req, res) => {
         });
 };
 
+const getTemplate = (req, res) => {
+    // TODO: provide templates in database
+    const dummyTemplates = {
+        t_0: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam 25%. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. ',
+        t_1: '$\/Document1\/VARIABLE1 On the date of $DATE ,\n $\/Document1\/VARIABLE1 has made a revenue of $VARIABLE2',
+        t_2: 'Eins Zwei Drei Vier \n mit zeilenbruch'
+    }
+
+    const templateId = req.params.templateId;
+
+    res.status(200).json({template: dummyTemplates[templateId]});
+};
+
 const saveTemplate = (req, res) => {
+    // TODO: save templates in database
+    const template = req.body.content;
+    res.status(200).json({response: "success!"});
+};
+
+const exportDocuments = (req, res) => {
+    // TODO: provide documents from database
+    const params = req.params.documents;
     res.status(200).json({response: "dummy response"});
 };
 
-const exportDocument = (req, res) => {
-    res.status(200).json({response: "dummy response"});
+const search = (req, res) => {
+    // TODO: provide documents in database for search
+    const searchQuery = req.params.searchqu;
+
+    let out = []
+    for (let i = 0; i < 9; i++) {
+        const obj = {id: "doc_" + i, name: "Document " + i, documentTypeId: "typed_" + i};
+        out.push(obj);
+    }
+    out.push({
+        id: "5efa2869444d2082a89b793a",
+        name: "Document1 (Amazon)",
+        documentTypeId: "5ef99f619815e6b0c4f9292a"
+    })
+
+    res.status(200).json({documents: out});
 };
 
 const download = (req, res) => {
-    res.status(200).json({response: "dummy response"});
-};
+    res.status(200).json({response: "success!"});
+}
 
+const getDocumentAttributes = (req, res) => {
+    let docNames = req.query.documentIDs;
+    if (!Array.isArray(docNames)) {
+        docNames = [docNames]
+    }
+
+    docNames = docNames.map(doc => {
+        return mongoose.Types.ObjectId(doc)
+    })
+
+
+    DocumentModel.aggregate([
+            {$match: {_id: {$in: docNames}}},
+            {$unwind: "$attributes"},
+            {
+                "$project": {
+                    "docTypeId": "$documentTypeId",
+                    "attributeId": "$attributes.attributeId",
+                    "value": "$attributes.value",
+                }
+            },
+            {$lookup: {from: 'attributetypes', localField: 'attributeId', foreignField: '_id', as: 'test'}},
+            {$unwind: "$test"},
+            {
+                "$project": {
+
+                    "docTypeId": "$documentTypeId",
+                    "attribute": {
+                        "name": "$test.name",
+                        "value": "$value"
+                    },
+                }
+            }
+
+        ],
+        function (err, documents) {
+            if (err) return res.status(500).json({
+                error: "Internal Server error",
+                message: err.message
+            })
+            res.status(200).json(documents);
+
+        });
+
+}
 const searchDocumentsByName = (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.query, "documentName")) {
         return res.status(400).json({
@@ -42,11 +125,9 @@ const searchDocumentsByName = (req, res) => {
             message: 'The request query must contain the following search param: documentName',
         });
     }
-
     const query = req.query;
-    const dbQuery = {};
+    const dbQuery = {fileType: {$ne: fileTypes.FOLDER}};
     dbQuery['name'] = {$regex: ".*" + query.documentName + ".*"};
-
     DocumentModel.find(dbQuery)
         .then(documents => {
             return Promise.all(documents.map(document => {
@@ -77,10 +158,14 @@ const searchDocumentsByName = (req, res) => {
         })
 }
 
+
 module.exports = {
     listTemplates,
     saveTemplate,
-    exportDocument,
-    download,
+    exportDocuments,
+    getTemplate,
+    search,
     searchDocumentsByName,
+    download,
+    getDocumentAttributes,
 };

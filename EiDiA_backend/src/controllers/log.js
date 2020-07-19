@@ -1,6 +1,8 @@
 "use strict";
 const LogModel = require('../models/log');
 const mongoose = require('mongoose');
+const {logCount} = require("../../../constants");
+const {format} = require('date-fns');
 
 
 const getLogs = (req, res) => {
@@ -26,21 +28,26 @@ const getLogs = (req, res) => {
                     message: error.message,
 
                 });
-            else
-                res.status(200).json(logs.slice(0, 20));
+            else {
+                logs = logs.map(log => {
+                    log.date = format(log.date, 'dd/MM/yyyy');
+                    return log
+                })
+                res.status(200).json(logs.slice(0, logCount));
+
+            }
 
         });
 
 };
 const getRecentRecords = (req, res) => {
-    LogModel.aggregate([
-            {$match: {userId: mongoose.Types.ObjectId(req.params.userId)}},
+    LogModel.aggregate([{$match: {userId: mongoose.Types.ObjectId(req.userId)}}, //select logs with userId
             {$sort: {date: -1}},
-            {$group: {_id: '$recordId',}},
-            {$lookup: {from: 'records', localField: '_id', foreignField: '_id', as: 'records'}},
-            {$unwind: "$records"},
+            {$group: {_id: '$recordId',}}, // no duplicates
+            {$lookup: {from: 'records', localField: '_id', foreignField: '_id', as: 'records'}}, //join with records to get name
+            {$unwind: "$records"}, // 1 output for each record
             {
-                "$project": {
+                "$project": { // structure output
                     "_id": 0,
                     "recordId": "$records._id",
                     "name": "$records.name"
@@ -49,7 +56,6 @@ const getRecentRecords = (req, res) => {
             }
         ],
         function (err, logs) {
-            console.log(logs)
             if (err)
                 res.status(400).json({
                     error: 'Internal server error',
@@ -57,7 +63,7 @@ const getRecentRecords = (req, res) => {
 
                 });
             else {
-                res.status(200).json(logs.slice(0, 5));
+                res.status(200).json(logs.slice(0, 4));
 
             }
 

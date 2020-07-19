@@ -2,13 +2,13 @@
 const WidgetModel = require('../models/widget');
 const mongoose = require('mongoose');
 const LogModel = require('../models/log')
+const ErrorHandling = require("./errorHandling");
 
 const getDashboard = (req, res) => {
     res.status(200).json({response: "dummy response"});
 };
 
-const listWidgetTypes = (req, res) => {
-    console.log(req.body)
+const listWidgetsToRecord = (req, res) => {
     WidgetModel.find({'recordId': req.params.recordId})
         .then(widgets => {
             if (widgets.length > 0) {
@@ -25,17 +25,23 @@ const listWidgetTypes = (req, res) => {
             error: 'Internal Server Error',
             message: error.message,
         }));
-    // TODO is this really the function we want to send to the backend? i.e. haben wir keine vordefiniete Anzahl an WidgetTypes
 };
 
 const addWidget = (req, res) => {
-    console.log(req.body)
-    if (!Object.prototype.hasOwnProperty.call(req.body, 'title')) {
+    let errors = []
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'title'))
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'recordId'))
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'positionInfo'))
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'widgetType'))
+    errors = errors.filter(error => error); // get rid of null entries
+
+    if (errors.length > 0) {
         return res.status(400).json({
             error: 'Bad Request',
-            message: 'The request body must contain a password property',
-        });
+            message: errors.join('\n')
+        })
     }
+
     const widget = {};
 
     widget['title'] = req.body.title;
@@ -46,40 +52,29 @@ const addWidget = (req, res) => {
     widget['attributeMapping'] = req.body.attributeMapping;
 
     const filter = {positionInfo: req.body.positionInfo, recordId: req.body.recordId}
-    const options = {upsert: true, new: true, setDefaultsOnInsert: true};
-    //TODO
-    WidgetModel.findOneAndUpdate(filter, widget, options).then(body => {
-        // console.log(body)
-        res.status(200).json(
-            "all alright");
-        //TODO maybe using rawResult, differentiate between add and update
+    const options = {upsert: true, new: true, setDefaultsOnInsert: true, returnNewDocument: true};
+
+    WidgetModel.findOneAndUpdate(filter, widget, options).then(updated => {
+        res.status(200).json(updated);
+
         LogModel.create({
             userId: req.userId,
-            recordId: body.recordId,
-            log: "changed Widget \"" + body.title + "\""
+            recordId: updated.recordId,
+            log: "changed Widget \"" + updated.title + "\""
         }).then("Created Log").catch((e) => {
             console.log("Didnt Create Log" + e)
         })
-    })
-        .catch(error => {
-
-            res.status(500).json({
-                error: 'Internal server erroerr' + error.message,
-                message: error.message,
-            });
-
+    }).catch(error => {
+        return res.status(500).json({
+            error: 'Internal server error',
+            message: error.message,
         });
-
-
+    })
 };
 
-const moveWidget = (req, res) => {
-    res.status(200).json({response: "dummy response"});
-};
 
 module.exports = {
     getDashboard,
-    listWidgetTypes,
+    listWidgetsToRecord,
     addWidget,
-    moveWidget,
 };

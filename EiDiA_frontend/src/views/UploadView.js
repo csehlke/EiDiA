@@ -44,6 +44,10 @@ export class UploadView extends React.Component {
         this.props.setTitle("Upload Document");
     }
 
+    componentWillUnmount() {
+        this.state.ocrWorker.terminate();
+    }
+
     handlePageTitleChange(newTitle) {
         this.props.setTitle(newTitle)
     }

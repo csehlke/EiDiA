@@ -12,7 +12,6 @@ class SmartDropDownBox extends React.Component {
 
         this.state = {
             inputValue: '',
-            //TODO default margin value should be zero
             margin: this.props.margin != null ? this.props.margin : "0.5em",
             options: this.props.options,
             label: this.props.label,
@@ -31,7 +30,7 @@ class SmartDropDownBox extends React.Component {
             this.setState({
                 options: this.props.options,
                 label: this.props.label,
-                value: this.props.preselectedValue ? this.props.preselectedValue : null,
+                value: this.props.preselectedValue ? this.props.preselectedValue : this.state.value,
 
             })
         }
@@ -71,7 +70,6 @@ class SmartDropDownBox extends React.Component {
                 blurOnSelect
                 fullWidth
                 size={"small"}
-                //TODO: change this to state and therefore controlled
                 disabled={this.props.disabled ? this.props.disabled : false}
                 options={this.state.options}
                 inputValue={this.state.inputValue}
@@ -79,12 +77,13 @@ class SmartDropDownBox extends React.Component {
                 onChange={this.handleOnChange}
                 onInputChange={this.handleOnInputChange}
                 getOptionLabel={(option) => option.name}
-                //TODO: better solution for style
                 style={this.props.style ? this.props.style : {margin: this.state.margin}}
 
                 getOptionSelected={(option, value) => option.id === value.id && option.name === value.name}
                 renderInput={(params) => (
                     <TextField {...params}
+                               error={this.props.error}
+                               helperText={this.props.error && this.props.errorMessage}
                                label={this.state.label}
                                variant="outlined" placeholder="Type to filter"
                     />)}
@@ -102,7 +101,8 @@ SmartDropDownBox.propTypes = {
     onChange: PropTypes.func.isRequired,
     options: PropTypes.array.isRequired,
     style: PropTypes.object,
-    preselectedValue: PropTypes.object,
     margin: PropTypes.string,
     clearable: PropTypes.bool,
+    error: PropTypes.bool,
+    errorMessage: PropTypes.string,
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import Widget from "./Widgets/Widget";
 import WidgetDropTarget from "./Widgets/WidgetDropTarget";
-import {WidgetTypes} from "../../assets/Constants";
 import {DashboardWrapper, WidgetWrapper} from "../StyleElements";
 import {LogWidget} from "./Widgets/LogWidget";
 import {GraphsWidget} from "./Widgets/GraphsWidget";
@@ -10,7 +9,7 @@ import {FiEdit} from 'react-icons/fi'
 import Fab from "@material-ui/core/Fab";
 import RecordService from "../../services/RecordService";
 import {MdClose} from "react-icons/all";
-import {styleFabButton} from "../../../../constants";
+import {styleFabButton, WidgetTypes} from "../../../../constants";
 
 export class Dashboard extends React.Component {
     constructor(props) {
@@ -27,9 +26,6 @@ export class Dashboard extends React.Component {
 
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-
-    }
 
     componentDidMount() {
         this.getWidgetsFromBackend()
@@ -98,9 +94,12 @@ export class Dashboard extends React.Component {
     getWidgetsFromBackend() {
 
         RecordService.getWidgets(this.props.recordId).then(response => {
+            this.getLogs()
             this.setState({widgets: response});
             this.fillUpFreeSlots();
+
         }).catch(e => console.error("No Widgets found:" + e))
+        // todo snackbar
     }
 
     getDocTypes = () => {
@@ -110,26 +109,34 @@ export class Dashboard extends React.Component {
         RecordService.getAttributeTypes(this.props.recordId).then(response => {
             this.setState({attributeTypes: response})
         }).catch(e => console.error(e))
+        //TODO snackbar
 
     }
     getAttributeValues = () => {
         RecordService.getAttributeValues(this.props.recordId).then(response => {
             this.setState({attributeValues: response.flat()})
         }).catch(e => console.error(e))
+        //TODO snackbar
+
 
     }
     getLogs = () => {
         RecordService.getLogs(this.props.recordId).then(response => {
             this.setState({logs: response})
         }).catch(e => console.error(e))
+        //TODO snackbar
+
     }
 
     sendWidgetToBackend(widget) {
         const requestData = {recordId: this.props.recordId, ...widget}
-
         if (widget.graphType) requestData['graphType'] = widget.graphType
+        RecordService.addWidget(requestData).then(response => {
+            widget = response;
+            this.setState(this.state)
+        }).catch(e => console.error(e))
+        //TODO snackbar
 
-        RecordService.addWidget(requestData).then(response => console.log(response)).catch(e => console.error(e))
     }
 
 
@@ -149,13 +156,12 @@ export class Dashboard extends React.Component {
         let b = this.state.widgets.find(widget => widget.positionInfo === positionB)
         a.positionInfo = positionB;
         b.positionInfo = positionA;
+        this.sendWidgetToBackend(a)
+        this.sendWidgetToBackend(b)
         this.setState({widgets: this.state.widgets})
     }
 
     render() {
-        //taken from here https://stackoverflow.com/questions/35828991/make-material-ui-reactjs-floatingactionbutton-float
-        //to let fab button float right
-
         return (
             <div>
 
