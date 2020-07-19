@@ -75,7 +75,6 @@ const download = (req, res) => {
 
 const getDocumentAttributes = (req, res) => {
     let docNames = req.query.documentIDs;
-    console.log(docNames.length)
     if (!Array.isArray(docNames)) {
         docNames = [docNames]
     }
@@ -83,7 +82,6 @@ const getDocumentAttributes = (req, res) => {
     docNames = docNames.map(doc => {
         return mongoose.Types.ObjectId(doc)
     })
-    console.log(docNames.length)
 
 
     DocumentModel.aggregate([
@@ -91,12 +89,9 @@ const getDocumentAttributes = (req, res) => {
             {$unwind: "$attributes"},
             {
                 "$project": {
-
                     "docTypeId": "$documentTypeId",
-                    "date": "$createdOnDate",
                     "attributeId": "$attributes.attributeId",
                     "value": "$attributes.value",
-
                 }
             },
             {$lookup: {from: 'attributetypes', localField: 'attributeId', foreignField: '_id', as: 'test'}},
@@ -114,8 +109,10 @@ const getDocumentAttributes = (req, res) => {
 
         ],
         function (err, documents) {
-            //TODO: check for error
-            // console.log(documents)
+            if (err) return res.status(500).json({
+                error: "Internal Server error",
+                message: err.message
+            })
             res.status(200).json(documents);
 
         });
