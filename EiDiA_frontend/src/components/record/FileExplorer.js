@@ -158,7 +158,7 @@ export default class FileExplorer extends React.Component {
                         <span style={{textAlign: "center"}}>Actions</span>
                     </Grid>
 
-                    <Grid item xl={12}>
+                    <Grid item xs={12} sm={12} xl={12}>
                         <hr/>
                     </Grid>
                     {this.state.elements.map((element, index) => element.parentFolderId === 0 ?
