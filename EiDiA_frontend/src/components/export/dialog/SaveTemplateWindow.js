@@ -17,6 +17,16 @@ const styles = {
 }
 
 export default class SaveTemplateWindow extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {templateName: ""};
+        this.setTemplateName = this.setTemplateName.bind(this);
+    }
+
+    setTemplateName(event) {
+        this.setState({templateName: event.target.value});
+    }
+
     render() {
         return (
             <Column>
@@ -26,7 +36,7 @@ export default class SaveTemplateWindow extends React.Component {
                     </Typography>
                 </Row>
                 <Row>
-                    <Input placeholder="Template Name"/>
+                    <Input placeholder="Template Name" onChange={this.setTemplateName}/>
                 </Row>
                 Saving template not implemented yet
                 <Row>
@@ -44,7 +54,7 @@ export default class SaveTemplateWindow extends React.Component {
                         variant="contained"
                         color="primary"
                         disableElevation
-                        onClick={this.props.save}
+                        onClick={() => this.props.save(this.state.templateName)}
                     >
                         Save Template
                     </Button>

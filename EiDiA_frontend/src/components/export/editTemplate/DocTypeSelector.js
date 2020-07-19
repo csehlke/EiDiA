@@ -8,13 +8,23 @@ import Snackbar from "@material-ui/core/Snackbar";
 import CommonService from "../../../services/CommonService";
 import {v4 as uuidv4} from 'uuid';
 
+function findWithAttr(array, attr, value) {
+    for (let i = 0; i < array.length; i += 1) {
+        if (array[i][attr] === value) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 export default class DocTypeSelector extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isSnackBarOpen: false,
-            // e.g. [{key: "123214", docTypeID: null}, {key: "145214", docTypeID: "12er213"}]
+            // e.g. [{key: "123214", docTypeID: null, docNumber: 1}, {key: "145214", docTypeID: "12er213", docNumber: 2}]
             // keys generated with uuid for dynamic removing/rendering of DocTypeSelectorLine
+            // docNumber for variable e.g. $/Document1/
             docTypesWithUUID: [],
         }
 
@@ -48,9 +58,10 @@ export default class DocTypeSelector extends React.Component {
         this.setState({isSnackBarOpen: false});
     }
 
-    setSelectedDocType(index, newDocTypeID) {
+    setSelectedDocType(docNumber, newDocTypeID) {
         // update DocTypesWithUUID
         let newDocTypesWithUUID = this.state.docTypesWithUUID;
+        const index = findWithAttr(newDocTypesWithUUID, "docNumber", docNumber);
         newDocTypesWithUUID[index].docTypeID = newDocTypeID;
         this.setState({docTypesWithUUID: newDocTypesWithUUID});
 
@@ -64,8 +75,14 @@ export default class DocTypeSelector extends React.Component {
         let selectedDocTypes = this.props.selectedDocTypes;
         selectedDocTypes = selectedDocTypes.slice(docTypesWithUUID.length, selectedDocTypes.length);       // docTypesWithUUID.length <= selectedDocTypes
 
+        let highestDocNumber = docTypesWithUUID.length > 0 ? docTypesWithUUID[docTypesWithUUID.length - 1].docNumber : 0
+
         let newDocTypesWithUUID = [];
-        selectedDocTypes.forEach((docTypeID) => newDocTypesWithUUID.push({docTypeID: docTypeID, key: uuidv4()}))
+        selectedDocTypes.forEach((docTypeID) => newDocTypesWithUUID.push({
+            docTypeID: docTypeID,
+            key: uuidv4(),
+            docNumber: ++highestDocNumber
+        }))
         newDocTypesWithUUID = docTypesWithUUID.concat(newDocTypesWithUUID);
         this.setState({docTypesWithUUID: newDocTypesWithUUID})
     }
@@ -84,12 +101,11 @@ export default class DocTypeSelector extends React.Component {
             <div style={{overflow: 'auto', maxHeight: '35vh', minHeight: '35vh'}}>
                 {docTypesWithUUID.map((element, index) =>
                     <DocTypeSelectLine
-                        showButton={index < this.props.selectedDocTypes.length - 1}
                         key={element.key}
                         variables={this.props.variables}
                         handleSnackBarOpen={this.handleSnackBarOpen}
                         docTypes={this.state.documentTypes}
-                        number={index + 1}
+                        number={element.docNumber}
                         remove={this.removeDocTypeWithUUID}
                         onSetDocType={this.setSelectedDocType}
                     />)}

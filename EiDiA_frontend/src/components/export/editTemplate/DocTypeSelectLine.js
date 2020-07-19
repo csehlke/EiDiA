@@ -19,7 +19,8 @@ export default class DocTypeSelectLine extends React.Component {
             disableCopy: true,
             disableAttributes: true,
             attributeFieldValue: null,
-            toAdd: true
+            toAdd: true,
+            disableRemoveButton: false
         }
         this.docTypeSelected = this.docTypeSelected.bind(this);
         this.createVariableString = this.createVariableString.bind(this);
@@ -30,9 +31,12 @@ export default class DocTypeSelectLine extends React.Component {
         if (JSON.stringify(this.props.variables) !== JSON.stringify(prevProps.variables)) {
             let variables = this.props.variables;
             this.setState({disableDocType: this.state.variable in variables});
-            if (this.state.toAdd && this.state.variable in variables) {
-                this.setState({toAdd: false});
-                this.props.onSetDocType(this.props.number - 1, this.state.selectedDocType);
+            this.setState({disableRemoveButton: this.state.variable in variables});
+            if (this.state.variable in variables) {
+                if (this.state.toAdd) {
+                    this.setState({toAdd: false});
+                    this.props.onSetDocType(this.props.number, this.state.selectedDocType);
+                }
             }
         }
     }
@@ -73,8 +77,13 @@ export default class DocTypeSelectLine extends React.Component {
                     <Typography style={{margin: "10px"}} variant="subtitle2">
                         Document{this.props.number}
                     </Typography>
-                    {(this.props.number > 1 || this.props.showButton) && // dont show if Document1 is the only one
-                    <Button size="small" color="secondary" onClick={this.remove}>Remove</Button>}
+                    <Button size="small"
+                            color="secondary"
+                            onClick={this.remove}
+                            disabled={this.state.disableRemoveButton}
+                    >
+                        Remove
+                    </Button>
                 </Row>
                 <Row>
                     <SmartDropDownBox disabled={this.state.disableDocType}
