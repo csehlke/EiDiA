@@ -39,7 +39,6 @@ class SaveTemplateWindow extends React.Component {
                     <Button
                         style={styles.button_left}
                         variant="contained"
-                        color="primary"
                         disableElevation
                         onClick={this.props.onClose}
                         className={classes.error}
