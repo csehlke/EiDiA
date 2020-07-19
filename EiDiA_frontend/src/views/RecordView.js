@@ -67,7 +67,7 @@ class RecordView extends React.Component {
         }, {});
     };
 
-    handleServerErrorBarClose() {
+    handleServerErrorBarClose = (e) => {
         this.setState({
             isServerError: false,
 

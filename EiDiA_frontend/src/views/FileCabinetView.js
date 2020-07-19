@@ -47,7 +47,7 @@ export class FileCabinetView extends React.Component {
         this.setState({search: event.target.value});
     }
 
-    handleServerErrorBarClose() {
+    handleServerErrorBarClose = (e) => {
         this.setState({
             isServerError: false,
 

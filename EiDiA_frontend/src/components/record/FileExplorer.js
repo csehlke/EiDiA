@@ -130,7 +130,7 @@ export default class FileExplorer extends React.Component {
         );
     }
 
-    handleServerErrorBarClose() {
+    handleServerErrorBarClose = (e) => {
         this.setState({
             isServerError: false,
 

@@ -158,7 +158,7 @@ export class Dashboard extends React.Component {
         this.setState({widgets: this.state.widgets})
     }
 
-    handleServerErrorBarClose() {
+    handleServerErrorBarClose = (e) => {
         this.setState({
             isServerError: false,
 
