@@ -5,12 +5,13 @@ import 'draft-js/dist/Draft.css'
 const styles = {
     editor: {
         width: '21cm',
-        height: '30cm',
+        minHeight: '30cm',
         align: 'center',
         margin: 10,
         backgroundColor: "white",
         boxShadow: "0px 0px 6px 1px rgba(0,0,0,0.5)",
         padding: "20px",
+        display: 'flex'
     }
 };
 
