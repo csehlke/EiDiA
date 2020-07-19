@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 
-import {DatabaseDocTypes, GraphType, WidgetTypes} from "../../../assets/Constants";
+import {GraphType, WidgetTypes} from "../../../assets/Constants";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
 import SmartDropDownBox from "../../SmartDropDownBox";
@@ -13,14 +13,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import {IoMdAddCircleOutline, IoMdRemoveCircleOutline} from "react-icons/all";
-
-/**
- * TODO:
- * Add Limit for Titles
- * Add Limit for Attributes
- * - Color minus red
- * - Color Plus türkis
- */
 
 
 export class EditDialog extends React.Component {
@@ -47,37 +39,13 @@ export class EditDialog extends React.Component {
         }
     }
 
-    getRecordDocTypes() {
-        /**
-         * TODO Database COnnection
-         */
-        return (DatabaseDocTypes)
-    }
-
-    getAttributes() {
-        /**
-         * TODO: database connection
-         */
-        return this.props.attributeValues;
-    }
-
 
     getAttributesForDocType(docTypeId) {
-        /**
-         * TODO make sure that each attribute object as a name attribute
-         * of same id return only the one with the newest date
-         */
         return this.props.attributeTypes.filter(attributeType => attributeType.docTypeId === docTypeId);
     }
 
 
     indicator() {
-        /**
-         * TODO:
-         * - set min width around Grid items for bigger fields
-         * - set max length for Display name and display error if too long
-         * - style description texts
-         * */
         return (
             [
                 <Grid key={"descriptionIndicatorAttributes"} item xs={12}>
@@ -99,12 +67,13 @@ export class EditDialog extends React.Component {
     }
 
     graph() {
-        /**
-         * TODO: more advanced colors
-         */
+
         const colorOptions = [
             {name: "Red", color: "red"},
             {name: "Green", color: "green"},
+            {name: "Blue", color: "blue"},
+            {name: "Pink", color: "pink"},
+            {name: "Orange", color: "orange"},
         ]
         const GraphTypeOptions = [
             {name: GraphType.Line, graphType: GraphType.Line},
@@ -127,7 +96,7 @@ export class EditDialog extends React.Component {
                     <DialogContentText>Select Attributes to
                         Display:</DialogContentText>
                 </Grid>,
-                //TODO validate, that only one DocType is selected
+                //TODO for Graphs only one DocType makes sense, this should be considered and validated in futures
                 this.state.selectedAttributeMapping.map((mapping, index) =>
                     [
                         this.getDocTypeSelector(index, mapping, 3),
@@ -302,9 +271,7 @@ export class EditDialog extends React.Component {
             {name: WidgetTypes.GRAPH, widgetType: WidgetTypes.GRAPH},
             {name: WidgetTypes.LOG, widgetType: WidgetTypes.LOG}
         ]
-        /**
-         * TODO: THeme needs to be set for Typography to style e.g. the different headings
-         */
+
         return (
             <Dialog open={this.props.open} onClose={this.props.onClose} style={{flexGrow: 1}} fullWidth={true}
                     maxWidth={'lg'}>
@@ -344,9 +311,7 @@ export class EditDialog extends React.Component {
                 <DialogActions>
                     {/*TODO: coloring of Buttons*/}
                     <Button onClick={
-
                         this.props.onClose
-
                     }>
                         Cancel
                     </Button>

@@ -5,10 +5,7 @@ import Fab from "@material-ui/core/Fab";
 import {DragTypes} from "../../../assets/Constants";
 import {EditDialog} from "./EditDialog";
 import {DragSource} from "react-dnd";
-/**
- * TODO:
- *
- */
+
 
 /*
  *Reason for no use of inheritance as specified in Data model, instead composition is used
@@ -99,7 +96,7 @@ class Widget extends React.Component {
                         handleUpdateWidgetButton={this.props.handleUpdateWidgetButton}
                         widgetTitle={this.state.widget.title}
                         widgetType={this.state.widget.widgetType}
-                        graphType={this.state.widget.graphType} // TODO: handle undefined
+                        graphType={this.state.widget.graphType}
                         onClose={this.toggleEditDialog}
                         open={this.state.widgetEditingActive}
                         attributeMapping={this.state.widget.attributeMapping}/>

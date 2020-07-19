@@ -27,9 +27,6 @@ export class Dashboard extends React.Component {
 
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-
-    }
 
     componentDidMount() {
         this.getWidgetsFromBackend()
@@ -98,8 +95,10 @@ export class Dashboard extends React.Component {
     getWidgetsFromBackend() {
 
         RecordService.getWidgets(this.props.recordId).then(response => {
+            this.getLogs()
             this.setState({widgets: response});
             this.fillUpFreeSlots();
+
         }).catch(e => console.error("No Widgets found:" + e))
     }
 

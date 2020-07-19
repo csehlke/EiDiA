@@ -1,13 +1,6 @@
 import React from 'react';
 import {FlexRow, IndicatorElement, TealRight} from "../../StyleElements";
 
-/**
- * TODO:
- * Add Limit for Titles
- * Add Limit for Attributes
- * - get only newest attribute
- */
-
 
 export class IndicatorWidget extends React.Component {
     constructor(props) {

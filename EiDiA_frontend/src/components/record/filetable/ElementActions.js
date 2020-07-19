@@ -5,13 +5,6 @@ import {MdCloudDownload, MdCreateNewFolder, MdDelete, MdEdit} from "react-icons/
 import IconButton from "@material-ui/core/IconButton";
 
 
-/**
- * TODO:
- * - Button Link Coloring
- * - Remove Button border color when clicked and add Icon Color
- *- or remove whole button and make icon clickable
- */
-
 export class ElementActions extends React.Component {
     constructor(props) {
         super(props);

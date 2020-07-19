@@ -14,11 +14,6 @@ import {
 } from 'recharts';
 import {GraphType} from "../../../assets/Constants";
 
-/**
- * TODO:
- *
- */
-
 
 export class GraphsWidget extends React.Component {
     constructor(props) {

@@ -1,6 +1,7 @@
 "use strict";
 const LogModel = require('../models/log');
 const mongoose = require('mongoose');
+const {logCount} = require("../../../constants");
 const {format} = require('date-fns');
 
 
@@ -32,7 +33,7 @@ const getLogs = (req, res) => {
                     log.date = format(log.date, 'dd/MM/yyyy');
                     return log
                 })
-                res.status(200).json(logs.slice(0, 20));
+                res.status(200).json(logs.slice(0, logCount));
 
             }
 

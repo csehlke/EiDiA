@@ -76,10 +76,8 @@ class Element extends React.Component {
         const toRender = (
             <div>
                 {!isDragging &&
-                //TODO: cursor doesnt work yet
                 <Grid container item spacing={2}
-
-                      style={{cursor: (this.state.elementData.type === fileTypes.FOLDER) && 'pointer'}}
+                      style={{cursor: (this.state.elementData.fileType === fileTypes.FOLDER) && 'pointer'}}
                 >
                     <Grid item xs={12} xl={4} sm={4} onClick={(e) => {
                         this.state.nameEdit ? {} : this.props.activeToggle()
@@ -128,13 +126,5 @@ class Element extends React.Component {
     }
 }
 
-/*
-*TODO:
-* - a cleaner Code would be to remove Elementtable and making Element Target & Source at the same time, however, this
-* needs state handling. If choosen to do both in one, one has to write something like this
-* const drop = DropTarget(DragTypes.ELEMENT, {}, collectDrop);
-* const drag = DragSource(DragTypes.ELEMENT, itemSource, collectDrag);
-* export default drop(drag(Element));
-*/
 const drag = DragSource(DragTypes.ELEMENT, itemSource, collectDrag);
 export default drag(Element);

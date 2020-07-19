@@ -28,7 +28,7 @@ const styleFabButton = {
     position: 'fixed',
 };
 const elementIconSize = '1.5rem';
-
+const logCount = 5;
 
 module.exports = {
     baseURL,
@@ -37,4 +37,5 @@ module.exports = {
     fileActions,
     styleFabButton,
     elementIconSize,
+    logCount
 };

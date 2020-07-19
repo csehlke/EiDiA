@@ -13,11 +13,7 @@ const Center = styled.div`
    text-align:center;
 `;
 
-/**
- * TODO:
- * - Cant drag files to toplevel at the moment
- * - Design DnD operations
- */
+
 export default class FileExplorer extends React.Component {
 
     constructor(props) {
@@ -34,28 +30,10 @@ export default class FileExplorer extends React.Component {
                 elements: this.props.elements,
             })
         }
-        // this.state.elements.forEach(element => element['activeFolder'] = false);
     }
 
-    //TODO during drag and drop check if element was pushed into child element
-    /*testIfNewParentIsActuallyAChild(newId,parent){
-        let childDetected=false
-        let child=this.state.elements.find(elem=>elem.parentFolderId===parent.id)
-        for(int )
-            if(child.id===newId) return true;
-            return this.testIfNewParentIsActuallyAChild(newId,child)
-        }
-        child.map(childchild=>{
-            if(childchild.id==newId) {
-                childDetected = true
-                return;
-            }
-            childDetected= this.testIfNewParentIsActuallyAChild(newId,childchild)
-        })
-    }*/
-    setNewParent = (child) => (newParentId) => {
 
-        // if(this.testIfNewParentIsActuallyAChild(newParentId,child))return;
+    setNewParent = (child) => (newParentId) => {
         let reqBody = {
             id: child.id,
             parentFolderId: newParentId + ""

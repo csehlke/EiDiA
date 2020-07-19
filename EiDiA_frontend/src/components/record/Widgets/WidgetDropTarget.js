@@ -26,7 +26,6 @@ class WidgetDropTarget extends Component {
     render() {
         const {connectDropTarget, isOver} = this.props;
         return connectDropTarget(
-            //TODO: cursor should be fine however it is different in chrome from firefox & a forbiddon cursor would be nice if no drag desired
             //TODO: color
             <div style={{
                 backgroundColor: isOver ? 'rgba(28, 166, 166,0.3)' : '',

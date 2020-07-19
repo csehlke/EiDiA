@@ -59,8 +59,8 @@ const addWidget = (req, res) => {
 
         LogModel.create({
             userId: req.userId,
-            recordId: body.recordId,
-            log: "changed Widget \"" + body.title + "\""
+            recordId: updated.recordId,
+            log: "changed Widget \"" + updated.title + "\""
         }).then("Created Log").catch((e) => {
             console.log("Didnt Create Log" + e)
         })
