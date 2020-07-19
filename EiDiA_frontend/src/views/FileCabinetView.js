@@ -6,7 +6,14 @@ import {RecordSymbol} from "../components/record/RecordSymbol";
 import styled from "styled-components";
 import {Input} from '@material-ui/core';
 import {Link} from "../components/Link";
+import Fab from "@material-ui/core/Fab";
+import {IoMdAddCircleOutline} from "react-icons/all";
+import AddElementDialog from "../components/record/AddElementDialog";
 import RecordService from "../services/RecordService";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+import {ServerSideErrorSnackBar} from "../components/ServerSideErrorSnackBar";
+import {styleFabButton} from "../../../constants";
 
 const FlexRow = styled.div`
     display: flex;
@@ -29,9 +36,14 @@ export class FileCabinetView extends React.Component {
         this.state = {
             records: [],
             search: '',
+            isAddRecordDialogActive: false,
+            isRecordAlreadyExistsError: false,
+            isServerError: false,
         }
 
-
+        this.addRecord = this.addRecord.bind(this);
+        this.handleRecordAlreadyExistsErrorBarClose = this.handleRecordAlreadyExistsErrorBarClose.bind(this);
+        this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -39,7 +51,9 @@ export class FileCabinetView extends React.Component {
         RecordService.getAllRecords().then(result => {
             this.setState({records: result.records});
         }).catch((e) => {
-            //TODO snackbar
+            this.setState({
+                isServerError: true,
+            });
             console.error((e))
         })
     }
@@ -48,10 +62,51 @@ export class FileCabinetView extends React.Component {
         this.setState({search: event.target.value});
     }
 
-    render() {
+    toggleAddRecordDialog = () => {
+        this.setState({
+            isAddRecordDialogActive: !this.state.isAddRecordDialogActive,
+        });
+    }
 
+    handleRecordAlreadyExistsErrorBarClose() {
+        this.setState({
+            isRecordAlreadyExistsError: false,
+        })
+    }
+
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+        })
+    }
+
+    addRecord(recordName) {
+        RecordService.addNewRecord(recordName)
+            .then(record => {
+                let records = [record, ...this.state.records];
+                records.sort((a, b) => {
+                    return ('' + a.name).localeCompare(b.name);
+                });
+                this.setState({
+                    records: records,
+                });
+            })
+            .catch(error => {
+                if (error === "Record already exists") {
+                    this.setState({
+                        isRecordAlreadyExistsError: true,
+                    });
+                } else {
+                    this.setState({
+                        isServerError: true,
+                    });
+                }
+                console.log(error);
+            });
+    }
+
+    render() {
         let filteredRecords = this.state.records.filter((record) => {
-            //TODO: maybe transform all records to lowercase
             return record.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
         });
 
@@ -75,6 +130,23 @@ export class FileCabinetView extends React.Component {
                         </Link>
                     )}
                 </FlexRow>
+                <Fab style={styleFabButton} color="primary" aria-label="add"
+                     onClick={this.toggleAddRecordDialog}>
+                    <IoMdAddCircleOutline size={32}/>
+                </Fab>
+                <AddElementDialog elementType={"Record"}
+                                  open={this.state.isAddRecordDialogActive}
+                                  onClose={this.toggleAddRecordDialog}
+                                  onSave={this.addRecord}/>
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
+                <Snackbar open={this.state.isRecordAlreadyExistsError}
+                          autoHideDuration={5000}
+                          onClose={this.handleRecordAlreadyExistsErrorBarClose}>
+                    <Alert severity="error" onClose={this.handleRecordAlreadyExistsErrorBarClose}>
+                        There exists already a record with the same name.<br/>
+                        Cannot create it again.
+                    </Alert>
+                </Snackbar>;
             </Page>
         );
     }

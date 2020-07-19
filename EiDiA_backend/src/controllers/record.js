@@ -59,7 +59,12 @@ const addRecord = (req, res) => {
 
     RecordModel.create(record)
         .then(record => {
-            res.status(200).json({record: record});
+            res.status(200).json({
+                record: {
+                    id: record._id,
+                    name: record.name
+                }
+            });
             LogModel.create({
                 userId: req.userId,
                 recordId: record._id,

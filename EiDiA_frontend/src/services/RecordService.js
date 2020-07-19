@@ -152,4 +152,13 @@ export default class RecordService {
         });
     }
 
+    static addNewRecord(recordName) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(baseURL + '/record/add', {recordName: recordName}, function (data) {
+                resolve(data.record);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
 }
