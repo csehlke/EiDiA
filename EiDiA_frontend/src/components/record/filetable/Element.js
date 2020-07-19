@@ -4,17 +4,19 @@ import React from 'react';
 import styled from "styled-components";
 import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
-import {DragTypes} from "../../../assets/Constants";
-import {fileTypes} from "../../../../../constants";
+
+import {DragTypes, fileTypes} from "../../../../../constants";
 import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
-
+import TextField from "@material-ui/core/TextField";
+import UserService from "../../../services/UserService";
 
 const Name = styled.div`
-    
     padding-left: ${props => props.padding + "%"};
+    
+    display:flex;
+    align-items:center;
 `;
-
 
 const itemSource = {
     beginDrag() {
@@ -24,7 +26,6 @@ const itemSource = {
         if (!monitor.getDropResult()) return
         let wrapperProps = monitor.getDropResult().component.props;
         component.props.handleDrop(wrapperProps.id);
-
     }
 }
 
@@ -44,10 +45,31 @@ class Element extends React.Component {
             symbolArray: [],
             padding: this.props.level * 5,
             width: 40 - this.props.level * 2,
-            elementData: this.props.elementData
+            elementData: this.props.elementData,
+            nameEdit: false,
+            nameInput: this.props.elementData.name
         };
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps !== this.props) {
+            this.setState({
+                elementData: this.props.elementData,
+                nameInput: this.props.elementData.name
+
+
+            })
+        }
+    }
+
+    handleEditName = (e) => {
+        if (this.state.nameEdit) {
+            this.props.editName(this.state.nameInput) //this should reset the state
+            this.setState({nameEdit: false})
+        } else {
+            this.setState({nameEdit: !this.state.nameEdit})
+        }
+    }
 
     render() {
         const {isDragging} = this.props;
@@ -55,46 +77,57 @@ class Element extends React.Component {
         const toRender = (
             <div>
                 {!isDragging &&
-                //TODO: cursor doesnt work yet
-                <Grid container spacing={2}
-                      style={{cursor: (this.state.elementData.type === fileTypes.FOLDER) && 'pointer'}}
-                      onClick={this.props.activeToggle}>
-                    <Grid item xs={12} sm={4}>
+                <Grid container item spacing={2}
+                      style={{cursor: (this.state.elementData.fileType === fileTypes.FOLDER) && 'pointer'}}
+                >
+                    <Grid item xs={12} xl={4} sm={4} onClick={(e) => {
+                        this.state.nameEdit ? {} : this.props.activeToggle()
+                    }}>
                         <Name padding={this.state.padding}>
-                            <ElementSymbol type={this.state.elementData.type}
-                                           activeFolder={this.state.elementData.activeFolder}/>
-                            &nbsp;&nbsp;{this.state.elementData.name}
+                            <ElementSymbol fileType={this.state.elementData.fileType}
+                                           activeFolder={this.state.elementData.activeFolder}
+                            />
+                            &nbsp;&nbsp;{this.state.nameEdit ?
+                            <TextField value={this.state.nameInput}
+                                       onChange={(e) => {
+                                           this.setState({nameInput: e.target.value})
+                                       }}
+                            /> :
+                            this.state.elementData.name
+                        }
                         </Name>
                     </Grid>
-                    <Grid item xs={12} sm={1}>
-                        {this.state.elementData.dateCreation}
+                    <Grid item xs={12} xl={1} sm={2}>
+                        {this.state.elementData.createdOnDate}
                     </Grid>
-                    <Grid item xs={12} sm={1}>
-                        {this.state.elementData.dateModification}
+                    <Grid item xs={12} xl={1} sm={2}>
+                        {this.state.elementData.lastModifiedOnDate}
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} xl={4} sm={3}>
                         {this.state.elementData.comment}
                     </Grid>
-                    <Grid item xs={12} sm={2}>
-                        <ElementActions actions={this.state.elementData.actions}/>
+                    <Grid item xs={12} xl={2} sm={1}>
+                        <ElementActions
+                            fileType={this.state.elementData.fileType}
+                            handleEditName={this.handleEditName}
+                            handleDeleteElement={this.props.handleDeleteElement}
+                            handleAddFolder={this.props.handleAddFolder}
+                            editName={this.props.editName}
+                            withinSearchResults={!this.props.dragEnabled}
+                            isNotAuthorized={!(this.state.elementData.createdBy === UserService.getCurrentUser().id || UserService.isAdmin())}
+                        />
+
                     </Grid>
-
-
-                </Grid>
-                }
+                </Grid>}
             </div>
         );
-        return this.props.connectDragSource(toRender);
+        if (this.props.dragEnabled && !this.state.nameEdit) {
+            return this.props.connectDragSource(toRender);
+        } else {
+            return toRender;
+        }
     }
 }
 
-/*
-*TODO:
-* - a cleaner Code would be to remove Elementtable and making Element Target & Source at the same time, however, this
-* needs state handling. If choosen to do both in one, one has to write something like this
-* const drop = DropTarget(DragTypes.ELEMENT, {}, collectDrop);
-* const drag = DragSource(DragTypes.ELEMENT, itemSource, collectDrag);
-* export default drop(drag(Element));
-*/
 const drag = DragSource(DragTypes.ELEMENT, itemSource, collectDrag);
 export default drag(Element);

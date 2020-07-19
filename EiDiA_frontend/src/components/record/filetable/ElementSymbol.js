@@ -1,7 +1,8 @@
 import React from 'react';
-import {FaFileImage, FaFilePdf, FaFileWord, FaFolder, FaFolderOpen} from 'react-icons/fa'
+import {FaFileWord} from 'react-icons/fa'
 import {AiFillFileUnknown} from 'react-icons/ai'
-import {fileTypes} from "../../../../../constants";
+import {elementIconSize, fileTypes} from "../../../../../constants";
+import {MdFolder, MdFolderOpen, MdImage, MdPictureAsPdf} from "react-icons/all";
 import {IconContext} from "react-icons";
 
 export class ElementSymbol extends React.Component {
@@ -10,43 +11,36 @@ export class ElementSymbol extends React.Component {
 
     }
 
-    /*
-     *TODO:
-     * - Add more symbols like folder, excel etc.
-     */
-
-
     render() {
         //TODO: size should ideally be scaled together with text
-        let size = '1.5em';
-        switch (this.props.type) {
+        switch (this.props.fileType) {
             case fileTypes.PDF:
                 return <IconContext.Provider value={{className: 'react-icons'}}>
-                    <FaFilePdf size={size}/>
+                    <MdPictureAsPdf size={elementIconSize}/>
                 </IconContext.Provider>
             case fileTypes.WORD:
                 return <IconContext.Provider value={{className: 'react-icons'}}>
-                    <FaFileWord size={size}/>
+                    <FaFileWord size={elementIconSize}/>
                 </IconContext.Provider>
             case fileTypes.FOLDER:
                 if (this.props.activeFolder) {
                     return <IconContext.Provider value={{className: 'react-icons'}}>
-                        <FaFolderOpen size={size}/>
+                        <MdFolderOpen size={elementIconSize}/>
                     </IconContext.Provider>
                 } else {
                     return <IconContext.Provider value={{className: 'react-icons'}}>
-                        <FaFolder size={size}/>
+                        <MdFolder size={elementIconSize}/>
                     </IconContext.Provider>
                 }
             case fileTypes.NONE:
                 return <div/>;
             case fileTypes.IMAGE:
                 return <IconContext.Provider value={{className: 'react-icons'}}>
-                    <FaFileImage size={size}/>
+                    <MdImage size={elementIconSize}/>
                 </IconContext.Provider>
             default:
                 return <IconContext.Provider value={{className: 'react-icons'}}>
-                    <AiFillFileUnknown size={size}/>
+                    <AiFillFileUnknown size={elementIconSize}/>
                 </IconContext.Provider>
         }
     }

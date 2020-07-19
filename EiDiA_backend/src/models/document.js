@@ -1,6 +1,8 @@
 "use strict";
 
 const mongoose = require('mongoose');
+const AttributeTypeModel = require('../models/attributeType');
+const DocumentTypeModel = require('../models/documentType')
 const {fileTypes} = require('../../../constants');
 
 // Define the schema
@@ -36,6 +38,7 @@ const DocumentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         index: true,
+        ref: DocumentTypeModel
     },
     completeOcrText: {
         type: String,
@@ -63,16 +66,15 @@ const DocumentSchema = new mongoose.Schema({
     fileType: {
         type: String,
         enum: Object.values(fileTypes),
-        required: false,
+        required: true,
     },
-
-
     attributes: [
         {
             attributeId: {
                 type: mongoose.Schema.Types.ObjectId,
                 required: true,
                 index: true,
+                ref: AttributeTypeModel
             },
             value: {
                 type: mongoose.Schema.Types.Mixed,

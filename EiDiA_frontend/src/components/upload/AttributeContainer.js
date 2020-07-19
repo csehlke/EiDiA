@@ -86,7 +86,7 @@ class AttributeContainer extends React.Component {
                 const {data: {text}} = await this.props.ocrWorker.recognize(this.props.crop); //Do OCR on crop
                 console.log(text);
                 this.setState({
-                    textValue: text
+                    textValue: text.trim() //remove trailing spaces/newlines
                 });
             })();
         }
@@ -105,10 +105,14 @@ class AttributeContainer extends React.Component {
         let idx = (this.state.attributeData.findIndex(element => element.attributeId === attrID))
         if (idx === -1) { //If ID doesn't exist yet, add it
             this.setState({
-                attributeData: [...this.state.attributeData, {attributeId: attrID, value: this.state.textValue}]
+                attributeData: [...this.state.attributeData, {
+                    attributeId: attrID,
+                    value: this.state.textValue,
+                    type: 'text'
+                }]
             });
         } else {
-            copyArr.splice(idx, 1, {attributeId: attrID, value: this.state.textValue}) //If ID exists already, overwrite it with new value
+            copyArr.splice(idx, 1, {attributeId: attrID, value: this.state.textValue, type: 'text'}) //If ID exists already, overwrite it with new value
             this.setState({
                 attributeData: copyArr
             });
@@ -122,13 +126,16 @@ class AttributeContainer extends React.Component {
         if (!isNaN(Date.parse(data))) { //IF OCR String is date, convert to datatype 'Date'
             let convDate = data.split("/");
             let dateObject = new Date(+convDate[2], convDate[1] - 1, +convDate[0]); //Convert to dd/MM/YYYY
-
             if (idx === -1) { //If ID doesn't exist yet, add it
                 this.setState({
-                    attributeData: [...this.state.attributeData, {attributeId: attrID, value: dateObject}]
+                    attributeData: [...this.state.attributeData, {
+                        attributeId: attrID,
+                        value: dateObject,
+                        type: 'date'
+                    }]
                 });
             } else {
-                copyArr.splice(idx, 1, {attributeId: attrID, value: dateObject}) //If ID exists already, overwrite it with new value
+                copyArr.splice(idx, 1, {attributeId: attrID, value: dateObject, type: 'date'}) //If ID exists already, overwrite it with new value
                 this.setState({
                     attributeData: copyArr
                 });
@@ -147,10 +154,14 @@ class AttributeContainer extends React.Component {
         if (!isNaN(Number(this.state.textValue))) {
             if (idx === -1) { //If ID doesn't exist yet, add it
                 this.setState({
-                    attributeData: [...this.state.attributeData, {attributeId: attrID, value: this.state.textValue}]
+                    attributeData: [...this.state.attributeData, {
+                        attributeId: attrID,
+                        value: this.state.textValue,
+                        type: 'number'
+                    }]
                 });
             } else {
-                copyArr.splice(idx, 1, {attributeId: attrID, value: this.state.textValue}) //If ID exists already, overwrite it with new value
+                copyArr.splice(idx, 1, {attributeId: attrID, value: this.state.textValue, type: 'number'}) //If ID exists already, overwrite it with new value
                 this.setState({
                     attributeData: copyArr
                 });
@@ -171,16 +182,20 @@ class AttributeContainer extends React.Component {
         }
     }
 
-    handleTextFieldOnChange(event, attrID) { //Updates attributeData based on user input
+    handleTextFieldOnChange(event, attrID, type) { //Updates attributeData based on user input
         let copyArr = this.state.attributeData
         let idx = (this.state.attributeData.findIndex(element => element.attributeId === attrID))
 
         if (idx === -1) { //If ID doesn't exist yet, add it
             this.setState({
-                attributeData: [...this.state.attributeData, {attributeId: attrID, value: event.target.value}]
+                attributeData: [...this.state.attributeData, {
+                    attributeId: attrID,
+                    value: event.target.value,
+                    type: type
+                }]
             });
         } else {
-            copyArr.splice(idx, 1, {attributeId: attrID, value: event.target.value}) //Overwrite with new value
+            copyArr.splice(idx, 1, {attributeId: attrID, value: event.target.value, type: type}) //Overwrite with new value
             this.setState({
                 attributeData: copyArr
             });
@@ -193,10 +208,14 @@ class AttributeContainer extends React.Component {
 
         if (idx === -1) { //If ID doesn't exist yet, add it
             this.setState({
-                attributeData: [...this.state.attributeData, {attributeId: attrID, value: date}]
+                attributeData: [...this.state.attributeData, {
+                    attributeId: attrID,
+                    value: date,
+                    type: 'date'
+                }]
             });
         } else {
-            copyArr.splice(idx, 1, {attributeId: attrID, value: date}) //Overwrite with new value
+            copyArr.splice(idx, 1, {attributeId: attrID, value: date, type: 'date'}) //Overwrite with new value
             this.setState({
                 attributeData: copyArr
             });
@@ -205,12 +224,14 @@ class AttributeContainer extends React.Component {
 
 
     renderTextFields(attrName, attrID) {
-        return <Grid item xs style={{padding: 10}}>
+        return <Grid item xs style={{padding: 10, maxWidth: "295px"}}>
             <TextField
                 label={attrName}
                 variant="outlined"
+                multiline
+                rowsMax={3}
                 value={this.getFieldValue(attrID)}
-                onChange={(evt) => this.handleTextFieldOnChange(evt, attrID)}
+                onChange={(evt) => this.handleTextFieldOnChange(evt, attrID, 'text')}
                 InputProps={{
                     endAdornment: <InputAdornment>
                         <IconButton onClick={() => this.saveTextFieldData(attrID)}>
@@ -228,7 +249,7 @@ class AttributeContainer extends React.Component {
                 type="number"
                 variant="outlined"
                 value={Number(this.getFieldValue(attrID)) || ""}
-                onChange={(evt) => this.handleTextFieldOnChange(evt, attrID)}
+                onChange={(evt) => this.handleTextFieldOnChange(evt, attrID, 'number')}
                 InputProps={{
                     endAdornment: <InputAdornment>
                         <IconButton onClick={() => this.saveNumberFieldData(attrID)}>
@@ -345,7 +366,7 @@ class AttributeContainer extends React.Component {
                         container
                         direction="row"
                         justify="space-evenly"
-                        alignItems="flex-end">
+                        alignItems="flex-start">
                         {this.state.attributes.map(function (item) {
                             if (item.dataType === 'text') {
                                 return (

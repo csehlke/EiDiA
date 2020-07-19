@@ -15,4 +15,5 @@ router.get('/download', middleWares.checkAuthentication, ExportTemplateControlle
 router.get('/documentNames', middleWares.checkAuthentication, ExportTemplateController.searchDocumentsByName);
 router.get('/documents', middleWares.checkAuthentication, ExportTemplateController.getDocumentAttributes);
 
+
 module.exports = router;

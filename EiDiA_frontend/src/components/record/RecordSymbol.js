@@ -22,10 +22,7 @@ const FolderLogo = styled(FaFolder)`
 `;
 
 export class RecordSymbol extends React.Component {
-    /*
-     *TODO:
-     * - add Logo to Record?
-     */
+
     constructor(props) {
         super(props);
 

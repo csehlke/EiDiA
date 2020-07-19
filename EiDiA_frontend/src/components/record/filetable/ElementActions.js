@@ -6,13 +6,6 @@ import IconButton from "@material-ui/core/IconButton";
 import {IconContext} from "react-icons";
 
 
-/**
- * TODO:
- * - Button Link Coloring
- * - Remove Button border color when clicked and add Icon Color
- *- or remove whole button and make icon clickable
- */
-
 export class ElementActions extends React.Component {
     constructor(props) {
         super(props);
@@ -20,6 +13,7 @@ export class ElementActions extends React.Component {
 
     actionSelection() {
         let toReturn = ["", "", ""];
+
 
         toReturn[0] = (
             <IconButton style={{padding: "0"}} onClick={this.props.handleEditName} aria-label="Edit Element">
@@ -30,20 +24,19 @@ export class ElementActions extends React.Component {
 
 
         toReturn[1] = (
-            <IconButton style={{padding: "0"}} onClick={this.props.handleDeleteElement} aria-label="Delete Element">
+            <IconButton disabled={this.props.isNotAuthorized} style={{padding: "0"}}
+                        onClick={this.props.handleDeleteElement} aria-label="Delete Element">
                 <IconContext.Provider value={{className: 'react-icons'}}>
                     <MdDelete size={elementIconSize}/>
                 </IconContext.Provider>
             </IconButton>);
-
         if (this.props.fileType === fileTypes.FOLDER) {
             toReturn[2] = (
                 <IconButton style={{padding: "0"}} onClick={this.props.handleAddFolder} aria-label="Add Subfolder">
                     <IconContext.Provider value={{className: 'react-icons'}}>
                         <MdCreateNewFolder size={elementIconSize}/>
                     </IconContext.Provider>
-                </IconButton>
-            );
+                </IconButton>);
         } else {
             toReturn[2] = (
                 <IconButton style={{padding: "0"}}  /*onClick={this.props.handleEditName}*/>
@@ -52,6 +45,13 @@ export class ElementActions extends React.Component {
                     </IconContext.Provider>
                 </IconButton>
             );
+        }
+        if (this.props.withinSearchResults) {
+            toReturn[0] = ""
+            if (this.props.fileType === fileTypes.FOLDER) {
+                toReturn[1] = ""
+                toReturn[2] = ""
+            }
         }
 
 

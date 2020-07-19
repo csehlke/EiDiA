@@ -9,13 +9,13 @@ import DocSearch from './selectTemplate/DocSearch';
 import ExportSection from './selectTemplate/ButtonArea';
 import TemplateList from './selectTemplate/TemplateList';
 import SaveTemplateSection from './editTemplate/SaveTemplateSection';
-import VariableList from './editTemplate/VariableList';
 import SetValueSection from './edit/SetValueSection';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import ExportService from "../../services/ExportService";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import DocTypeSelector from "./editTemplate/DocTypeSelector";
 import {pageNames} from "../../views/ExportView";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -38,7 +38,6 @@ const isPath = (string) => {
     return /^(?:\/|[a-z]+:\/\/)/.test(string);
 }
 
-
 export default class ExportMainView extends React.Component {
     constructor(props) {
         super(props);
@@ -52,8 +51,10 @@ export default class ExportMainView extends React.Component {
             variables: {},
             selectedDocs: [], // e.g. ["Document A", "Document B"] --> array of documents selected for mapping values to variables
             selectedVariable: "", // e.g. $Variable1 --> necessary for manually assigning value to selected variable
+            linkedDocTypes: [],
             showAlert: false,
-            isSnackBarOpen: false
+            isSnackBarOpen: false,
+            selectedDocTypes: [null] // array for docTypes chosen in "Edit Template" view
         };
 
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
@@ -74,6 +75,8 @@ export default class ExportMainView extends React.Component {
         this.createNewTemplate = this.createNewTemplate.bind(this);
         this.handleSnackBarOpen = this.handleSnackBarOpen.bind(this);
         this.handleSnackBarClose = this.handleSnackBarClose.bind(this);
+        this.addDocType = this.addDocType.bind(this);
+        this.removeDocType = this.removeDocType.bind(this);
 
         // reference to document editor, allows access to focus() method (focus editor)
         // necessary for setting inline styles
@@ -93,8 +96,8 @@ export default class ExportMainView extends React.Component {
             [pageNames.editTemplate]: {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
-                onAction2_1: null,
-                onAction2_2: null,
+                onAction2_1: this.addDocType,
+                onAction2_2: this.removeDocType,
                 onAction3_1: this.toggleDialog,
                 onAction3_2: this.setSelectedVariable,
                 onAction3_3: null
@@ -121,7 +124,7 @@ export default class ExportMainView extends React.Component {
         },
         [pageNames.editTemplate]: {
             comp1: EditorTools,
-            comp2: VariableList,
+            comp2: DocTypeSelector,
             comp3: SaveTemplateSection
         },
         [pageNames.edit]: {
@@ -187,7 +190,6 @@ export default class ExportMainView extends React.Component {
         }
         return editorText;
     }
-
 
     // matches given data from document with variables in document text
     mapDocumentsWithVariables() {
@@ -303,7 +305,6 @@ export default class ExportMainView extends React.Component {
         this.setState(newState);
     }
 
-
     // update function for editor when user give input to the editor
     // scans for new variables entered by user when in "Edit Template" page
     onChange(editorState) {
@@ -337,7 +338,6 @@ export default class ExportMainView extends React.Component {
         return newVariableState;
     }
 
-
     getTextFromEditorState(editorState) {
         const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
         return blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
@@ -365,7 +365,6 @@ export default class ExportMainView extends React.Component {
         return varObject;
     }
 
-
     //Edit View:  User chose variable to manually assign value
     setSelectedVariable(event) {
         let newState = this.state;
@@ -373,11 +372,14 @@ export default class ExportMainView extends React.Component {
         this.setState(newState);
     }
 
-    saveTemplate() {
-        // TODO: Let User save template
-        const editorText = this.getTextFromEditorState(this.state.editorState);
-        const templateName = "not done yet";
-        const template = {text: editorText, name: templateName};
+    saveTemplate(templateName) {
+        // TODO: Let User save template (done in backend branch)
+        let linkedDoctypeIDs = this.state.selectedDocTypes.filter((id) => id !== null);
+        const template = {
+            editorText: this.getTextFromEditorState(this.state.editorState),
+            linkedDoctypeIDs: linkedDoctypeIDs,
+            name: templateName
+        }
         ExportService.saveTemplate(template).then((data) => {
             let res = data.response;
             let newState = this.state;
@@ -410,6 +412,22 @@ export default class ExportMainView extends React.Component {
         this.setState({isSnackBarOpen: false});
     }
 
+    addDocType(addDocTypeSelectLine, newDocType, index) {
+        let docTypes = this.state.selectedDocTypes;
+        if (addDocTypeSelectLine) {
+            this.setState({selectedDocTypes: docTypes.concat(null)});       // concat null as placeholder for new docType variable
+        } else {
+            docTypes[index] = newDocType;
+            this.setState({selectedDoctypes: docTypes});
+        }
+    }
+
+    removeDocType(index) {
+        let selectedDocTypes = this.state.selectedDocTypes;
+        selectedDocTypes.splice(index, 1);
+        this.setState({selectedDocTypes: selectedDocTypes});
+    }
+
     render() {
         const currentPage = this.props.currentPage
         const editorState = this.state.editorState;
@@ -418,9 +436,9 @@ export default class ExportMainView extends React.Component {
         return (
             <div>
                 <Row>
-                    <ExportViewColumn>
+                    <div style={{width: "30%"}}>
                         {/*Insert left column next to editor, so editor is in the center*/}
-                    </ExportViewColumn>
+                    </div>
                     <ExportViewColumn>
                         <div style={{overflow: "auto", maxHeight: '83vh'}}><DocEditor
                             readOnly={this.props.readOnly}
@@ -435,6 +453,7 @@ export default class ExportMainView extends React.Component {
                     </ExportViewColumn>
                     <ExportViewColumn>
                         <RightSidepanel
+                            selectedDocTypes={this.state.selectedDocTypes}
                             componentSet={componentSet}
                             actionSet={actionSet}
                             editorState={this.state.editorState}

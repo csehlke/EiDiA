@@ -4,7 +4,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 
-import {Attributes, DatabaseDocTypes, GraphType, WidgetTypes} from "../../../assets/Constants";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
 import SmartDropDownBox from "../../SmartDropDownBox";
@@ -12,17 +11,9 @@ import Grid from "@material-ui/core/Grid";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
+import {GraphType, WidgetTypes} from "../../../../../constants";
 import {IoMdAddCircleOutline, IoMdRemoveCircleOutline} from "react-icons/all";
 import {IconContext} from "react-icons";
-
-/**
- * TODO:
- * Add Limit for Titles
- * Add Limit for Attributes
- * - Color minus red
- * - Color Plus türkis
- */
-
 
 
 export class EditDialog extends React.Component {
@@ -32,7 +23,9 @@ export class EditDialog extends React.Component {
             selectedType: this.props.widgetType,
             selectedTitle: this.props.widgetTitle,
             selectedAttributeMapping: this.props.attributeMapping,
-            selectedGraph: this.props.graphType
+            selectedGraph: this.props.graphType,
+            titleError: false,
+            typeError: false,
         }
     }
 
@@ -42,44 +35,20 @@ export class EditDialog extends React.Component {
                 selectedType: this.props.widgetType,
                 selectedTitle: this.props.widgetTitle,
                 selectedAttributeMapping: this.props.attributeMapping,
-                selectedGraph: this.props.graphType
+                selectedGraph: this.props.graphType,
 
 
             })
         }
     }
 
-    getRecordDocTypes() {
-        /**
-         * TODO Database COnnection
-         */
-        return (DatabaseDocTypes)
-    }
-
-    getAttributes() {
-        /**
-         * TODO: database connection
-         */
-        return Attributes;
-    }
-
 
     getAttributesForDocType(docTypeId) {
-        /**
-         * TODO make sure that each attribute object as a name attribute
-         * of same id return only the one with the newest date
-         */
-        return (this.getAttributes().filter(attr => attr.docTypeId === docTypeId))
+        return this.props.attributeTypes.filter(attributeType => attributeType.docTypeId === docTypeId);
     }
 
 
     indicator() {
-        /**
-         * TODO:
-         * - set min width around Grid items for bigger fields
-         * - set max length for Display name and display error if too long
-         * - style description texts
-         * */
         return (
             [
                 <Grid key={"descriptionIndicatorAttributes"} item xs={12}>
@@ -101,27 +70,28 @@ export class EditDialog extends React.Component {
     }
 
     graph() {
-        /**
-         * TODO: more advanced colors
-         */
+
         const colorOptions = [
             {name: "Red", color: "red"},
             {name: "Green", color: "green"},
+            {name: "Blue", color: "blue"},
+            {name: "Pink", color: "pink"},
+            {name: "Orange", color: "orange"},
         ]
         const GraphTypeOptions = [
-            {name: GraphType.Line, type: GraphType.Line},
-            {name: GraphType.Bar, type: GraphType.Bar},
-            // {name: GraphType.Pie, type:GraphType.Pie}
+            {name: GraphType.Line, graphType: GraphType.Line},
+            {name: GraphType.Bar, graphType: GraphType.Bar},
         ]
+        const preValueGraphType = GraphTypeOptions.find(opt => opt.graphType === this.state.selectedGraph);
         return ([
                 <Grid key={"descriptionGraphSelection"} item xs={12}>
                     <DialogContentText>Select The Graph Type to Show:</DialogContentText>
                 </Grid>,
                 <Grid key={"selectGraphType"} item xs={12}>
                     <SmartDropDownBox margin={"0"}
-                                      preselectedValue={GraphTypeOptions.find(opt => opt.type === this.state.selectedGraph)}
+                                      preselectedValue={preValueGraphType ? preValueGraphType : GraphType.Line}
                                       label={"Graph Type"}
-                                      onChange={(event, value) => this.changeGraphType(value.type)}
+                                      onChange={(event, value) => this.changeGraphType(value.graphType)}
                                       options={GraphTypeOptions}
                                       clearable={false}/>
                 </Grid>,
@@ -129,6 +99,7 @@ export class EditDialog extends React.Component {
                     <DialogContentText>Select Attributes to
                         Display:</DialogContentText>
                 </Grid>,
+                //TODO for Graphs only one DocType makes sense, this should be considered and validated in futures
                 this.state.selectedAttributeMapping.map((mapping, index) =>
                     [
                         this.getDocTypeSelector(index, mapping, 3),
@@ -196,12 +167,13 @@ export class EditDialog extends React.Component {
     }
 
     getAttributeSelector = (index, mapping, sm) => {
+        const preselectedValue = this.getAttributesForDocType(mapping.docTypeId).find(opt => opt.attributeId === mapping.attributeId)
         return (
             <Grid key={index + "attributeId"} item xs={12} sm={sm}>
                 <SmartDropDownBox margin={"0"}
-                                  preselectedValue={this.getAttributes().find(opt => opt.attrId === mapping.attrId)}
+                                  preselectedValue={preselectedValue}
                                   label={"Attribute"}
-                                  onChange={(event, value) => this.changeAttributeMapping(index, "attrId", value.attrId)}
+                                  onChange={(event, value) => this.changeAttributeMapping(index, "attributeId", value.attributeId)}
                                   options={this.getAttributesForDocType(mapping.docTypeId)}
                                   clearable={false}/>
             </Grid>
@@ -212,10 +184,10 @@ export class EditDialog extends React.Component {
         return (
             <Grid key={index + "a"} item xs={12} sm={sm}>
                 <SmartDropDownBox margin={"0"}
-                                  preselectedValue={this.getRecordDocTypes().find(opt => opt.docTypeId === mapping.docTypeId)}
+                                  preselectedValue={this.props.docTypes.find(opt => opt.docTypeId === mapping.docTypeId)}
                                   label={"Document Type"}
                                   onChange={(event, value) => this.changeAttributeMapping(index, "docTypeId", value.docTypeId)}
-                                  options={this.getRecordDocTypes()}
+                                  options={this.props.docTypes}
                                   clearable={false}/>
             </Grid>
         );
@@ -243,19 +215,21 @@ export class EditDialog extends React.Component {
     }
 
     changeTitle = (value) => {
-        this.setState({selectedTitle: value});
+        this.setState({selectedTitle: value, titleError: false});
     }
 
     changeType = (value) => {
         if (value === WidgetTypes.GRAPH && this.state.selectedGraph === undefined)
-            this.setState({selectedType: value, selectedGraph: GraphType.Line});
+            this.setState({selectedType: value, selectedGraph: GraphType.Line, typeError: false});
         else
-            this.setState({selectedType: value});
+            this.setState({selectedType: value, typeError: false});
     }
 
     changeAttributeMapping = (index, attr, value) => {
         //this line has to come before adding changing the actual attribute of attributeMapping
-        if (attr === "docTypeId" && this.state.selectedAttributeMapping[index][attr] !== value) this.state.selectedAttributeMapping[index]["attrId"] = "";
+        if (attr === "docTypeId" && this.state.selectedAttributeMapping[index][attr] !== value) {
+            this.state.selectedAttributeMapping[index]["attributeId"] = "";
+        }
         this.state.selectedAttributeMapping[index][attr] = value;
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping});
     }
@@ -267,7 +241,7 @@ export class EditDialog extends React.Component {
     handleAddAttributeButton = () => {
         this.state.selectedAttributeMapping.push({
             docTypeId: null,
-            attrId: null,
+            attributeId: null,
             displayName: '',
         })
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping})
@@ -277,38 +251,32 @@ export class EditDialog extends React.Component {
         this.state.selectedAttributeMapping.splice(index, 1)
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping})
     }
+    handleSaveButton = () => {
+        if (this.state.selectedTitle.trim() === "" || this.state.selectedType === "") {
+            this.setState({titleError: this.state.selectedTitle === "", typeError: this.state.selectedType === ""})
+        } else {
+            this.props.handleUpdateWidgetButton(
+                this.state.selectedTitle,
+                this.state.selectedType,
+                this.state.selectedAttributeMapping,
+                this.state.selectedGraph
+            );
+            this.props.onClose();
+        }
+    }
 
 
     render() {
-
-        const classes = {
-            dialog: {
-                width: '30vw',
-                height: 'auto'
-            },
-            container: {
-                display: 'flex', flexWrap: 'wrap',
-            },
-            formControl: {
-                minWidth: 120,
-                margin: "0 5%",
-            },
-            title: {
-                marginLeft: "5%"
-            },
-        };
         let typeOptions = [
-            {name: WidgetTypes.INDICATOR, type: WidgetTypes.INDICATOR},
-            {name: WidgetTypes.GRAPH, type: WidgetTypes.GRAPH},
-            {name: WidgetTypes.LOG, type: WidgetTypes.LOG}
+            {name: WidgetTypes.INDICATOR, widgetType: WidgetTypes.INDICATOR},
+            {name: WidgetTypes.GRAPH, widgetType: WidgetTypes.GRAPH},
+            {name: WidgetTypes.LOG, widgetType: WidgetTypes.LOG}
         ]
-        /**
-         * TODO: THeme needs to be set for Typography to style e.g. the different headings
-         */
+
         return (
             <Dialog open={this.props.open} onClose={this.props.onClose} style={{flexGrow: 1}} fullWidth={true}
                     maxWidth={'lg'}>
-                <DialogTitle key={"title"} style={classes.title}>
+                <DialogTitle key={"title"} style={{marginLeft: "5%"}}>
                     Edit Widget
 
                 </DialogTitle>
@@ -316,22 +284,30 @@ export class EditDialog extends React.Component {
                     <Grid style={{flexGrow: 1}} container spacing={2}>
                         <Grid key={"titleInput"} item xs={12}>
                             <TextField
+
                                 size={"small"}
+                                error={this.state.titleError}
                                 fullWidth={true}
                                 id="Title"
                                 label="Title"
                                 value={this.state.selectedTitle}
                                 variant={"outlined"}
                                 onChange={(event) => this.changeTitle(event.target.value)}
+                                helperText={this.state.titleError && "The title must not be empty!"}
                             />
                         </Grid>
+
+
                         <Grid key={"widgetSelect"} item xs={12}>
                             <SmartDropDownBox margin={"0"}
-                                              preselectedValue={typeOptions.find(type => type.type === this.state.selectedType)}
+                                              preselectedValue={typeOptions.find(opt => opt.widgetType === this.state.selectedType)}
                                               label={"Widget Type"}
-                                              onChange={(event, value) => this.changeType(value.type)}
+                                              onChange={(event, value) => this.changeType(value.widgetType)}
                                               options={typeOptions}
-                                              clearable={false}/>
+                                              clearable={false}
+                                              error={this.state.typeError}
+                                              errorMessage={"The widget type must be selected!"}
+                            />
                         </Grid>
                         {this.dialogPicker()}
                     </Grid>
@@ -341,21 +317,10 @@ export class EditDialog extends React.Component {
                 <DialogActions>
                     <Button style={{color: "#ff0000"}} onClick={
                         this.props.onClose
-
                     }>
                         Cancel
                     </Button>
-                    <Button color="primary" onClick={
-                        () => {
-                            this.props.handleUpdateWidgetButton(
-                                this.state.selectedTitle,
-                                this.state.selectedType,
-                                this.state.selectedAttributeMapping,
-                                this.state.selectedGraph
-                            );
-                            this.props.onClose();
-                        }
-                    }>
+                    <Button color="primary" onClick={this.handleSaveButton}>
                         Save
                     </Button>
                 </DialogActions>

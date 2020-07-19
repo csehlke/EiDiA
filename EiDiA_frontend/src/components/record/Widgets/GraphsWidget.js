@@ -12,12 +12,7 @@ import {
     XAxis,
     YAxis
 } from 'recharts';
-import {Attributes, GraphType} from "../../../assets/Constants";
-
-/**
- * TODO:
- *
- */
+import {GraphType} from "../../../../../constants";
 
 
 export class GraphsWidget extends React.Component {
@@ -25,7 +20,8 @@ export class GraphsWidget extends React.Component {
         super(props);
         this.state = {
             attributeMapping: props.attributeMapping,
-            type: props.graph,
+            graphType: props.graphType,
+            attributeValues: props.attributeValues,
 
         }
     }
@@ -34,13 +30,14 @@ export class GraphsWidget extends React.Component {
         if (prevProps !== this.props) {
             this.setState({
                 attributeMapping: this.props.attributeMapping,
-                type: this.props.graph,
-
+                graphType: this.props.graphType,
+                attributeValues: this.props.attributeValues
             })
         }
     }
 
     createLineChart(attributeMapping, data) {
+
         return (
             <LineChart
                 data={data}
@@ -81,7 +78,7 @@ export class GraphsWidget extends React.Component {
 
     createGraph(attributeMapping) {
         let data = this.getData(attributeMapping);
-        switch (this.state.type) {
+        switch (this.state.graphType) {
             case GraphType.Line:
                 return this.createLineChart(attributeMapping, data);
             case GraphType.Bar:
@@ -94,33 +91,36 @@ export class GraphsWidget extends React.Component {
     getData(attributeMapping) {
 
         let data = []
-
-
-        let tmp = JSON.parse(JSON.stringify(Attributes));
-
-
         attributeMapping.map(mapping => data.push(
-            tmp
-                .filter(attr => attr.attrId === mapping.attrId)
+            this.state.attributeValues.filter(attr => attr.attributeId === mapping.attributeId)
                 .map(foundAttribute => {
-                    foundAttribute[mapping.displayName] = foundAttribute.value;
-                    return foundAttribute
+                    let newObject = {
+                        tmp: foundAttribute.value,
+                        ...foundAttribute
+                    }
+                    newObject[mapping.displayName] = foundAttribute.value;
+                    return newObject
                 })
             )
         )
-        //Taken from https://stackoverflow.com/questions/46849286/merge-two-array-of-objects-based-on-a-key
-        //TODO: first check if exist to prevent crash
-        const mergeByDate = (a1, a2) =>
-            a1.map(itm => Object.assign(itm, a2.find((item) => (item.date === itm.date)))
-            );
-        /*
-         *TODO: Do this for multiple attributes not only two
-         * - check wether datapoints where left out
-         * - make it stable: right now, if only one attribute mapping currently it crashes, if >2 the extra attributes are ignored
-         */
-        data = mergeByDate(data[0], data[1]);
 
-        return (data)
+        data = data.reduce((acc, current) => {
+            return acc.map(itm => {
+                return {...itm, ...current.find((item) => (item.date === itm.date))}
+            })
+
+        })
+        try {
+            data.forEach(
+                attr => {
+                    attr.date = attr.date.split('T')[0]
+                })
+        } catch (e) {
+            console.error("There is probably an issue while cutting of Date From Time in GraphsWidget. See detailed error below")
+            console.error(e)
+        }
+
+        return (data.flat())
     }
 
     render() {
