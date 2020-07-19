@@ -28,6 +28,8 @@ class RecordView extends React.Component {
         RecordService.getRecordName(this.state.recordId).then(response => this.props.setTitle(response.name)).catch(error => {
             console.log(error);
             this.props.setTitle("Record")
+            //TODO snackbar
+
         })
 
 
@@ -49,6 +51,8 @@ class RecordView extends React.Component {
                 this.setState({documents: response})
             })
             .catch(e => console.error(e))
+        //TODO snackbar
+
     }
 
     updateData = () => {

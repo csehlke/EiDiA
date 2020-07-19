@@ -108,18 +108,23 @@ export class Dashboard extends React.Component {
         RecordService.getAttributeTypes(this.props.recordId).then(response => {
             this.setState({attributeTypes: response})
         }).catch(e => console.error(e))
+        //TODO snackbar
 
     }
     getAttributeValues = () => {
         RecordService.getAttributeValues(this.props.recordId).then(response => {
             this.setState({attributeValues: response.flat()})
         }).catch(e => console.error(e))
+        //TODO snackbar
+
 
     }
     getLogs = () => {
         RecordService.getLogs(this.props.recordId).then(response => {
             this.setState({logs: response})
         }).catch(e => console.error(e))
+        //TODO snackbar
+
     }
 
     sendWidgetToBackend(widget) {
@@ -129,6 +134,8 @@ export class Dashboard extends React.Component {
             widget = response;
             this.setState(this.state)
         }).catch(e => console.error(e))
+        //TODO snackbar
+
     }
 
 
