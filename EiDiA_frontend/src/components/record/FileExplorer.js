@@ -7,6 +7,10 @@ import RecordService from "../../services/RecordService";
 import Fab from "@material-ui/core/Fab";
 import {MdCreateNewFolder} from "react-icons/md/index";
 import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
 
 
 export default class FileExplorer extends React.Component {
@@ -15,7 +19,9 @@ export default class FileExplorer extends React.Component {
         super(props);
         this.state = {
             elements: this.props.elements,
-            isServerError: false
+            isServerError: false,
+            deleteInProgress: false,
+            toDeleteElement: null
         }
     }
 
@@ -73,15 +79,21 @@ export default class FileExplorer extends React.Component {
             }
         ).catch((e) => this.setState({isServerError: true}))
     }
+
+    handleDeleteElementApproved = (e) => {
+        RecordService.deleteDocument(this.state.toDeleteElement.id).then(result => {
+                if (result.ok) this.state.elements.splice(this.state.elements.findIndex(elem => elem.id === this.state.toDeleteElement.id), 1);
+                this.setState(this.state)
+                this.setState({deleteInProgress: false, toDeleteElement: null})
+            }
+        ).catch((e) => {
+            this.setState({isServerError: true})
+        })
+
+    }
     handleDeleteElement = (element) => (e) => {
         //TODO if parent Element deleted, also delete all child elements
-        //TODO make pop up if u really want to delete
-        RecordService.deleteDocument(element.id).then(result => {
-                console.log("Ok:" + result.ok)
-                if (result.ok) this.state.elements.splice(this.state.elements.findIndex(elem => elem.id === element.id), 1);
-                this.setState(this.state)
-            }
-        ).catch((e) => this.setState({isServerError: true}))
+        this.setState({deleteInProgress: true, toDeleteElement: element})
     }
 
     renderElement(element, index, level) {
@@ -166,8 +178,23 @@ export default class FileExplorer extends React.Component {
                     </Fab>
                     : null}
                 <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
-
-            </div>
+                <Dialog open={this.state.deleteInProgress}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Are you sure you want to perform Delete ?"}</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            this.setState({deleteInProgress: false, toDeleteElement: null})
+                        }} color="primary">
+                            Cancel
+                        </Button>
+                        {/*//TODO color erro*/}
+                        <Button onClick={this.handleDeleteElementApproved} color="primary" autoFocus>
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </Dialog></div>
 
         );
     }
