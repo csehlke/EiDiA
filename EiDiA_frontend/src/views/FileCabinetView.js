@@ -12,6 +12,8 @@ import AddElementDialog from "../components/record/AddElementDialog";
 import RecordService from "../services/RecordService";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import {ServerSideErrorSnackBar} from "../components/ServerSideErrorSnackBar";
+import {styleFabButton} from "../../../constants";
 
 const FlexRow = styled.div`
     display: flex;
@@ -104,18 +106,7 @@ export class FileCabinetView extends React.Component {
     }
 
     render() {
-        //taken from here https://stackoverflow.com/questions/35828991/make-material-ui-reactjs-floatingactionbutton-float
-        //to let fab button float right
-        const styleFabButton = {
-            top: 'auto',
-            bottom: '2em',
-            right: '2em',
-            left: 'auto',
-            position: 'fixed',
-        };
-
         let filteredRecords = this.state.records.filter((record) => {
-            //TODO: maybe transform all records to lowercase
             return record.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
         });
 
@@ -147,7 +138,7 @@ export class FileCabinetView extends React.Component {
                                   open={this.state.isAddRecordDialogActive}
                                   onClose={this.toggleAddRecordDialog}
                                   onSave={this.addRecord}/>
-                {/*<ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/> TODO merge master first*/}
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
                 <Snackbar open={this.state.isRecordAlreadyExistsError}
                           autoHideDuration={5000}
                           onClose={this.handleRecordAlreadyExistsErrorBarClose}>

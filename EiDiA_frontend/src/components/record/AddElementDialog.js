@@ -34,7 +34,7 @@ export default class AddElementDialog extends React.Component {
         this.props.onClose();
     }
     
-    create() {
+    create(event) {
         if (event.key === 'Enter' && this.state.title !== '') {
             this.onClose();
             this.props.onSave(this.state.title);
@@ -61,7 +61,7 @@ export default class AddElementDialog extends React.Component {
                                onChange={(event) => this.changeTitle(event.target.value)}/>
                 </DialogContent>
                 <DialogActions>
-                    <Button color="secondary" onClick={this.onClose}>
+                    <Button style={{color: "#FF0000"}} onClick={this.onClose}>
                         Cancel
                     </Button>
                     <Button autoFocus
