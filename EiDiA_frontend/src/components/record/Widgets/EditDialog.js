@@ -265,23 +265,7 @@ export class EditDialog extends React.Component {
 
 
     render() {
-        const classes = {
-            dialog: {
-                width: '30vw',
-                height: 'auto'
-            },
-            container: {
-                display: 'flex', flexWrap: 'wrap',
-            },
-            formControl: {
-                minWidth: 120,
-                margin: "0 5%",
-            },
-            title: {
-                marginLeft: "5%"
-            }
 
-        };
         let typeOptions = [
             {name: WidgetTypes.INDICATOR, widgetType: WidgetTypes.INDICATOR},
             {name: WidgetTypes.GRAPH, widgetType: WidgetTypes.GRAPH},
@@ -291,7 +275,7 @@ export class EditDialog extends React.Component {
         return (
             <Dialog open={this.props.open} onClose={this.props.onClose} style={{flexGrow: 1}} fullWidth={true}
                     maxWidth={'lg'}>
-                <DialogTitle key={"title"} style={classes.title}>
+                <DialogTitle key={"title"} style={{marginLeft: "5%"}}>
                     Edit Widget
 
                 </DialogTitle>

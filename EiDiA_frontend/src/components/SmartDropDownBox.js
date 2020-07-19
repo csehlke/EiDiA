@@ -104,5 +104,5 @@ SmartDropDownBox.propTypes = {
     margin: PropTypes.string,
     clearable: PropTypes.bool,
     error: PropTypes.bool,
-    errorMessage: PropTypes.String,
+    errorMessage: PropTypes.string,
 }
