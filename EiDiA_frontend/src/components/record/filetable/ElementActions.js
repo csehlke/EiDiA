@@ -4,15 +4,12 @@ import {FaCloudDownloadAlt} from 'react-icons/fa'
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
 import {fileActions} from '../../../../../constants';
+import IconButton from "@material-ui/core/IconButton";
 
 
-const IconButton = styled.button`
-    width: 2.5em;  
-    height: auto;
-    margin: 0 0.5em;
-    border: none;
-    background: transparent;
-    cursor: pointer; 
+const StyledIconButton = styled(IconButton)`
+    font-size: 1em;
+    padding: 3px;
 `;
 
 /**
@@ -49,10 +46,9 @@ export class ElementActions extends React.Component {
             <Grid container spacing={1}>
                 {this.actionSelection(this.props.actions).map((button, index) =>
                     <Grid key={index} item xs={12} sm={4}>
-                        <IconButton
-                        >
+                        <StyledIconButton>
                             {button}
-                        </IconButton>
+                        </StyledIconButton>
                     </Grid>
                 )}
             </Grid>
