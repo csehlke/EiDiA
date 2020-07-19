@@ -28,7 +28,7 @@ const styleFabButton = {
     position: 'fixed',
     color: 'primary',
 };
-const elementIconSize = '1.5rem';
+const elementIconSize = '24';
 const logCount = 5;
 
 const recordMenuOptions = {
