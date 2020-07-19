@@ -100,11 +100,14 @@ export class Dashboard extends React.Component {
             this.setState({widgets: response});
             this.fillUpFreeSlots();
 
-        }).catch((e) => this.setState({isServerError: true}))
+        }).catch((e) => {
+            this.setState({isServerError: true})
+        })
     }
 
     getDocTypes = () => {
-        RecordService.getDocTypes(this.props.recordId).then(response => this.setState({docTypes: response.documents})).catch((e) => this.setState({isServerError: true}))
+        RecordService.getDocTypes(this.props.recordId).then(response => this.setState({docTypes: response.documents}))
+            .catch((e) => this.setState({isServerError: true}))
     }
     getAttributeTypes = () => {
         RecordService.getAttributeTypes(this.props.recordId).then(response => {
