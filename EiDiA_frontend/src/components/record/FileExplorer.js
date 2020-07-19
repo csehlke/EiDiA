@@ -11,9 +11,15 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
+import withStyles from "@material-ui/core/styles/withStyles";
 
+const styles = theme => ({
+    error: {
+        color: theme.palette.error.main // see index.js
+    }
+});
 
-export default class FileExplorer extends React.Component {
+class FileExplorer extends React.Component {
 
     constructor(props) {
         super(props);
@@ -138,7 +144,7 @@ export default class FileExplorer extends React.Component {
     }
 
     render() {
-
+        const {classes} = this.props;
         return (
             <div>
                 <Grid style={{flexGrow: 1}} container spacing={0}>
@@ -186,10 +192,9 @@ export default class FileExplorer extends React.Component {
                     <DialogActions>
                         <Button onClick={() => {
                             this.setState({deleteInProgress: false, toDeleteElement: null})
-                        }} color="primary">
+                        }} className={classes.error}>
                             Cancel
                         </Button>
-                        {/*//TODO color erro*/}
                         <Button onClick={this.handleDeleteElementApproved} color="primary" autoFocus>
                             Delete
                         </Button>
@@ -199,3 +204,5 @@ export default class FileExplorer extends React.Component {
         );
     }
 }
+
+export default withStyles(styles, {withTheme: true})(FileExplorer);

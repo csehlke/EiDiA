@@ -3,7 +3,6 @@ import Grid from "@material-ui/core/Grid";
 import {elementIconSize, fileTypes} from "../../../../../constants";
 import {MdCloudDownload, MdCreateNewFolder, MdDelete, MdEdit} from "react-icons/md/index";
 import IconButton from "@material-ui/core/IconButton";
-import {IconContext} from "react-icons";
 
 
 export class ElementActions extends React.Component {
@@ -17,32 +16,25 @@ export class ElementActions extends React.Component {
 
         toReturn[0] = (
             <IconButton style={{padding: "0"}} onClick={this.props.handleEditName} aria-label="Edit Element">
-                <IconContext.Provider value={{className: 'react-icons'}}>
                     <MdEdit size={elementIconSize}/>
-                </IconContext.Provider>
             </IconButton>);
 
 
         toReturn[1] = (
             <IconButton disabled={this.props.isNotAuthorized} style={{padding: "0"}}
-                        onClick={this.props.handleDeleteElement} aria-label="Delete Element">
-                <IconContext.Provider value={{className: 'react-icons'}}>
-                    <MdDelete size={elementIconSize}/>
-                </IconContext.Provider>
+                        onClick={this.props.handleDeleteElement} aria-label="Delete Element"
+            >
+                <MdDelete size={elementIconSize}/>
             </IconButton>);
         if (this.props.fileType === fileTypes.FOLDER) {
             toReturn[2] = (
                 <IconButton style={{padding: "0"}} onClick={this.props.handleAddFolder} aria-label="Add Subfolder">
-                    <IconContext.Provider value={{className: 'react-icons'}}>
                         <MdCreateNewFolder size={elementIconSize}/>
-                    </IconContext.Provider>
                 </IconButton>);
         } else {
             toReturn[2] = (
                 <IconButton style={{padding: "0"}}  /*onClick={this.props.handleEditName}*/>
-                    <IconContext.Provider value={{className: 'react-icons'}}>
                         <MdCloudDownload size={elementIconSize}/>
-                    </IconContext.Provider>
                 </IconButton>
             );
         }

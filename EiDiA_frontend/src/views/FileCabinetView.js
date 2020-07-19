@@ -75,7 +75,7 @@ export class FileCabinetView extends React.Component {
 
 
 
-    addRecord=(recordName)=(e)=> {
+    addRecord = (recordName) => {
         RecordService.addNewRecord(recordName)
             .then(record => {
                 let records = [record, ...this.state.records];
