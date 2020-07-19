@@ -4,7 +4,6 @@ const {fileTypes} = require("../../../constants");
 const RecordModel = require('../models/record');
 const DocumentModel = require('../models/document')
 const LogModel = require('../models/log')
-const DocumentTypeModel = require('../models/documentType')
 const AttributeTypeModel = require('../models/attributeType')
 const mongoose = require("mongoose")
 
@@ -310,9 +309,8 @@ const updateDocumentParentFolderId = (req, res) => {
                 message: error.message,
             })
         )
-
-
 }
+
 const deleteDocument = (req, res) => {
     console.log(req.params.documentId)
     DocumentModel.deleteOne({_id: req.params.documentId}).then(result => {
@@ -331,6 +329,21 @@ const deleteDocument = (req, res) => {
 }
 
 
+const getRecordName = (id) => {
+    return new Promise((resolve, reject) => {
+        RecordModel.findById(id, {}, {}, (err, record) => {
+            if (err) {
+                reject(err);
+            } else if (record === null) {
+                reject({message: "Record not found"});
+            } else {
+                resolve(record.name);
+            }
+        });
+    });
+}
+
+
 module.exports = {
     listRecords,
     addRecord,
@@ -343,5 +356,6 @@ module.exports = {
     addFolder,
     updateDocumentName,
     updateDocumentParentFolderId,
-    deleteDocument
+    deleteDocument,
+    getRecordName
 };

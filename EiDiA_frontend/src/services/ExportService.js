@@ -61,7 +61,7 @@ export default class CommonService {
     }
 
     static getDocumentAttributes(documentIDs) {
-        let url = new URL("documen", baseURL);
+        let url = new URL("/exporttemplate/documents", baseURL);
         documentIDs.forEach((id) => url.searchParams.append('documentIDs', id));
         return new Promise((resolve, reject) => {
             HttpService.get(url, function (data) {

@@ -47,7 +47,8 @@ const alertConstants = {
     messages: {
         template: "An error occurred with the selected template.",
         docSearch: "An error occurred with your document search.",
-        document: "An error occurred with one of your selected documents"
+        document: "An error occurred with one of your selected documents",
+        variables: "Some variable could not be mapped with selected documents"
     }
 }
 
@@ -137,7 +138,7 @@ export default class ExportMainView extends React.Component {
         },
         [pageNames.editTemplate]: {
             comp1: EditorTools,
-            comp2: VariableList,
+            comp2: DocTypeSelector,
             comp3: SaveTemplateSection
         },
         [pageNames.edit]: {
@@ -153,7 +154,7 @@ export default class ExportMainView extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.currentPage !== prevProps.currentPage) {
             if (this.props.currentPage === pageNames.edit) {
-                this.mapDocumentsWithVariables();
+                this.mapDocumentsWithVariables(this.state.selectedDocs);
             } else if (this.props.currentPage === pageNames.selectTemplate && this.state.selectedTemplate === null) {
                 this.setInitialView();
             } else if (prevProps.currentPage === pageNames.edit && this.state.selectedTemplate !== null) {
@@ -210,12 +211,11 @@ export default class ExportMainView extends React.Component {
 
 
     // matches given data from document with variables in document text
-    mapDocumentsWithVariables() {
-        let selectedDocs = this.state.selectedDocs;
+    mapDocumentsWithVariables(selectedDocs) {
         let selectedDocsIds = selectedDocs.map((docElem) => docElem.id)
         if (selectedDocs.length !== 0) {
             ExportService.getDocumentAttributes(selectedDocsIds).then((data) => {
-                const documents = data.response;
+                const documents = data.documentAttributes;
                 if (Object.keys(documents).length !== 0) {
                     let newState = this.state;
                     let templateVariables = this.state.variables;
@@ -223,7 +223,7 @@ export default class ExportMainView extends React.Component {
                     // gather data of selected documents
                     let documentData = selectedDocsIds.reduce((dataArr, docID) => {
                         if (docID in documents) {
-                            dataArr.push(documents[docID]);
+                            dataArr = dataArr.concat(documents[docID]);
                         }
                         return dataArr;
                     }, []);
@@ -236,6 +236,7 @@ export default class ExportMainView extends React.Component {
                         for (let k of Object.keys(templateVariables)) {
                             if (isPath(k.slice(1))) { // find variables that depend on documents
                                 let variableTokens = k.split("/");
+
                                 let docVariable = variableTokens[variableTokens.length - 1];                // Get to be mapped variabled from editorText
                                 let indexString = variableTokens[variableTokens.length - 2];
                                 let documentIndex = parseInt(indexString[indexString.length - 1]) - 1;      // Get index for correct document, e.g. $/Document1/Variable1 --> index = 1 -1 = 0
@@ -261,7 +262,7 @@ export default class ExportMainView extends React.Component {
                     newState.variables = templateVariables;
 
                     this.setState(newState);
-                    if (attributesNotFound) this.handleSnackBarOpen();
+                    if (attributesNotFound) this.handleSnackBarOpen(alertConstants.alertType.warning, alertConstants.messages.variables);
                 }
             }, (err) => {
                 console.log(err);
@@ -285,7 +286,7 @@ export default class ExportMainView extends React.Component {
         }
 
         if (this.props.currentPage === pageNames.edit) {
-            this.mapDocumentsWithVariables();
+            this.mapDocumentsWithVariables([docItem]);
         }
     }
 
@@ -408,7 +409,7 @@ export default class ExportMainView extends React.Component {
             documentTypes: this.state.linkedDocTypes,
             name: templateName
         }
-        ExportService.saveTemplate(template).then((data) => {
+        ExportService.saveTemplate(template).then(() => {
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);

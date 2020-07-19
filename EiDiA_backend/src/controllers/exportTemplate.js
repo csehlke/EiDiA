@@ -3,7 +3,6 @@
 const ExportTemplateModel = require('../models/exportTemplate');
 const DocumentModel = require('../models/document');
 const RecordController = require('./record');
-const AttributeModel = require('../models/attributeType');
 const {fileTypes} = require('../../../constants');
 const mongoose = require('mongoose');
 
@@ -68,7 +67,12 @@ const saveTemplate = (req, res) => {
 
 // send linked Documents for pdf download
 const exportDocuments = (req, res) => {
-    const mongooseIDs = req.query.documentIDs.map((id) => mongoose.Types.ObjectId(id));
+    let documentIDs = req.query.documentIDs;
+
+    if (!Array.isArray(documentIDs)) {
+        documentIDs = [documentIDs]
+    }
+    const mongooseIDs = documentIDs.map((id) => mongoose.Types.ObjectId(id));
     const dbQuery = {_id: {$in: mongooseIDs}};
 
     DocumentModel.find(dbQuery).select('completeOcrText -_id').then((documents) => {
@@ -83,29 +87,55 @@ const exportDocuments = (req, res) => {
 
 // Send document attributes for value mapping
 const getDocumentAttributes = (req, res) => {
-    // TODO: provide documents for variable extraction
-    console.log(typeof req.query.documentIDs)
-    const mongooseIDs = req.query.documentIDs.map((id) => mongoose.Types.ObjectId(id));
-    const dbQuery = {_id: {$in: mongooseIDs}};
-    DocumentModel.find(dbQuery).select('attributes documentTypeId -_id').then((documents) => {
-        let doc = documents[0];
-        let docTypeID = doc.documentTypeId;
-        let attributes = doc.attributes;
-        console.log(doc);
-        const query = {documentTypeId: mongoose.Types.ObjectId(docTypeID)};
-        AttributeModel.find(query).then((attributes) => {
-            console.log(attributes);
-        })
+    let docNames = req.query.documentIDs;
 
+    if (!Array.isArray(docNames)) {
+        docNames = [docNames]
+    }
 
-        res.status(200).json({attributes: documents});
-    }).catch(error => {
-        res.status(400).json({
-            error: 'Internal server error',
-            message: error.message,
+    docNames = docNames.map(doc => {
+        return mongoose.Types.ObjectId(doc)
+    })
+
+    DocumentModel.aggregate([
+            {$match: {_id: {$in: docNames}}},
+            {$unwind: "$attributes"},
+            {
+                "$project": {
+
+                    "docTypeId": "$documentTypeId",
+                    "date": "$createdOnDate",
+                    "attributeId": "$attributes.attributeId",
+                    "value": "$attributes.value",
+
+                }
+            },
+            {$lookup: {from: 'attributetypes', localField: 'attributeId', foreignField: '_id', as: 'test'}},
+            {$unwind: "$test"},
+            {
+                "$project": {
+
+                    "docTypeId": "$documentTypeId",
+                    "attribute": {
+                        "name": "$test.name",
+                        "value": "$value"
+                    },
+                }
+            }
+
+        ],
+        function (err, documents) {
+            let responseObj = {};
+            documents.forEach((doc) => {
+                if (!(doc._id in responseObj)) {
+                    responseObj[doc._id] = {};
+                }
+                let name = doc.attribute.name.split(' ').join('');
+                responseObj[doc._id][name] = doc.attribute.value;
+            })
+
+            res.status(200).json({documentAttributes: responseObj});
         });
-    });
-
 }
 
 // send search results
