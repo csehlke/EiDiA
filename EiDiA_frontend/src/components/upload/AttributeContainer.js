@@ -21,7 +21,6 @@ import UploadService from '../../services/UploadService';
 import {fileTypes} from "../../../../constants";
 import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
 import {Link} from "react-router-dom";
-import {format} from "date-fns";
 
 const Container = styled.div
     // Outer Container
@@ -127,17 +126,16 @@ class AttributeContainer extends React.Component {
         if (!isNaN(Date.parse(data))) { //IF OCR String is date, convert to datatype 'Date'
             let convDate = data.split("/");
             let dateObject = new Date(+convDate[2], convDate[1] - 1, +convDate[0]); //Convert to dd/MM/YYYY
-
             if (idx === -1) { //If ID doesn't exist yet, add it
                 this.setState({
                     attributeData: [...this.state.attributeData, {
                         attributeId: attrID,
-                        value: format(dateObject, 'dd/MM/yyyy'),
+                        value: dateObject,
                         type: 'date'
                     }]
                 });
             } else {
-                copyArr.splice(idx, 1, {attributeId: attrID, value: format(dateObject, 'dd/MM/yyyy'), type: 'date'}) //If ID exists already, overwrite it with new value
+                copyArr.splice(idx, 1, {attributeId: attrID, value: dateObject, type: 'date'}) //If ID exists already, overwrite it with new value
                 this.setState({
                     attributeData: copyArr
                 });
@@ -212,12 +210,12 @@ class AttributeContainer extends React.Component {
             this.setState({
                 attributeData: [...this.state.attributeData, {
                     attributeId: attrID,
-                    value: format(date, 'dd/MM/yyyy'),
+                    value: date,
                     type: 'date'
                 }]
             });
         } else {
-            copyArr.splice(idx, 1, {attributeId: attrID, value: format(date, 'dd/MM/yyyy'), type: 'date'}) //Overwrite with new value
+            copyArr.splice(idx, 1, {attributeId: attrID, value: date, type: 'date'}) //Overwrite with new value
             this.setState({
                 attributeData: copyArr
             });

@@ -62,7 +62,7 @@ const addDocument = (req, res) => {
             case 'date':
                 return {
                     attributeId: attribute.attributeId,
-                    value: DateFns.parse(attribute.value, 'dd/MM/yyyy', new Date()),
+                    value: DateFns.parseISO(attribute.value),
                 }
             case 'number':
                 return {
