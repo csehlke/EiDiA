@@ -9,7 +9,7 @@ const styles = theme => ({
     }
 });
 
-export default class SaveTemplateWindow extends React.Component {
+class SaveTemplateWindow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,6 +23,7 @@ export default class SaveTemplateWindow extends React.Component {
     }
 
     render() {
+        const {classes} = this.props;
         return (
             <Column>
                 <Row>
@@ -33,7 +34,6 @@ export default class SaveTemplateWindow extends React.Component {
                 <Row>
                     <Input placeholder="Template Name" onChange={this.setTemplateName}/>
                 </Row>
-                Saving template not implemented yet
                 <Row>
                     <div style={{margin: "15px"}}>
                         <Button

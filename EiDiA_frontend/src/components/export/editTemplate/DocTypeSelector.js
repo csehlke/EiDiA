@@ -26,6 +26,7 @@ export default class DocTypeSelector extends React.Component {
             // keys generated with uuid for dynamic removing/rendering of DocTypeSelectorLine
             // docNumber for variable e.g. $/Document1/
             docTypesWithUUID: [],
+            documentTypes: []
         }
 
         this.handleSnackBarOpen = this.handleSnackBarOpen.bind(this);
