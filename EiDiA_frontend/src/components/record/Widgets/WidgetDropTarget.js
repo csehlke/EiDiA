@@ -28,7 +28,7 @@ class WidgetDropTarget extends Component {
         return connectDropTarget(
             //TODO: color
             <div style={{
-                backgroundColor: isOver ? 'rgba(28, 166, 166,0.3)' : '',
+                backgroundColor: isOver ? 'rgba(0, 94, 124, 0.3)' : '',
                 width: "100%", height: "100%"
             }}>
                 {this.props.children}
