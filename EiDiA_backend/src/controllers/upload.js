@@ -96,7 +96,7 @@ const addDocument = (req, res) => {
             LogModel.create({
                 userId: req.userId,
                 recordId: req.body.recordId,
-                log: "uploaded Document \"" + req.body.name + "\""
+                log: "uploaded document \"" + req.body.name + "\""
             }).then("Created Log").catch((e) => {
                 console.log("Didn't Create Log" + e)
             })

@@ -63,7 +63,7 @@ const addRecord = (req, res) => {
             LogModel.create({
                 userId: req.userId,
                 recordId: record._id,
-                log: "created Record \"" + record.name + "\""
+                log: "created record \"" + record.name + "\""
             }).then("Created Log").catch((e) => {
                 console.error("Didnt Create Log" + e)
             })
@@ -294,7 +294,7 @@ const addFolder = (req, res) => {
         LogModel.create({
             userId: req.userId,
             recordId: folder.recordId,
-            log: "created Folder \"" + folder.name + "\""
+            log: "created folder \"" + folder.name + "\""
         }).then("Created Log").catch((e) => {
             console.error("Didnt Create Log" + e)
         })
@@ -325,7 +325,7 @@ const updateDocumentName = (req, res) => {
                 LogModel.create({
                     userId: req.userId,
                     recordId: document.recordId,
-                    log: "changed " + document.fileType + " Name: " + document.name + " to " + req.body.name
+                    log: "changed " + document.fileType + " name: " + document.name + " to " + req.body.name
                 }).then("Created Log").catch((e) => {
                     console.error("Didnt Create Log" + e)
                 })
