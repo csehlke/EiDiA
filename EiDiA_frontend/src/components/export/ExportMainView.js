@@ -15,8 +15,9 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import ExportService from "../../services/ExportService";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
-import DocTypeSelector from "./editTemplate/DocTypeSelector";
 import {pageNames} from "../../views/ExportView";
+import DocTypeSelector from "./editTemplate/DocTypeSelector";
+import {parseISO} from 'date-fns';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -38,6 +39,22 @@ const isPath = (string) => {
     return /^(?:\/|[a-z]+:\/\/)/.test(string);
 }
 
+
+export const alertConstants = {
+    alertType: {
+        error: "error",
+        warning: "warning"
+    },
+    messages: {
+        template: "An error occurred with the selected template.",
+        docSearch: "An error occurred with your document search.",
+        document: "An error occurred with one or more of your selected documents",
+        variables: "Some variable could not be mapped with selected documents",
+        templateList: "An error occurred while fetching templates.",
+        docTypes: "An error occurred while fetching document types."
+    }
+}
+
 export default class ExportMainView extends React.Component {
     constructor(props) {
         super(props);
@@ -53,8 +70,10 @@ export default class ExportMainView extends React.Component {
             selectedVariable: "", // e.g. $Variable1 --> necessary for manually assigning value to selected variable
             linkedDocTypes: [],
             showAlert: false,
-            isSnackBarOpen: false,
-            selectedDocTypes: [null] // array for docTypes chosen in "Edit Template" view
+            selectedDocTypes: [null], // array for docTypes chosen in "Edit Template" view
+            isWarningMessageOpen: false,
+            isErrorMessageOpen: false,
+            errorMessage: ""
         };
 
         this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
@@ -114,7 +133,6 @@ export default class ExportMainView extends React.Component {
         }
     }
 
-
     // passed to RightSidePanel, so the right components are rendered according to currentPage
     subComponentSet = {
         [pageNames.selectTemplate]: {
@@ -140,11 +158,11 @@ export default class ExportMainView extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.currentPage !== prevProps.currentPage) {
             if (this.props.currentPage === pageNames.edit) {
-                this.mapDocumentsWithVariables();
+                this.mapDocumentsWithVariables(this.state.selectedDocs);
             } else if (this.props.currentPage === pageNames.selectTemplate && this.state.selectedTemplate === null) {
                 this.setInitialView();
             } else if (prevProps.currentPage === pageNames.edit && this.state.selectedTemplate !== null) {
-                this.selectTemplate(this.state.selectedTemplate.name, this.state.selectedTemplate.id);
+                this.selectTemplate(this.state.selectedTemplate.name, this.state.selectedTemplate._id);
             }
         }
     }
@@ -154,10 +172,10 @@ export default class ExportMainView extends React.Component {
     setInitialView() {
         ExportService.getAllTemplates().then((data) => {
             if (data.exportTemplates.length !== 0) {
-                let initTemplate = data.exportTemplates[0]
-                this.selectTemplate(initTemplate.name, initTemplate.id);
+                let initTemplate = data.exportTemplates[0];
+                this.selectTemplate(initTemplate.name, initTemplate._id);
             }
-        })
+        }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.templateList));
     }
 
     createNewTemplate() {
@@ -192,12 +210,11 @@ export default class ExportMainView extends React.Component {
     }
 
     // matches given data from document with variables in document text
-    mapDocumentsWithVariables() {
-        let selectedDocs = this.state.selectedDocs;
+    mapDocumentsWithVariables(selectedDocs) {
         let selectedDocsIds = selectedDocs.map((docElem) => docElem.id)
         if (selectedDocs.length !== 0) {
             ExportService.getDocumentAttributes(selectedDocsIds).then((data) => {
-                const documents = data.response;
+                const documents = data.documentAttributes;
                 if (Object.keys(documents).length !== 0) {
                     let newState = this.state;
                     let templateVariables = this.state.variables;
@@ -205,14 +222,13 @@ export default class ExportMainView extends React.Component {
                     // gather data of selected documents
                     let documentData = selectedDocsIds.reduce((dataArr, docID) => {
                         if (docID in documents) {
-                            dataArr.push(documents[docID]);
+                            dataArr = dataArr.concat(documents[docID]);
                         }
                         return dataArr;
                     }, []);
 
                     let editorText = this.getTextFromEditorState(newState.editorState);
                     let attributesNotFound = false;
-
                     if (documentData.length !== 0) {
                         // Iterate through document data and map attributes with variables
                         for (let k of Object.keys(templateVariables)) {
@@ -225,6 +241,15 @@ export default class ExportMainView extends React.Component {
                                 let indices = templateVariables[k].index;
                                 if (docVariable in documentData[documentIndex]) {
                                     let docValue = documentData[documentIndex][docVariable];
+
+                                    try {
+                                        let date = parseISO(docValue);
+                                        if (date != "Invalid Date") {
+                                            docValue = String(date);
+                                        }
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
 
                                     // update current value and value source of that variable for state
                                     templateVariables[k].value = docValue;
@@ -243,11 +268,9 @@ export default class ExportMainView extends React.Component {
                     newState.variables = templateVariables;
 
                     this.setState(newState);
-                    if (attributesNotFound) this.handleSnackBarOpen();
+                    if (attributesNotFound) this.handleSnackBarOpen(alertConstants.alertType.warning, alertConstants.messages.variables);
                 }
-            }, (err) => {
-                console.log(err);
-            })
+            }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.document));
         }
     }
 
@@ -267,7 +290,7 @@ export default class ExportMainView extends React.Component {
         }
 
         if (this.props.currentPage === pageNames.edit) {
-            this.mapDocumentsWithVariables();
+            this.mapDocumentsWithVariables([docItem]);
         }
     }
 
@@ -280,14 +303,19 @@ export default class ExportMainView extends React.Component {
     // collects all variables of the template
     selectTemplate(name, id) {
         ExportService.getTemplate(id).then((data) => {
-            let editorText = data.template;
-            let newState = this.state;
+            let template = data.template;
+            let editorText = template.documentContent;
+            if (typeof editorText === 'undefined' || typeof editorText === 'undefined') {
+                this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template)
+            } else {
+                let newState = this.state;
 
-            newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
-            newState.selectedTemplate = {name: name, id: id};
-            newState.variables = this.extractVariables(newState.editorState);
-            this.setState(newState);
-        })
+                newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
+                newState.selectedTemplate = {name: name, _id: id};
+                newState.variables = this.extractVariables(newState.editorState);
+                this.setState(newState);
+            }
+        }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template));
     }
 
     toggleInlineStyle(style) {
@@ -373,43 +401,53 @@ export default class ExportMainView extends React.Component {
     }
 
     saveTemplate(templateName) {
-        // TODO: Let User save template (done in backend branch)
-        let linkedDoctypeIDs = this.state.selectedDocTypes.filter((id) => id !== null);
+        // will overwrite template name; if no template found in database -> create new entry
         const template = {
-            editorText: this.getTextFromEditorState(this.state.editorState),
-            linkedDoctypeIDs: linkedDoctypeIDs,
+            _id: this.state.selectedTemplate ? this.state.selectedTemplate._id : null,
+            documentContent: this.getTextFromEditorState(this.state.editorState),
+            documentTypes: this.state.linkedDocTypes,
             name: templateName
         }
-        ExportService.saveTemplate(template).then((data) => {
-            let res = data.response;
+        ExportService.saveTemplate(template).then(() => {
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);
             this.props.changeView(pageNames.selectTemplate);
-        })
+        }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template));
     }
 
     downloadDocument(docIDs) {
-        // TODO: Let User download created and linked documents
         const editorText = this.getTextFromEditorState(this.state.editorState);
-        ExportService.exportDocuments(docIDs).then((data) => {
+        ExportService.downloadDocuments(docIDs).then((data) => {
+            let pdfData = data.pdfText;
+            pdfData.forEach(pdfContent => {
+                const pdf = pdfMake.createPdf({content: pdfContent.completeOcrText});
+                pdf.download();
+            })
             const docDefinition = {content: editorText};
             const pdf = pdfMake.createPdf(docDefinition);
             pdf.download();
 
-            let res = data.response;
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);
-        })
+        }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.document));
     }
 
-    handleSnackBarOpen() {
-        this.setState({isSnackBarOpen: true});
+    handleSnackBarOpen(alertType, message) {
+        if (alertType === alertConstants.alertType.warning) {
+            this.setState({isWarningMessageOpen: true});
+        } else if (alertType === alertConstants.alertType.error) {
+            this.setState({isErrorMessageOpen: true, errorMessage: message});
+        }
     }
 
-    handleSnackBarClose() {
-        this.setState({isSnackBarOpen: false});
+    handleSnackBarClose(alertType) {
+        if (alertType === alertConstants.alertType.warning) {
+            this.setState({isWarningMessageOpen: false});
+        } else if (alertType === alertConstants.alertType.error) {
+            this.setState({isErrorMessageOpen: false});
+        }
     }
 
     addDocType(addDocTypeSelectLine, newDocType, index) {
@@ -453,6 +491,7 @@ export default class ExportMainView extends React.Component {
                     </ExportViewColumn>
                     <ExportViewColumn>
                         <RightSidepanel
+                            errorHandler={this.handleSnackBarOpen}
                             selectedDocTypes={this.state.selectedDocTypes}
                             componentSet={componentSet}
                             actionSet={actionSet}
@@ -474,10 +513,19 @@ export default class ExportMainView extends React.Component {
                     editorState={this.state.editorState}
                 />
                 <Snackbar
-                    open={this.state.isSnackBarOpen}
+                    open={this.state.isWarningMessageOpen}
                     autoHideDuration={5000}>
-                    <Alert severity="warning" onClose={this.handleSnackBarClose}>
+                    <Alert severity={alertConstants.alertType.warning}
+                           onClose={() => this.handleSnackBarClose(alertConstants.alertType.warning)}>
                         Some Attributes in selected Documents not found. Affected variables remain unchanged.
+                    </Alert>
+                </Snackbar>
+                <Snackbar
+                    open={this.state.isErrorMessageOpen}
+                    autoHideDuration={5000}>
+                    <Alert severity={alertConstants.alertType.error}
+                           onClose={() => this.handleSnackBarClose(alertConstants.alertType.error)}>
+                        {this.state.errorMessage}
                     </Alert>
                 </Snackbar>
             </div>

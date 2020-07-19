@@ -4,6 +4,7 @@ import HttpService from './HttpService';
 import {baseURL} from '../../../constants.js'
 
 export default class CommonService {
+
     static getAllTemplates() {
         return new Promise((resolve, reject) => {
             HttpService.get(baseURL + "/exporttemplate/list", function (data) {
@@ -46,9 +47,9 @@ export default class CommonService {
         })
     }
 
-    static exportDocuments(documentIDs) {
+    static downloadDocuments(documentIDs) {
         let url = new URL("/exporttemplate/exportDocuments", baseURL);
-        url.searchParams.set('documentIDs', documentIDs)
+        documentIDs.forEach((id) => url.searchParams.append('documentIDs', id));
         return new Promise((resolve, reject) => {
             HttpService.get(url, function (data) {
                 resolve(data);
@@ -60,7 +61,7 @@ export default class CommonService {
 
     static getDocumentAttributes(documentIDs) {
         let url = new URL("/exporttemplate/documents", baseURL);
-        url.searchParams.set('documentIDs', documentIDs)
+        documentIDs.forEach((id) => url.searchParams.append('documentIDs', id));
         return new Promise((resolve, reject) => {
             HttpService.get(url, function (data) {
                 resolve(data);

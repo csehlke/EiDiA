@@ -45,11 +45,11 @@ export default class DocTypeSelectLine extends React.Component {
         this.setState({attributeFieldValue: null});
         if (value) {
             UploadService.listAttributes(value.id).then((data) => {
-                this.setState({
-                    docAttributes: data.attributeTypes,
-                    selectedDocType: value.id,
-                    disableAttributes: false
-                });
+                    this.setState({
+                        docAttributes: data.attributeTypes,
+                        selectedDocType: value.id,
+                        disableAttributes: false
+                    });
                 }
             )
         } else {
@@ -59,7 +59,8 @@ export default class DocTypeSelectLine extends React.Component {
 
     createVariableString(event, value) {
         if (value) {
-            let variable = this.state.variable + value.name.split(' ').join(''); // remove whitespaces from attribute name
+            const uriBase = "$/document" + this.props.number + "/";
+            let variable = uriBase + value.name.split(' ').join(''); // remove whitespaces from attribute name
             this.setState({variable: variable, disableCopy: false});
         } else {
             this.setState({disableCopy: true});
@@ -67,7 +68,7 @@ export default class DocTypeSelectLine extends React.Component {
     }
 
     remove() {
-        this.props.remove(this.props.number - 1);
+        this.props.remove(this.props.number);
     }
 
     render() {

@@ -435,6 +435,20 @@ const deleteDocument = (req, res) => {
 
 }
 
+const getRecordNameByID = (id) => {
+    return new Promise((resolve, reject) => {
+        RecordModel.findById(id, {}, {}, (err, record) => {
+            if (err) {
+                reject(err);
+            } else if (record === null) {
+                reject({message: "Record not found"});
+            } else {
+                resolve(record.name);
+            }
+        });
+    });
+}
+
 
 module.exports = {
     listRecords,
@@ -448,5 +462,6 @@ module.exports = {
     updateDocumentName,
     updateDocumentParentFolderId,
     deleteDocument,
-    getRecordName
+    getRecordName,
+    getRecordNameByID
 };
