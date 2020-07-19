@@ -77,7 +77,6 @@ const getDocumentAttributes = (req, res) => {
     let docNames = req.query.documentIDs;
     console.log(docNames.length)
     if (!Array.isArray(docNames)) {
-        console.log("hello")
         docNames = [docNames]
     }
     console.log(docNames)
