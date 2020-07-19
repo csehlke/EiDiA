@@ -4,17 +4,15 @@ import React from 'react';
 import styled from "styled-components";
 import {ElementSymbol} from "./ElementSymbol";
 import {ElementActions} from "./ElementActions";
-import {DragTypes, fileTypes} from "../../../assets/Constants"
+import {DragTypes} from "../../../assets/Constants";
+import {fileTypes} from "../../../../../constants";
 import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
-
+import TextField from "@material-ui/core/TextField";
 
 const Name = styled.div`
-    
     padding-left: ${props => props.padding + "%"};
 `;
-
-
 
 const itemSource = {
     beginDrag() {
@@ -24,7 +22,6 @@ const itemSource = {
         if (!monitor.getDropResult()) return
         let wrapperProps = monitor.getDropResult().component.props;
         component.props.handleDrop(wrapperProps.id);
-
     }
 }
 
@@ -44,10 +41,31 @@ class Element extends React.Component {
             symbolArray: [],
             padding: this.props.level * 5,
             width: 40 - this.props.level * 2,
-            elementData: this.props.elementData
+            elementData: this.props.elementData,
+            nameEdit: false,
+            nameInput: this.props.elementData.name
         };
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps !== this.props) {
+            this.setState({
+                elementData: this.props.elementData,
+                nameInput: this.props.elementData.name
+
+
+            })
+        }
+    }
+
+    handleEditName = (e) => {
+        if (this.state.nameEdit) {
+            this.props.editName(this.state.nameInput) //this should reset the state
+            this.setState({nameEdit: false})
+        } else {
+            this.setState({nameEdit: !this.state.nameEdit})
+        }
+    }
 
     render() {
         const {isDragging} = this.props;
@@ -58,33 +76,49 @@ class Element extends React.Component {
                 //TODO: cursor doesnt work yet
                 <Grid container spacing={2}
                       style={{cursor: (this.state.elementData.type === fileTypes.FOLDER) && 'pointer'}}
-                      onClick={this.props.activeToggle}>
-                    <Grid item xs={12} sm={4}>
+                >
+                    <Grid item xs={12} sm={4} onClick={(e) => {
+                        this.state.nameEdit ? {} : this.props.activeToggle()
+                    }}>
                         <Name padding={this.state.padding}>
-                            <ElementSymbol type={this.state.elementData.type}
-                                           activeFolder={this.state.elementData.activeFolder}/>
-                            &nbsp;&nbsp;{this.state.elementData.name}
+                            <ElementSymbol fileType={this.state.elementData.fileType}
+                                           activeFolder={this.state.elementData.activeFolder}
+                            />
+                            &nbsp;&nbsp;{this.state.nameEdit ?
+                            <TextField value={this.state.nameInput}
+                                       onChange={(e) => {
+                                           this.setState({nameInput: e.target.value})
+                                       }}
+                            /> :
+                            this.state.elementData.name
+                        }
                         </Name>
                     </Grid>
                     <Grid item xs={12} sm={1}>
-                        {this.state.elementData.dateCreation}
+                        {this.state.elementData.createdOnDate.replace(/[T].*/, "")}
                     </Grid>
                     <Grid item xs={12} sm={1}>
-                        {this.state.elementData.dateModification}
+                        {this.state.elementData.lastModifiedOnDate.replace(/[T].*/, "")}
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         {this.state.elementData.comment}
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                        <ElementActions actions={this.state.elementData.actions}/>
+                        <ElementActions
+                            fileType={this.state.elementData.fileType}
+                            handleEditName={this.handleEditName}
+                            handleDeleteElement={this.props.handleDeleteElement}
+                            handleAddFolder={this.props.handleAddFolder}
+                            editName={this.props.editName}/>
                     </Grid>
-
-
-                </Grid>
-                }
+                </Grid>}
             </div>
         );
-        return this.props.connectDragSource(toRender);
+        if (this.props.dragEnabled && !this.state.nameEdit) {
+            return this.props.connectDragSource(toRender);
+        } else {
+            return toRender;
+        }
     }
 }
 

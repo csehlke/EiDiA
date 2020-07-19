@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {DropTarget} from 'react-dnd';
-import {DragTypes, fileTypes} from "../../../assets/Constants";
+import {DragTypes} from "../../../assets/Constants";
+import {fileTypes} from "../../../../../constants";
 
 
 const calTarget = {
     canDrop(props) {
-        return props.type === fileTypes.FOLDER;
+            return props.type === fileTypes.FOLDER;
     },
 
     drop(props, monitor, component) {

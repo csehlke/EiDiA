@@ -3,11 +3,10 @@ import DocEditor from "./DocEditor";
 import RightSidepanel from "./RightSidepanel";
 import {ContentState, convertToRaw, EditorState, RichUtils} from 'draft-js';
 import FloatingWindows from './dialog/FloatingWindow';
-import {pageNames} from '../../support files/constants';
-import {Column, Row} from '../StyleElements';
+import {ExportViewColumn, Row} from '../StyleElements';
 import EditorTools from './editTemplate/EditorTools';
 import DocSearch from './selectTemplate/DocSearch';
-import ExportSection from './selectTemplate/ExportSection';
+import ExportSection from './selectTemplate/ButtonArea';
 import TemplateList from './selectTemplate/TemplateList';
 import SaveTemplateSection from './editTemplate/SaveTemplateSection';
 import SetValueSection from './edit/SetValueSection';
@@ -16,22 +15,22 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import ExportService from "../../services/ExportService";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import {pageNames} from "../../views/ExportView";
 import DocTypeSelector from "./editTemplate/DocTypeSelector";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function CustomDialog(props) {
     return (
-        props.currentPage === pageNames.selectTemplate ? "" : <FloatingWindows
-            showDialog={props.showDialog}
-            onClose={props.onClose}
-            save={props.save}
-            currentPage={props.currentPage}
-                selectedDocs={props.selectedDocs}
-                download={props.download}
-                editorState={props.editorState}
-            />
-    )
+        props.currentPage === pageNames.selectTemplate ? "" :
+            <FloatingWindows showDialog={props.showDialog}
+                             onClose={props.onClose}
+                             save={props.save}
+                             currentPage={props.currentPage}
+                             selectedDocs={props.selectedDocs}
+                             download={props.download}
+                             editorState={props.editorState}/>
+    );
 }
 
 // Checks if string/variable is URI, e.g. Document1/VARIABLE1
@@ -39,23 +38,6 @@ const isPath = (string) => {
     return /^(?:\/|[a-z]+:\/\/)/.test(string);
 }
 
-// pass to RightSidePanel, so the right components are rendered according to currentPage
-const subComponents = {
-    [pageNames.selectTemplate]: {
-        comp1: TemplateList,
-        comp2: DocSearch,
-        comp3: ExportSection
-    },
-    [pageNames.editTemplate]: {
-        comp1: EditorTools,
-        comp2: DocTypeSelector,
-        comp3: SaveTemplateSection
-    },
-    [pageNames.edit]: {
-        comp2: DocSearch,
-        comp3: SetValueSection
-    }
-}
 
 const alertConstants = {
     alertType: {
@@ -145,11 +127,30 @@ export default class ExportMainView extends React.Component {
         }
     }
 
+
+    // passed to RightSidePanel, so the right components are rendered according to currentPage
+    subComponentSet = {
+        [pageNames.selectTemplate]: {
+            comp1: TemplateList,
+            comp2: DocSearch,
+            comp3: ExportSection
+        },
+        [pageNames.editTemplate]: {
+            comp1: EditorTools,
+            comp2: VariableList,
+            comp3: SaveTemplateSection
+        },
+        [pageNames.edit]: {
+            comp2: DocSearch,
+            comp3: SetValueSection
+        }
+    }
+
     componentDidMount() {
         this.setInitialView()
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.currentPage !== prevProps.currentPage) {
             if (this.props.currentPage === pageNames.edit) {
                 this.mapDocumentsWithVariables();
@@ -455,14 +456,14 @@ export default class ExportMainView extends React.Component {
         const currentPage = this.props.currentPage
         const editorState = this.state.editorState;
         const actionSet = this.actionSet[currentPage];
-        const componentSet = subComponents[currentPage];
+        const componentSet = this.subComponentSet[currentPage];
         return (
             <div>
                 <Row>
-                    <Column>
+                    <ExportViewColumn>
                         {/*Insert left column next to editor, so editor is in the center*/}
-                    </Column>
-                    <Column>
+                    </ExportViewColumn>
+                    <ExportViewColumn>
                         <div style={{overflow: "auto", maxHeight: '83vh'}}><DocEditor
                             readOnly={this.props.readOnly}
                             textAlignment={this.state.textAlignment}
@@ -473,8 +474,8 @@ export default class ExportMainView extends React.Component {
                             onChange={this.onChange}
                         />
                         </div>
-                    </Column>
-                    <Column>
+                    </ExportViewColumn>
+                    <ExportViewColumn>
                         <RightSidepanel
                             componentSet={componentSet}
                             actionSet={actionSet}
@@ -484,7 +485,7 @@ export default class ExportMainView extends React.Component {
                             selectedVariable={this.state.selectedVariable}
                             editorDidChange={this.props.editorDidChange}
                         />
-                    </Column>
+                    </ExportViewColumn>
                 </Row>
                 <CustomDialog
                     showDialog={this.state.showDialog}

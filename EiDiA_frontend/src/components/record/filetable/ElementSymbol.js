@@ -1,7 +1,7 @@
 import React from 'react';
 import {FaFileImage, FaFilePdf, FaFileWord, FaFolder, FaFolderOpen} from 'react-icons/fa'
 import {AiFillFileUnknown} from 'react-icons/ai'
-import {fileTypes} from "../../../assets/Constants";
+import {fileTypes} from "../../../../../constants";
 
 export class ElementSymbol extends React.Component {
     constructor(props) {
@@ -18,7 +18,7 @@ export class ElementSymbol extends React.Component {
     render() {
         //TODO: size should ideally be scaled together with text
         let size = '1.5em';
-        switch (this.props.type) {
+        switch (this.props.fileType) {
             case fileTypes.PDF:
                 return <FaFilePdf size={size}/>;
             case fileTypes.WORD:

@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 
-import {Attributes, DatabaseDocTypes, GraphType, WidgetTypes} from "../../../assets/Constants";
+import {DatabaseDocTypes, GraphType, WidgetTypes} from "../../../assets/Constants";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
 import SmartDropDownBox from "../../SmartDropDownBox";
@@ -58,7 +58,7 @@ export class EditDialog extends React.Component {
         /**
          * TODO: database connection
          */
-        return Attributes;
+        return this.props.attributeValues;
     }
 
 
@@ -67,7 +67,7 @@ export class EditDialog extends React.Component {
          * TODO make sure that each attribute object as a name attribute
          * of same id return only the one with the newest date
          */
-        return (this.getAttributes().filter(attr => attr.docTypeId === docTypeId))
+        return this.props.attributeTypes.filter(attributeType => attributeType.docTypeId === docTypeId);
     }
 
 
@@ -107,19 +107,19 @@ export class EditDialog extends React.Component {
             {name: "Green", color: "green"},
         ]
         const GraphTypeOptions = [
-            {name: GraphType.Line, type: GraphType.Line},
-            {name: GraphType.Bar, type: GraphType.Bar},
-            // {name: GraphType.Pie, type:GraphType.Pie}
+            {name: GraphType.Line, graphType: GraphType.Line},
+            {name: GraphType.Bar, graphType: GraphType.Bar},
         ]
+        const preValueGraphType = GraphTypeOptions.find(opt => opt.graphType === this.state.selectedGraph);
         return ([
                 <Grid key={"descriptionGraphSelection"} item xs={12}>
                     <DialogContentText>Select The Graph Type to Show:</DialogContentText>
                 </Grid>,
                 <Grid key={"selectGraphType"} item xs={12}>
                     <SmartDropDownBox margin={"0"}
-                                      preselectedValue={GraphTypeOptions.find(opt => opt.type === this.state.selectedGraph)}
+                                      preselectedValue={preValueGraphType ? preValueGraphType : GraphType.Line}
                                       label={"Graph Type"}
-                                      onChange={(event, value) => this.changeGraphType(value.type)}
+                                      onChange={(event, value) => this.changeGraphType(value.graphType)}
                                       options={GraphTypeOptions}
                                       clearable={false}/>
                 </Grid>,
@@ -127,6 +127,7 @@ export class EditDialog extends React.Component {
                     <DialogContentText>Select Attributes to
                         Display:</DialogContentText>
                 </Grid>,
+                //TODO validate, that only one DocType is selected
                 this.state.selectedAttributeMapping.map((mapping, index) =>
                     [
                         this.getDocTypeSelector(index, mapping, 3),
@@ -190,12 +191,14 @@ export class EditDialog extends React.Component {
     }
 
     getAttributeSelector = (index, mapping, sm) => {
+        // console.log(this.getAttributesForDocType(mapping.docTypeId).find(opt => opt.attributeId === mapping.attributeId))
+        const preselectedValue = this.getAttributesForDocType(mapping.docTypeId).find(opt => opt.attributeId === mapping.attributeId)
         return (
             <Grid key={index + "attributeId"} item xs={12} sm={sm}>
                 <SmartDropDownBox margin={"0"}
-                                  preselectedValue={this.getAttributes().find(opt => opt.attrId === mapping.attrId)}
+                                  preselectedValue={preselectedValue}
                                   label={"Attribute"}
-                                  onChange={(event, value) => this.changeAttributeMapping(index, "attrId", value.attrId)}
+                                  onChange={(event, value) => this.changeAttributeMapping(index, "attributeId", value.attributeId)}
                                   options={this.getAttributesForDocType(mapping.docTypeId)}
                                   clearable={false}/>
             </Grid>
@@ -206,10 +209,10 @@ export class EditDialog extends React.Component {
         return (
             <Grid key={index + "a"} item xs={12} sm={sm}>
                 <SmartDropDownBox margin={"0"}
-                                  preselectedValue={this.getRecordDocTypes().find(opt => opt.docTypeId === mapping.docTypeId)}
+                                  preselectedValue={this.props.docTypes.find(opt => opt.docTypeId === mapping.docTypeId)}
                                   label={"Document Type"}
                                   onChange={(event, value) => this.changeAttributeMapping(index, "docTypeId", value.docTypeId)}
-                                  options={this.getRecordDocTypes()}
+                                  options={this.props.docTypes}
                                   clearable={false}/>
             </Grid>
         );
@@ -249,9 +252,13 @@ export class EditDialog extends React.Component {
 
     changeAttributeMapping = (index, attr, value) => {
         //this line has to come before adding changing the actual attribute of attributeMapping
-        if (attr === "docTypeId" && this.state.selectedAttributeMapping[index][attr] !== value) this.state.selectedAttributeMapping[index]["attrId"] = "";
+        if (attr === "docTypeId" && this.state.selectedAttributeMapping[index][attr] !== value) {
+            console.log("hello")
+            this.state.selectedAttributeMapping[index]["attributeId"] = "";
+        }
         this.state.selectedAttributeMapping[index][attr] = value;
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping});
+        console.log(this.state.selectedAttributeMapping[index])
     }
 
     changeGraphType = (value) => {
@@ -261,7 +268,7 @@ export class EditDialog extends React.Component {
     handleAddAttributeButton = () => {
         this.state.selectedAttributeMapping.push({
             docTypeId: null,
-            attrId: null,
+            attributeId: null,
             displayName: '',
         })
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping})
@@ -291,9 +298,9 @@ export class EditDialog extends React.Component {
 
         };
         let typeOptions = [
-            {name: WidgetTypes.INDICATOR, type: WidgetTypes.INDICATOR},
-            {name: WidgetTypes.GRAPH, type: WidgetTypes.GRAPH},
-            {name: WidgetTypes.LOG, type: WidgetTypes.LOG}
+            {name: WidgetTypes.INDICATOR, widgetType: WidgetTypes.INDICATOR},
+            {name: WidgetTypes.GRAPH, widgetType: WidgetTypes.GRAPH},
+            {name: WidgetTypes.LOG, widgetType: WidgetTypes.LOG}
         ]
         /**
          * TODO: THeme needs to be set for Typography to style e.g. the different headings
@@ -318,13 +325,16 @@ export class EditDialog extends React.Component {
                                 onChange={(event) => this.changeTitle(event.target.value)}
                             />
                         </Grid>
+
+
                         <Grid key={"widgetSelect"} item xs={12}>
                             <SmartDropDownBox margin={"0"}
-                                              preselectedValue={typeOptions.find(type => type.type === this.state.selectedType)}
+                                              preselectedValue={typeOptions.find(opt => opt.widgetType === this.state.selectedType)}
                                               label={"Widget Type"}
-                                              onChange={(event, value) => this.changeType(value.type)}
+                                              onChange={(event, value) => this.changeType(value.widgetType)}
                                               options={typeOptions}
-                                              clearable={false}/>
+                                              clearable={false}
+                            />
                         </Grid>
                         {this.dialogPicker()}
                     </Grid>

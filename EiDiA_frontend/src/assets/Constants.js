@@ -1,39 +1,27 @@
+
+const {fileActions, fileTypes, styleFabButton} = require('../../../constants');
+
 export const recordMenuOptions = {
     DASHBOARD: 1,
     FILEEXPLORER: 2,
 };
+
 export const DragTypes = {
     ELEMENT: 'element',
     WIDGET: 'widget'
 }
 
-export const fileTypes = {
-    FOLDER: 'Folder',
-    PDF: 'PDF',
-    WORD: 'Word',
-    NONE: 'None',
-    IMAGE: 'Image'
-};
-
-
 export const WidgetTypes = {
     LOG: 'Log',
     GRAPH: 'Graph',
     INDICATOR: 'Indicator'
-
-
 }
+
 export const GraphType = {
     Line: 'Line Chart',
     Bar: 'Bar Chart',
 }
-export const ActionTypes = {
-    NewDocument: "new Document",
-    EditedDocument: "Changed Document",
-    RemovedDocument: "Removed Document",
-    NewWidget: "NewWidget"
 
-}
 export const LogEntries = [
     {
         logID: 1,
@@ -48,7 +36,6 @@ export const LogEntries = [
         action: "added Widget \"Indicator One\"",
         date: "2011-05-14",
         recordId: "34"
-
     },
     {
         logID: 1,
@@ -63,7 +50,6 @@ export const LogEntries = [
         action: "added Widget \"Indicator One\"",
         date: "2011-05-14",
         recordId: "34"
-
     },
     {
         logID: 3,
@@ -71,7 +57,6 @@ export const LogEntries = [
         action: "did something that should not show up it is simply to old and outside of the count (if set to three)",
         date: "1900-06-13",
         recordId: "2" //e.g. VW
-
     },
     {
         logID: 2,
@@ -79,12 +64,12 @@ export const LogEntries = [
         action: "changed Widget \"Indicator One\"",
         date: "2012-06-13",
         recordId: "34"
-
     }
 ]
+
 export const Attributes = [
     {
-        attrId: 55, //Factory Count
+        attributeId: 55, //Factory Count
         name: "factoryCount",
         value: "24",
         date: "2020-05-15",
@@ -92,7 +77,7 @@ export const Attributes = [
         docTypeId: 123
     },
     {
-        attrId: 56, //Pending Factory Assesments
+        attributeId: 56, //Pending Factory Assesments
         name: "pendingFactoryAssesments",
 
         value: "18",
@@ -101,7 +86,7 @@ export const Attributes = [
         docTypeId: 123
     },
     {
-        attrId: 10, //Some Tax assesment maybe
+        attributeId: 10, //Some Tax assesment maybe
         name: "taxAssesment",
 
         value: 1000,
@@ -110,7 +95,7 @@ export const Attributes = [
         docTypeId: 124
     },
     {
-        attrId: 10,
+        attributeId: 10,
         name: "taxAssesment",
 
         value: 1100,
@@ -119,7 +104,7 @@ export const Attributes = [
         docTypeId: 124
     },
     {
-        attrId: 10,
+        attributeId: 10,
         name: "taxAssesment",
 
         value: 950,
@@ -128,7 +113,7 @@ export const Attributes = [
         docTypeId: 124
     },
     {
-        attrId: 10,
+        attributeId: 10,
         name: "taxAssesment",
 
         value: 950,
@@ -137,7 +122,7 @@ export const Attributes = [
         docTypeId: 124
     },
     {
-        attrId: 11,//Some other Tax assesment maybe
+        attributeId: 11,//Some other Tax assesment maybe
         name: "revenue",
 
         value: 10500,
@@ -146,7 +131,7 @@ export const Attributes = [
         docTypeId: 124
     },
     {
-        attrId: 11,
+        attributeId: 11,
         name: "revenue",
 
         value: 11000,
@@ -155,7 +140,7 @@ export const Attributes = [
         docTypeId: 124
     },
     {
-        attrId: 11,
+        attributeId: 11,
         name: "revenue",
 
         value: 13000,
@@ -164,7 +149,7 @@ export const Attributes = [
         docTypeId: 124
     },
     {
-        attrId: 11,
+        attributeId: 11,
         name: "revenue",
 
         value: 10000,
@@ -173,7 +158,7 @@ export const Attributes = [
         docTypeId: 124
     },
     {
-        attrId: 58,//name: "Last customer Inquiry",
+        attributeId: 58,//name: "Last customer Inquiry",
         name: "lastCustomerInquiry",
 
         date: "2020-01-04",
@@ -182,7 +167,7 @@ export const Attributes = [
 
     },
     {
-        attrId: 156, //       name: "Date of Last File Update",
+        attributeId: 156, //       name: "Date of Last File Update",
         name: "lastFileUpdate",
 
         date: "2020-04-19",
@@ -190,7 +175,7 @@ export const Attributes = [
         docTypeId: 125,
     },
     {
-        attrId: 25,//Tax Due
+        attributeId: 25,//Tax Due
         name: "taxDue",
 
         value: "12345$",
@@ -205,7 +190,7 @@ export const DatabaseDocTypes =
         {name: "DocTypB", docTypeId: 124},
         {name: "DocTypC", docTypeId: 125}
     ]
-export const Widgets =
+/*export const Widgets =
     [
         {
             positionInfo: {
@@ -213,19 +198,18 @@ export const Widgets =
                 y: 1,
             },
             title: "Indicator One",
-            type: WidgetTypes.INDICATOR,
+            widgetType: WidgetTypes.INDICATOR,
             attributeMapping: [
                 {
                     docTypeId: 123,
 
-                    attrId: 55,
+                    attributeId: 55,
                     displayName: "Factory Count",
                 },
                 {
                     docTypeId: 123,
-                    attrId: 56,
+                    attributeId: 56,
                     displayName: "Pending Factory assesments",
-
                 }
             ]
         },
@@ -235,18 +219,18 @@ export const Widgets =
                 y: 1,
             },
             title: "Graph One",
-            type: WidgetTypes.GRAPH,
-            graph: GraphType.Bar,
+            widgetType: WidgetTypes.GRAPH,
+            graphType: GraphType.Bar,
             attributeMapping: [
                 {
                     docTypeId: 124,
-                    attrId: 10,
+                    attributeId: 10,
                     displayName: "Tax assesment",
                     color: "red"
                 },
                 {
                     docTypeId: 124,
-                    attrId: 11,
+                    attributeId: 11,
                     displayName: "Revenue",
                     color: "green"
                 }
@@ -258,36 +242,33 @@ export const Widgets =
                 y: 2,
             },
             title: "Indicator Two",
-            type: WidgetTypes.INDICATOR,
+            widgetType: WidgetTypes.INDICATOR,
             attributeMapping: [
                 {
                     docTypeId: 125,
 
-                    attrId: 58,
+                    attributeId: 58,
                     displayName: "Date of Last customer Inquiry",
                 },
                 {
                     docTypeId: 125,
-                    attrId: 156,
+                    attributeId: 156,
                     displayName: "Date of Last File Update",
                 },
                 {
                     docTypeId: 124,
-                    attrId: 25,
+                    attributeId: 25,
                     displayName: "Tax Due",
-
                 },
                 {
                     docTypeId: 125,
-                    attrId: 58,
+                    attributeId: 58,
                     displayName: "Date of Last customer Inquiry",
-
                 },
                 {
                     docTypeId: 125,
-                    attrId: 156,
+                    attributeId: 156,
                     displayName: "Date of Last File Update",
-
                 }
             ]
         },
@@ -297,11 +278,11 @@ export const Widgets =
                 y: 1,
             },
             title: "Log",
-            type: WidgetTypes.LOG,
+            widgetType: WidgetTypes.LOG,
             attributeMapping: []
         }
 
-    ]
+    ]*/
 
 
 export const logs = [
@@ -320,9 +301,7 @@ export const logs = [
         ACTIVITY: "added Document \"Tax assesment\"",
         TIMESTAMP: "1.1.1970"
     }
-
 ]
-
 
 export const databaseEntriesPlaceholder = [
     {
@@ -334,19 +313,18 @@ export const databaseEntriesPlaceholder = [
         dateCreation: '1.1.1970',
         dateModification: '1.1.2020',
         comment: 'This is a long long Lorem Ipsum Comment talking blablabla',
-        actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-
+        actions: [fileActions.DOWNLOAD, fileActions.EDIT, fileActions.DELETE],
     },
     {
         parentId: 0,
         id: 3,
         activeFolder: false,
         type: fileTypes.FOLDER,
-        name: "Sample Folder",
+        name: "Sample Tom Folder",
         dateCreation: '',
         dateModification: '',
         comment: 'TJust some Folder',
-        actions: ['EDIT', 'DELETE'],
+        actions: [fileActions.EDIT, fileActions.DELETE],
     },
     {
         parentId: 3,
@@ -357,7 +335,7 @@ export const databaseEntriesPlaceholder = [
         dateCreation: '2.2.1970',
         dateModification: '2.2.2020',
         comment: 'Second Document Comment',
-        actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
+        actions: [fileActions.DOWNLOAD, fileActions.EDIT, fileActions.DELETE],
 
     },
     {
@@ -369,7 +347,7 @@ export const databaseEntriesPlaceholder = [
         dateCreation: '',
         dateModification: '',
         comment: 'TJust some Folder',
-        actions: ['EDIT', 'DELETE'],
+        actions: [fileActions.EDIT, fileActions.DELETE],
     },
     {
         parentId: 6,
@@ -380,11 +358,8 @@ export const databaseEntriesPlaceholder = [
         dateCreation: '1.1.1970',
         dateModification: '1.1.2020',
         comment: 'This is a long long Lorem Ipsum Comment talking blablabla',
-        actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-
+        actions: [fileActions.DOWNLOAD, fileActions.EDIT, fileActions.DELETE],
     },
-
-
     {
         parentId: 3,
         id: 4,
@@ -394,9 +369,6 @@ export const databaseEntriesPlaceholder = [
         dateCreation: '2.2.1970',
         dateModification: '2.2.2020',
         comment: 'Second Document Comment',
-        actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-
+        actions: [fileActions.DOWNLOAD, fileActions.EDIT, fileActions.DELETE],
     },
-
-
 ];

@@ -14,7 +14,7 @@ export default class SearchResults extends React.Component {
         return (
             <div>
                 <h3>Search Results</h3>
-                <FileExplorer/>
+                <FileExplorer elements={this.props.table} dragEnabled={false}/>
             </div>
         );
     }

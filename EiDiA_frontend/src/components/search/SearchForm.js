@@ -9,6 +9,7 @@ import CommonService from "../../services/CommonService";
 import UserService from "../../services/UserService";
 import RecordService from "../../services/RecordService";
 import PropTypes from "prop-types";
+import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
 
 const Background = styled.div`
     background-color: #EDEDED;
@@ -26,9 +27,11 @@ class SearchForm extends React.Component {
             attributeTypes: [],
             records: [],
             users: [],
+            isServerError: false,
         }
 
         this.handleTabChange = this.handleTabChange.bind(this);
+        this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -37,6 +40,9 @@ class SearchForm extends React.Component {
                 documentTypes: [...data.documentTypes],
             });
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e);
         });
 
@@ -45,6 +51,9 @@ class SearchForm extends React.Component {
                 attributeTypes: [...data.attributeTypes],
             });
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e);
         });
 
@@ -53,6 +62,9 @@ class SearchForm extends React.Component {
                 users: [...data.users],
             });
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e);
         });
 
@@ -61,6 +73,9 @@ class SearchForm extends React.Component {
                 records: [...data.records],
             });
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e);
         });
     }
@@ -70,6 +85,12 @@ class SearchForm extends React.Component {
             tabValue: newTabValue
         });
     };
+
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+        })
+    }
 
     render() {
         return (
@@ -93,6 +114,7 @@ class SearchForm extends React.Component {
                         attributeTypes={this.state.attributeTypes}
                         onSearch={this.props.onSearch}/>
                 }
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
             </Background>
         );
     }

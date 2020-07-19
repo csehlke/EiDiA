@@ -18,7 +18,9 @@ import {RiCropLine} from "react-icons/all";
 import Alert from "@material-ui/lab/Alert";
 
 import UploadService from '../../services/UploadService';
-
+import {fileTypes} from "../../../../constants";
+import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
+import {Link} from "react-router-dom";
 
 const Container = styled.div
     // Outer Container
@@ -27,6 +29,11 @@ const Container = styled.div
     flex-grow: 1; //For Splitview
     flex-basis: 50%;
     flex-direction: column;
+`;
+
+const RightSide = styled.div`
+    width: 50%;
+    margin: 3em;
 `;
 
 
@@ -44,10 +51,7 @@ class AttributeContainer extends React.Component {
             priority: "",
             department: "",
             comment: "",
-            createdBy: "5ef9e3d2c4664e04e4003999", //Placeholder
-            rootFolderId: "5ef9e3d2c4664e04e4003999", //Placeholder
-            recordId: "5ef9e3d2c4664e04e4003999", //Placeholder
-            //TODO Remove Placeholders
+            isServerError: false,
         }
         this.attrsToBackend = this.attrsToBackend.bind(this);
         this.saveTextFieldData = this.saveTextFieldData.bind(this);
@@ -58,6 +62,7 @@ class AttributeContainer extends React.Component {
         this.getMetaData = this.getMetaData.bind(this);
         this.handleDateSnackbarClose = this.handleDateSnackbarClose.bind(this);
         this.handleNumberSnackbarClose = this.handleNumberSnackbarClose.bind(this);
+        this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -68,6 +73,9 @@ class AttributeContainer extends React.Component {
                 attributes: [...data.attributeTypes]
             });
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e.message)
         });
     }
@@ -272,6 +280,12 @@ class AttributeContainer extends React.Component {
         });
     }
 
+    handleServerErrorBarClose() {
+        this.setState({
+            isServerError: false,
+        })
+    }
+
     attrsToBackend() { //Send current state to backend
         let requestData = {
             attributeData: this.state.attributeData,
@@ -279,15 +293,19 @@ class AttributeContainer extends React.Component {
             department: this.state.department,
             comment: this.state.comment,
             createdBy: this.state.createdBy,
-            rootFolderId: this.state.rootFolderId,
-            recordId: this.state.recordId,
+            parentFolderId: this.props.assignedFolder,
+            recordId: this.props.assignedRecord,
             name: this.props.documentName,
             documentTypeId: this.props.selectedDocumentTypeId,
-            base64Image: this.props.base64Image
+            base64Image: this.props.base64Image,
+            fileType: fileTypes.IMAGE // EiDiA currently only supports uploading scanned images
         }
         UploadService.addAttributes(requestData).then((response) => {
             console.log(response)
         }).catch((e) => {
+            this.setState({
+                isServerError: true,
+            });
             console.error(e);
         });
     }
@@ -321,58 +339,63 @@ class AttributeContainer extends React.Component {
             </Snackbar>
         );
         return ( // Render TextFields dynamically from state
-            <Container>
-                <Grid
-                    container
-                    direction="row"
-                    justify="space-evenly"
-                    alignItems="flex-end">
-                    {this.state.attributes.map(function (item) {
-                        if (item.dataType === 'text') {
-                            return (
-                                <div key={item.id}>
-                                    {self.renderTextFields(item.name, item.id)}
-                                </div>
-                            );
-                        } else if (item.dataType === 'number') {
-                            return (
-                                <div key={item.id}>
-                                    {self.renderNumberFields(item.name, item.id)}
-                                </div>
-                            );
-                        } else if (item.dataType === 'date') {
-                            return (
-                                <div key={item.id}>
-                                    {self.renderDateFields(item.name, item.id)}
-                                </div>
-                            );
-                        }
-                    })}
+            <RightSide>
+                <Container>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-evenly"
+                        alignItems="flex-end">
+                        {this.state.attributes.map(function (item) {
+                            if (item.dataType === 'text') {
+                                return (
+                                    <div key={item.id}>
+                                        {self.renderTextFields(item.name, item.id)}
+                                    </div>
+                                );
+                            } else if (item.dataType === 'number') {
+                                return (
+                                    <div key={item.id}>
+                                        {self.renderNumberFields(item.name, item.id)}
+                                    </div>
+                                );
+                            } else if (item.dataType === 'date') {
+                                return (
+                                    <div key={item.id}>
+                                        {self.renderDateFields(item.name, item.id)}
+                                    </div>
+                                );
+                            }
+                        })}
 
-                    <Grid item xs={12} align="center">
-                        <Box mt={10}/>
+                        <Grid item xs={12} align="center">
+                            <Box mt={10}/>
+                        </Grid>
+
+                        <MetaData callbackAttributeContainer={this.getMetaData}/>
+
+                        <Grid item xs={6} align="center" style={{marginTop: 100}}>
+                            <Button variant="contained"
+                                    color="primary">
+                                Update Document Type
+                            </Button>
+                        </Grid>
+
+                        <Grid item xs={6} align="center" style={{marginTop: 100}}>
+                            <Button variant="contained"
+                                    color="primary"
+                                    onClick={this.attrsToBackend}
+                                    component={Link} to={'/record/' + this.props.assignedRecord}>
+                                Save
+                            </Button>
+                        </Grid>
                     </Grid>
-
-                    <MetaData callbackAttributeContainer={this.getMetaData}/>
-
-                    <Grid item xs={6} align="center" style={{marginTop: 100}}>
-                        <Button variant="contained"
-                                color="primary">
-                            Update Document Type
-                        </Button>
-                    </Grid>
-
-                    <Grid item xs={6} align="center" style={{marginTop: 100}}>
-                        <Button variant="contained"
-                                color="primary"
-                                onClick={this.attrsToBackend}>
-                            Save
-                        </Button>
-                    </Grid>
-                </Grid>
-                {dateSnackBar}
-                {numberSnackBar}
-            </Container>
+                    {dateSnackBar}
+                    {numberSnackBar}
+                    <ServerSideErrorSnackBar isError={this.state.isServerError}
+                                             onClose={this.handleServerErrorBarClose}/>
+                </Container>
+            </RightSide>
         )
     }
 }

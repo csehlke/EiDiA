@@ -7,18 +7,24 @@ export default class VariableList extends React.Component {
         const variableState = this.props.variables;
         const variableKeys = Object.keys(variableState);
         return (
-
             <div style={{margin: "3%"}}>
                 <Typography variant="subtitle2">
                     Variables
                 </Typography>
-                <Box style={{minHeight: "220px", maxHeight: "220px", overflow: "auto"}}
+                <Box style={{
+                    height: "200px",
+                    maxHeight: "200px",
+                    minWidth: "400px",
+                    maxWidth: "400px",
+                    overflow: "auto"
+                }}
                      component="span"
                      display="block"
                      p={1}
                      m={1}
                      bgcolor="LightGray">
-                    {variableKeys.map((key) => <li key={key}>{key}</li>)}
+                    {variableKeys.map((key) => <li style={{whiteSpace: "nowrap", margin: "3%"}}
+                                                   key={key}>{key}</li>)}
                 </Box>
             </div>
         )

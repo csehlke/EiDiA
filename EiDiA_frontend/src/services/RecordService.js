@@ -16,4 +16,133 @@ export default class RecordService {
             });
         });
     }
+
+    static getWidgets(recordId) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/dashboard/widget/list/' + recordId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static addWidget(widgetData) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(baseURL + '/dashboard/widget/add', widgetData, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static addRecord(name) {
+        //TODO: Add Record
+
+    }
+
+    static addFolder(folder) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(baseURL + '/record/folder/add', folder, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+
+    static getDocuments(recordId) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/record/document/list/' + recordId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static getDocTypes(recordId) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/record/docTypes/list/' + recordId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static getAttributeTypes(recordId) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/record/attributeTypes/list/' + recordId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static getAttributeValues(recordId) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/record/attributeValues/list/' + recordId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+
+    static listFolders(recordId) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/record/document/listfolders/' + recordId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static getLogs(recordId) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(baseURL + '/log/list/' + recordId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static updateName(requestBody) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(baseURL + '/record/document/update/name', requestBody, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static updateParentFolderId(requestBody) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(baseURL + '/record/document/update/parentFolderId', requestBody, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static deleteDocument(documentId) {
+        console.log(documentId)
+        return new Promise((resolve, reject) => {
+            HttpService.remove(baseURL + '/record/document/delete/' + documentId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
 }
