@@ -153,7 +153,7 @@ const searchDocumentsByName = (req, res) => {
         .then(documents => {
             return Promise.all(documents.map(document => {
                 return new Promise((resolve, reject) => {
-                    RecordController.getRecordName(document.recordId)
+                    RecordController.getRecordNameByID(document.recordId)
                         .then(recordName => {
                             resolve({
                                 id: document._id,
