@@ -146,7 +146,7 @@ export class FileCabinetView extends React.Component {
                         There exists already a record with the same name.<br/>
                         Cannot create it again.
                     </Alert>
-                </Snackbar>;
+                </Snackbar>
             </Page>
         );
     }
