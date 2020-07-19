@@ -170,6 +170,17 @@ const getAttributeValuesForRecord = (req, res) => {
 
                 }
             },
+            {$lookup: {from: 'attributetypes', localField: 'attributeId', foreignField: '_id', as: 'attributeType'}},
+            {$unwind: "$attributeType"},
+            {
+                "$project": {
+                    "docTypeId": "$docTypeId",
+                    "date": "$date",
+                    "attributeId": "$attributeId",
+                    "value": "$value",
+                    "type": "$attributeType.dataType"
+                }
+            },
         ],
         function (err, documents) {
             if (err) {
@@ -178,6 +189,11 @@ const getAttributeValuesForRecord = (req, res) => {
                     message: err.message
                 })
             }
+            documents = documents.map(doc => {
+                if (doc.type == 'date') doc.value = format(new Date(doc.value), 'dd/MM/yyyy')
+                return doc
+            })
+
             res.status(200).json(documents);
         });
 }
