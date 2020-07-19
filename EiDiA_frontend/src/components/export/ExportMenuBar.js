@@ -13,12 +13,13 @@ const useStyles = makeStyles(() => ({
         },
         title: {
             flexGrow: 1,
-            color: "black",
-            background: "#b0b0b0",
+            color: "white",
+            background: "#005e7c",
         },
         titleUnselect: {
             flexGrow: 1,
-            color: "gray",
+            color: "white",
+            background: "#0094c6",
         },
 
     }

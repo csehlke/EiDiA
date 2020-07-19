@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
-        background: "#DADADA",
+        background: "linear-gradient(90deg, #FFFFFF 0%, rgb(187,225,238) 10%, rgb(0,126,167) 35%, rgba(0,94,124,1) 50%, rgba(0,148,198,1) 100%)",
     },
     drawer: {
         width: drawerWidth,
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
-        color: "black"
+        color: "white"
     },
     logo: {
         margin: "1em",

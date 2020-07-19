@@ -12,6 +12,8 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import {IoIosArrowBack, IoIosArrowDown, RiDeleteBinLine} from "react-icons/all";
 import PropTypes from "prop-types";
+import {MdDelete} from "react-icons/md";
+import {IconContext} from "react-icons";
 
 const ListItemTextSmall = styled(ListItemText)`
     font-size: 0.75em;
@@ -81,7 +83,7 @@ export default class SearchSummary extends React.Component {
                     <ListItemSmall button
                                    key={index}
                                    onClick={() => this.handleOpen(index)}>
-                        <ListItemTextSmall primary={TypeConstraint.name} />
+                        <ListItemTextSmall primary={TypeConstraint.name}/>
                         {!this.state.notOpen.includes(index) ? <IoIosArrowDown/> : <IoIosArrowBack/>}
                     </ListItemSmall>
                     <Collapse in={!this.state.notOpen.includes(index)}>
@@ -95,13 +97,15 @@ export default class SearchSummary extends React.Component {
         } else if (indent) {
             return (
                 <ListItemIndent button key={index}>
-                    <ListItemTextSmall primary={TypeConstraint.name} />
+                    <ListItemTextSmall primary={TypeConstraint.name}/>
                     <ListItemSecondaryAction>
                         <IconButton
                             edge="end"
                             aria-label="delete"
                             onClick={() => this.props.handleDelete(TypeConstraint)}>
-                            <RiDeleteBinLine/>
+                            <IconContext.Provider value={{className: 'react-icons'}}>
+                                <MdDelete/>
+                            </IconContext.Provider>
                         </IconButton>
                     </ListItemSecondaryAction>
                 </ListItemIndent>
@@ -109,13 +113,15 @@ export default class SearchSummary extends React.Component {
         } else {
             return (
                 <ListItemSmall button key={index}>
-                    <ListItemTextSmall primary={TypeConstraint.name} />
+                    <ListItemTextSmall primary={TypeConstraint.name}/>
                     <ListItemSecondaryAction>
                         <IconButton
                             edge="end"
                             aria-label="delete"
                             onClick={() => this.props.handleDelete(TypeConstraint)}>
-                            <RiDeleteBinLine/>
+                            <IconContext.Provider value={{className: 'react-icons'}}>
+                                <RiDeleteBinLine/>
+                            </IconContext.Provider>
                         </IconButton>
                     </ListItemSecondaryAction>
                 </ListItemSmall>
