@@ -30,7 +30,6 @@ export default class App extends React.Component {
                 this.getRoute('/export', ExportView, true),
                 this.getRoute('/help', DefaultView, true),
                 this.getRoute('/permissionRequests', DefaultView, true),
-                this.getRoute('/record', RecordView, true), //TODO<- this should later be deleted
                 this.getRoute('/record/:id', RecordView, false),
                 this.getRoute('/search', SearchView, true),
                 this.getRoute('/settings', DefaultView, true),
