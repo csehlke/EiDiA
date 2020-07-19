@@ -79,7 +79,6 @@ const getDocumentAttributes = (req, res) => {
     if (!Array.isArray(docNames)) {
         docNames = [docNames]
     }
-    console.log(docNames)
 
     docNames = docNames.map(doc => {
         return mongoose.Types.ObjectId(doc)
