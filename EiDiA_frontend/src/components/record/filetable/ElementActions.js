@@ -3,6 +3,7 @@ import {AiFillDelete, AiFillEdit} from 'react-icons/ai'
 import {FaCloudDownloadAlt} from 'react-icons/fa'
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
+import {fileActions} from '../../../../../constants';
 import IconButton from "@material-ui/core/IconButton";
 
 
@@ -25,16 +26,16 @@ export class ElementActions extends React.Component {
     }
 
     actionSelection(actions) {
-        let toReturn = ["", "", ""];
-        if (actions.includes('EDIT')) {
+        let toReturn = [];
+        if (actions.includes(fileActions.EDIT)) {
             //TODO: different icon here maybe?
             toReturn[0] = <AiFillEdit size={IconSize}/>;
         }
-        if (actions.includes('DOWNLOAD')) {
-            toReturn[2] = (<FaCloudDownloadAlt size={IconSize}/>);
+        if (actions.includes(fileActions.DOWNLOAD)) {
+            toReturn[1] = (<FaCloudDownloadAlt size={IconSize}/>);
         }
-        if (actions.includes('DELETE')) {
-            toReturn[1] = (<AiFillDelete size={IconSize}/>);
+        if (actions.includes(fileActions.DELETE)) {
+            toReturn[2] = (<AiFillDelete size={IconSize}/>);
         }
 
         return toReturn;

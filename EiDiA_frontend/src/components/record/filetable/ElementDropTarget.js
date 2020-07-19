@@ -6,7 +6,10 @@ import {fileTypes} from "../../../../../constants";
 
 const calTarget = {
     canDrop(props) {
-        return props.type === fileTypes.FOLDER;
+        if (props.dragEnabled === undefined || props.dragEnabled) {
+            return props.type === fileTypes.FOLDER;
+        }
+        return false;
     },
 
     drop(props, monitor, component) {

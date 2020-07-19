@@ -8,7 +8,6 @@ const LogModel = require('../models/log')
 const tes = require('tesseract.js')
 
 const fullTextOCR = (documentId, base64Image) => {
-
     const worker = tes.createWorker({
         logger: m => console.log(m)
     });

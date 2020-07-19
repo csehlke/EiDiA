@@ -1,4 +1,5 @@
-const {fileTypes} = require('../../../constants');
+
+const {fileActions, fileTypes} = require('../../../constants');
 
 export const recordMenuOptions = {
     DASHBOARD: 1,
@@ -14,20 +15,13 @@ export const WidgetTypes = {
     LOG: 'Log',
     GRAPH: 'Graph',
     INDICATOR: 'Indicator'
-
-
 }
+
 export const GraphType = {
     Line: 'Line Chart',
     Bar: 'Bar Chart',
 }
-export const ActionTypes = {
-    NewDocument: "new Document",
-    EditedDocument: "Changed Document",
-    RemovedDocument: "Removed Document",
-    NewWidget: "NewWidget"
 
-}
 export const LogEntries = [
     {
         logID: 1,
@@ -42,7 +36,6 @@ export const LogEntries = [
         action: "added Widget \"Indicator One\"",
         date: "2011-05-14",
         recordId: "34"
-
     },
     {
         logID: 1,
@@ -57,7 +50,6 @@ export const LogEntries = [
         action: "added Widget \"Indicator One\"",
         date: "2011-05-14",
         recordId: "34"
-
     },
     {
         logID: 3,
@@ -65,7 +57,6 @@ export const LogEntries = [
         action: "did something that should not show up it is simply to old and outside of the count (if set to three)",
         date: "1900-06-13",
         recordId: "2" //e.g. VW
-
     },
     {
         logID: 2,
@@ -73,9 +64,9 @@ export const LogEntries = [
         action: "changed Widget \"Indicator One\"",
         date: "2012-06-13",
         recordId: "34"
-
     }
 ]
+
 export const Attributes = [
     {
         attrId: 55, //Factory Count
@@ -219,7 +210,6 @@ export const Widgets =
                     docTypeId: 123,
                     attrId: 56,
                     displayName: "Pending Factory assesments",
-
                 }
             ]
         },
@@ -269,19 +259,16 @@ export const Widgets =
                     docTypeId: 124,
                     attrId: 25,
                     displayName: "Tax Due",
-
                 },
                 {
                     docTypeId: 125,
                     attrId: 58,
                     displayName: "Date of Last customer Inquiry",
-
                 },
                 {
                     docTypeId: 125,
                     attrId: 156,
                     displayName: "Date of Last File Update",
-
                 }
             ]
         },
@@ -314,9 +301,7 @@ export const logs = [
         ACTIVITY: "added Document \"Tax assesment\"",
         TIMESTAMP: "1.1.1970"
     }
-
 ]
-
 
 export const databaseEntriesPlaceholder = [
     {
@@ -328,8 +313,7 @@ export const databaseEntriesPlaceholder = [
         dateCreation: '1.1.1970',
         dateModification: '1.1.2020',
         comment: 'This is a long long Lorem Ipsum Comment talking blablabla',
-        actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-
+        actions: [fileActions.DOWNLOAD, fileActions.EDIT, fileActions.DELETE],
     },
     {
         parentId: 0,
@@ -340,7 +324,7 @@ export const databaseEntriesPlaceholder = [
         dateCreation: '',
         dateModification: '',
         comment: 'TJust some Folder',
-        actions: ['EDIT', 'DELETE'],
+        actions: [fileActions.EDIT, fileActions.DELETE],
     },
     {
         parentId: 3,
@@ -351,7 +335,7 @@ export const databaseEntriesPlaceholder = [
         dateCreation: '2.2.1970',
         dateModification: '2.2.2020',
         comment: 'Second Document Comment',
-        actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
+        actions: [fileActions.DOWNLOAD, fileActions.EDIT, fileActions.DELETE],
 
     },
     {
@@ -363,7 +347,7 @@ export const databaseEntriesPlaceholder = [
         dateCreation: '',
         dateModification: '',
         comment: 'TJust some Folder',
-        actions: ['EDIT', 'DELETE'],
+        actions: [fileActions.EDIT, fileActions.DELETE],
     },
     {
         parentId: 6,
@@ -374,11 +358,8 @@ export const databaseEntriesPlaceholder = [
         dateCreation: '1.1.1970',
         dateModification: '1.1.2020',
         comment: 'This is a long long Lorem Ipsum Comment talking blablabla',
-        actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-
+        actions: [fileActions.DOWNLOAD, fileActions.EDIT, fileActions.DELETE],
     },
-
-
     {
         parentId: 3,
         id: 4,
@@ -388,9 +369,6 @@ export const databaseEntriesPlaceholder = [
         dateCreation: '2.2.1970',
         dateModification: '2.2.2020',
         comment: 'Second Document Comment',
-        actions: ['DOWNLOAD', 'EDIT', 'DELETE'],
-
+        actions: [fileActions.DOWNLOAD, fileActions.EDIT, fileActions.DELETE],
     },
-
-
 ];
