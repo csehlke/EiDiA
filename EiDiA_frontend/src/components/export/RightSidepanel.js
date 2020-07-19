@@ -26,6 +26,7 @@ export default class RightSidePanel extends React.Component {
                 /> : <div/>}
                 <Divider/>
                 <TypeComponent2
+                    selectedDocTypes={this.props.selectedDocTypes}
                     editorState={this.props.editorState}
                     variables={this.props.variables}
                     selectedDocs={this.props.selectedDocs}
