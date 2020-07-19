@@ -4,9 +4,9 @@ import React from 'react';
 import styled from "styled-components";
 import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
-import {FaFolderOpen} from "react-icons/fa";
 import {DragTypes} from "../../../../../constants";
 import {IconContext} from "react-icons";
+import {MdFolderOpen} from "react-icons/all";
 
 
 const Name = styled.div`
@@ -49,7 +49,7 @@ class Element extends React.Component {
                     <Grid item xs={12} sm={12}>
                         <Name padding={this.state.padding}>
                             <IconContext.Provider value={{className: 'react-icons'}}>
-                                <FaFolderOpen size={'1.5em'}/>
+                                <MdFolderOpen size={'1.5em'}/>
                             </IconContext.Provider>
                             &nbsp;&nbsp;{this.state.elementData.name}
                         </Name>
