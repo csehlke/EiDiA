@@ -80,7 +80,7 @@ const register = (req, res) => {
 
     user['firstName'] = req.body.firstName ? req.body.firstName : '';
     user['lastName'] = req.body.lastName ? req.body.lastName : '';
-    user['picture'] = req.body.picture ? req.body.picture : '';
+    user['picture'] = req.body.picture ? req.body.picture : null;
     user['workPosition'] = req.body.workPosition ? req.body.workPosition : '';
     user['workLocation'] = req.body.workLocation ? req.body.workLocation : '';
     user['settings'] = {};
