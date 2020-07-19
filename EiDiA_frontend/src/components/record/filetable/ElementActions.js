@@ -13,6 +13,7 @@ export class ElementActions extends React.Component {
     actionSelection() {
         let toReturn = ["", "", ""];
 
+
         toReturn[0] = (
             <IconButton style={{padding: "0"}} onClick={this.props.handleEditName} aria-label="Edit Element">
                 <MdEdit size={elementIconSize}/>
@@ -20,22 +21,32 @@ export class ElementActions extends React.Component {
 
 
         toReturn[1] = (
-            <IconButton style={{padding: "0"}} onClick={this.props.handleDeleteElement} aria-label="Delete Element">
+            <IconButton disabled={this.props.isNotAuthorized} style={{padding: "0"}}
+                        onClick={this.props.handleDeleteElement} aria-label="Delete Element">
                 <MdDelete size={elementIconSize}/>
             </IconButton>);
 
         if (this.props.fileType === fileTypes.FOLDER) {
+
             toReturn[2] = (
                 <IconButton style={{padding: "0"}} onClick={this.props.handleAddFolder} aria-label="Add Subfolder">
                     <MdCreateNewFolder size={elementIconSize}/>
-                </IconButton>
-            );
+                </IconButton>);
+
+
         } else {
             toReturn[2] = (
                 <IconButton style={{padding: "0"}}  /*onClick={this.props.handleEditName}*/>
                     <MdCloudDownload size={elementIconSize}/>
                 </IconButton>
             );
+        }
+        if (this.props.withinSearchResults) {
+            toReturn[0] = ""
+            if (this.props.fileType === fileTypes.FOLDER) {
+                toReturn[1] = ""
+                toReturn[2] = ""
+            }
         }
 
 

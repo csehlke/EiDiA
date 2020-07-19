@@ -52,7 +52,7 @@ const WidgetSchema = new mongoose.Schema({
             },
             color: {
                 type: String,
-                enum: ['red', 'green', 'blue'],
+                enum: ['red', 'green', 'blue', 'pink', 'orange'],
                 required: false,
             }
         }

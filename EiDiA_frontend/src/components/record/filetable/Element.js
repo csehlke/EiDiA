@@ -9,6 +9,7 @@ import {fileTypes} from "../../../../../constants";
 import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import UserService from "../../../services/UserService";
 
 const Name = styled.div`
     padding-left: ${props => props.padding + "%"};
@@ -83,7 +84,6 @@ class Element extends React.Component {
                         this.state.nameEdit ? {} : this.props.activeToggle()
                     }}>
                         <Name padding={this.state.padding}>
-                            {/*<span style={{verticalAlign:"middle",display:"inline-block"}}>*/}
                             <ElementSymbol fileType={this.state.elementData.fileType}
                                            activeFolder={this.state.elementData.activeFolder}
                             />
@@ -94,15 +94,14 @@ class Element extends React.Component {
                                        }}
                             /> :
                             this.state.elementData.name
-                            /*</span>*/
                         }
                         </Name>
                     </Grid>
                     <Grid item xs={12} xl={1} sm={2}>
-                        {this.state.elementData.createdOnDate.replace(/[T].*/, "")}
+                        {this.state.elementData.createdOnDate}
                     </Grid>
                     <Grid item xs={12} xl={1} sm={2}>
-                        {this.state.elementData.lastModifiedOnDate.replace(/[T].*/, "")}
+                        {this.state.elementData.lastModifiedOnDate}
                     </Grid>
                     <Grid item xs={12} xl={4} sm={3}>
                         {this.state.elementData.comment}
@@ -113,7 +112,11 @@ class Element extends React.Component {
                             handleEditName={this.handleEditName}
                             handleDeleteElement={this.props.handleDeleteElement}
                             handleAddFolder={this.props.handleAddFolder}
-                            editName={this.props.editName}/>
+                            editName={this.props.editName}
+                            withinSearchResults={!this.props.dragEnabled}
+                            isNotAuthorized={!(this.state.elementData.createdBy === UserService.getCurrentUser().id || UserService.isAdmin())}
+                        />
+
                     </Grid>
                 </Grid>}
             </div>
