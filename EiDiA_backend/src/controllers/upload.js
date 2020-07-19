@@ -90,7 +90,6 @@ const addDocument = (req, res) => {
         fileType: req.body.fileType
     })
         .then((insertedData) => {
-            console.log("yes")
             res.status(200).json({response: "Inserted attribute-data"});
             fullTextOCR(insertedData._id, insertedData.base64Image) //Start backend-OCR after inserting attributes
             LogModel.create({
@@ -102,7 +101,6 @@ const addDocument = (req, res) => {
             })
         })
         .catch(error => {
-            console.log("no")
             console.log(error.message)
             res.status(400).json({
                 error: error.message,

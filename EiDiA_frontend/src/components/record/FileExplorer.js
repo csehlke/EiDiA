@@ -86,7 +86,6 @@ export default class FileExplorer extends React.Component {
         //TODO if parent Element deleted, also delete all child elements
         //TODO make pop up if u really want to delete
         RecordService.deleteDocument(element.id).then(result => {
-                console.log("Ok:" + result.ok)
                 if (result.ok) this.state.elements.splice(this.state.elements.findIndex(elem => elem.id === element.id), 1);
                 this.setState(this.state)
             }
