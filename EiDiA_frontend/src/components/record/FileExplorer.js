@@ -188,7 +188,7 @@ class FileExplorer extends React.Component {
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">{"Are you sure you want to perform Delete ?"}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">Are you sure you want to perform Delete ?</DialogTitle>
                     <DialogActions>
                         <Button onClick={() => {
                             this.setState({deleteInProgress: false, toDeleteElement: null})
