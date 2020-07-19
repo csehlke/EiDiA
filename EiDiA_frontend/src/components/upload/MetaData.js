@@ -98,7 +98,8 @@ class MetaData extends React.Component {
                 </FormControl>
 
                 <TextField
-                    multiline={true}
+                    multiline
+                    rowsMax={5}
                     label={"Comment"}
                     variant="outlined"
                     onChange={this.handleOnCommentChange}/>
