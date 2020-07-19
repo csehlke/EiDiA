@@ -10,9 +10,9 @@ import Fab from "@material-ui/core/Fab";
 import {IoMdAddCircleOutline} from "react-icons/all";
 import AddElementDialog from "../components/record/AddElementDialog";
 import RecordService from "../services/RecordService";
+import {ServerSideErrorSnackBar} from "../components/ServerSideErrorSnackBar";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
-import {ServerSideErrorSnackBar} from "../components/ServerSideErrorSnackBar";
 import {styleFabButton} from "../../../constants";
 
 const FlexRow = styled.div`
@@ -41,25 +41,24 @@ export class FileCabinetView extends React.Component {
             isServerError: false,
         }
 
-        this.addRecord = this.addRecord.bind(this);
-        this.handleRecordAlreadyExistsErrorBarClose = this.handleRecordAlreadyExistsErrorBarClose.bind(this);
-        this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
     }
 
     componentDidMount() {
         this.props.setTitle("File Cabinet");
         RecordService.getAllRecords().then(result => {
             this.setState({records: result.records});
-        }).catch((e) => {
-            this.setState({
-                isServerError: true,
-            });
-            console.error((e))
-        })
+        }).catch((e) => this.setState({isServerError: true}))
     }
 
     updateSearch = (event) => {
         this.setState({search: event.target.value});
+    }
+
+    handleServerErrorBarClose = (e) => {
+        this.setState({
+            isServerError: false,
+
+        });
     }
 
     toggleAddRecordDialog = () => {
@@ -68,19 +67,15 @@ export class FileCabinetView extends React.Component {
         });
     }
 
-    handleRecordAlreadyExistsErrorBarClose() {
+    handleRecordAlreadyExistsErrorBarClose=(e)=> {
         this.setState({
             isRecordAlreadyExistsError: false,
         })
     }
 
-    handleServerErrorBarClose() {
-        this.setState({
-            isServerError: false,
-        })
-    }
 
-    addRecord(recordName) {
+
+    addRecord = (recordName) => {
         RecordService.addNewRecord(recordName)
             .then(record => {
                 let records = [record, ...this.state.records];

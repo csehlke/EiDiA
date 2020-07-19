@@ -15,10 +15,7 @@ const listWidgetsToRecord = (req, res) => {
                 return res.status(200).json(widgets);
 
             }
-            return res.status(404).json({
-                error: 'Not Found',
-                message: `Widgets not found`,
-            });
+
 
         })
         .catch(error => res.status(500).json({

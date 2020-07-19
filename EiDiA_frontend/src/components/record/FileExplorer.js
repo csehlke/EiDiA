@@ -6,14 +6,28 @@ import Grid from "@material-ui/core/Grid";
 import RecordService from "../../services/RecordService";
 import Fab from "@material-ui/core/Fab";
 import {MdCreateNewFolder} from "react-icons/md/index";
+import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
+import withStyles from "@material-ui/core/styles/withStyles";
 
+const styles = theme => ({
+    error: {
+        color: theme.palette.error.main // see index.js
+    }
+});
 
-export default class FileExplorer extends React.Component {
+class FileExplorer extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            elements: this.props.elements
+            elements: this.props.elements,
+            isServerError: false,
+            deleteInProgress: false,
+            toDeleteElement: null
         }
     }
 
@@ -37,11 +51,7 @@ export default class FileExplorer extends React.Component {
                 this.setState(this.state);
 
             }
-        ).catch((e) => {
-                console.log(e)
-                //TODO snackbar
-            }
-        )
+        ).catch((e) => this.setState({isServerError: true}))
 
     }
     activeToggle = (element) => () => {
@@ -61,10 +71,7 @@ export default class FileExplorer extends React.Component {
                     this.state.elements.push(resp);
                     this.setState({elements: this.state.elements})
                 }
-            )
-            .catch(
-                //TODO open snackbar error
-                (e) => console.log(e))
+            ).catch((e) => this.setState({isServerError: true}))
     }
     editName = (element) => (name) => {
         let reqBody = {
@@ -76,23 +83,23 @@ export default class FileExplorer extends React.Component {
                 this.setState(this.state);
 
             }
-        ).catch((e) => {
-                console.log(e)
-                //TODO snackbar
+        ).catch((e) => this.setState({isServerError: true}))
+    }
+
+    handleDeleteElementApproved = (e) => {
+        RecordService.deleteDocument(this.state.toDeleteElement.id).then(result => {
+                if (result.ok) this.state.elements.splice(this.state.elements.findIndex(elem => elem.id === this.state.toDeleteElement.id), 1);
+                this.setState(this.state)
+                this.setState({deleteInProgress: false, toDeleteElement: null})
             }
-        )
+        ).catch((e) => {
+            this.setState({isServerError: true})
+        })
+
     }
     handleDeleteElement = (element) => (e) => {
         //TODO if parent Element deleted, also delete all child elements
-        //TODO make pop up if u really want to delete
-        RecordService.deleteDocument(element.id).then(result => {
-                if (result.ok) this.state.elements.splice(this.state.elements.findIndex(elem => elem.id === element.id), 1);
-                this.setState(this.state)
-            }
-        ).catch((e) => {
-            //TODO snabkbar
-            console.log(e)
-        })
+        this.setState({deleteInProgress: true, toDeleteElement: element})
     }
 
     renderElement(element, index, level) {
@@ -129,8 +136,15 @@ export default class FileExplorer extends React.Component {
         );
     }
 
-    render() {
+    handleServerErrorBarClose = (e) => {
+        this.setState({
+            isServerError: false,
 
+        });
+    }
+
+    render() {
+        const {classes} = this.props;
         return (
             <div>
                 <Grid style={{flexGrow: 1}} container spacing={0}>
@@ -150,7 +164,7 @@ export default class FileExplorer extends React.Component {
                         <span style={{textAlign: "center"}}>Actions</span>
                     </Grid>
 
-                    <Grid item xl={12}>
+                    <Grid item xs={12} sm={12} xl={12}>
                         <hr/>
                     </Grid>
                     {this.state.elements.map((element, index) => element.parentFolderId === 0 ?
@@ -169,8 +183,26 @@ export default class FileExplorer extends React.Component {
                         <MdCreateNewFolder size={32}/>
                     </Fab>
                     : null}
-            </div>
+                <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
+                <Dialog open={this.state.deleteInProgress}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">Are you sure you want to perform Delete ?</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            this.setState({deleteInProgress: false, toDeleteElement: null})
+                        }} className={classes.error}>
+                            Cancel
+                        </Button>
+                        <Button onClick={this.handleDeleteElementApproved} color="primary" autoFocus>
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </Dialog></div>
 
         );
     }
 }
+
+export default withStyles(styles, {withTheme: true})(FileExplorer);

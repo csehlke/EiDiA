@@ -16,6 +16,7 @@ const theme = createMuiTheme({
         },
         secondary: {
             main: "#005E7C",
+
         },
         error: {
             main: "#ff0000",
@@ -23,6 +24,7 @@ const theme = createMuiTheme({
         sidebarIconUnselected: {
             main: "rgba(0,0,0,0.55)",
         },
+
     },
     overrides: { //everything stated here will be used globally
         MuiCssBaseline: {
@@ -51,7 +53,18 @@ const theme = createMuiTheme({
                 '.react-icons-fail': { //style react icons with IconProvider here
                     'color': "#ff0000"
                 },
-            }
+                '.MuiIconButton-root.Mui-disabled': {
+                    'color': "rgba(0, 94, 124, 0.3)",
+
+                },
+                '.MuiIconButton-root': {
+                    'color': "#005E7C"
+
+                }
+
+            },
+
+
         }
     }
 });
