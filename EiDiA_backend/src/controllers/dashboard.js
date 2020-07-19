@@ -7,7 +7,7 @@ const getDashboard = (req, res) => {
     res.status(200).json({response: "dummy response"});
 };
 
-const listWidgetTypes = (req, res) => {
+const listWidgetsToRecord = (req, res) => {
     console.log(req.body)
     WidgetModel.find({'recordId': req.params.recordId})
         .then(widgets => {
@@ -79,7 +79,7 @@ const moveWidget = (req, res) => {
 
 module.exports = {
     getDashboard,
-    listWidgetTypes,
+    listWidgetsToRecord,
     addWidget,
     moveWidget,
 };

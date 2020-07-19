@@ -15,7 +15,7 @@ router.put('/widget/drag', middleWares.checkAuthentication, DashboardController.
 //TODO:activate authentication for development
 router.get('/', DashboardController.getDashboard);
 
-router.get('/widget/list/:recordId', DashboardController.listWidgetTypes);
+router.get('/widget/list/:recordId', DashboardController.listWidgetsToRecord);
 router.post('/widget/add/', middleWares.checkAuthentication, DashboardController.addWidget);
 router.put('/widget/drag', DashboardController.moveWidget);
 
