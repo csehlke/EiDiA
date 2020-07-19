@@ -102,19 +102,15 @@ const getDocumentAttributes = (req, res) => {
             {$unwind: "$attributes"},
             {
                 "$project": {
-
                     "docTypeId": "$documentTypeId",
-                    "date": "$createdOnDate",
                     "attributeId": "$attributes.attributeId",
                     "value": "$attributes.value",
-
                 }
             },
             {$lookup: {from: 'attributetypes', localField: 'attributeId', foreignField: '_id', as: 'test'}},
             {$unwind: "$test"},
             {
                 "$project": {
-
                     "docTypeId": "$documentTypeId",
                     "attribute": {
                         "name": "$test.name",

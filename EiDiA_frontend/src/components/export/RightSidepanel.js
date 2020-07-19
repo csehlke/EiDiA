@@ -21,11 +21,13 @@ export default class RightSidePanel extends React.Component {
             <div style={styles.drawer}>
                 <Divider/>
                 {typeof TypeComponent1 !== 'undefined' ? <TypeComponent1
+                    errorHandler={this.props.errorHandler}
                     onAction1={this.props.actionSet.onAction1_1}
                     onAction2={this.props.actionSet.onAction1_2}
                 /> : <div/>}
                 <Divider/>
                 <TypeComponent2
+                    errorHandler={this.props.errorHandler}
                     selectedDocTypes={this.props.selectedDocTypes}
                     editorState={this.props.editorState}
                     variables={this.props.variables}

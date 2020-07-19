@@ -6,6 +6,7 @@ import DocListItem from './DocListItem';
 import {Column, Row} from '../../StyleElements';
 import ExportService from '../../../services/ExportService'
 import Button from '@material-ui/core/Button';
+import {alertConstants} from "../ExportMainView";
 
 const styles = {
     root: {
@@ -26,29 +27,30 @@ export default class DocSearch extends React.Component {
         }
         this.search = this.search.bind(this);
         this.clickSearch = this.clickSearch.bind(this);
+        this.onKeyDownSearch = this.onKeyDownSearch.bind(this);
         this.onChange = this.onChange.bind(this);
     }
 
-    search(event) {
+    search() {
+        ExportService.searchDocuments(this.state.textFieldValue).then((data) => {
+            let searchResults = data.documents;
+            this.setState({searchResults: searchResults});
+        }).catch(() => this.props.errorHandler(alertConstants.alertType.error, alertConstants.messages.docTypes));
+    }
+
+    clickSearch() {
+        this.search();
+    }
+
+    onKeyDownSearch(event) {
         if (event.key === 'Enter') {
-            ExportService.searchDocuments(event.target.value).then((data) => {
-                let searchResults = data.documents;
-                this.setState({searchResults: searchResults});
-            }).catch((err) => console.log(err));
+            this.search();
         }
     }
 
     onChange(event) {
         this.setState({textFieldValue: event.target.value});
     }
-
-    clickSearch() {
-        ExportService.searchDocuments(this.state.textFieldValue).then((data) => {
-            let searchResults = data.documents;
-            this.setState({searchResults: searchResults});
-        }).catch((err) => console.log(err));
-    }
-
 
     render() {
         const listItems = this.state.searchResults;
@@ -57,7 +59,7 @@ export default class DocSearch extends React.Component {
             <div style={styles.root}>
                 <Row>
                     <TextField style={{margin: "5px"}} label="Search Document" variant="outlined"
-                               onKeyPress={this.search} onChange={this.onChange}/>
+                               onKeyPress={this.onKeyDownSearch} onChange={this.onChange}/>
                     <Button style={{margin: "5px"}} size="small" variant="contained" color="primary"
                             onClick={this.clickSearch}>Search</Button>
                 </Row>

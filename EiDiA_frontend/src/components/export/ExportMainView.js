@@ -40,7 +40,7 @@ const isPath = (string) => {
 }
 
 
-const alertConstants = {
+export const alertConstants = {
     alertType: {
         error: "error",
         warning: "warning"
@@ -48,8 +48,10 @@ const alertConstants = {
     messages: {
         template: "An error occurred with the selected template.",
         docSearch: "An error occurred with your document search.",
-        document: "An error occurred with one of your selected documents",
-        variables: "Some variable could not be mapped with selected documents"
+        document: "An error occurred with one or more of your selected documents",
+        variables: "Some variable could not be mapped with selected documents",
+        templateList: "An error occurred while fetching templates.",
+        docTypes: "An error occurred while fetching document types."
     }
 }
 
@@ -173,7 +175,7 @@ export default class ExportMainView extends React.Component {
                 let initTemplate = data.exportTemplates[0];
                 this.selectTemplate(initTemplate.name, initTemplate._id);
             }
-        }).catch((err) => console.log(err));
+        }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.templateList));
     }
 
     createNewTemplate() {
@@ -268,9 +270,7 @@ export default class ExportMainView extends React.Component {
                     this.setState(newState);
                     if (attributesNotFound) this.handleSnackBarOpen(alertConstants.alertType.warning, alertConstants.messages.variables);
                 }
-            }, (err) => {
-                console.log(err);
-            }).catch((err) => console.log(err));
+            }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.document));
         }
     }
 
@@ -315,9 +315,7 @@ export default class ExportMainView extends React.Component {
                 newState.variables = this.extractVariables(newState.editorState);
                 this.setState(newState);
             }
-        }, () => {
-            this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template);
-        }).catch((err) => console.log(err));
+        }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template));
     }
 
     toggleInlineStyle(style) {
@@ -415,9 +413,7 @@ export default class ExportMainView extends React.Component {
             newState.showDialog = false;
             this.setState(newState);
             this.props.changeView(pageNames.selectTemplate);
-        }, () => {
-            this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template);
-        }).catch((err) => console.log(err));
+        }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template));
     }
 
     downloadDocument(docIDs) {
@@ -435,7 +431,7 @@ export default class ExportMainView extends React.Component {
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);
-        }).catch((err) => console.log(err));
+        }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.document));
     }
 
     handleSnackBarOpen(alertType, message) {
@@ -495,6 +491,7 @@ export default class ExportMainView extends React.Component {
                     </ExportViewColumn>
                     <ExportViewColumn>
                         <RightSidepanel
+                            errorHandler={this.handleSnackBarOpen}
                             selectedDocTypes={this.state.selectedDocTypes}
                             componentSet={componentSet}
                             actionSet={actionSet}

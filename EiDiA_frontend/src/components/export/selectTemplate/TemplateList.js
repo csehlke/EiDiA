@@ -3,6 +3,7 @@ import {List, Typography} from '@material-ui/core';
 import ExportService from '../../../services/ExportService';
 import TemplateListItem from './TemplateListItem';
 import {v4 as uuidv4} from 'uuid';
+import {alertConstants} from "../ExportMainView";
 
 export default class TemplateList extends React.Component {
     constructor(props) {
@@ -19,7 +20,7 @@ export default class TemplateList extends React.Component {
         ExportService.getAllTemplates().then((data) => {
             newState.templateList = data.exportTemplates;
             this.setState(newState);
-        }).catch(error => console.log(error));
+        }).catch(() => this.props.errorHandler(alertConstants.alertType.error, alertConstants.messages.docTypes));
     }
 
 

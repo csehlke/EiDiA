@@ -7,6 +7,7 @@ import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import CommonService from "../../../services/CommonService";
 import {v4 as uuidv4} from 'uuid';
+import {alertConstants} from '../ExportMainView';
 
 function findWithAttr(array, attr, value) {
     for (let i = 0; i < array.length; i += 1) {
@@ -42,7 +43,7 @@ export default class DocTypeSelector extends React.Component {
             this.setState({
                 documentTypes: [...data.documentTypes],
             })
-        }).catch((err) => console.log(err));
+        }).catch(() => this.props.errorHandler(alertConstants.alertType.error, alertConstants.messages.docTypes));
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -101,7 +102,7 @@ export default class DocTypeSelector extends React.Component {
         let docTypesWithUUID = this.state.docTypesWithUUID;
         return (
             <div style={{overflow: 'auto', maxHeight: '35vh', minHeight: '35vh'}}>
-                {docTypesWithUUID.map((element, index) =>
+                {docTypesWithUUID.map((element) =>
                     <DocTypeSelectLine
                         key={element.key}
                         variables={this.props.variables}
