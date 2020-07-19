@@ -79,7 +79,7 @@ class Widget extends React.Component {
                 <div>
                     {this.state.dashboardEditingActive ?
                         <Centering>
-                            <Fab onClick={this.toggleEditDialog} aria-label="edit">
+                            <Fab color="primary" onClick={this.toggleEditDialog} aria-label="edit">
                                 <FiEdit2 size={32}/>
                             </Fab>
                         </Centering>

@@ -47,7 +47,7 @@ export const TealName = styled.span`
    font-weight:bold;   
 `;
 export const TealRight = styled.p`         
-   color:#1CA6A6;  
+   color:#0094C6;  
    text-align:right;  
    margin:0;
 `;

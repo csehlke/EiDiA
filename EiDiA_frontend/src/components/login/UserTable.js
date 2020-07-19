@@ -10,28 +10,34 @@ import {
     MdChevronLeft,
     MdChevronRight,
     MdClear,
+    MdDelete,
     MdEdit,
     MdFilterList,
     MdFirstPage,
     MdLastPage,
     MdRemove,
     MdViewColumn,
-    RiDeleteBinLine,
     RiSave3Line
 } from "react-icons/all";
 import UserService from "../../services/UserService";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
+import {IconContext} from "react-icons";
 
 
 const tableIcons = {
-    Add: React.forwardRef((props, ref) => <span ref={ref}> <IoMdAddCircle {...props} /> </span>),
-    Check: React.forwardRef((props, ref) => <span ref={ref}> <MdCheck {...props} /> </span>),
-    Clear: React.forwardRef((props, ref) => <span ref={ref}> <MdClear {...props} /> </span>),
-    Delete: React.forwardRef((props, ref) => <span ref={ref}> <RiDeleteBinLine {...props} /> </span>),
+    Add: React.forwardRef((props, ref) => <span ref={ref}> <IconContext.Provider
+        value={{className: 'react-icons'}}><IoMdAddCircle {...props} /></IconContext.Provider> </span>),
+    Check: React.forwardRef((props, ref) => <span ref={ref}>  <IconContext.Provider
+        value={{className: 'react-icons-success'}}><MdCheck {...props} /></IconContext.Provider> </span>),
+    Clear: React.forwardRef((props, ref) => <span ref={ref}> <IconContext.Provider
+        value={{className: 'react-icons-fail'}}><MdClear {...props} /></IconContext.Provider> </span>),
+    Delete: React.forwardRef((props, ref) => <span ref={ref}> <IconContext.Provider
+        value={{className: 'react-icons'}}><MdDelete {...props} /> </IconContext.Provider></span>),
     DetailPanel: React.forwardRef((props, ref) => <span ref={ref}> <MdChevronRight {...props} /> </span>),
-    Edit: React.forwardRef((props, ref) => <span ref={ref}> <MdEdit {...props} /> </span>),
+    Edit: React.forwardRef((props, ref) => <span ref={ref}> <IconContext.Provider
+        value={{className: 'react-icons'}}><MdEdit {...props} /></IconContext.Provider> </span>),
     Export: React.forwardRef((props, ref) => <span ref={ref}> <RiSave3Line {...props} /> </span>),
     Filter: React.forwardRef((props, ref) => <span ref={ref}> <MdFilterList {...props} /> </span>),
     FirstPage: React.forwardRef((props, ref) => <span ref={ref}> <MdFirstPage {...props} /> </span>),
@@ -47,7 +53,7 @@ const tableIcons = {
 
 const columns = [
     {title: 'ID', field: 'id', readonly: true, hidden: true},
-    {title: 'Username', field: 'username', readonly: true, defaultSort: 'asc'},
+    {title: 'Username', field: 'username', readonly: true, defaultSort: 'asc', editable: 'onAdd'},
     {title: 'First Name', field: 'firstName'},
     {title: 'Last Name', field: 'lastName'},
     {title: 'Work Location', field: 'workLocation'},
@@ -61,6 +67,15 @@ const columns = [
     },
 ];
 
+const localization = {
+    body: {
+        emptyDataSourceMessage: 'No users to display',
+        editRow: {
+            deleteText: 'Are you sure you want to delete this user?',
+        }
+    }
+}
+
 export default class UserTable extends React.Component {
 
     constructor(props) {
@@ -71,9 +86,12 @@ export default class UserTable extends React.Component {
             isLoading: true,
             isServerError: false,
             isSuccess: false,
+            isUserError: false,
+            errorMessage: '',
         }
         this.handleSuccessBarClose = this.handleSuccessBarClose.bind(this);
         this.handleServerErrorBarClose = this.handleServerErrorBarClose.bind(this);
+        this.handleUserErrorBarClose = this.handleUserErrorBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -102,6 +120,12 @@ export default class UserTable extends React.Component {
         })
     }
 
+    handleUserErrorBarClose() {
+        this.setState({
+            isUserError: false,
+        })
+    }
+
     render() {
         // https://material-table.com/#/docs/all-props
         return (
@@ -111,8 +135,10 @@ export default class UserTable extends React.Component {
                                data={this.state.data}
                                icons={tableIcons}
                                isLoading={this.state.isLoading}
+                               localization={localization}
                                editable={{
                                    isDeletable: rowData => rowData.userRole !== "admin",
+                                   isDeleteHidden: rowData => rowData.userRole === "admin",
                                    onRowAdd: (newData) =>
                                        new Promise((resolve, reject) => {
                                            const user = {
@@ -124,6 +150,24 @@ export default class UserTable extends React.Component {
                                                workLocation: newData.workLocation,
                                                userRole: newData.userRole,
                                            }
+
+                                           let message = '';
+                                           if (user.username ? user.username === '' : true) {
+                                               message = 'The user must have a username.'
+                                           } else if (user.password ? user.password === '' : true) {
+                                               message = 'The user must have a password.'
+                                           } else if (user.userRole !== 'admin' && user.userRole !== 'user') {
+                                               message = 'The user must have a user role.'
+                                           }
+                                           if (message !== '') {
+                                               this.setState({
+                                                   isUserError: true,
+                                                   errorMessage: message,
+                                               });
+                                               reject();
+                                               return;
+                                           }
+
                                            UserService.addUserAdmin(user)
                                                .then(newUser => {
                                                    resolve();
@@ -134,11 +178,18 @@ export default class UserTable extends React.Component {
                                                        return {...prevState, data};
                                                    });
                                                })
-                                               .catch(() => {
+                                               .catch((error) => {
                                                    reject();
-                                                   this.setState({
-                                                       isServerError: true,
-                                                   });
+                                                   if (error === 'Username already exists') {
+                                                       this.setState({
+                                                           isUserError: true,
+                                                           errorMessage: 'This username already exists, please choose a different one.',
+                                                       });
+                                                   } else {
+                                                       this.setState({
+                                                           isServerError: true,
+                                                       });
+                                                   }
                                                });
                                        }),
                                    onRowUpdate: (newData, oldData) =>
@@ -194,6 +245,13 @@ export default class UserTable extends React.Component {
                                }}
                 />
                 <ServerSideErrorSnackBar isError={this.state.isServerError} onClose={this.handleServerErrorBarClose}/>
+                <Snackbar open={this.state.isUserError}
+                          autoHideDuration={5000}
+                          onClose={this.handleUserErrorBarClose}>
+                    <Alert severity="error" onClose={this.handleUserErrorBarClose}>
+                        {this.state.errorMessage}
+                    </Alert>
+                </Snackbar>
                 <Snackbar open={this.state.isSuccess}
                           autoHideDuration={5000}
                           onClose={this.handleSuccessBarClose}>

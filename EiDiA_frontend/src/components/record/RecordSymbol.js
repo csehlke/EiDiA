@@ -3,6 +3,7 @@
 import React from 'react';
 import styled from "styled-components";
 import {FaFolder} from "react-icons/all";
+import {IconContext} from "react-icons";
 
 
 const Quarter = styled.div`
@@ -31,7 +32,9 @@ export class RecordSymbol extends React.Component {
     render() {
         return (
             <Quarter>
-                <FolderLogo/>
+                <IconContext.Provider value={{className: 'react-icons'}}>
+                    <FolderLogo/>
+                </IconContext.Provider>
                 <HeadingNoMargin>{this.props.name}</HeadingNoMargin>
             </Quarter>
         );

@@ -26,6 +26,7 @@ const styleFabButton = {
     right: '2em',
     left: 'auto',
     position: 'fixed',
+    color: 'primary',
 };
 const elementIconSize = '1.5rem';
 const logCount = 5;

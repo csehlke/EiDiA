@@ -13,6 +13,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import {GraphType, WidgetTypes} from "../../../../../constants";
 import {IoMdAddCircleOutline, IoMdRemoveCircleOutline} from "react-icons/all";
+import {IconContext} from "react-icons";
 
 
 export class EditDialog extends React.Component {
@@ -117,7 +118,9 @@ export class EditDialog extends React.Component {
         return (
             <Grid container key={"addButton"} item xs={12} sm={sm} justify="center">
                 <IconButton onClick={this.handleAddAttributeButton} aria-label="Add">
-                    <IoMdAddCircleOutline/>
+                    <IconContext.Provider value={{className: 'react-icons'}}>
+                        <IoMdAddCircleOutline/>
+                    </IconContext.Provider>
                 </IconButton>
             </Grid>
         )
@@ -128,7 +131,9 @@ export class EditDialog extends React.Component {
             <Grid key={index + "removeButton"} item xs={12} sm={sm}>
                 <IconButton onClick={this.handleRemoveAttributeButton(index)}
                             aria-label="Remove Line">
-                    <IoMdRemoveCircleOutline/>
+                    <IconContext.Provider value={{className: 'react-icons'}}>
+                        <IoMdRemoveCircleOutline/>
+                    </IconContext.Provider>
                 </IconButton>
             </Grid>);
     }
@@ -262,7 +267,6 @@ export class EditDialog extends React.Component {
 
 
     render() {
-
         let typeOptions = [
             {name: WidgetTypes.INDICATOR, widgetType: WidgetTypes.INDICATOR},
             {name: WidgetTypes.GRAPH, widgetType: WidgetTypes.GRAPH},
@@ -311,13 +315,12 @@ export class EditDialog extends React.Component {
 
                 </DialogContent>
                 <DialogActions>
-                    {/*TODO: coloring of Buttons*/}
-                    <Button onClick={
+                    <Button style={{color: "#ff0000"}} onClick={
                         this.props.onClose
                     }>
                         Cancel
                     </Button>
-                    <Button onClick={this.handleSaveButton}>
+                    <Button color="primary" onClick={this.handleSaveButton}>
                         Save
                     </Button>
                 </DialogActions>

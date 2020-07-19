@@ -6,7 +6,6 @@ const NewFileIcon = () =>
          width="1em"
          fill='currentColor'
          display='inline-block'
-         color='rgba(0, 0, 0, 0.54)'
          viewBox="0 0 512 512"
          xmlns="http://www.w3.org/2000/svg">
         <path d="m503.01 220.771-104.383-104.384v104.384z"/>
