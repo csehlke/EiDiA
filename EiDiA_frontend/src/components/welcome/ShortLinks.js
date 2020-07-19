@@ -22,7 +22,7 @@ export default class ShortLinks extends React.Component {
         return (
             <FlexRow>
                 <ShortLinkTile name={"Browse File Cabinet"} icon={FiHardDrive} link={"/browse"}/>
-                <ShortLinkTile name={"Advanced Search"} icon={AiOutlineSearch} link={"/search"}/>
+                <ShortLinkTile name={"Intelligent Search"} icon={AiOutlineSearch} link={"/search"}/>
             </FlexRow>
         );
     }
