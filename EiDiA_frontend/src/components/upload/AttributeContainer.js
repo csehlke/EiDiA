@@ -86,7 +86,7 @@ class AttributeContainer extends React.Component {
                 const {data: {text}} = await this.props.ocrWorker.recognize(this.props.crop); //Do OCR on crop
                 console.log(text);
                 this.setState({
-                    textValue: text
+                    textValue: text.trim() //remove trailing spaces/newlines
                 });
             })();
         }
@@ -228,6 +228,8 @@ class AttributeContainer extends React.Component {
             <TextField
                 label={attrName}
                 variant="outlined"
+                multiline
+                rowsMax={3}
                 value={this.getFieldValue(attrID)}
                 onChange={(evt) => this.handleTextFieldOnChange(evt, attrID, 'text')}
                 InputProps={{
@@ -364,7 +366,7 @@ class AttributeContainer extends React.Component {
                         container
                         direction="row"
                         justify="space-evenly"
-                        alignItems="flex-end">
+                        alignItems="flex-start">
                         {this.state.attributes.map(function (item) {
                             if (item.dataType === 'text') {
                                 return (
