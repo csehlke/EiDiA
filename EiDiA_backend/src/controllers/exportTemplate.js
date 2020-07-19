@@ -3,6 +3,7 @@
 const ExportTemplateModel = require('../models/exportTemplate');
 const DocumentModel = require('../models/document');
 const RecordController = require('./record');
+const AttributeModel = require('../models/attributeType');
 const {fileTypes} = require('../../../constants');
 const mongoose = require('mongoose');
 
@@ -83,10 +84,20 @@ const exportDocuments = (req, res) => {
 // Send document attributes for value mapping
 const getDocumentAttributes = (req, res) => {
     // TODO: provide documents for variable extraction
+    console.log(typeof req.query.documentIDs)
     const mongooseIDs = req.query.documentIDs.map((id) => mongoose.Types.ObjectId(id));
     const dbQuery = {_id: {$in: mongooseIDs}};
-    DocumentModel.find(dbQuery).select('attributes -_id').then((documents) => {
-        console.log(documents[0]);
+    DocumentModel.find(dbQuery).select('attributes documentTypeId -_id').then((documents) => {
+        let doc = documents[0];
+        let docTypeID = doc.documentTypeId;
+        let attributes = doc.attributes;
+        console.log(doc);
+        const query = {documentTypeId: mongoose.Types.ObjectId(docTypeID)};
+        AttributeModel.find(query).then((attributes) => {
+            console.log(attributes);
+        })
+
+
         res.status(200).json({attributes: documents});
     }).catch(error => {
         res.status(400).json({
