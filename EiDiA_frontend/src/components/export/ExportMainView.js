@@ -70,7 +70,6 @@ export default class ExportMainView extends React.Component {
         this.getTextFromEditorState = this.getTextFromEditorState.bind(this);
         this.downloadDocument = this.downloadDocument.bind(this);
         this.setValueToVariable = this.setValueToVariable.bind(this);
-        this.addLinkedDocType = this.addLinkedDocType.bind(this);
         this.setInitialView = this.setInitialView.bind(this);
         this.removeSelectedDocumentFromList = this.removeSelectedDocumentFromList.bind(this);
         this.createNewTemplate = this.createNewTemplate.bind(this);
@@ -78,6 +77,7 @@ export default class ExportMainView extends React.Component {
         this.handleSnackBarClose = this.handleSnackBarClose.bind(this);
         this.addDocType = this.addDocType.bind(this);
         this.removeDocType = this.removeDocType.bind(this);
+
         // reference to document editor, allows access to focus() method (focus editor)
         // necessary for setting inline styles
         this.docEditor = React.createRef();
@@ -163,10 +163,6 @@ export default class ExportMainView extends React.Component {
     createNewTemplate() {
         this.setState({editorState: EditorState.createEmpty(), selectedTemplate: null});
         this.props.changeView(pageNames.editTemplate);
-    }
-
-    addLinkedDocType(docType) {
-        this.setState({linkedDocTypes: this.state.linkedDocTypes.concat(docType.id)})
     }
 
     // Set Value to variable manually (not from document)
@@ -377,10 +373,11 @@ export default class ExportMainView extends React.Component {
     }
 
     saveTemplate(templateName) {
-        // TODO: Let User save template
+        // TODO: Let User save template (done in backend branch)
+        let linkedDoctypeIDs = this.state.selectedDocTypes.filter((id) => id !== null);
         const template = {
             editorText: this.getTextFromEditorState(this.state.editorState),
-            linkedDocTypeIds: this.state.linkedDocTypes,
+            linkedDoctypeIDs: linkedDoctypeIDs,
             name: templateName
         }
         ExportService.saveTemplate(template).then((data) => {
@@ -415,20 +412,19 @@ export default class ExportMainView extends React.Component {
         this.setState({isSnackBarOpen: false});
     }
 
-    addDocType(addDocTypeSelectLine, newDocType) {
+    addDocType(addDocTypeSelectLine, newDocType, index) {
         let docTypes = this.state.selectedDocTypes;
         if (addDocTypeSelectLine) {
             this.setState({selectedDocTypes: docTypes.concat(null)});       // concat null as placeholder for new docType variable
         } else {
-            docTypes[docTypes.length - 1] = newDocType;
+            docTypes[index] = newDocType;
+            this.setState({selectedDoctypes: docTypes});
         }
     }
 
     removeDocType(index) {
         let selectedDocTypes = this.state.selectedDocTypes;
-        console.log(selectedDocTypes, index);
         selectedDocTypes.splice(index, 1);
-        console.log(selectedDocTypes);
         this.setState({selectedDocTypes: selectedDocTypes});
     }
 

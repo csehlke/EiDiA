@@ -19,6 +19,7 @@ export default class DocTypeSelectLine extends React.Component {
             disableCopy: true,
             disableAttributes: true,
             attributeFieldValue: null,
+            toAdd: true
         }
         this.docTypeSelected = this.docTypeSelected.bind(this);
         this.createVariableString = this.createVariableString.bind(this);
@@ -29,8 +30,9 @@ export default class DocTypeSelectLine extends React.Component {
         if (JSON.stringify(this.props.variables) !== JSON.stringify(prevProps.variables)) {
             let variables = this.props.variables;
             this.setState({disableDocType: this.state.variable in variables});
-            if (this.props.isLastItem) {
-                this.props.addDocType(this.state.selectedDocType);
+            if (this.state.toAdd && this.state.variable in variables) {
+                this.setState({toAdd: false});
+                this.props.onSetDocType(this.props.number - 1, this.state.selectedDocType);
             }
         }
     }
@@ -71,7 +73,7 @@ export default class DocTypeSelectLine extends React.Component {
                     <Typography style={{margin: "10px"}} variant="subtitle2">
                         Document{this.props.number}
                     </Typography>
-                    {this.props.showButton &&
+                    {(this.props.number > 1 || this.props.showButton) && // dont show if Document1 is the only one
                     <Button size="small" color="secondary" onClick={this.remove}>Remove</Button>}
                 </Row>
                 <Row>
