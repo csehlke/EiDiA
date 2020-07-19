@@ -26,7 +26,6 @@ export const DashboardWrapper = styled.div`
     
 
 `;
-//TODO: curser does not look like move? maybe some other element is lying on top
 export const WidgetWrapper = styled.div`
      border: ${props => props.dashboardEditingActive ? "2px" : "0px"} dotted ${props => props.color};
      grid-row-start:${props => props.positionInfo.y};

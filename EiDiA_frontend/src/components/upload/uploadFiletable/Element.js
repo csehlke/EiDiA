@@ -2,10 +2,10 @@
 
 import React from 'react';
 import styled from "styled-components";
-import {DragTypes} from "../../../assets/Constants"
 import {DragSource} from "react-dnd";
 import Grid from "@material-ui/core/Grid";
 import {FaFolderOpen} from "react-icons/fa";
+import {DragTypes} from "../../../../../constants";
 
 
 const Name = styled.div`
@@ -20,7 +20,7 @@ const itemSource = {
     }
 }
 
-function collectDrag(connect, monitor) {
+function collectDrag(connect) {
     return {
         connectDragSource: connect.dragSource(),
         isDragging: false,
@@ -40,7 +40,7 @@ class Element extends React.Component {
 
 
     render() {
-        const toRender = (
+        return (
             <div>
                 <Grid container spacing={2}
                       style={{cursor: 'pointer'}}
@@ -54,7 +54,6 @@ class Element extends React.Component {
                 </Grid>
             </div>
         );
-        return toRender;
     }
 }
 

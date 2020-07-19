@@ -2,13 +2,10 @@ import React from 'react';
 import {Centering, FoggyDiv, H2WithOutMargin} from "../../StyleElements";
 import {FiEdit2} from "react-icons/fi";
 import Fab from "@material-ui/core/Fab";
-import {DragTypes} from "../../../assets/Constants";
 import {EditDialog} from "./EditDialog";
 import {DragSource} from "react-dnd";
-/**
- * TODO:
- *
- */
+import {DragTypes} from "../../../../../constants";
+
 
 /*
  *Reason for no use of inheritance as specified in Data model, instead composition is used
@@ -48,7 +45,9 @@ class Widget extends React.Component {
             widget: this.props.widget,
             widgetEditingActive: false,
             dashboardEditingActive: this.props.dashboardEditingActive,
-            editingActive: false
+            editingActive: false,
+            attributeValues: this.props.attributeValues,
+            attributeTypes: this.props.attributeTypes
         }
 
     }
@@ -57,7 +56,10 @@ class Widget extends React.Component {
         if (prevProps !== this.props) {
             this.setState({
                 widget: this.props.widget,
-                dashboardEditingActive: this.props.dashboardEditingActive
+                dashboardEditingActive: this.props.dashboardEditingActive,
+                attributeValues: this.props.attributeValues,
+                attributeTypes: this.props.attributeTypes
+
 
             })
         }
@@ -88,10 +90,13 @@ class Widget extends React.Component {
                         {this.props.children}
                     </FoggyDiv>
                     <EditDialog
+                        docTypes={this.props.docTypes}
+                        attributeTypes={this.state.attributeTypes}
+                        attributeValues={this.state.attributeValues}
                         handleUpdateWidgetButton={this.props.handleUpdateWidgetButton}
                         widgetTitle={this.state.widget.title}
-                        widgetType={this.state.widget.type}
-                        graphType={this.state.widget.graph} // TODO: handle undefined
+                        widgetType={this.state.widget.widgetType}
+                        graphType={this.state.widget.graphType}
                         onClose={this.toggleEditDialog}
                         open={this.state.widgetEditingActive}
                         attributeMapping={this.state.widget.attributeMapping}/>

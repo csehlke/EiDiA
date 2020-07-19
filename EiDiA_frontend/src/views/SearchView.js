@@ -26,8 +26,8 @@ export class SearchView extends React.Component {
 
         this.state = {
             table: [],
-            showEmptyResultInfo: false,
             isServerError: false,
+            showEmptyResultInfo: false,
         }
 
         this.onSearch = this.onSearch.bind(this);

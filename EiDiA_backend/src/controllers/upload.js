@@ -17,7 +17,7 @@ const fullTextOCR = (documentId, base64Image) => {
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
         const {data: {text}} = await worker.recognize(base64Image);
-        DocumentModel.findByIdAndUpdate({_id: documentId}, {completeOcrText: text}, {new: true}, function (err, result) {
+        DocumentModel.findByIdAndUpdate({_id: documentId}, {completeOcrText: text}, {new: true}, function (err) {
             if (err) {
                 console.log(err)
             } else {
@@ -50,7 +50,6 @@ const addDocument = (req, res) => {
     }
 
     let parentFolderId;
-
     if (req.body.parentFolderId === '0') {
         parentFolderId = '000000000000000000000000' //valid ObjectId for MongoDB
     } else {
@@ -91,6 +90,7 @@ const addDocument = (req, res) => {
         fileType: req.body.fileType
     })
         .then((insertedData) => {
+            console.log("yes")
             res.status(200).json({response: "Inserted attribute-data"});
             fullTextOCR(insertedData._id, insertedData.base64Image) //Start backend-OCR after inserting attributes
             LogModel.create({
@@ -102,6 +102,8 @@ const addDocument = (req, res) => {
             })
         })
         .catch(error => {
+            console.log("no")
+            console.log(error.message)
             res.status(400).json({
                 error: error.message,
                 message: error.message,

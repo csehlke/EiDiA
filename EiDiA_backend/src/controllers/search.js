@@ -4,7 +4,6 @@ const {format} = require('date-fns');
 const mongoose = require('mongoose');
 const DocumentModel = require('../models/document');
 const FileTypes = require('../../../constants').fileTypes;
-const FileActions = require('../../../constants').fileActions;
 const RecordModel = require('../models/record');
 const DateFns = require('date-fns');
 const {fileTypes} = require("../../../constants");
@@ -255,20 +254,16 @@ function getSearchTable(fileArray, userId) {
         Promise.all(recordIds.map(recordId => getRecordFolderElements(recordId)))
             .then(folders => {
                 fileArray.map(document => {
-                    let fileActions = [FileActions.EDIT, FileActions.DOWNLOAD];
-                    if ('' + document.createdBy === userId) {
-                        fileActions.push(FileActions.DELETE);
-                    }
+
                     folders.push({
-                        parentId: document.recordId,
+                        parentFolderId: document.recordId,
                         id: document._id,
                         activeFolder: false,
-                        type: document.fileType,
+                        fileType: document.fileType,
                         name: document.name,
-                        dateCreation: format(document.createdOnDate, 'dd/MM/yyyy'),
-                        dateModification: format(document.lastModifiedOnDate, 'dd/MM/yyyy'),
+                        createdOnDate: format(document.createdOnDate, 'dd/MM/yyyy'),
+                        lastModifiedOnDate: format(document.lastModifiedOnDate, 'dd/MM/yyyy'),
                         comment: document.comment,
-                        actions: fileActions,
                     });
                 });
                 return resolve(folders);
@@ -289,15 +284,14 @@ function getRecordFolderElements(recordId) {
                 return;
             }
             let folderElement = {
-                parentId: 0,
+                parentFolderId: 0,
                 id: recordId,
                 activeFolder: true,
-                type: FileTypes.FOLDER,
+                fileType: FileTypes.FOLDER,
                 name: record.name,
-                dateCreation: '',
-                dateModification: '',
+                createdOnDate: '',
+                lastModifiedOnDate: '',
                 comment: '',
-                actions: [],
             };
             resolve(folderElement);
         });

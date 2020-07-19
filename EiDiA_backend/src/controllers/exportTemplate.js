@@ -3,6 +3,7 @@
 const ExportTemplateModel = require('../models/exportTemplate');
 const DocumentModel = require('../models/document');
 const RecordController = require('./record');
+const mongoose = require('mongoose')
 const {fileTypes} = require('../../../constants');
 
 const listTemplates = (req, res) => {
@@ -73,17 +74,49 @@ const download = (req, res) => {
 }
 
 const getDocumentAttributes = (req, res) => {
-    // TODO: provide documents for variable extraction
-    const docNames = req.params.documentIDs;
+    let docNames = req.query.documentIDs;
+    if (!Array.isArray(docNames)) {
+        docNames = [docNames]
+    }
 
-    const documentMockData = {
-        "doc_1": {
-            "VARIABLE1": "BMW",
-            "VARIABLE2": "500.000€"
-        }
-    };
+    docNames = docNames.map(doc => {
+        return mongoose.Types.ObjectId(doc)
+    })
 
-    res.status(200).json({response: documentMockData});
+
+    DocumentModel.aggregate([
+            {$match: {_id: {$in: docNames}}},
+            {$unwind: "$attributes"},
+            {
+                "$project": {
+                    "docTypeId": "$documentTypeId",
+                    "attributeId": "$attributes.attributeId",
+                    "value": "$attributes.value",
+                }
+            },
+            {$lookup: {from: 'attributetypes', localField: 'attributeId', foreignField: '_id', as: 'test'}},
+            {$unwind: "$test"},
+            {
+                "$project": {
+
+                    "docTypeId": "$documentTypeId",
+                    "attribute": {
+                        "name": "$test.name",
+                        "value": "$value"
+                    },
+                }
+            }
+
+        ],
+        function (err, documents) {
+            if (err) return res.status(500).json({
+                error: "Internal Server error",
+                message: err.message
+            })
+            res.status(200).json(documents);
+
+        });
+
 }
 const searchDocumentsByName = (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.query, "documentName")) {
@@ -125,6 +158,7 @@ const searchDocumentsByName = (req, res) => {
         })
 }
 
+
 module.exports = {
     listTemplates,
     saveTemplate,
@@ -133,5 +167,5 @@ module.exports = {
     search,
     searchDocumentsByName,
     download,
-    getDocumentAttributes
+    getDocumentAttributes,
 };
