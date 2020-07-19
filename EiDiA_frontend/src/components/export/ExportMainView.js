@@ -173,7 +173,7 @@ export default class ExportMainView extends React.Component {
                 let initTemplate = data.exportTemplates[0];
                 this.selectTemplate(initTemplate.name, initTemplate._id);
             }
-        })
+        }).catch((err) => console.log(err));
     }
 
     createNewTemplate() {
@@ -227,7 +227,6 @@ export default class ExportMainView extends React.Component {
 
                     let editorText = this.getTextFromEditorState(newState.editorState);
                     let attributesNotFound = false;
-                    console.log(documentData)
                     if (documentData.length !== 0) {
                         // Iterate through document data and map attributes with variables
                         for (let k of Object.keys(templateVariables)) {
@@ -271,7 +270,7 @@ export default class ExportMainView extends React.Component {
                 }
             }, (err) => {
                 console.log(err);
-            })
+            }).catch((err) => console.log(err));
         }
     }
 
@@ -318,7 +317,7 @@ export default class ExportMainView extends React.Component {
             }
         }, () => {
             this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template);
-        })
+        }).catch((err) => console.log(err));
     }
 
     toggleInlineStyle(style) {
@@ -418,7 +417,7 @@ export default class ExportMainView extends React.Component {
             this.props.changeView(pageNames.selectTemplate);
         }, () => {
             this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.template);
-        })
+        }).catch((err) => console.log(err));
     }
 
     downloadDocument(docIDs) {
@@ -436,7 +435,7 @@ export default class ExportMainView extends React.Component {
             let newState = this.state;
             newState.showDialog = false;
             this.setState(newState);
-        })
+        }).catch((err) => console.log(err));
     }
 
     handleSnackBarOpen(alertType, message) {

@@ -34,7 +34,7 @@ export default class DocSearch extends React.Component {
             ExportService.searchDocuments(event.target.value).then((data) => {
                 let searchResults = data.documents;
                 this.setState({searchResults: searchResults});
-            })
+            }).catch((err) => console.log(err));
         }
     }
 
@@ -46,7 +46,7 @@ export default class DocSearch extends React.Component {
         ExportService.searchDocuments(this.state.textFieldValue).then((data) => {
             let searchResults = data.documents;
             this.setState({searchResults: searchResults});
-        })
+        }).catch((err) => console.log(err));
     }
 
 
