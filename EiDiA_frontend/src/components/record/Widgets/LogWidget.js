@@ -26,11 +26,10 @@ export class LogWidget extends React.Component {
     }
 
     logEntry(log) {
-        let reg = /[.].*/
         return (
             <p>
-                <PreferredBreakSpan><TealName>{log.user}</TealName>&nbsp;{log.action}</PreferredBreakSpan>
-                <PreferredBreakSpan>({log.date.replace('T', " ").replace(reg, "")})</PreferredBreakSpan>
+                <PreferredBreakSpan><TealName>{log.user}</TealName>&nbsp;{log.action}&nbsp;</PreferredBreakSpan>
+                <PreferredBreakSpan>({log.date})</PreferredBreakSpan>
             </p>
         )
     }
