@@ -224,7 +224,7 @@ class AttributeContainer extends React.Component {
 
 
     renderTextFields(attrName, attrID) {
-        return <Grid item xs style={{padding: 10}}>
+        return <Grid item xs style={{padding: 10, maxWidth: "295px"}}>
             <TextField
                 label={attrName}
                 variant="outlined"
