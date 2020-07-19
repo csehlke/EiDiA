@@ -20,18 +20,10 @@ const fileActions = {
     DOWNLOAD: 'DOWNLOAD',
     DELETE: 'DELETE',
 }
-const styleFabButton = {
-    top: 'auto',
-    bottom: '2em',
-    right: '2em',
-    left: 'auto',
-    position: 'fixed',
-};
 
 module.exports = {
     baseURL,
     mongoDBUrl,
     fileTypes,
     fileActions,
-    styleFabButton
 };

@@ -67,6 +67,7 @@ export default class ExportMainView extends React.Component {
             selectedVariable: "", // e.g. $Variable1 --> necessary for manually assigning value to selected variable
             linkedDocTypes: [],
             showAlert: false,
+            selectedDocTypes: [null], // array for docTypes chosen in "Edit Template" view
             isWarningMessageOpen: false,
             isErrorMessageOpen: false,
             errorMessage: ""
@@ -85,12 +86,13 @@ export default class ExportMainView extends React.Component {
         this.getTextFromEditorState = this.getTextFromEditorState.bind(this);
         this.downloadDocument = this.downloadDocument.bind(this);
         this.setValueToVariable = this.setValueToVariable.bind(this);
-        this.addLinkedDocType = this.addLinkedDocType.bind(this);
         this.setInitialView = this.setInitialView.bind(this);
         this.removeSelectedDocumentFromList = this.removeSelectedDocumentFromList.bind(this);
         this.createNewTemplate = this.createNewTemplate.bind(this);
         this.handleSnackBarOpen = this.handleSnackBarOpen.bind(this);
         this.handleSnackBarClose = this.handleSnackBarClose.bind(this);
+        this.addDocType = this.addDocType.bind(this);
+        this.removeDocType = this.removeDocType.bind(this);
 
         // reference to document editor, allows access to focus() method (focus editor)
         // necessary for setting inline styles
@@ -110,8 +112,8 @@ export default class ExportMainView extends React.Component {
             [pageNames.editTemplate]: {
                 onAction1_1: this.toggleInlineStyle,
                 onAction1_2: this.toggleBlockType,
-                onAction2_1: null,
-                onAction2_2: this.addLinkedDocType,
+                onAction2_1: this.addDocType,
+                onAction2_2: this.removeDocType,
                 onAction3_1: this.toggleDialog,
                 onAction3_2: this.setSelectedVariable,
                 onAction3_3: null
@@ -179,10 +181,6 @@ export default class ExportMainView extends React.Component {
         this.props.changeView(pageNames.editTemplate);
     }
 
-    addLinkedDocType(docType) {
-        this.setState({linkedDocTypes: this.state.linkedDocTypes.concat(docType.id)})
-    }
-
     // Set Value to variable manually (not from document)
     setValueToVariable(value) {
         let newState = this.state;
@@ -208,7 +206,6 @@ export default class ExportMainView extends React.Component {
         }
         return editorText;
     }
-
 
     // matches given data from document with variables in document text
     mapDocumentsWithVariables(selectedDocs) {
@@ -236,7 +233,6 @@ export default class ExportMainView extends React.Component {
                         for (let k of Object.keys(templateVariables)) {
                             if (isPath(k.slice(1))) { // find variables that depend on documents
                                 let variableTokens = k.split("/");
-
                                 let docVariable = variableTokens[variableTokens.length - 1];                // Get to be mapped variabled from editorText
                                 let indexString = variableTokens[variableTokens.length - 2];
                                 let documentIndex = parseInt(indexString[indexString.length - 1]) - 1;      // Get index for correct document, e.g. $/Document1/Variable1 --> index = 1 -1 = 0
@@ -331,7 +327,6 @@ export default class ExportMainView extends React.Component {
         this.setState(newState);
     }
 
-
     // update function for editor when user give input to the editor
     // scans for new variables entered by user when in "Edit Template" page
     onChange(editorState) {
@@ -365,7 +360,6 @@ export default class ExportMainView extends React.Component {
         return newVariableState;
     }
 
-
     getTextFromEditorState(editorState) {
         const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
         return blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
@@ -392,7 +386,6 @@ export default class ExportMainView extends React.Component {
         }
         return varObject;
     }
-
 
     //Edit View:  User chose variable to manually assign value
     setSelectedVariable(event) {
@@ -453,6 +446,22 @@ export default class ExportMainView extends React.Component {
         }
     }
 
+    addDocType(addDocTypeSelectLine, newDocType, index) {
+        let docTypes = this.state.selectedDocTypes;
+        if (addDocTypeSelectLine) {
+            this.setState({selectedDocTypes: docTypes.concat(null)});       // concat null as placeholder for new docType variable
+        } else {
+            docTypes[index] = newDocType;
+            this.setState({selectedDoctypes: docTypes});
+        }
+    }
+
+    removeDocType(index) {
+        let selectedDocTypes = this.state.selectedDocTypes;
+        selectedDocTypes.splice(index, 1);
+        this.setState({selectedDocTypes: selectedDocTypes});
+    }
+
     render() {
         const currentPage = this.props.currentPage
         const editorState = this.state.editorState;
@@ -461,9 +470,9 @@ export default class ExportMainView extends React.Component {
         return (
             <div>
                 <Row>
-                    <ExportViewColumn>
+                    <div style={{width: "30%"}}>
                         {/*Insert left column next to editor, so editor is in the center*/}
-                    </ExportViewColumn>
+                    </div>
                     <ExportViewColumn>
                         <div style={{overflow: "auto", maxHeight: '83vh'}}><DocEditor
                             readOnly={this.props.readOnly}
@@ -478,6 +487,7 @@ export default class ExportMainView extends React.Component {
                     </ExportViewColumn>
                     <ExportViewColumn>
                         <RightSidepanel
+                            selectedDocTypes={this.state.selectedDocTypes}
                             componentSet={componentSet}
                             actionSet={actionSet}
                             editorState={this.state.editorState}

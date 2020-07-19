@@ -1,17 +1,16 @@
 import React from 'react';
+import {AiFillDelete, AiFillEdit} from 'react-icons/ai'
+import {FaCloudDownloadAlt} from 'react-icons/fa'
+import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
-import {fileTypes} from "../../../../../constants";
-import {MdCloudDownload, MdCreateNewFolder, MdDelete, MdEdit} from "react-icons/md/index";
+import {fileActions} from '../../../../../constants';
 import IconButton from "@material-ui/core/IconButton";
 
-/*const IconButton = styled.button`
-    width: 2.5em;  
-    height: auto;
-    margin: 0 0.5em;
-    border: none;
-    background: transparent;
-    cursor: pointer; 
-`;*/
+
+const StyledIconButton = styled(IconButton)`
+    font-size: 1em;
+    padding: 3px;
+`;
 
 /**
  * TODO:
@@ -26,40 +25,18 @@ export class ElementActions extends React.Component {
         super(props);
     }
 
-    actionSelection() {
-        let toReturn = ["", "", ""];
-
-        toReturn[0] = (
-            <IconButton onClick={this.props.handleEditName} aria-label="Edit Element">
-                <MdEdit size={IconSize}/>
-            </IconButton>);
-
-
-        toReturn[1] = (
-            <IconButton onClick={this.props.handleDeleteElement} aria-label="Delete Element">
-                <MdDelete size={IconSize}/>
-            </IconButton>);
-
-        if (this.props.fileType === fileTypes.FOLDER) {
-            toReturn[2] = (
-                <IconButton onClick={this.props.handleAddFolder} aria-label="Add Subfolder">
-                    <MdCreateNewFolder size={IconSize}/>
-                </IconButton>
-            );
-        } else {
-            toReturn[2] = (
-                <IconButton /*onClick={this.props.handleEditName}*/>
-                    <MdCloudDownload size={IconSize}/>
-                </IconButton>
-            );
+    actionSelection(actions) {
+        let toReturn = [];
+        if (actions.includes(fileActions.EDIT)) {
+            //TODO: different icon here maybe?
+            toReturn[0] = <AiFillEdit size={IconSize}/>;
         }
-
-        /*  if (actions.includes(fileActions.DOWNLOAD)) {
-              toReturn[1] = (<FaCloudDownloadAlt size={IconSize}/>);
-          }
-          if (actions.includes(fileActions.DELETE)) {
-              toReturn[2] = (<AiFillDelete size={IconSize}/>);
-          }*/
+        if (actions.includes(fileActions.DOWNLOAD)) {
+            toReturn[1] = (<FaCloudDownloadAlt size={IconSize}/>);
+        }
+        if (actions.includes(fileActions.DELETE)) {
+            toReturn[2] = (<AiFillDelete size={IconSize}/>);
+        }
 
         return toReturn;
     }
@@ -67,9 +44,11 @@ export class ElementActions extends React.Component {
     render() {
         return (
             <Grid container spacing={1}>
-                {this.actionSelection().map((button, index) =>
+                {this.actionSelection(this.props.actions).map((button, index) =>
                     <Grid key={index} item xs={12} sm={4}>
-                        {button}
+                        <StyledIconButton>
+                            {button}
+                        </StyledIconButton>
                     </Grid>
                 )}
             </Grid>

@@ -19,7 +19,7 @@ export default class TemplateList extends React.Component {
             newState.templateList = data.exportTemplates;
             this.setState(newState);
         })
-        .catch(error => console.log(error));
+            .catch(error => console.log(error));
     }
 
 

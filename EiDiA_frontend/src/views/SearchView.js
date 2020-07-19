@@ -26,8 +26,8 @@ export class SearchView extends React.Component {
 
         this.state = {
             table: [],
-            isServerError: false,
             showEmptyResultInfo: false,
+            isServerError: false,
         }
 
         this.onSearch = this.onSearch.bind(this);
@@ -71,16 +71,18 @@ export class SearchView extends React.Component {
         }
     }
 
+
     handleInfoBarClose() {
         this.setState({
             showEmptyResultInfo: false,
-        })
+        });
     }
 
     handleServerErrorBarClose() {
         this.setState({
             isServerError: false,
-        })
+
+        });
     }
 
     render() {

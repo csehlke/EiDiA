@@ -7,7 +7,6 @@ const LogModel = require('../models/log')
 const AttributeTypeModel = require('../models/attributeType')
 const mongoose = require("mongoose")
 
-
 const listRecords = (req, res) => {
     //TODO: error handling
 

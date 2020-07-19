@@ -17,7 +17,7 @@ export default class EditorTools extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-        // If true: mark as active
+            // If true: mark as active
             bold: false,
             italic: false,
             underlined: false,
@@ -57,7 +57,7 @@ export default class EditorTools extends React.Component {
             <div style={styles.div}>
                 <IconButton
                     style={this.state.bold ? styles.iconClicked : null}
-                    onMouseDown={(  event) => this.setInlineStyle(event, "bold")}
+                    onMouseDown={(event) => this.setInlineStyle(event, "bold")}
                 >
                     <AiOutlineBold/>
                 </IconButton>

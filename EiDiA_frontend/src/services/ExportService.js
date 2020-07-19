@@ -31,10 +31,10 @@ export default class CommonService {
         url.searchParams.set("documentName", query);
         return new Promise((resolve, reject) => {
             HttpService.get(url, function (data) {
-                    resolve(data);
-                }, function (textStatus) {
-                    reject(textStatus);
-                });
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
         });
     }
 
