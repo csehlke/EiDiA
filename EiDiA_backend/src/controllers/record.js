@@ -5,7 +5,6 @@ const RecordModel = require('../models/record');
 const DocumentModel = require('../models/document')
 const mongoose = require("mongoose")
 
-
 const listRecords = (req, res) => {
     RecordModel.find()
         .then(records => {

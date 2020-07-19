@@ -3,6 +3,7 @@
 const DateFns = require('date-fns');
 const DocumentModel = require('../models/document');
 const ErrorHandling = require('./errorHandling');
+const LogModel = require('../models/log')
 
 const tes = require('tesseract.js')
 
@@ -93,6 +94,13 @@ const addDocument = (req, res) => {
         .then((insertedData) => {
             res.status(200).json({response: "Inserted attribute-data"});
             fullTextOCR(insertedData._id, insertedData.base64Image) //Start backend-OCR after inserting attributes
+            LogModel.create({
+                userId: req.userId,
+                recordId: req.body.recordId,
+                log: "Uploaded Document \"" + req.body.name + "\""
+            }).then("Created Log").catch((e) => {
+                console.log("Didn't Create Log" + e)
+            })
         })
         .catch(error => {
             res.status(400).json({

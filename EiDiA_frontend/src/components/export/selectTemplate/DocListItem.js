@@ -14,6 +14,7 @@ export default class DocListItem extends React.Component {
     addToList() {
         this.props.onSelect({name: this.props.name, id: this.props.id});
     }
+
     render() {
         return (
             <ListItem>

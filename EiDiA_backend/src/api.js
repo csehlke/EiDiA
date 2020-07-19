@@ -13,6 +13,7 @@ const model = require('./routes/model');
 const upload = require('./routes/upload');
 const exportTemplate = require('./routes/exportTemplate');
 const search = require('./routes/search');
+const log = require('./routes/log')
 
 const api = express();
 
@@ -39,5 +40,6 @@ api.use('/model', model);
 api.use('/upload', upload);
 api.use('/exporttemplate', exportTemplate);
 api.use('/search', search);
+api.use('/log', log)
 
 module.exports = api;
