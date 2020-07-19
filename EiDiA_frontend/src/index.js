@@ -44,7 +44,13 @@ const theme = createMuiTheme({
                 },
                 '.react-icons': { //style react icons with IconProvider here
                     'color': "#005E7C"
-                }
+                },
+                '.react-icons-success': { //style react icons with IconProvider here
+                    'color': "#278014"
+                },
+                '.react-icons-fail': { //style react icons with IconProvider here
+                    'color': "#ff0000"
+                },
             }
         }
     }
