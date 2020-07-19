@@ -26,16 +26,20 @@ export default class DocSearch extends React.Component {
         }
         this.search = this.search.bind(this);
         this.clickSearch = this.clickSearch.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     search(event) {
-        this.setState({textFieldValue: event.target.value});
         if (event.key === 'Enter') {
             ExportService.searchDocuments(event.target.value).then((data) => {
                 let searchResults = data.documents;
                 this.setState({searchResults: searchResults});
             })
         }
+    }
+
+    onChange(event) {
+        this.setState({textFieldValue: event.target.value});
     }
 
     clickSearch() {
@@ -53,7 +57,7 @@ export default class DocSearch extends React.Component {
             <div style={styles.root}>
                 <Row>
                     <TextField style={{margin: "5px"}} label="Search Document" variant="outlined"
-                               onKeyPress={this.search}/>
+                               onKeyPress={this.search} onChange={this.onChange}/>
                     <Button style={{margin: "5px"}} size="small" variant="contained" color="primary"
                             onClick={this.clickSearch}>Search</Button>
                 </Row>

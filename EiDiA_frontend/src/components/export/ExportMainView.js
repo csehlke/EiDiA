@@ -17,6 +17,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import {pageNames} from "../../views/ExportView";
 import DocTypeSelector from "./editTemplate/DocTypeSelector";
+import {parseISO} from 'date-fns';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -130,7 +131,6 @@ export default class ExportMainView extends React.Component {
         }
     }
 
-
     // passed to RightSidePanel, so the right components are rendered according to currentPage
     subComponentSet = {
         [pageNames.selectTemplate]: {
@@ -227,7 +227,7 @@ export default class ExportMainView extends React.Component {
 
                     let editorText = this.getTextFromEditorState(newState.editorState);
                     let attributesNotFound = false;
-
+                    console.log(documentData)
                     if (documentData.length !== 0) {
                         // Iterate through document data and map attributes with variables
                         for (let k of Object.keys(templateVariables)) {
@@ -240,6 +240,15 @@ export default class ExportMainView extends React.Component {
                                 let indices = templateVariables[k].index;
                                 if (docVariable in documentData[documentIndex]) {
                                     let docValue = documentData[documentIndex][docVariable];
+
+                                    try {
+                                        let date = parseISO(docValue);
+                                        if (date != "Invalid Date") {
+                                            docValue = String(date);
+                                        }
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
 
                                     // update current value and value source of that variable for state
                                     templateVariables[k].value = docValue;
