@@ -18,8 +18,11 @@ const theme = createMuiTheme({
             main: "#005E7C",
         },
         error: {
-            main: "#ff0000"
-        }
+            main: "#ff0000",
+        },
+        sidebarIconUnselected: {
+            main: "rgba(0,0,0,0.55)",
+        },
     },
     overrides: { //everything stated here will be used globally
         MuiCssBaseline: {
