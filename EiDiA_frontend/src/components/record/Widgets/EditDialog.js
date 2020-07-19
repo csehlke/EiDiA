@@ -22,7 +22,9 @@ export class EditDialog extends React.Component {
             selectedType: this.props.widgetType,
             selectedTitle: this.props.widgetTitle,
             selectedAttributeMapping: this.props.attributeMapping,
-            selectedGraph: this.props.graphType
+            selectedGraph: this.props.graphType,
+            titleError: false,
+            typeError: false,
         }
     }
 
@@ -32,7 +34,7 @@ export class EditDialog extends React.Component {
                 selectedType: this.props.widgetType,
                 selectedTitle: this.props.widgetTitle,
                 selectedAttributeMapping: this.props.attributeMapping,
-                selectedGraph: this.props.graphType
+                selectedGraph: this.props.graphType,
 
 
             })
@@ -209,14 +211,14 @@ export class EditDialog extends React.Component {
     }
 
     changeTitle = (value) => {
-        this.setState({selectedTitle: value});
+        this.setState({selectedTitle: value, titleError: false});
     }
 
     changeType = (value) => {
         if (value === WidgetTypes.GRAPH && this.state.selectedGraph === undefined)
-            this.setState({selectedType: value, selectedGraph: GraphType.Line});
+            this.setState({selectedType: value, selectedGraph: GraphType.Line, typeError: false});
         else
-            this.setState({selectedType: value});
+            this.setState({selectedType: value, typeError: false});
     }
 
     changeAttributeMapping = (index, attr, value) => {
@@ -247,6 +249,20 @@ export class EditDialog extends React.Component {
         this.state.selectedAttributeMapping.splice(index, 1)
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping})
     }
+    handleSaveButton = () => {
+        if (this.state.selectedTitle.trim() === "" || this.state.selectedType === "") {
+            this.setState({titleError: this.state.selectedTitle === "", typeError: this.state.selectedType === ""})
+        } else {
+            this.props.handleUpdateWidgetButton(
+                this.state.selectedTitle,
+                this.state.selectedType,
+                this.state.selectedAttributeMapping,
+                this.state.selectedGraph
+            );
+            this.props.onClose();
+        }
+    }
+
 
     render() {
         const classes = {
@@ -283,13 +299,16 @@ export class EditDialog extends React.Component {
                     <Grid style={{flexGrow: 1}} container spacing={2}>
                         <Grid key={"titleInput"} item xs={12}>
                             <TextField
+
                                 size={"small"}
+                                error={this.state.titleError}
                                 fullWidth={true}
                                 id="Title"
                                 label="Title"
                                 value={this.state.selectedTitle}
                                 variant={"outlined"}
                                 onChange={(event) => this.changeTitle(event.target.value)}
+                                helperText={this.state.titleError && "The title must not be empty!"}
                             />
                         </Grid>
 
@@ -301,6 +320,8 @@ export class EditDialog extends React.Component {
                                               onChange={(event, value) => this.changeType(value.widgetType)}
                                               options={typeOptions}
                                               clearable={false}
+                                              error={this.state.typeError}
+                                              errorMessage={"The widget type must be selected!"}
                             />
                         </Grid>
                         {this.dialogPicker()}
@@ -315,17 +336,7 @@ export class EditDialog extends React.Component {
                     }>
                         Cancel
                     </Button>
-                    <Button onClick={
-                        () => {
-                            this.props.handleUpdateWidgetButton(
-                                this.state.selectedTitle,
-                                this.state.selectedType,
-                                this.state.selectedAttributeMapping,
-                                this.state.selectedGraph
-                            );
-                            this.props.onClose();
-                        }
-                    }>
+                    <Button onClick={this.handleSaveButton}>
                         Save
                     </Button>
                 </DialogActions>

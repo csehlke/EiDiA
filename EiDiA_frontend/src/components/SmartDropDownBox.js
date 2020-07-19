@@ -82,6 +82,8 @@ class SmartDropDownBox extends React.Component {
                 getOptionSelected={(option, value) => option.id === value.id && option.name === value.name}
                 renderInput={(params) => (
                     <TextField {...params}
+                               error={this.props.error}
+                               helperText={this.props.error && this.props.errorMessage}
                                label={this.state.label}
                                variant="outlined" placeholder="Type to filter"
                     />)}
@@ -101,4 +103,6 @@ SmartDropDownBox.propTypes = {
     style: PropTypes.object,
     margin: PropTypes.string,
     clearable: PropTypes.bool,
+    error: PropTypes.bool,
+    errorMessage: PropTypes.String,
 }
