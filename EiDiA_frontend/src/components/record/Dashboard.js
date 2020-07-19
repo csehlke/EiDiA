@@ -126,10 +126,11 @@ export class Dashboard extends React.Component {
 
     sendWidgetToBackend(widget) {
         const requestData = {recordId: this.props.recordId, ...widget}
-
         if (widget.graphType) requestData['graphType'] = widget.graphType
-
-        RecordService.addWidget(requestData).then(response => console.log(response)).catch(e => console.error(e.message))
+        RecordService.addWidget(requestData).then(response => {
+            widget = response;
+            this.setState(this.state)
+        }).catch(e => console.error(e))
     }
 
 
@@ -155,9 +156,6 @@ export class Dashboard extends React.Component {
     }
 
     render() {
-        //taken from here https://stackoverflow.com/questions/35828991/make-material-ui-reactjs-floatingactionbutton-float
-        //to let fab button float right
-
         return (
             <div>
 

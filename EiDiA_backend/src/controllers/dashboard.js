@@ -33,8 +33,6 @@ const addWidget = (req, res) => {
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'recordId'))
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'positionInfo'))
     errors.push(ErrorHandling.checkBodyForAttribute(req, 'widgetType'))
-    errors.push(ErrorHandling.checkBodyForAttribute(req, 'graphType'))
-    errors.push(ErrorHandling.checkBodyForAttribute(req, 'attributeMapping'))
     errors = errors.filter(error => error); // get rid of null entries
 
     if (errors.length > 0) {
@@ -54,12 +52,11 @@ const addWidget = (req, res) => {
     widget['attributeMapping'] = req.body.attributeMapping;
 
     const filter = {positionInfo: req.body.positionInfo, recordId: req.body.recordId}
-    const options = {upsert: true, new: true, setDefaultsOnInsert: true};
-    //TODO
-    WidgetModel.findOneAndUpdate(filter, widget, options).then(body => {
-        res.status(200).json(
-            "all alright");
-        //TODO maybe using rawResult, differentiate between add and update
+    const options = {upsert: true, new: true, setDefaultsOnInsert: true, returnNewDocument: true};
+
+    WidgetModel.findOneAndUpdate(filter, widget, options).then(updated => {
+        res.status(200).json(updated);
+
         LogModel.create({
             userId: req.userId,
             recordId: body.recordId,
@@ -67,26 +64,17 @@ const addWidget = (req, res) => {
         }).then("Created Log").catch((e) => {
             console.log("Didnt Create Log" + e)
         })
-    })
-        .catch(error => {
-
-            res.status(500).json({
-                error: 'Internal server error',
-                message: error.message,
-            });
-
+    }).catch(error => {
+        return res.status(500).json({
+            error: 'Internal server error',
+            message: error.message,
         });
-
-
+    })
 };
 
-const moveWidget = (req, res) => {
-    res.status(200).json({response: "dummy response"});
-};
 
 module.exports = {
     getDashboard,
     listWidgetsToRecord,
     addWidget,
-    moveWidget,
 };

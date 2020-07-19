@@ -37,10 +37,7 @@ export default class RecordService {
         });
     }
 
-    static addRecord(name) {
-        //TODO: Add Record
 
-    }
 
     static addFolder(folder) {
         return new Promise((resolve, reject) => {
