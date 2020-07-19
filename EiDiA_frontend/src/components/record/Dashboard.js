@@ -129,7 +129,7 @@ export class Dashboard extends React.Component {
 
         if (widget.graphType) requestData['graphType'] = widget.graphType
 
-        RecordService.addWidget(requestData).then(response => console.log(response)).catch(e => console.error(e))
+        RecordService.addWidget(requestData).then(response => console.log(response)).catch(e => console.error(e.message))
     }
 
 
@@ -149,6 +149,8 @@ export class Dashboard extends React.Component {
         let b = this.state.widgets.find(widget => widget.positionInfo === positionB)
         a.positionInfo = positionB;
         b.positionInfo = positionA;
+        this.sendWidgetToBackend(a)
+        this.sendWidgetToBackend(b)
         this.setState({widgets: this.state.widgets})
     }
 

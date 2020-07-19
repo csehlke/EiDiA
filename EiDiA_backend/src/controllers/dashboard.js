@@ -2,13 +2,13 @@
 const WidgetModel = require('../models/widget');
 const mongoose = require('mongoose');
 const LogModel = require('../models/log')
+const ErrorHandling = require("./errorHandling");
 
 const getDashboard = (req, res) => {
     res.status(200).json({response: "dummy response"});
 };
 
 const listWidgetsToRecord = (req, res) => {
-    console.log(req.body)
     WidgetModel.find({'recordId': req.params.recordId})
         .then(widgets => {
             if (widgets.length > 0) {
@@ -25,17 +25,25 @@ const listWidgetsToRecord = (req, res) => {
             error: 'Internal Server Error',
             message: error.message,
         }));
-    // TODO is this really the function we want to send to the backend? i.e. haben wir keine vordefiniete Anzahl an WidgetTypes
 };
 
 const addWidget = (req, res) => {
-    console.log(req.body)
-    if (!Object.prototype.hasOwnProperty.call(req.body, 'title')) {
+    let errors = []
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'title'))
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'recordId'))
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'positionInfo'))
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'widgetType'))
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'graphType'))
+    errors.push(ErrorHandling.checkBodyForAttribute(req, 'attributeMapping'))
+    errors = errors.filter(error => error); // get rid of null entries
+
+    if (errors.length > 0) {
         return res.status(400).json({
             error: 'Bad Request',
-            message: 'The request body must contain a password property',
-        });
+            message: errors.join('\n')
+        })
     }
+
     const widget = {};
 
     widget['title'] = req.body.title;
@@ -49,7 +57,6 @@ const addWidget = (req, res) => {
     const options = {upsert: true, new: true, setDefaultsOnInsert: true};
     //TODO
     WidgetModel.findOneAndUpdate(filter, widget, options).then(body => {
-        // console.log(body)
         res.status(200).json(
             "all alright");
         //TODO maybe using rawResult, differentiate between add and update
@@ -64,7 +71,7 @@ const addWidget = (req, res) => {
         .catch(error => {
 
             res.status(500).json({
-                error: 'Internal server erroerr' + error.message,
+                error: 'Internal server error',
                 message: error.message,
             });
 

@@ -1,6 +1,7 @@
 "use strict";
 const LogModel = require('../models/log');
 const mongoose = require('mongoose');
+const {format} = require('date-fns');
 
 
 const getLogs = (req, res) => {
@@ -26,8 +27,14 @@ const getLogs = (req, res) => {
                     message: error.message,
 
                 });
-            else
+            else {
+                logs = logs.map(log => {
+                    log.date = format(log.date, 'dd/MM/yyyy');
+                    return log
+                })
                 res.status(200).json(logs.slice(0, 20));
+
+            }
 
         });
 
