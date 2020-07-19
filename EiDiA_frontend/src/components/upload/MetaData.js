@@ -98,6 +98,7 @@ class MetaData extends React.Component {
                 </FormControl>
 
                 <TextField
+                    style={{maxWidth: "227px"}} // in case of multiline, keep original width
                     multiline
                     rowsMax={5}
                     label={"Comment"}
