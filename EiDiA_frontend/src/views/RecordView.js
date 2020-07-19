@@ -38,11 +38,6 @@ class RecordView extends React.Component {
     }
 
 
-    changePage(option) {
-        this.state.currentPage = option;
-        this.setState(this.state);
-    }
-
     handleChange(event, value) {
         this.setState({currentPage: value})
     }
@@ -60,12 +55,6 @@ class RecordView extends React.Component {
         this.getDocuments();
     }
 
-    groupBy = (xs, key) => {
-        return xs.reduce(function (rv, x) {
-            (rv[x[key]] = rv[x[key]] || []).push(x);
-            return rv;
-        }, {});
-    };
 
     handleServerErrorBarClose = (e) => {
         this.setState({
