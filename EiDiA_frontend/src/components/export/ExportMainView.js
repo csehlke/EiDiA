@@ -96,6 +96,7 @@ export default class ExportMainView extends React.Component {
         this.handleSnackBarClose = this.handleSnackBarClose.bind(this);
         this.addDocType = this.addDocType.bind(this);
         this.removeDocType = this.removeDocType.bind(this);
+        this.replaceVariables = this.replaceVariables.bind(this);
 
         // reference to document editor, allows access to focus() method (focus editor)
         // necessary for setting inline styles
@@ -187,6 +188,7 @@ export default class ExportMainView extends React.Component {
     setValueToVariable(value) {
         let newState = this.state;
         let variableState = newState.variables;
+
         let index = variableState[newState.selectedVariable].index;
         variableState[newState.selectedVariable].value = value;
         variableState[newState.selectedVariable].source = 'user';
@@ -201,10 +203,15 @@ export default class ExportMainView extends React.Component {
     // Replace positions of given variable with new value
     setValuesToText(indices, newValue, editorState) {
         let editorText = this.getTextFromEditorState(editorState);
+        console.log(newValue)
+        console.log(indices)
         const tmp_arr = editorText.split(/\s+/);
         for (let i of indices) {
             const toReplace = tmp_arr[i];
-            editorText = editorText.replace(toReplace, newValue);
+            console.log(toReplace);
+            editorText = editorText.split(toReplace).join(newValue);
+
+            //editorText = editorText.replace(toReplace, String(newValue));
         }
         return editorText;
     }
@@ -227,51 +234,71 @@ export default class ExportMainView extends React.Component {
                         return dataArr;
                     }, []);
 
-                    let editorText = this.getTextFromEditorState(newState.editorState);
+                    let editorState = newState.editorState;
                     let attributesNotFound = false;
+                    let editorText;
                     if (documentData.length !== 0) {
                         // Iterate through document data and map attributes with variables
-                        for (let k of Object.keys(templateVariables)) {
+                        let key = Object.keys(templateVariables)
+                        let toReplace = [];
+                        let replaceIndices = [];
+                        for (let k of key) {
                             if (isPath(k.slice(1))) { // find variables that depend on documents
                                 let variableTokens = k.split("/");
-                                let docVariable = variableTokens[variableTokens.length - 1];                // Get to be mapped variabled from editorText
+                                let docVariable = variableTokens[variableTokens.length - 1];                // Get to be mapped variables from editorText
                                 let indexString = variableTokens[variableTokens.length - 2];
                                 let documentIndex = parseInt(indexString[indexString.length - 1]) - 1;      // Get index for correct document, e.g. $/Document1/Variable1 --> index = 1 -1 = 0
 
                                 let indices = templateVariables[k].index;
-                                if (docVariable in documentData[documentIndex]) {
-                                    let docValue = documentData[documentIndex][docVariable];
 
-                                    try {
-                                        let date = parseISO(docValue);
-                                        if (date != "Invalid Date") {
-                                            docValue = String(date);
+                                if (typeof documentData[documentIndex] !== 'undefined') {
+                                    if (docVariable in documentData[documentIndex]) {
+                                        let docValue = documentData[documentIndex][docVariable];
+
+                                        try {
+                                            let date = parseISO(docValue);
+                                            if (date != "Invalid Date") {
+                                                docValue = String(date);
+                                            }
+                                        } catch (e) {
+                                            console.log(e);
                                         }
-                                    } catch (e) {
-                                        console.log(e);
-                                    }
 
-                                    // update current value and value source of that variable for state
-                                    templateVariables[k].value = docValue;
-                                    templateVariables[k].source = "\/" + selectedDocs[documentIndex].name + "\/" + docVariable;
-                                    editorText = this.setValuesToText(indices, docValue, newState.editorState)
-                                } else {
-                                    attributesNotFound = true
+                                        //update current value and value source of that variable for state
+                                        templateVariables[k].value = docValue;
+                                        templateVariables[k].source = "\/" + selectedDocs[documentIndex].name + "\/" + docVariable;
+
+                                        replaceIndices = [...replaceIndices, ...indices];
+
+                                        toReplace.push(docValue);
+                                    } else {
+                                        attributesNotFound = true;
+                                    }
                                 }
                             }
                         }
+                        editorText = this.replaceVariables(toReplace, replaceIndices, editorState);
                     } else {
                         attributesNotFound = true;
                     }
-
                     newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
                     newState.variables = templateVariables;
-
                     this.setState(newState);
+                    //this.scanForNewVariables(this.state.variables, editorState)
                     if (attributesNotFound) this.handleSnackBarOpen(alertConstants.alertType.warning, alertConstants.messages.variables);
                 }
             }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.document));
         }
+    }
+
+    replaceVariables(toReplace, indices, editorState) {
+        let editorText = this.getTextFromEditorState(editorState);
+        const tmp_arr = editorText.split(/\s+/);
+        for (let i = 0; i < indices.length; i++) {
+            const variable = tmp_arr[indices[i]];
+            editorText = editorText.split(variable).join(toReplace[i]);
+        }
+        return editorText;
     }
 
     toggleDialog() {
