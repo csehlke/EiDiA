@@ -1,185 +1,114 @@
 "use strict";
 
 import React from 'react';
-import Styled from 'styled-components';
 
-export const Footer = Styled(PlainFooter)`
-    max-height: 35px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    position: fixed;
-    background: white;
-    > p {
-        text-align: center;
-        margin-top: 4px;
-    }
+import {List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
+import NewFileIcon from "../assets/NewFileIcon";
+import {Link} from "./Link";
+import {AiOutlineSearch, FaCloudUploadAlt, FaHome, FiHardDrive} from "react-icons/all";
+import styled from "styled-components";
+import {withRouter} from "react-router-dom";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+const StyledListIcon = styled(ListItemIcon)`
+    font-size: 1.75em;
 `;
 
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
+const styles = theme => ({
+    selected: {
+        color: theme.palette.primary.main, // see index.js
     },
-    drawer: {
-        [theme.breakpoints.up('sm')]: {
-            width: drawerWidth,
-            flexShrink: 0,
-        },
+    unselected: {
+        color: theme.palette.sidebarIconUnselected.main,
     },
-    appBar: {
-        [theme.breakpoints.up('sm')]: {
-            width: `calc(100% - ${drawerWidth}px)`,
-            marginLeft: drawerWidth,
-        },
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-        [theme.breakpoints.up('sm')]: {
-            display: 'none',
-        },
-    },
-    // necessary for content to be below app bar
-    toolbar: theme.mixins.toolbar,
-    drawerPaper: {
-        width: drawerWidth,
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-    },
-}));
+});
 
-function ResponsiveDrawer(props) {
-    const { window } = props;
-    const classes = useStyles();
-    const theme = useTheme();
-    const [mobileOpen, setMobileOpen] = React.useState(false);
-
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
-
-    const drawer = (
-        <div>
-            <div className={classes.toolbar} />
-            <Divider />
-            <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-            </List>
-            <Divider />
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-            </List>
-        </div>
-    );
-
-    const container = window !== undefined ? () => window().document.body : undefined;
-
-    return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        className={classes.menuButton}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap>
-                        Responsive drawer
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <nav className={classes.drawer} aria-label="mailbox folders">
-                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-                <Hidden smUp implementation="css">
-                    <Drawer
-                        container={container}
-                        variant="temporary"
-                        anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-                        open={mobileOpen}
-                        onClose={handleDrawerToggle}
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                        ModalProps={{
-                            keepMounted: true, // Better open performance on mobile.
-                        }}
-                    >
-                        {drawer}
-                    </Drawer>
-                </Hidden>
-                <Hidden xsDown implementation="css">
-                    <Drawer
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                        variant="permanent"
-                        open
-                    >
-                        {drawer}
-                    </Drawer>
-                </Hidden>
-            </nav>
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
-                <Typography paragraph>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-                    facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-                    gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-                    donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                    adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-                    Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-                    imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-                    arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                    donec massa sapien faucibus et molestie ac.
-                </Typography>
-                <Typography paragraph>
-                    Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-                    facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-                    tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-                    consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-                    vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-                    hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-                    tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-                    nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-                    accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-                </Typography>
-            </main>
-        </div>
-    );
-}
-
-class PlainFooter extends React.Component {
+class Sidebar extends React.Component {
 
     constructor(props) {
         super(props);
     }
 
+    sidebarEntries = {
+        HOME: 'Home',
+        BROWSE: 'Browse',
+        SEARCH: 'Search',
+        UPLOAD_DOCUMENT: 'UploadDocument',
+        CREATE_DOCUMENT: 'CreateDocument',
+    }
+
     render() {
+        const {classes} = this.props;
+
+        let activePath = '';
+        const path = this.props.location.pathname;
+        if (path === '/') {
+            activePath = this.sidebarEntries.HOME;
+        } else if (path.startsWith('/browse') || path.startsWith('/record')) {
+            activePath = this.sidebarEntries.BROWSE;
+        } else if (path.startsWith('/search')) {
+            activePath = this.sidebarEntries.SEARCH;
+        } else if (path.startsWith('/upload')) {
+            activePath = this.sidebarEntries.UPLOAD_DOCUMENT;
+        } else if (path.startsWith('/export')) {
+            activePath = this.sidebarEntries.CREATE_DOCUMENT;
+        }
+
         return (
-            <div className={this.props.className}>
-                <hr/>
-                <p>© {new Date().getFullYear()} sebis. All rights reserved.</p>
-            </div>
+            <List>
+                <Link to={'/'}>
+                    <ListItem button key={this.sidebarEntries.HOME}
+                              selected={activePath === this.sidebarEntries.HOME}>
+                        <StyledListIcon
+                            className={activePath === this.sidebarEntries.HOME ? classes.selected : classes.unselected}>
+                            <FaHome/>
+                        </StyledListIcon>
+                        <ListItemText primary={"Home"}/>
+                    </ListItem>
+                </Link>
+                <Link to={'/browse'}>
+                    <ListItem button key={this.sidebarEntries.BROWSE}
+                              selected={activePath === this.sidebarEntries.BROWSE}>
+                        <StyledListIcon
+                            className={activePath === this.sidebarEntries.BROWSE ? classes.selected : classes.unselected}>
+                            <FiHardDrive/>
+                        </StyledListIcon>
+                        <ListItemText primary={"Browse"}/>
+                    </ListItem>
+                </Link>
+                <Link to={'/search'}>
+                    <ListItem button key={this.sidebarEntries.SEARCH}
+                              selected={activePath === this.sidebarEntries.SEARCH}>
+                        <StyledListIcon
+                            className={activePath === this.sidebarEntries.SEARCH ? classes.selected : classes.unselected}>
+                            <AiOutlineSearch/>
+                        </StyledListIcon>
+                        <ListItemText primary={"Search"}/>
+                    </ListItem>
+                </Link>
+                <Link to={'/upload'}>
+                    <ListItem button key={this.sidebarEntries.UPLOAD_DOCUMENT}
+                              selected={activePath === this.sidebarEntries.UPLOAD_DOCUMENT}>
+                        <StyledListIcon
+                            className={activePath === this.sidebarEntries.UPLOAD_DOCUMENT ? classes.selected : classes.unselected}>
+                            <FaCloudUploadAlt/>
+                        </StyledListIcon>
+                        <ListItemText primary={"Upload Document"}/>
+                    </ListItem>
+                </Link>
+                <Link to={'/export'}>
+                    <ListItem button key={this.sidebarEntries.CREATE_DOCUMENT}
+                              selected={activePath === this.sidebarEntries.CREATE_DOCUMENT}>
+                        <StyledListIcon
+                            className={activePath === this.sidebarEntries.CREATE_DOCUMENT ? classes.selected : classes.unselected}>
+                            <NewFileIcon/>
+                        </StyledListIcon>
+                        <ListItemText primary={"Create Document"}/>
+                    </ListItem>
+                </Link>
+            </List>
         );
     }
 }
 
+export default withStyles(styles, {withTheme: true})(withRouter(Sidebar));

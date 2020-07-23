@@ -1,21 +1,20 @@
 "use strict";
 
 
-const webpack            = require('webpack');
-const path               = require('path');
-const ExtractTextPlugin  = require("extract-text-webpack-plugin");
-const HtmlWebpackPlugin  = require('html-webpack-plugin');
+const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 
 module.exports = {
     entry: {
-        'vendor': ['react','react-dom','react-router-dom'],
-        'app': path.resolve(__dirname,'src/index.js')
+        'vendor': ['react', 'react-dom', 'react-router-dom'],
+        'app': path.resolve(__dirname, 'src/index.js')
     },
     output: {
-        path: path.resolve(__dirname,'dist'),
+        path: path.resolve(__dirname, 'dist'),
         filename: 'scripts/[name].js'
     },
     module: {
@@ -26,20 +25,24 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['env', 'react']
+                        presets: ['@babel/preset-env', '@babel/preset-react']
                     }
                 }
             },
             {
                 test: /\.html$/,
-                use: [ {
+                use: [{
                     loader: 'html-loader',
                     options: {
                         minimize: true,
-                        removeComments: false,
-                        collapseWhitespace: false
                     }
                 }]
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    'file-loader',
+                ],
             },
             {
                 test: /\.css$/,
@@ -51,15 +54,23 @@ module.exports = {
 
         ]
     },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        },
+    },
     plugins: [
         new CleanWebpackPlugin(['dist']),
-        new webpack.optimize.CommonsChunkPlugin({name: "vendor", minChunks: Infinity,}),
         new HtmlWebpackPlugin({
             template: './EiDiA_frontend/src/index.html',
             filename: 'index.html',
             inject: 'body'
         }),
-        new ExtractTextPlugin("styles/app.css")
+        new ExtractTextPlugin("styles/app.css"),
+        new FaviconsWebpackPlugin({
+            logo: __dirname + '/src/assets/favicon.png',
+            inject: true
+        })
     ]
 
 };
