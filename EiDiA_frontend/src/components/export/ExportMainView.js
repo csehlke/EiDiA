@@ -178,7 +178,7 @@ export default class ExportMainView extends React.Component {
                 this.selectTemplate(initTemplate.name, initTemplate._id);
             }
         }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.templateList));
-    }f
+    }
 
     createNewTemplate() {
         this.setState({editorState: EditorState.createEmpty(), selectedTemplate: null});
@@ -189,10 +189,9 @@ export default class ExportMainView extends React.Component {
     setValueToVariable(value) {
         let newState = this.state;
         let variableState = newState.variables;
-
-        let index = variableState[newState.selectedVariable].index;
-        variableState[newState.selectedVariable].value = value;
-        variableState[newState.selectedVariable].source = 'user';
+        let index = variableState[newState.selectedVariable].index; value;
+        variableState[newState.selectedVariable].source;
+        variableState[newState.selectedVariable].value == 'user';
         newState.variables = variableState;
 
         let editorText = this.setValuesToText(index, value, newState.editorState);
@@ -206,7 +205,8 @@ export default class ExportMainView extends React.Component {
     setValuesToText(indices, newValue, editorState) {
         let editorText = this.getTextFromEditorState(editorState);
         const tmp_arr = editorText.split(/\s+/);
-        console.log(tmp_arr);
+        console.log(indices)
+        console.log(this.state.variable);
         for (let i of indices) {
             const toReplace = tmp_arr[i];
             editorText = editorText.split(toReplace).join(newValue);
@@ -286,13 +286,13 @@ export default class ExportMainView extends React.Component {
                         attributesNotFound = true;
                     }
 
-                    newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
-                    newState.variables = templateVariables;
+                    let newEditorState = EditorState.createWithContent(ContentState.createFromText(editorText));
 
-                    this.setState(newState);
 
-                    let newVariables = this.scanForNewVariables(newState.variables, editorState);
-                    this.setState({variables: newVariables});
+                    this.setState({editorState: newEditorState});
+
+                    //let newVariables = this.scanForNewVariables(newState.variables, editorState);
+                    //this.setState({variables: newVariables});
                     if (attributesNotFound) this.handleSnackBarOpen(alertConstants.alertType.warning, alertConstants.messages.variables);
                 }
             }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.document));
@@ -382,6 +382,7 @@ export default class ExportMainView extends React.Component {
         this.setState(newState);
     }
 
+    // update variables and remove path variables
     updateVariablePositions(replacedVariables, editorText) {
         let untouchedVariables = [];
         let currVariables = this.state.variables;
@@ -394,7 +395,6 @@ export default class ExportMainView extends React.Component {
 
         const tmp_arr = editorText.split(/\s+/);
         let indices = {};
-        console.log(untouchedVariables);
         for (let uv of untouchedVariables) {
             let i = -1;
             for (i = 0; i < tmp_arr.length; i++)
@@ -402,12 +402,30 @@ export default class ExportMainView extends React.Component {
                     if (!indices.hasOwnProperty(uv)) {
                         indices[uv] = [];
                     }
+
                     indices[uv].push(i);
                 }
 
         }
-        console.log(indices)
+        /*let newVariableState = {}
+        for (let k of Object.keys(indices)) {
+            newVariableState[k] = {
+                value: "",
+                source: "",
+                index: indices[k]
+            };
+        }*/
+        let oldVariables = this.state.variables;
+        for (let k of Object.keys(indices)) {
+            oldVariables[k] = {
+                value: "", source: "",
+                index: indices[k]
+            }
+        }
+        console.log(oldVariables);
+        this.setState({variables: oldVariables});
         console.log(this.state.variables)
+
     }
 
     // Scans editorText for new Variables and returns object of updated variable state
@@ -477,9 +495,7 @@ export default class ExportMainView extends React.Component {
 
     //Edit View:  User chose variable to manually assign value
     setSelectedVariable(event) {
-        let newState = this.state;
-        newState.selectedVariable = event.target.value;
-        this.setState(newState);
+        this.setState({selectedVariable: event.target.value});
     }
 
     saveTemplate(templateName) {
