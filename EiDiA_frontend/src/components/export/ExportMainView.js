@@ -83,6 +83,7 @@ export default class ExportMainView extends React.Component {
         this.selectTemplate = this.selectTemplate.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
         this.extractVariables = this.extractVariables.bind(this);
+        this.updateVariablePositions = this.updateVariablePositions.bind(this);
         this.saveTemplate = this.saveTemplate.bind(this);
         this.addSelectedDocumentToList = this.addSelectedDocumentToList.bind(this);
         this.mapDocumentsWithVariables = this.mapDocumentsWithVariables.bind(this);
@@ -195,6 +196,7 @@ export default class ExportMainView extends React.Component {
         newState.variables = variableState;
 
         let editorText = this.setValuesToText(index, value, newState.editorState);
+
         newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
 
         this.setState(newState);
@@ -203,15 +205,11 @@ export default class ExportMainView extends React.Component {
     // Replace positions of given variable with new value
     setValuesToText(indices, newValue, editorState) {
         let editorText = this.getTextFromEditorState(editorState);
-        console.log(newValue)
-        console.log(indices)
         const tmp_arr = editorText.split(/\s+/);
+        console.log(tmp_arr);
         for (let i of indices) {
             const toReplace = tmp_arr[i];
-            console.log(toReplace);
             editorText = editorText.split(toReplace).join(newValue);
-
-            //editorText = editorText.replace(toReplace, String(newValue));
         }
         return editorText;
     }
@@ -237,6 +235,7 @@ export default class ExportMainView extends React.Component {
                     let editorState = newState.editorState;
                     let attributesNotFound = false;
                     let editorText;
+                    let replacedVariables;
                     if (documentData.length !== 0) {
                         // Iterate through document data and map attributes with variables
                         let key = Object.keys(templateVariables)
@@ -277,14 +276,23 @@ export default class ExportMainView extends React.Component {
                                 }
                             }
                         }
-                        editorText = this.replaceVariables(toReplace, replaceIndices, editorState);
+
+                        let out = this.replaceVariables(toReplace, replaceIndices, editorState);
+                        editorText = out[0];
+                        replacedVariables = out[1];
+                        this.updateVariablePositions(replacedVariables, editorText);
                     } else {
                         attributesNotFound = true;
                     }
+
+                    this.updateVariablePositions(replacedVariables);
                     newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
                     newState.variables = templateVariables;
+
                     this.setState(newState);
-                    //this.scanForNewVariables(this.state.variables, editorState)
+
+                    let newVariables = this.scanForNewVariables(newState.variables, editorState);
+                    this.setState({variables: newVariables});
                     if (attributesNotFound) this.handleSnackBarOpen(alertConstants.alertType.warning, alertConstants.messages.variables);
                 }
             }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.document));
@@ -294,11 +302,13 @@ export default class ExportMainView extends React.Component {
     replaceVariables(toReplace, indices, editorState) {
         let editorText = this.getTextFromEditorState(editorState);
         const tmp_arr = editorText.split(/\s+/);
+        let replacedVariables = [];
         for (let i = 0; i < indices.length; i++) {
             const variable = tmp_arr[indices[i]];
             editorText = editorText.split(variable).join(toReplace[i]);
+            replacedVariables.push(variable);
         }
-        return editorText;
+        return [editorText, replacedVariables];
     }
 
     toggleDialog() {
@@ -372,10 +382,31 @@ export default class ExportMainView extends React.Component {
         this.setState(newState);
     }
 
+    updateVariablePositions(replacedVariables, editorText) {
+        let untouchedVariables = [];
+        let currVariables = this.state.variables;
+
+        for (let cv in currVariables) {
+            if (!replacedVariables.includes(cv)) {
+                untouchedVariables.push(cv);
+            }
+        }
+
+        const tmp_arr = editorText.split(/\s+/);
+        let indices = [];
+
+        for (let uv of untouchedVariables) {
+            let i = -1;
+            for (i = 0; i < tmp_arr.length; i++)
+                if (tmp_arr[i] === uv)
+                    indices.push(i);
+        }
+    }
+
     // Scans editorText for new Variables and returns object of updated variable state
     scanForNewVariables(currVariables, editorState) {
         let newVariables = this.extractVariables(editorState);
-        let newVariableState = {}
+        let newVariableState = {};
         for (let k of Object.keys(newVariables)) {
             if (k in currVariables) {
                 let indices = new Set(currVariables[k].index.concat(newVariables[k].index)); // remove duplicate indices
@@ -395,7 +426,24 @@ export default class ExportMainView extends React.Component {
 
     getTextFromEditorState(editorState) {
         const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
-        return blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+        const mappedBlocks = blocks.map(
+            block => (!block.text.trim() && "\n") || block.text
+        );
+
+        let newText = "";
+        for (let i = 0; i < mappedBlocks.length; i++) {
+            const block = mappedBlocks[i];
+
+            // handle last block
+            if (i === mappedBlocks.length - 1) {
+                newText += block;
+            } else {
+                // otherwise we join with \n, except if the block is already a \n
+                if (block === "\n") newText += block;
+                else newText += block + "\n";
+            }
+        }
+        return newText
     }
 
     // Collects variables from document text as it is
