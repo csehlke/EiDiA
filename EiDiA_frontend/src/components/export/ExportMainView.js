@@ -178,7 +178,7 @@ export default class ExportMainView extends React.Component {
                 this.selectTemplate(initTemplate.name, initTemplate._id);
             }
         }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.templateList));
-    }
+    }f
 
     createNewTemplate() {
         this.setState({editorState: EditorState.createEmpty(), selectedTemplate: null});
@@ -281,11 +281,11 @@ export default class ExportMainView extends React.Component {
                         editorText = out[0];
                         replacedVariables = out[1];
                         this.updateVariablePositions(replacedVariables, editorText);
+
                     } else {
                         attributesNotFound = true;
                     }
 
-                    this.updateVariablePositions(replacedVariables);
                     newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
                     newState.variables = templateVariables;
 
@@ -393,14 +393,21 @@ export default class ExportMainView extends React.Component {
         }
 
         const tmp_arr = editorText.split(/\s+/);
-        let indices = [];
-
+        let indices = {};
+        console.log(untouchedVariables);
         for (let uv of untouchedVariables) {
             let i = -1;
             for (i = 0; i < tmp_arr.length; i++)
-                if (tmp_arr[i] === uv)
-                    indices.push(i);
+                if (tmp_arr[i] === uv) {
+                    if (!indices.hasOwnProperty(uv)) {
+                        indices[uv] = [];
+                    }
+                    indices[uv].push(i);
+                }
+
         }
+        console.log(indices)
+        console.log(this.state.variables)
     }
 
     // Scans editorText for new Variables and returns object of updated variable state
