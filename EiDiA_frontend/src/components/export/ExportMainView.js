@@ -83,6 +83,7 @@ export default class ExportMainView extends React.Component {
         this.selectTemplate = this.selectTemplate.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
         this.extractVariables = this.extractVariables.bind(this);
+        this.updateVariablePositions = this.updateVariablePositions.bind(this);
         this.saveTemplate = this.saveTemplate.bind(this);
         this.addSelectedDocumentToList = this.addSelectedDocumentToList.bind(this);
         this.mapDocumentsWithVariables = this.mapDocumentsWithVariables.bind(this);
@@ -96,6 +97,7 @@ export default class ExportMainView extends React.Component {
         this.handleSnackBarClose = this.handleSnackBarClose.bind(this);
         this.addDocType = this.addDocType.bind(this);
         this.removeDocType = this.removeDocType.bind(this);
+        this.replaceVariables = this.replaceVariables.bind(this);
 
         // reference to document editor, allows access to focus() method (focus editor)
         // necessary for setting inline styles
@@ -188,8 +190,8 @@ export default class ExportMainView extends React.Component {
         let newState = this.state;
         let variableState = newState.variables;
         let index = variableState[newState.selectedVariable].index;
-        variableState[newState.selectedVariable].value = value;
         variableState[newState.selectedVariable].source = 'user';
+        variableState[newState.selectedVariable].value = value;
         newState.variables = variableState;
 
         let editorText = this.setValuesToText(index, value, newState.editorState);
@@ -202,16 +204,18 @@ export default class ExportMainView extends React.Component {
     setValuesToText(indices, newValue, editorState) {
         let editorText = this.getTextFromEditorState(editorState);
         const tmp_arr = editorText.split(/\s+/);
+        console.log(indices)
+        console.log(this.state.variable);
         for (let i of indices) {
             const toReplace = tmp_arr[i];
-            editorText = editorText.replace(toReplace, newValue);
+            editorText = editorText.split(toReplace).join(newValue);
         }
         return editorText;
     }
 
     // matches given data from document with variables in document text
     mapDocumentsWithVariables(selectedDocs) {
-        let selectedDocsIds = selectedDocs.map((docElem) => docElem.id)
+        let selectedDocsIds = selectedDocs.map((docElem) => docElem.id);
         if (selectedDocs.length !== 0) {
             ExportService.getDocumentAttributes(selectedDocsIds).then((data) => {
                 const documents = data.documentAttributes;
@@ -227,51 +231,79 @@ export default class ExportMainView extends React.Component {
                         return dataArr;
                     }, []);
 
-                    let editorText = this.getTextFromEditorState(newState.editorState);
+                    let editorState = newState.editorState;
                     let attributesNotFound = false;
+                    let editorText;
+                    let replacedVariables;
                     if (documentData.length !== 0) {
                         // Iterate through document data and map attributes with variables
-                        for (let k of Object.keys(templateVariables)) {
+                        let key = Object.keys(templateVariables)
+                        let toReplace = [];
+                        let replaceIndices = [];
+                        for (let k of key) {
                             if (isPath(k.slice(1))) { // find variables that depend on documents
                                 let variableTokens = k.split("/");
-                                let docVariable = variableTokens[variableTokens.length - 1];                // Get to be mapped variabled from editorText
+                                let docVariable = variableTokens[variableTokens.length - 1];                // Get to be mapped variables from editorText
                                 let indexString = variableTokens[variableTokens.length - 2];
                                 let documentIndex = parseInt(indexString[indexString.length - 1]) - 1;      // Get index for correct document, e.g. $/Document1/Variable1 --> index = 1 -1 = 0
 
                                 let indices = templateVariables[k].index;
-                                if (docVariable in documentData[documentIndex]) {
-                                    let docValue = documentData[documentIndex][docVariable];
 
-                                    try {
-                                        let date = parseISO(docValue);
-                                        if (date != "Invalid Date") {
-                                            docValue = String(date);
+                                if (typeof documentData[documentIndex] !== 'undefined') {
+                                    if (docVariable in documentData[documentIndex]) {
+                                        let docValue = documentData[documentIndex][docVariable];
+
+                                        try {
+                                            let date = parseISO(docValue);
+                                            if (date != "Invalid Date") {
+                                                docValue = String(date);
+                                            }
+                                        } catch (e) {
+                                            console.log(e);
                                         }
-                                    } catch (e) {
-                                        console.log(e);
-                                    }
 
-                                    // update current value and value source of that variable for state
-                                    templateVariables[k].value = docValue;
-                                    templateVariables[k].source = "\/" + selectedDocs[documentIndex].name + "\/" + docVariable;
-                                    editorText = this.setValuesToText(indices, docValue, newState.editorState)
-                                } else {
-                                    attributesNotFound = true
+                                        //update current value and value source of that variable for state
+                                        templateVariables[k].value = docValue;
+                                        templateVariables[k].source = "\/" + selectedDocs[documentIndex].name + "\/" + docVariable;
+
+                                        replaceIndices = [...replaceIndices, ...indices];
+
+                                        toReplace.push(docValue);
+                                    } else {
+                                        attributesNotFound = true;
+                                    }
                                 }
                             }
                         }
+
+                        let out = this.replaceVariables(toReplace, replaceIndices, editorState);
+                        editorText = out[0];
+                        replacedVariables = out[1];
+                        this.updateVariablePositions(replacedVariables, editorText);
+
                     } else {
                         attributesNotFound = true;
                     }
 
-                    newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
-                    newState.variables = templateVariables;
+                    let newEditorState = EditorState.createWithContent(ContentState.createFromText(editorText));
+                    this.setState({editorState: newEditorState});
 
-                    this.setState(newState);
                     if (attributesNotFound) this.handleSnackBarOpen(alertConstants.alertType.warning, alertConstants.messages.variables);
                 }
             }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.document));
         }
+    }
+
+    replaceVariables(toReplace, indices, editorState) {
+        let editorText = this.getTextFromEditorState(editorState);
+        const tmp_arr = editorText.split(/\s+/);
+        let replacedVariables = [];
+        for (let i = 0; i < indices.length; i++) {
+            const variable = tmp_arr[indices[i]];
+            editorText = editorText.split(variable).join(toReplace[i]);
+            replacedVariables.push(variable);
+        }
+        return [editorText, replacedVariables];
     }
 
     toggleDialog() {
@@ -345,10 +377,46 @@ export default class ExportMainView extends React.Component {
         this.setState(newState);
     }
 
+    // update variables and remove path variables
+    updateVariablePositions(replacedVariables, editorText) {
+        let untouchedVariables = [];
+        let currVariables = this.state.variables;
+
+        for (let cv in currVariables) {
+            if (!replacedVariables.includes(cv)) {
+                untouchedVariables.push(cv);
+            }
+        }
+
+        const tmp_arr = editorText.split(/\s+/);
+        let indices = {};
+        for (let uv of untouchedVariables) {
+            let i = -1;
+            for (i = 0; i < tmp_arr.length; i++)
+                if (tmp_arr[i] === uv) {
+                    if (!indices.hasOwnProperty(uv)) {
+                        indices[uv] = [];
+                    }
+
+                    indices[uv].push(i);
+                }
+
+        }
+
+        let oldVariables = this.state.variables;
+        for (let k of Object.keys(indices)) {
+            oldVariables[k] = {
+                value: "", source: "",
+                index: indices[k]
+            }
+        }
+        this.setState({variables: oldVariables});
+    }
+
     // Scans editorText for new Variables and returns object of updated variable state
     scanForNewVariables(currVariables, editorState) {
         let newVariables = this.extractVariables(editorState);
-        let newVariableState = {}
+        let newVariableState = {};
         for (let k of Object.keys(newVariables)) {
             if (k in currVariables) {
                 let indices = new Set(currVariables[k].index.concat(newVariables[k].index)); // remove duplicate indices
@@ -368,7 +436,24 @@ export default class ExportMainView extends React.Component {
 
     getTextFromEditorState(editorState) {
         const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
-        return blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+        const mappedBlocks = blocks.map(
+            block => (!block.text.trim() && "\n") || block.text
+        );
+
+        let newText = "";
+        for (let i = 0; i < mappedBlocks.length; i++) {
+            const block = mappedBlocks[i];
+
+            // handle last block
+            if (i === mappedBlocks.length - 1) {
+                newText += block;
+            } else {
+                // otherwise we join with \n, except if the block is already a \n
+                if (block === "\n") newText += block;
+                else newText += block + "\n";
+            }
+        }
+        return newText
     }
 
     // Collects variables from document text as it is
@@ -395,9 +480,7 @@ export default class ExportMainView extends React.Component {
 
     //Edit View:  User chose variable to manually assign value
     setSelectedVariable(event) {
-        let newState = this.state;
-        newState.selectedVariable = event.target.value;
-        this.setState(newState);
+        this.setState({selectedVariable: event.target.value});
     }
 
     saveTemplate(templateName) {
