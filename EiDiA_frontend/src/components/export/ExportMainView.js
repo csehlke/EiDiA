@@ -189,13 +189,12 @@ export default class ExportMainView extends React.Component {
     setValueToVariable(value) {
         let newState = this.state;
         let variableState = newState.variables;
-        let index = variableState[newState.selectedVariable].index; value;
-        variableState[newState.selectedVariable].source;
-        variableState[newState.selectedVariable].value == 'user';
+        let index = variableState[newState.selectedVariable].index;
+        variableState[newState.selectedVariable].source = 'user';
+        variableState[newState.selectedVariable].value = value;
         newState.variables = variableState;
 
         let editorText = this.setValuesToText(index, value, newState.editorState);
-
         newState.editorState = EditorState.createWithContent(ContentState.createFromText(editorText));
 
         this.setState(newState);
@@ -216,7 +215,7 @@ export default class ExportMainView extends React.Component {
 
     // matches given data from document with variables in document text
     mapDocumentsWithVariables(selectedDocs) {
-        let selectedDocsIds = selectedDocs.map((docElem) => docElem.id)
+        let selectedDocsIds = selectedDocs.map((docElem) => docElem.id);
         if (selectedDocs.length !== 0) {
             ExportService.getDocumentAttributes(selectedDocsIds).then((data) => {
                 const documents = data.documentAttributes;
@@ -422,10 +421,7 @@ export default class ExportMainView extends React.Component {
                 index: indices[k]
             }
         }
-        console.log(oldVariables);
         this.setState({variables: oldVariables});
-        console.log(this.state.variables)
-
     }
 
     // Scans editorText for new Variables and returns object of updated variable state
