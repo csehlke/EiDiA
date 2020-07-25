@@ -21,6 +21,7 @@ import UploadService from '../../services/UploadService';
 import {fileTypes} from "../../../../constants";
 import {ServerSideErrorSnackBar} from "../ServerSideErrorSnackBar";
 import {Link} from "react-router-dom";
+import moment from "moment";
 
 const Container = styled.div
     // Outer Container
@@ -123,9 +124,8 @@ class AttributeContainer extends React.Component {
         let copyArr = this.state.attributeData
         let idx = (this.state.attributeData.findIndex(element => element.attributeId === attrID))
         let data = this.state.textValue
-        if (!isNaN(Date.parse(data))) { //IF OCR String is date, convert to datatype 'Date'
-            let convDate = data.split("/");
-            let dateObject = new Date(+convDate[2], convDate[1] - 1, +convDate[0]); //Convert to dd/MM/YYYY
+        if (moment(data, 'DD/MM/YYYY', true).isValid()) { //Check if OCR is date
+            const dateObject = moment(data, 'DD/MM/YYYY').toDate();
             if (idx === -1) { //If ID doesn't exist yet, add it
                 this.setState({
                     attributeData: [...this.state.attributeData, {

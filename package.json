@@ -31,6 +31,7 @@
     "helmet": "^3.23.0",
     "jsonwebtoken": "^8.5.1",
     "material-table": "1.63.1",
+    "moment": "^2.27.0",
     "mongoose": "^5.9.18",
     "pdfmake": "^0.1.66",
     "react": "^16.13.1",
