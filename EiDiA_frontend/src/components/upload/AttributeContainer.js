@@ -125,7 +125,7 @@ class AttributeContainer extends React.Component {
         let data = this.state.textValue
         if (!isNaN(Date.parse(data))) { //IF OCR String is date, convert to datatype 'Date'
             let convDate = data.split("/");
-            let dateObject = new Date(+convDate[2], convDate[1] - 1, +convDate[0]); //Convert to dd/MM/YYYY
+            let dateObject = new Date(convDate[2], convDate[0] - 1, convDate[1]); //Convert mm/dd/yyyy to Date
             if (idx === -1) { //If ID doesn't exist yet, add it
                 this.setState({
                     attributeData: [...this.state.attributeData, {
@@ -269,7 +269,7 @@ class AttributeContainer extends React.Component {
                     disableToolbar
                     inputVariant="outlined"
                     variant="inline"
-                    format="dd/MM/yyyy"
+                    format="MM/dd/yyyy"
                     invalidDateMessage=""
                     invalidLabel=""
                     label={attrName}
