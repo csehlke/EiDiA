@@ -286,12 +286,8 @@ export default class ExportMainView extends React.Component {
                     }
 
                     let newEditorState = EditorState.createWithContent(ContentState.createFromText(editorText));
-
-
                     this.setState({editorState: newEditorState});
 
-                    //let newVariables = this.scanForNewVariables(newState.variables, editorState);
-                    //this.setState({variables: newVariables});
                     if (attributesNotFound) this.handleSnackBarOpen(alertConstants.alertType.warning, alertConstants.messages.variables);
                 }
             }).catch(() => this.handleSnackBarOpen(alertConstants.alertType.error, alertConstants.messages.document));
@@ -406,14 +402,7 @@ export default class ExportMainView extends React.Component {
                 }
 
         }
-        /*let newVariableState = {}
-        for (let k of Object.keys(indices)) {
-            newVariableState[k] = {
-                value: "",
-                source: "",
-                index: indices[k]
-            };
-        }*/
+
         let oldVariables = this.state.variables;
         for (let k of Object.keys(indices)) {
             oldVariables[k] = {
