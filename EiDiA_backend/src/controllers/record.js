@@ -410,17 +410,17 @@ const deleteDocument = (req, res) => {
     }
     DocumentModel.findById({_id: req.params.documentId})
         .then((document) => {
-                if (document.createdBy === req.userId || req.userRole === 'admin') {
+                if ('' + document.createdBy === req.userId || req.userRole === 'admin') {
                     DocumentModel.deleteOne({_id: req.params.documentId})
                         .then(result => {
 
-                                res.status(200).json(result);
-                                LogModel.create({
-                                    userId: req.userId,
-                                    recordId: document.recordId,
-                                    log: "deleted " + document.fileType + ": " + document.name
-                                }).then("Created Log").catch((e) => {
-                                    console.error("Didnt Create Log" + e)
+                            res.status(200).json(result);
+                            LogModel.create({
+                                userId: req.userId,
+                                recordId: document.recordId,
+                                log: "deleted " + document.fileType + ": " + document.name
+                            }).then("Created Log").catch((e) => {
+                                console.error("Didnt Create Log" + e)
                                 })
                             }
                         )
