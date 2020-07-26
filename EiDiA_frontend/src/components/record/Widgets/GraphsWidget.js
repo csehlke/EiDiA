@@ -110,6 +110,9 @@ export class GraphsWidget extends React.Component {
             })
 
         })
+        data.sort((a, b) => {
+            return ('' + a.date).localeCompare(b.date);
+        });
         try {
             data.forEach(
                 attr => {
