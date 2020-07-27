@@ -28,7 +28,15 @@ export class Dashboard extends React.Component {
 
     }
 
-
+    /**
+     * Once Dashboard has Mounted it pulls the following from the Backend
+     * -  Widgets stored with this recordId
+     * - DocTypes used at this recordId
+     * - AttributeTypes used at this recordId
+     * - All Attributes (Values) used at this recordId
+     * - the Logs for this recordId
+     *
+     */
     componentDidMount() {
         this.getWidgetsFromBackend()
         this.getDocTypes()
@@ -37,6 +45,12 @@ export class Dashboard extends React.Component {
         this.getLogs()
     }
 
+    /**
+     * Depending on the widgetType different Widget Components are rendered
+     * and provided with the necessary data via props
+     * @param widget the widget object from the database that is to be rendered
+     * @returns {*}
+     */
     renderConcreteWidget(widget) {
 
         switch (widget.widgetType) {
@@ -60,7 +74,7 @@ export class Dashboard extends React.Component {
     }
 
     /**
-     * This method assures that at each slot of the grid there is a Widget.
+     * This method assures that at each slot of the Dashboard grid there is a Widget.
      *
      */
     fillUpFreeSlots() {
@@ -93,6 +107,11 @@ export class Dashboard extends React.Component {
         this.setState({dashboardEditingActive: !this.state.dashboardEditingActive})
     }
 
+    /**
+     * Pulls the widgets stored for the recordID,
+     * as |widgets| <= slots in dashboard grid, fillUpFreeSlots (after succesfull request) is called to provide empty
+     * dummy widgets. These can be edited and then stored to the backend
+     */
     getWidgetsFromBackend() {
 
         RecordService.getWidgets(this.props.recordId).then(response => {
@@ -129,6 +148,11 @@ export class Dashboard extends React.Component {
 
     }
 
+    /**
+     * If a widget is changed or added this method is used to send it to the backend/database
+     * TODO split this up or specify wether an Update should happen or if a new Widget is created.
+     * @param widget
+     */
     sendWidgetToBackend(widget) {
         const requestData = {recordId: this.props.recordId, ...widget}
         if (widget.graphType) requestData['graphType'] = widget.graphType
@@ -139,7 +163,11 @@ export class Dashboard extends React.Component {
 
     }
 
-
+    /**
+     * handles changes to a widget after edit is complete
+     * @param widget
+     * @returns {function(...[*]=)}
+     */
     handleUpdateWidgetButton = (widget) => (title, widgetType, attributeMapping, graphType) => {
         widget.title = title;
         widget.widgetType = widgetType;
@@ -149,7 +177,12 @@ export class Dashboard extends React.Component {
         this.sendWidgetToBackend(widget);
     }
 
-
+    /**
+     * Switches the position of two widgets
+     *
+     * @param positionA
+     * @param positionB
+     */
     switchWidget = (positionA, positionB) => {
         let a = this.state.widgets.find(widget => widget.positionInfo === positionA)
         let b = this.state.widgets.find(widget => widget.positionInfo === positionB)
@@ -167,6 +200,10 @@ export class Dashboard extends React.Component {
         });
     }
 
+    /**
+     * Renders all Widgets (general Information), and adds a ChildComponent with the Type of corresponding widget
+     * @returns {*}
+     */
     render() {
         return (
             <div>

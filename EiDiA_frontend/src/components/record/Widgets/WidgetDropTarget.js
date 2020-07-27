@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import {DropTarget} from 'react-dnd';
 import {DragTypes} from "../../../../../constants";
 
-
+/**
+ * specifies what should happen when a widget is dropped / wether something can be dropped
+ */
 const calTarget = {
     canDrop() {
         return true;
@@ -13,7 +15,13 @@ const calTarget = {
         return {component}
     },
 };
+/**
+ * Sets properties that are accessible within the drop target
+ * @param monitor this has several methods that tell what dragging is going on
+ * e.g isOver() tells wether a dragging is currently happening and pointing to this drop target
+ *
 
+ */
 function collect(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget(),
@@ -22,6 +30,10 @@ function collect(connect, monitor) {
     }
 }
 
+/**
+ * This Component specifies an area where Widgets can be dropped and changes the color if something is dragged over
+ * This class could theoretically be merged with Widget
+ */
 class WidgetDropTarget extends Component {
     render() {
         const {connectDropTarget, isOver} = this.props;

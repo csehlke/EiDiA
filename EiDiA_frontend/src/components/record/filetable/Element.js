@@ -17,7 +17,9 @@ const Name = styled.div`
     display:flex;
     align-items:center;
 `;
-
+/**
+ * specifies what should happen when drag begins / ends
+ */
 const itemSource = {
     beginDrag() {
         return {};
@@ -28,7 +30,9 @@ const itemSource = {
         component.props.handleDrop(wrapperProps.id);
     }
 }
-
+/**
+ * Sets properties that are accessible within the dragged component
+ */
 function collectDrag(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
@@ -36,6 +40,10 @@ function collectDrag(connect, monitor) {
     };
 }
 
+/**
+ * Specifies a Component to render a Folder or File within FileExplorer
+ * Further this class is wrapped and exported with a DragSource to make it draggable
+ */
 class Element extends React.Component {
 
     constructor(props) {

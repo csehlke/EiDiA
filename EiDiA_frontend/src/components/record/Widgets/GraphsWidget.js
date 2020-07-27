@@ -14,7 +14,9 @@ import {
 } from 'recharts';
 import {GraphType} from "../../../../../constants";
 
-
+/**
+ * Merges attributeMapping and attributeValue such that a graph corresponding to graphType can be rendered from the attributes
+ */
 export class GraphsWidget extends React.Component {
     constructor(props) {
         super(props);
@@ -88,6 +90,13 @@ export class GraphsWidget extends React.Component {
         }
     }
 
+    /**
+     * TODO rename
+     * this method does not getData from backend, but takes the backenddata and the attributeMapping from the Widget
+     * and merges both such that it can be used by the createGraph method
+     * @param attributeMapping
+     * @returns {unknown[] | any[]}
+     */
     getData(attributeMapping) {
 
         let data = []

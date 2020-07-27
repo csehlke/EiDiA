@@ -2,6 +2,9 @@ import React from 'react';
 import {FlexRow, IndicatorElement, TealRight} from "../../StyleElements";
 
 
+/**
+ * Merges attributeMapping and attributeValues and then display the attributes
+ */
 export class IndicatorWidget extends React.Component {
     constructor(props) {
         super(props);
@@ -34,7 +37,13 @@ export class IndicatorWidget extends React.Component {
         )
     }
 
-
+    /**
+     * TODO rename, shift upwards?
+     * this method does not getData from backend, but takes the backenddata and the attributeMapping from the Widget
+     * and merges both such that it can be used by the IndicatorWidget component
+     * @param attributeMapping
+     * @returns {unknown[] | any[]}
+     */
     getData(attributeMapping) {
         let data = [];
         try {

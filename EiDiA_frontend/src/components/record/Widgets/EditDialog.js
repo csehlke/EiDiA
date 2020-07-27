@@ -15,7 +15,9 @@ import {GraphType, WidgetTypes} from "../../../../../constants";
 import {IoMdAddCircleOutline, IoMdRemoveCircleOutline} from "react-icons/all";
 import {IconContext} from "react-icons";
 
-
+/**
+ * Opens up a Dialog to edit a Widget
+ */
 export class EditDialog extends React.Component {
     constructor(props) {
         super(props);
@@ -36,8 +38,6 @@ export class EditDialog extends React.Component {
                 selectedTitle: this.props.widgetTitle,
                 selectedAttributeMapping: this.props.attributeMapping,
                 selectedGraph: this.props.graphType,
-
-
             })
         }
     }
@@ -47,7 +47,10 @@ export class EditDialog extends React.Component {
         return this.props.attributeTypes.filter(attributeType => attributeType.docTypeId === docTypeId);
     }
 
-
+    /**
+     * Renders Edit Fiels specific for an Indicator Widget
+     * @returns {*[]}
+     */
     indicator() {
         return (
             [
@@ -68,9 +71,12 @@ export class EditDialog extends React.Component {
             ]
         )
     }
-
+    /**
+     * Renders Edit Fields specific for an Graph Widget
+     * @returns {*[]}
+     */
     graph() {
-
+        //TODO shift colorOptions to a more central place like constants
         const colorOptions = [
             {name: "Red", color: "red"},
             {name: "Green", color: "green"},
@@ -78,6 +84,8 @@ export class EditDialog extends React.Component {
             {name: "Pink", color: "pink"},
             {name: "Orange", color: "orange"},
         ]
+        //TODO shift GraphTypeOptions to a more central place like constants
+
         const GraphTypeOptions = [
             {name: GraphType.Line, graphType: GraphType.Line},
             {name: GraphType.Bar, graphType: GraphType.Bar},
@@ -99,7 +107,7 @@ export class EditDialog extends React.Component {
                     <DialogContentText>Select Attributes to
                         Display:</DialogContentText>
                 </Grid>,
-                //TODO for Graphs only one DocType makes sense, this should be considered and validated in futures
+                //TODO for Graphs only one DocType makes sense, this should be considered and validated in future
                 this.state.selectedAttributeMapping.map((mapping, index) =>
                     [
                         this.getDocTypeSelector(index, mapping, 3),
@@ -194,13 +202,18 @@ export class EditDialog extends React.Component {
     }
 
     /**
-     * So far there are no special options that can be set for the Log widget
+     *Renders Edit Fields specific for an LogWidget
+     * But So far there are no special options that can be set for the Log widget
      * @returns {null}
      */
     log() {
         return null
     }
 
+    /**
+     * Chooses which special Fields should be rendered for editing. This depends on the selectedType of the Widget
+     * @returns {*[]|*}
+     */
     dialogPicker() {
         switch (this.state.selectedType) {
             case WidgetTypes.INDICATOR:
@@ -251,6 +264,9 @@ export class EditDialog extends React.Component {
         this.state.selectedAttributeMapping.splice(index, 1)
         this.setState({selectedAttributeMapping: this.state.selectedAttributeMapping})
     }
+    /**
+     * Checks wethere all necessary fields are set and then calls the passed Callback function for updating the database
+     */
     handleSaveButton = () => {
         if (this.state.selectedTitle.trim() === "" || this.state.selectedType === "") {
             this.setState({titleError: this.state.selectedTitle === "", typeError: this.state.selectedType === ""})

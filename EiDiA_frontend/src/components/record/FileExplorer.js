@@ -39,7 +39,11 @@ class FileExplorer extends React.Component {
         }
     }
 
-
+    /**
+     * Sets a new ParentId for an Element first in the database and then updates the state
+     * @param child the element that should get a new Parent Id
+     * @returns {function(...[*]=)}
+     */
     setNewParent = (child) => (newParentId) => {
         let reqBody = {
             id: child.id,
@@ -59,6 +63,11 @@ class FileExplorer extends React.Component {
 
         this.setState(this.state);
     }
+    /**
+     * Adds a Folder with a specific parentId to the database, and then updates the state if succesfull
+     * @param parentFolderId
+     * @returns {function(...[*]=)}
+     */
     handleAddFolder = (parentFolderId) => (e) => {
         let requestData = {
             name: "New Folder",
@@ -73,6 +82,12 @@ class FileExplorer extends React.Component {
                 }
             ).catch((e) => this.setState({isServerError: true}))
     }
+    /**
+     * Edits the name of an element
+     * @param element the element to be changed
+     * @param name the new name
+     * @returns {function(...[*]=)}
+     */
     editName = (element) => (name) => {
         let reqBody = {
             id: element.id,
@@ -86,6 +101,11 @@ class FileExplorer extends React.Component {
         ).catch((e) => this.setState({isServerError: true}))
     }
 
+    /**
+     * Deletes an element from database and if succesfull from the state
+     * The element to be deleted must be stored in this.state.toDeleteElement first e.g. by handleDeleteElement
+     * @param e
+     */
     handleDeleteElementApproved = (e) => {
         RecordService.deleteDocument(this.state.toDeleteElement.id).then(result => {
                 if (result.ok) this.state.elements.splice(this.state.elements.findIndex(elem => elem.id === this.state.toDeleteElement.id), 1);
@@ -97,8 +117,13 @@ class FileExplorer extends React.Component {
         })
 
     }
+    /**
+     * Sets the state variables deleteInProgress to true and specifies (in state) what should be deleted
+     * @param element the element to be delete
+     * @returns {function(...[*]=)}
+     */
     handleDeleteElement = (element) => (e) => {
-        //TODO if parent Element deleted, also delete all child elements
+        //TODO if parent Element deleted, also delete all child elements (from database)
         this.setState({deleteInProgress: true, toDeleteElement: element})
     }
 
