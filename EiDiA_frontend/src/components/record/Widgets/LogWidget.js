@@ -3,8 +3,11 @@ import {PreferredBreakSpan, TealName} from "../../StyleElements";
 import {logCount} from "../../../../../constants";
 
 
-//TODO: somehow when something on dashboard changes this doesnt update immeadietly
+//TODO: this doesnt update when changes happen to the dashboard
 
+/**
+ * Displays the Logs passed by this.props.logs
+ */
 export class LogWidget extends React.Component {
     constructor(props) {
         super(props);

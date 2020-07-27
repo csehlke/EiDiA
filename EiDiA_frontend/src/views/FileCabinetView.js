@@ -43,6 +43,9 @@ export class FileCabinetView extends React.Component {
 
     }
 
+    /**
+     * Pulls all available Records from the database
+     */
     componentDidMount() {
         this.props.setTitle("File Cabinet");
         RecordService.getAllRecords().then(result => {
@@ -50,23 +53,40 @@ export class FileCabinetView extends React.Component {
         }).catch((e) => this.setState({isServerError: true}))
     }
 
+    /**
+     * updates the Search Prop
+     * TODO Rename this to handleSearch as it is an event
+     * @param event
+     */
     updateSearch = (event) => {
         this.setState({search: event.target.value});
     }
 
+    /**
+     * Is used to set the isServerError property to false.
+     * This Property defines wether the ServerError Snackbar is shown or not
+     * @param e
+     */
     handleServerErrorBarClose = (e) => {
         this.setState({
             isServerError: false,
 
         });
     }
-
+    /**
+     * Is used to toggle the isAddRecordDialogActive property to the opposite Boolean value
+     *
+     */
     toggleAddRecordDialog = () => {
         this.setState({
             isAddRecordDialogActive: !this.state.isAddRecordDialogActive,
         });
     }
-
+    /**
+     * Is used to set the isRecordAlreadyExistsError property to false.
+     * This Property defines wether the Snackbar, that handles the Record Already Exist Error during Record Creation, is shown or not
+     * @param e
+     */
     handleRecordAlreadyExistsErrorBarClose=(e)=> {
         this.setState({
             isRecordAlreadyExistsError: false,
@@ -74,7 +94,10 @@ export class FileCabinetView extends React.Component {
     }
 
 
-
+    /**
+     * Sends a Request to the database to create a new Record
+     * @param recordName the name of the new Record
+     */
     addRecord = (recordName) => {
         RecordService.addNewRecord(recordName)
             .then(record => {

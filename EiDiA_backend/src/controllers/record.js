@@ -120,6 +120,14 @@ const getDocTypesForRecord = (req, res) => {
         });
 
 }
+/**
+ * First matches all Documents with a specific recordId
+ * Then groups those by document Types
+ * Having
+ * @param req
+ * @param res
+ * @returns {*|Promise<any>} all attributeTypes that appear in all documents with a specific recordId
+ */
 const getAttributeTypesForRecord = (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.params, "recordId")) {
         return res.status(400).json({

@@ -12,7 +12,9 @@ import {DragTypes} from "../../../../../constants";
  * https://reactjs.org/docs/composition-vs-inheritance.html#so-what-about-inheritance
  */
 
-
+/**
+ * specifies what should happen when drag begins / ends and wether the widget is drabable
+ */
 const itemSource = {
     canDrag(props) {
         return props.dashboardEditingActive;
@@ -30,6 +32,9 @@ const itemSource = {
     }
 }
 
+/**
+ * Sets properties that are accessible within the dragged component
+ */
 function collectDrag(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
@@ -37,7 +42,9 @@ function collectDrag(connect, monitor) {
     }
 }
 
-
+/**
+ * This is a wrapper for concrete Widgets, holding all the general Information like PositionInfo, title, etc.
+ */
 class Widget extends React.Component {
     constructor(props) {
         super(props);
@@ -69,6 +76,7 @@ class Widget extends React.Component {
         this.setState({widgetEditingActive: !this.state.widgetEditingActive})
 
     }
+
 
     renderMainPart() {
         const {isDragging} = this.props
@@ -110,7 +118,10 @@ class Widget extends React.Component {
 
     }
 
-
+    /**
+     * The actual rendering is wrapped by connectDragSource to make this dragable
+     *
+     */
     render() {
         return this.props.connectDragSource(this.renderMainPart());
     }

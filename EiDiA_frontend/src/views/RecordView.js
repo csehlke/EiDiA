@@ -25,6 +25,9 @@ class RecordView extends React.Component {
         }
     }
 
+    /**
+     * Once the Component did mount, all Documents aswell as the Record Name is pulled from the database for the corresponding recordID
+     */
     componentDidMount() {
         this.getDocuments()
         RecordService.getRecordName(this.state.recordId)
@@ -37,11 +40,19 @@ class RecordView extends React.Component {
 
     }
 
-
+    /**
+     * Sets the current Page this can be either
+     * recordMenueOptions.FILEEXPLORER or recordMenueOptions.DASHBOARD
+     * @param event
+     * @param value
+     */
     handleChange(event, value) {
         this.setState({currentPage: value})
     }
 
+    /**
+     * Pulls a Documents for the current recordID from the Database
+     */
     getDocuments() {
         RecordService.getDocuments(this.state.recordId)
             .then(response => {
@@ -51,6 +62,9 @@ class RecordView extends React.Component {
 
     }
 
+    /**
+     * This is used as callback function e.g. for the FileExplorer to force an update on the Documents from the Database
+     */
     updateData = () => {
         this.getDocuments();
     }
@@ -63,6 +77,12 @@ class RecordView extends React.Component {
         });
     }
 
+    /**
+     * Depending on this.state.currentPage this method renders a Dashboard or an FileExplorer
+     * TODO shift datahandling from Dashboard to RecordView or push datahandling of Fileexplorer downwards
+     * (if this data is not needed within Recordview)
+     * @returns {*}
+     */
     render() {
         let toShow;
 
