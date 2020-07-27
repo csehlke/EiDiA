@@ -34,7 +34,6 @@ const itemSource = {
 
 /**
  * Sets properties that are accessible within the dragged component
-
  */
 function collectDrag(connect, monitor) {
     return {
