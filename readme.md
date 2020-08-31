@@ -13,7 +13,7 @@ Team members:
   
  - [Tom Bader](https://github.com/thetommes)  
  - [Philipp Bock](https://github.com/bockph)  
- - [Thien Nguyen](https://github.com/neihtfool)  
+ - [Thien Nguyen](https://github.com/neihtq)  
  - [Carsten Sehlke](https://github.com/csehlke)
 
 ## Running the project
