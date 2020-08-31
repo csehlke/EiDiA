@@ -81,13 +81,24 @@ webpack-dev-server --open --config EiDiA_frontend/webpack.dev.js
 ```
 This will serve the frontend on port 8000.
 
-## Database
-[Mongodb](https://www.mongodb.com/de) should be used as database. Th MongoDB URL should be defined in `constants.js` line 4.
+## Set up your database
+- Create a new directory where your database will be stored
+- Start the database server
+
+```sh
+mongod --dbpath relative/path/to/database
+```
+
+- The database scheme is already set via [Mongoose](https://mongoosejs.com/) within the application. Import data to begin with
+
+```sh
+mongorestore dump/
+```
+
+- The MongoDB URI then should be set in `constants.js` line 4.
 ```js
 const mongoDBUrl = 'YOUR MONGODB URL'
 ```
-
- The database scheme is already set via [Mongoose](https://mongoosejs.com/). 
 
 ## Optional: Build frontend
 ```
