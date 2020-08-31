@@ -2,9 +2,24 @@
 <div align="center">  
   <img width="220px" src="https://github.com/csehlke/EiDiA/blob/master/EiDiA_frontend/src/assets/logo.png">  
 </div>  
-  
+
 # EiDiA - Einfach Digitale Akte 
-## Encouraging Your Ideas    
+
+## Table of contents
+* [About the Project: Encouraging Your Ideas](#about-the-project:-encouraging-your-ideas)
+  * [Built with](#built-with)
+* [Running the project](#running-the-project)
+  * [Prerequisites](#prerequisites)
+  * [Download the project](#download-the-project)
+  * [Install Dependencies](#install-dependencies)
+  * [Run backend](#run-backend)
+  * [Run frontend](#run-frontend)
+  * [Devstart](#devstart)
+* [Database](#database) 
+* [Optional: Build frontend](#optional:-build-frontend)
+* [Acknowledgment](#acknowledgment)
+
+## About the Project: Encouraging Your Ideas    
  EiDiA is a platform for file digitalization and collaboration in law and tax firms to solve the issue of inefficiency and intransparency of analog files by providing a central data storage.  
   
 It was developed within the course "Software Engineering for Business Applications - Master Course: Web Application Engineering" in the summer term 2020 at the Technical University of Munich.  
@@ -13,8 +28,19 @@ Team members:
   
  - [Tom Bader](https://github.com/thetommes)  
  - [Philipp Bock](https://github.com/bockph)  
- - [Thien Nguyen](https://github.com/neihtfool)  
+ - [Thien Nguyen](https://github.com/neihtq)  
  - [Carsten Sehlke](https://github.com/csehlke)
+
+## Built with
+- [React](https://reactjs.org/)
+- [Material-UI](https://material-ui.com/)
+- [Draft.js](https://draftjs.org/)
+- [Express](https://expressjs.com/de/)
+- [pdfmake](http://pdfmake.org/)
+- [MongoDB](https://www.mongodb.com/)
+- [Mongoose](https://mongoosejs.com/)
+- [Tesseract.js](https://tesseract.projectnaptha.com/)
+
 
 ## Running the project
 ### Prerequisites
@@ -44,7 +70,7 @@ webpack-dev-server --open --config EiDiA_frontend/webpack.dev.js
 ```
 This will serve the frontend on port 8000.
 
-## Devstart
+### Devstart
 To devstart the backend, use 
 ```
 nodemon EiDiA_backend/index.js
@@ -58,7 +84,7 @@ This will serve the frontend on port 8000.
 ## Database
 The database is hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), no configuration is needed on your side.
 
-### Optional: Build frontend
+## Optional: Build frontend
 ```
 webpack --config EiDiA_frontend/webpack.prod.js
 ```
@@ -67,3 +93,8 @@ webpack --config EiDiA_frontend/webpack.prod.js
 * `dist` - contains all the files of your application and their dependencies.
 
 
+## Acknowledgment
+- [date-fns](https://date-fns.org/)
+- [material-table](https://material-table.com/)
+- [Moment.js](https://momentjs.com/)
+- [react-copy-to-clipboard](https://github.com/nkbt/react-copy-to-clipboard)
