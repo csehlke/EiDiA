@@ -82,7 +82,12 @@ webpack-dev-server --open --config EiDiA_frontend/webpack.dev.js
 This will serve the frontend on port 8000.
 
 ## Database
-The database is hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), no configuration is needed on your side.
+[Mongodb](https://www.mongodb.com/de) should be used as database. Th MongoDB URL should be defined in `constants.js` line 4.
+```js
+const mongoDBUrl = 'YOUR MONGODB URL'
+```
+
+ The database scheme is already set via [Mongoose](https://mongoosejs.com/). 
 
 ## Optional: Build frontend
 ```
