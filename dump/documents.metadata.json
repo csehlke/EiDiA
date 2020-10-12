@@ -1,0 +1,69 @@
+{
+  "options": {},
+  "indexes": [
+    {
+      "v": 2,
+      "key": {
+        "_id": 1
+      },
+      "name": "_id_"
+    },
+    {
+      "v": 2,
+      "key": {
+        "createdOnDate": 1
+      },
+      "name": "createdOnDate_1",
+      "background": true
+    },
+    {
+      "v": 2,
+      "key": {
+        "recordId": 1
+      },
+      "name": "recordId_1",
+      "background": true
+    },
+    {
+      "v": 2,
+      "key": {
+        "parentFolderId": 1
+      },
+      "name": "parentFolderId_1",
+      "background": true
+    },
+    {
+      "v": 2,
+      "key": {
+        "documentTypeId": 1
+      },
+      "name": "documentTypeId_1",
+      "background": true
+    },
+    {
+      "v": 2,
+      "key": {
+        "completeOcrText": 1
+      },
+      "name": "completeOcrText_1",
+      "background": true
+    },
+    {
+      "v": 2,
+      "key": {
+        "createdBy": 1
+      },
+      "name": "createdBy_1",
+      "background": true
+    },
+    {
+      "v": 2,
+      "key": {
+        "attributes.attributeId": 1
+      },
+      "name": "attributes.attributeId_1",
+      "background": true
+    }
+  ],
+  "uuid": "36e0ff7762eb4fdcad0b755f24b6786a"
+}

@@ -88,17 +88,30 @@ This will serve the frontend on port 8000.
 ```sh
 mongod --dbpath relative/path/to/database
 ```
-
-- The database scheme is already set via [Mongoose](https://mongoosejs.com/) within the application. Import data to begin with
-
-```sh
-mongorestore dump/
-```
-
-- The MongoDB URI then should be set in `constants.js` line 4.
+- The MongoDB URI should be set in `constants.js` line 4.
 ```js
-const mongoDBUrl = 'YOUR MONGODB URL'
+const mongoDBUrl = 'YOUR MONGODB URL';
 ```
+
+- The database scheme is already set via [Mongoose](https://mongoosejs.com/) within the application.
+
+- To import a user into the database to begin with
+
+    - either run
+        ```sh
+        mongorestore --db EiDiA-db dump/
+        ```
+    - or start both the back- and frontend server and then manually insert this object into the `EiDiA-db.users` collection
+        ```json
+        {
+          "username":"admin",
+          "password":"$2a$08$JY2Ogc4SY3vTj2BbvfliIeFISQRGtIW4zFfwf8jhT1yEdBmYVO0A6"
+        }
+        ```
+      
+- The initial user credentials (should be changed later on in the UI) are
+    - username: admin
+    - password: admin
 
 ## Optional: Build frontend
 ```
